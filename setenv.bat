@@ -58,7 +58,7 @@ if /i "%__ARG%"=="help" ( set _HELP=1 & goto args_done
 ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
 ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
 ) else (
-    echo %_BASENAME%: Unknown subcommand %__ARG%
+    echo Error: Unknown subcommand %__ARG% 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -68,7 +68,7 @@ goto :args_loop
 goto :eof
 
 :help
-echo Usage: setenv { options ^| subcommands }
+echo Usage: %_BASENAME% { options ^| subcommands }
 echo   Options:
 echo     -debug      show commands executed by this script
 echo     -verbose    display environment settings
@@ -251,13 +251,18 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('clang.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% clang %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% clang.exe
 )
+where /q lli.exe
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1,2,3,*" %%i in ('lli.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% lli %%k,"
+    set __WHERE_ARGS=%__WHERE_ARGS% lli.exe
+) else (
+    echo Warning: lli executable not found in directory %_LLVM_HOME% 1>&2
+    echo ^(LLVM installation directory needs additional binaries^) 1>&2
+)
 where /q opt.exe
 if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('opt.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% opt %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% opt.exe
-) else (
-    echo Warning: opt executable not found in directory %_LLVM_HOME% 1>&2
-    echo ^(LLVM installation directory needs additional binaries^) 1>&2
 )
 where /q cl.exe
 if %ERRORLEVEL%==0 (
