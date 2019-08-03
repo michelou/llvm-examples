@@ -77,9 +77,6 @@ echo     help        display this help message
 goto :eof
 
 :llvm
-where /q clang.exe
-if %ERRORLEVEL%==0 goto :eof
-
 if defined LLVM_HOME (
     set _LLVM_HOME=%LLVM_HOME%
     if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable LLVM_HOME
@@ -109,9 +106,6 @@ set "_LLVM_PATH=;%_LLVM_HOME%\bin"
 goto :eof
 
 :msvc
-where /q cl.exe
-if %ERRORLEVEL%==0 goto :eof
-
 if defined MSVC_HOME (
     if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable MSVC_HOME
     call :msvs_home "%_MSVC_HOME%"
@@ -127,7 +121,7 @@ set __MSVC_BIN_DIR=
 set __MSVC_ARCH=x86\x86
 if "%PROCESSOR_ARCHITECTURE%"=="AMD64" set __MSVC_ARCH=x64\x64
 for /f "delims=" %%f in ('where /r "%__SEARCH_PATH%" cl.exe ^| findstr "%__MSVC_ARCH%"') do (
-    for %%i in ("%%f") do set __MSVC_BIN_DIR=%%~dpsi
+    for %%i in ("%%f") do set "__MSVC_BIN_DIR=%%~dpi"
 )
 if not exist "%__MSVC_BIN_DIR%" (
     echo Error: Could not find Microsoft C/C++ compiler for architecture %__MSVC_ARCH% 1>&2
@@ -146,6 +140,7 @@ set "_MSBUILD_PATH=;!__MSBUILD_BIN_DIR!"
 
 set "__PATH=%_MSVS_HOME%\Common7\IDE\CommonExtensions\Microsoft\CMake"
 for /f "delims=" %%i in ('where /r "!__PATH!" cmake.exe') do set "__CMAKE_BIN_DIR=%%~dpi"
+for %%f in ("%__CMAKE_BIN_DIR%..") do set "_CMAKE_HOME=%%~sf"
 set "_CMAKE_PATH=;!__CMAKE_BIN_DIR!"
 
 set "_MSVC_PATH=;%__MSVC_BIN_DIR%"
@@ -195,9 +190,6 @@ set _MSVS_HOME=%__DRIVE_NAME%
 goto :eof
 
 :git
-where /q git.exe
-if %ERRORLEVEL%==0 goto :eof
-
 if defined GIT_HOME (
     set _GIT_HOME=%GIT_HOME%
     if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable GIT_HOME
@@ -220,7 +212,7 @@ if not exist "%_GIT_HOME%\bin\git.exe" (
     set _EXITCODE=1
     goto :eof
 )
-set "_GIT_PATH=;%_GIT_HOME%\bin;%_GIT_HOME%\usr\bin"
+set "_GIT_PATH=;%_GIT_HOME%\bin;%_GIT_HOME%\usr\bin;%_GIT_HOME%\mingw64\bin"
 goto :eof
 
 :clean
@@ -297,6 +289,10 @@ if %__VERBOSE%==1 (
     rem if %_DEBUG%==1 echo [%_BASENAME%] where %__WHERE_ARGS%
     echo Tool paths:
     for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p
+    rem echo Environment variables:
+    rem echo    LLVM_HOME=%LLVM_HOME%
+    rem echo    MSVC_HOME=%MSVC_HOME%
+    rem echo    CMAKE_HOME=%CMAKE_HOME%
 )
 goto :eof
 

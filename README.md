@@ -14,13 +14,14 @@
 This project repository relies on two external software for the **Microsoft Windows** plaform:
 
 - [LLVM 8 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1) ([*release notes*](https://releases.llvm.org/8.0.1/docs/ReleaseNotes.html))
-- [Microsoft Visual Studio 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes))
+- [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes))
 
 > **:mag_right:** Command [**`vshere.exe`**](https://github.com/microsoft/vswhere) displays VS properties, including the exact version of our Visual Studio installation:
 > <pre style="font-size:80%;">
-> <b>&gt; "C:\Program Files (x86)\Microsoft Visual Studio"\Installer\vswhere.exe -property installationVersion</b>
-16.1.29102.190
+> <b>&gt; "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -property installationVersion</b>
+> 16.2.29123.88
 > </pre>
+<!-- old: 16.1.29102.190 -->
 
 Optionally one may also install the following software:
 
@@ -48,7 +49,7 @@ This repository is organized as follows:
 bin\llvm\build.bat
 docs\
 examples\
-llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_02"><a href="#footnote_02">[1]</a></sup>
+llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_02"><a href="#footnote_02">[1]</a></sup>
 README.md
 setenv.bat
 </pre>
@@ -58,7 +59,7 @@ where
 - directory [**`bin\`**](bin/) contains utility batch files.
 - directory [**`docs\`**](docs/) contains several LLVM related papers/articles.
 - directory [**`examples\`**](examples/) contains LLVM code examples (see [**`examples\README.md`**](examples/README.md)).
-- directory [**`llvm-8.0.1.src\`**](llvm-8.0.1.src/) contains the LLVM source code distribution.
+- directory **`llvm-8.0.1.src\`** contains the LLVM source code distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`setenv.bat`**](setenv.bat) is the batch script for setting up our environment.
 
@@ -114,11 +115,12 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; setenv</b>
 Tool versions:
     clang 8.0.1, opt 8.0.1,
-    cl version 19.21.27702.2, cmake 3.14.19050301-MSVC_2
-    msbuild 16.1.76.45076, nmake 14.21.27702.2, git 2.22.0.windows.1
+    cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
+    msbuild 16.200.19.32702, nmake 14.22.27905.0, git 2.22.0.windows.1
 
-<b>&gt; where clang</b>
+<b>&gt; where clang cmake</b>
 C:\opt\LLVM-8.0.1\bin\clang.exe
+X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
 </pre>
 
 Command **`setenv -verbose`** also displays the tool paths:
@@ -127,19 +129,40 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; setenv -verbose</b>
 Tool versions:
    clang 8.0.1, opt 8.0.1,
-   cl version 19.21.27702.2, cmake 3.14.19050301-MSVC_2
-   msbuild 16.1.76.45076, nmake 14.21.27702.2, git 2.22.0.windows.1
+   cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
+   msbuild 16.200.19.32702, nmake 14.22.27905.0, git 2.22.0.windows.1
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
+   C:\opt\LLVM-8.0.1\bin\lli.exe
    C:\opt\LLVM-8.0.1\bin\opt.exe
-   X:\VC\Tools\MSVC\14.21.27702\bin\Hostx64\x64\cl.exe
+   X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\cl.exe
    X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
    X:\MSBuild\Current\Bin\amd64\MSBuild.exe
-   X:\VC\Tools\MSVC\14.21.27702\bin\Hostx64\x64\nmake.exe
+   X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
    C:\opt\Git-2.22.0\bin\git.exe
+   C:\opt\Git-2.22.0\mingw64\bin\git.exe
 </pre>
 
 #### `llvm-8.0.1.src\build.bat`
+
+Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) in directory **`llvm-8.0.1.src\`** generates the binaries to be added to the LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
+
+<pre>
+<b>&gt; cd</b>
+L:\llvm-8.0.1.src
+<b>&gt; build -verbose compile</b>
+Project: LLVM, Configuration: Release, Platform: x64
+Generate configuration files into directory "build"
+[...]
+</pre>
+
+> **&#9755;** ***LLVM source distribution***<br/>
+> Directory **`llvm-8.0.1.src\`** is setup as follows:
+> <pre>
+> <b>&gt; curl -L --silent --output llvm-8.0.1.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz</b>
+> <b>&gt; tar xzvf llvm-8.0.1.src.tar.xz</b>
+> <b>&gt; cp bin\llvm\build.bat llvm-8.0.1.src</b>
+> </pre>
 
 Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) in directory **`llvm-8.0.1.src\`** copies the generated binaries to the LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
 
@@ -168,15 +191,15 @@ We list below several binaries in the LLVM installation directory; e.g. commands
 
 ### Blogs
 
-- [Compiler Performance and LLVM](http://pling.jondgoodwin.com/post/compiler-performance/) by Jonathan Goodwin, March 2019.
-- [How LLVM optimizes a function](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
-- [How LLVM optimizes power sums](https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html) by Krister Walfridsson, April 2018.
-- [Adventures in JIT compilation: Part 3 - LLVM](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
-- [Adventures in JIT compilation: Part 2 - an x64 JIT](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-2-an-x64-jit/) by John Regehr, March 2017.
-- [Adventures in JIT compilation: Part 1 - an interpreter](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-1-an-interpreter/) by Eli Bendersky, March 2017.
-- [A Tourist’s Guide to the LLVM Source Code](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
-- [A deeper look into the LLVM code generator, Part 1](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, Feburary 2013.
-- [Life of an instruction in LLVM](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
+- [*Compiler Performance and LLVM*](http://pling.jondgoodwin.com/post/compiler-performance/) by Jonathan Goodwin, March 2019.
+- [*How LLVM optimizes a function*](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
+- [*How LLVM optimizes power sums*](https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html) by Krister Walfridsson, April 2018.
+- [*Adventures in JIT compilation: Part 3 - LLVM*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
+- [*Adventures in JIT compilation: Part 2 - an x64 JIT*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-2-an-x64-jit/) by Eli Bendersky, March 2017.
+- [*Adventures in JIT compilation: Part 1 - an interpreter*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-1-an-interpreter/) by Eli Bendersky, March 2017.
+- [*A Tourist’s Guide to the LLVM Source Code*](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
+- [*A deeper look into the LLVM code generator, Part 1*](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, Feburary 2013.
+- [*Life of an instruction in LLVM*](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
 
 ### Books
 
@@ -186,7 +209,7 @@ We list below several binaries in the LLVM installation directory; e.g. commands
 
 ### News
 
-- [LLVM Weekly](http://llvmweekly.org/) - A weekly newsletter covering developments in LLVM, Clang, and related projects.
+- [*LLVM Weekly*](http://llvmweekly.org/) - A weekly newsletter covering developments in LLVM, Clang, and related projects.
 
 
 ## Footnotes
