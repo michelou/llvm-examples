@@ -28,11 +28,12 @@
 .settings/
 build/
 clibraries/
+llvm-*.src/
 svmbuild/
+test-suite-*.src/
 core.*
 env
 hs_err_pid*.log
-llvm-*.src
 workingsets.xml
 bench-results.json
 jmh_result.json
