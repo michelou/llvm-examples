@@ -26,6 +26,7 @@
 .metadata/
 .project
 .settings/
+build/
 clibraries/
 svmbuild/
 core.*

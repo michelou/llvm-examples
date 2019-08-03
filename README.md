@@ -13,10 +13,10 @@
 
 This project repository relies on two external software for the **Microsoft Windows** plaform:
 
-- [LLVM 8 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1) ([*release notes*](https://releases.llvm.org/8.0.1/docs/ReleaseNotes.html))
+- [LLVM 8 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1) ([*release notes*](https://releases.llvm.org/8.0.0/docs/ReleaseNotes.html))
 - [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes))
 
-> **:mag_right:** Command [**`vshere.exe`**](https://github.com/microsoft/vswhere) displays VS properties, including the exact version of our Visual Studio installation:
+> **:mag_right:** Command [**`vswhere.exe`**](https://github.com/microsoft/vswhere) displays VS properties, including the exact version of our Visual Studio installation:
 > <pre style="font-size:80%;">
 > <b>&gt; "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -property installationVersion</b>
 > 16.2.29123.88
@@ -89,7 +89,7 @@ We distinguish different sets of batch commands:
         help        display this help message
     </pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command must be copied manually to the LLVM source distribution **`llvm-8.0.1.src\`**; with it we can generate/install binaries not available in the installed LLVM distribution (in our case **`C:\opt\LLVM-8.0.1\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (binaries, header files, library files, CMake modules) not available in the installed LLVM distribution (in our case **`C:\opt\LLVM-8.0.1\`**).
 
     <pre>
     <b>&gt; build help</b>
@@ -109,12 +109,12 @@ We distinguish different sets of batch commands:
 
 #### `setenv.bat`
 
-Command [**`setenv`**](setenv.bat) is executed once to setup our development environment; it makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) and [**`git.exe`**](https://git-scm.com/docs/git) directly available from the command prompt:
+Command [**`setenv`**](setenv.bat) is executed once to setup our development environment; it makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) and [**`git.exe`**](https://git-scm.com/docs/git) directly available from the command prompt:
 
 <pre style="font-size:80%;">
 <b>&gt; setenv</b>
 Tool versions:
-    clang 8.0.1, opt 8.0.1,
+    clang 8.0.1, lli 8.0.1, opt 8.0.1,
     cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
     msbuild 16.200.19.32702, nmake 14.22.27905.0, git 2.22.0.windows.1
 
@@ -128,7 +128,7 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; setenv -verbose</b>
 Tool versions:
-   clang 8.0.1, opt 8.0.1,
+   clang 8.0.1, lli 8.0.1, opt 8.0.1,
    cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
    msbuild 16.200.19.32702, nmake 14.22.27905.0, git 2.22.0.windows.1
 Tool paths:
@@ -145,7 +145,17 @@ Tool paths:
 
 #### `llvm-8.0.1.src\build.bat`
 
-Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) in directory **`llvm-8.0.1.src\`** generates the binaries to be added to the LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
+We make use of the LLVM source distribution to build the addtional binaries not available in the LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
+
+Directory **`llvm-8.0.1.src\`** is setup as follows:
+<pre>
+<b>&gt; curl -L --silent --output llvm-8.0.1.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz</b>
+<b>&gt; tar xzvf llvm-8.0.1.src.tar.xz</b>
+<b>&gt; cp bin\llvm\build.bat llvm-8.0.1.src</b>
+<b>&gt; cd llvm-8.0.1.src</b>
+</pre>
+
+Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (**`.exe`** and **`.lib`** files) into directory **`build\Release\`**.
 
 <pre>
 <b>&gt; cd</b>
@@ -156,15 +166,7 @@ Generate configuration files into directory "build"
 [...]
 </pre>
 
-> **&#9755;** ***LLVM source distribution***<br/>
-> Directory **`llvm-8.0.1.src\`** is setup as follows:
-> <pre>
-> <b>&gt; curl -L --silent --output llvm-8.0.1.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz</b>
-> <b>&gt; tar xzvf llvm-8.0.1.src.tar.xz</b>
-> <b>&gt; cp bin\llvm\build.bat llvm-8.0.1.src</b>
-> </pre>
-
-Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) in directory **`llvm-8.0.1.src\`** copies the generated binaries to the LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
+Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
 
 <pre style="font-size:80%;">
 <b>&gt; build -verbose install</b>
@@ -174,7 +176,7 @@ Copy files from directory build\lib\cmake to C:\opt\LLVM-8.0.1\lib\cmake\
 Copy files from directory include to C:\opt\LLVM-8.0.1\include\
 </pre>
 
-We list below several binaries in the LLVM installation directory; e.g. commands like [**`clang.exe`**](https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html), [**`lld.exe`**](https://lld.llvm.org/)  and [**`lldb.exe`**](https://lldb.llvm.org/) belong to the orginal distribution while commands like [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html), [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) and [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) were build/added from the LLVM source distribution.
+We list below several executables in the LLVM installation directory; e.g. commands like [**`clang.exe`**](https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html), [**`lld.exe`**](https://lld.llvm.org/)  and [**`lldb.exe`**](https://lldb.llvm.org/) belong to the orginal distribution while commands like [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html), [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) and [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) were build/added from the LLVM source distribution.
 
 <pre style="font-size:80%;">
 <b>&gt; where /t clang llc lld lldb lli opt</b>
@@ -217,7 +219,7 @@ We list below several binaries in the LLVM installation directory; e.g. commands
 <a name="footnote_01">[1]</a>  [↩](#anchor_01)
 
 <div style="margin:0 0 1em 20px;">
-The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (that includes executables, header files, library files and CMake modules) increases its size to 2.18 GB.
+The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 2.18 GB.
 </div>
 
 <a name="footnote_01">[2]</a>  [↩](#anchor_02)
@@ -225,8 +227,8 @@ The original size of the LLVM installation directory is 1.1 GB. The installation
 <div style="margin:0 0 1em 20px;">
 <div>In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):</div>
 <pre style="font-size:80%;">
-<a href="https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/LLVM-8.0.1-win64.exe">LLVM-8.0.1-win64.exe</a>   <i>(131 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz">llvm-8.0.1.src.tar.xz</a>  <i>( 29 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>   <i>(131 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>  <i>( 29 MB)</i>
 vs_2019_community.exe  <i>(no offline installer)</i>
 </pre>
 </div>
