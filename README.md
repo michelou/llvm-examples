@@ -4,7 +4,7 @@
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/">LLVM</a> examples coming from various websites and books.<br/>
-  It also includes several batch scripts for experimenting with LLVM on the <b>Microsoft Windows</b> platform.
+  It also includes several batch scripts for experimenting with the LLVM infrastructure on the <b>Microsoft Windows</b> platform.
   </td>
   </tr>
 </table>
@@ -16,9 +16,9 @@ This project repository relies on two external software for the **Microsoft Wind
 - [LLVM 8 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1) ([*release notes*](https://releases.llvm.org/8.0.0/docs/ReleaseNotes.html))
 - [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes))
 
-> **:mag_right:** Command [**`vswhere.exe`**](https://github.com/microsoft/vswhere) displays VS properties, including the exact version of our Visual Studio installation:
+> **:mag_right:** Command [**`vswhere.exe`**](https://github.com/microsoft/vswhere) displays VS properties, including the exact version of our Visual Studio installation (starting with VS 2017):
 > <pre style="font-size:80%;">
-> <b>&gt; "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -property installationVersion</b>
+> <b>&gt; bin\vswhere -property installationVersion</b>
 > 16.2.29123.88
 > </pre>
 <!-- old: 16.1.29102.190 -->
@@ -44,11 +44,11 @@ We further recommand using an advanced console emulator such as [ComEmu](https:/
 
 ## Directory structure
 
-This repository is organized as follows:
+This project is organized as follows:
 <pre style="font-size:80%;">
 bin\llvm\build.bat
 docs\
-examples\
+examples\{JITTutorial1, ..}
 llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_02"><a href="#footnote_02">[1]</a></sup>
 README.md
 setenv.bat
@@ -84,12 +84,12 @@ We distinguish different sets of batch commands:
     Usage: setenv { options | subcommands }
       Options:
         -debug      show commands executed by this script
-        -verbose    display environment settings
+        -verbose    display progress messages
       Subcommands:
         help        display this help message
     </pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (binaries, header files, library files, CMake modules) not available in the installed LLVM distribution (in our case **`C:\opt\LLVM-8.0.1\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, CMake modules) not available in LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
 
     <pre>
     <b>&gt; build help</b>
@@ -105,6 +105,8 @@ We distinguish different sets of batch commands:
       run         run executable
     </pre>
 
+    > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode runner) are not part of the LLVM binary distribution (e.g. [LLVM-8.0.1-win64.exe](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1)).
+
 ## Usage examples
 
 #### `setenv.bat`
@@ -116,11 +118,13 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 Tool versions:
     clang 8.0.1, lli 8.0.1, opt 8.0.1,
     cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
-    msbuild 16.200.19.32702, nmake 14.22.27905.0, git 2.22.0.windows.1
+    msbuild 16.200.19.32702, nmake 14.22.27905.0
+    git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
 
-<b>&gt; where clang cmake</b>
+<b>&gt; where clang cmake vswhere</b>
 C:\opt\LLVM-8.0.1\bin\clang.exe
 X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
+L:\bin\vswhere.exe
 </pre>
 
 Command **`setenv -verbose`** also displays the tool paths:
@@ -130,7 +134,8 @@ Command **`setenv -verbose`** also displays the tool paths:
 Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1,
    cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
-   msbuild 16.200.19.32702, nmake 14.22.27905.0, git 2.22.0.windows.1
+   msbuild 16.200.19.32702, nmake 14.22.27905.0
+   git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
    C:\opt\LLVM-8.0.1\bin\lli.exe
@@ -141,6 +146,7 @@ Tool paths:
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
    C:\opt\Git-2.22.0\bin\git.exe
    C:\opt\Git-2.22.0\mingw64\bin\git.exe
+   L:\bin\vswhere.exe
 </pre>
 
 #### `llvm-8.0.1.src\build.bat`
@@ -183,7 +189,7 @@ We list below several executables in the LLVM installation directory; e.g. comma
   69512704   18.03.2019      16:58:26  C:\opt\LLVM-8.0.1\bin\clang.exe
   39413248   02.08.2019      17:50:13  C:\opt\LLVM-8.0.1\bin\llc.exe
   47860736   18.03.2019      17:00:18  C:\opt\LLVM-8.0.1\bin\lld.exe
-    229376   18.03.2019      17:01:06  C:\opt\LLVM-8.0.0\bin\lldb.exe
+    229376   18.03.2019      17:01:06  C:\opt\LLVM-8.0.1\bin\lldb.exe
   16918528   02.08.2019      17:50:27  C:\opt\LLVM-8.0.1\bin\lli.exe
   42942976   02.08.2019      17:56:01  C:\opt\LLVM-8.0.1\bin\opt.exe
 </pre>
@@ -218,20 +224,20 @@ We list below several executables in the LLVM installation directory; e.g. comma
 
 <a name="footnote_01">[1]</a>  [↩](#anchor_01)
 
-<div style="margin:0 0 1em 20px;">
+<p style="margin:0 0 1em 20px;">
 The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 2.18 GB.
-</div>
+</p>
 
 <a name="footnote_01">[2]</a>  [↩](#anchor_02)
 
-<div style="margin:0 0 1em 20px;">
-<div>In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):</div>
-<pre style="font-size:80%;">
+<p style="margin:0 0 1em 20px;">
+In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
+</p>
+<pre style="margin:0 0 1em 20px; font-size:80%;">
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>   <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>  <i>( 29 MB)</i>
 vs_2019_community.exe  <i>(no offline installer)</i>
 </pre>
-</div>
 
 ***
 

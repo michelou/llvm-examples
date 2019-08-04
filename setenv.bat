@@ -237,6 +237,7 @@ set __VERBOSE=%1
 set __VERSIONS_LINE1=
 set __VERSIONS_LINE2=
 set __VERSIONS_LINE3=
+set __VERSIONS_LINE4=
 set __WHERE_ARGS=
 where /q clang.exe
 if %ERRORLEVEL%==0 (
@@ -273,18 +274,25 @@ if %ERRORLEVEL%==0 (
 )
 where /q nmake.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-7,*" %%i in ('nmake.exe /? 2^>^&1 ^| findstr Version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% nmake %%o,"
+    for /f "tokens=1-7,*" %%i in ('nmake.exe /? 2^>^&1 ^| findstr Version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% nmake %%o"
     set __WHERE_ARGS=%__WHERE_ARGS% nmake.exe
 )
 where /q git.exe
 if %ERRORLEVEL%==0 (
-   for /f "tokens=1,2,*" %%i in ('git.exe --version') do set __VERSIONS_LINE3=%__VERSIONS_LINE3% git %%k
+    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% git %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% git.exe
 )
+rem see https://github.com/Microsoft/vswhere/releases
+where /q vswhere.exe
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1-4,5,*" %%i in ('vswhere -help ^| findstr /R /C:"version [0-9][0-9.+]*"') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% vswhere %%m"
+    set __WHERE_ARGS=%__WHERE_ARGS% vswhere.exe
+)
 echo Tool versions:
-echo    %__VERSIONS_LINE1%
-echo    %__VERSIONS_LINE2%
-echo    %__VERSIONS_LINE3%
+echo   %__VERSIONS_LINE1%
+echo   %__VERSIONS_LINE2%
+echo   %__VERSIONS_LINE3%
+echo   %__VERSIONS_LINE4%
 if %__VERBOSE%==1 (
     rem if %_DEBUG%==1 echo [%_BASENAME%] where %__WHERE_ARGS%
     echo Tool paths:
@@ -305,7 +313,7 @@ endlocal & (
     rem if not defined MSVS_HOME set MSVS_HOME=%_MSVS_HOME%
     if not defined MSVC_HOME set MSVC_HOME=%_MSVC_HOME%
     if not defined CMAKE_HOME set CMAKE_HOME=%_CMAKE_HOME%
-    set "PATH=%PATH%%_LLVM_PATH%%_MSVC_PATH%%_MSBUILD_PATH%%_CMAKE_PATH%%_GIT_PATH%
+    set "PATH=%PATH%%_LLVM_PATH%%_MSVC_PATH%%_MSBUILD_PATH%%_CMAKE_PATH%%_GIT_PATH%;%~dp0bin"
     call :print_env %_VERBOSE%
     if %_DEBUG%==1 echo [%_BASENAME%] _EXITCODE=%_EXITCODE%
     for /f "delims==" %%i in ('set ^| findstr /b "_"') do set %%i=
