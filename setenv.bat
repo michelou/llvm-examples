@@ -71,30 +71,33 @@ goto :eof
 echo Usage: %_BASENAME% { options ^| subcommands }
 echo   Options:
 echo     -debug      show commands executed by this script
-echo     -verbose    display environment settings
+echo     -verbose    display progress messages
 echo   Subcommands:
 echo     help        display this help message
 goto :eof
 
+rem output parameter(s): _LLVM_HOME, _LLVM_PATH
 :llvm
-if defined LLVM_HOME (
+set _LLVM_HOME=
+set _LLVM_PATH=
+
+set __CLANG_EXE=
+for /f %%f in ('where clang.exe 2^>NUL') do set __CLANG_EXE=%%f
+if defined __CLANG_EXE (
+    if %_DEBUG%==1 echo [%_BASENAME%] Using path of Clang executable found in PATH
+    for /f "delims=" %%i in ("%__CLANG_EXE%") do set __LLVM_BIN_DIR=%%~dpi
+    for %%f in ("!__LLVM_BIN_DIR!..") do set _LLVM_HOME=%%~sf
+    rem keep _LLVM_PATH undefined since executable already in path
+    goto :eof
+) else if defined LLVM_HOME (
     set _LLVM_HOME=%LLVM_HOME%
     if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable LLVM_HOME
 ) else (
-    where /q clang.exe
-    if !ERRORLEVEL!==0 (
-        for /f "delims=" %%i in ('where /f clang.exe') do set _LLVM_BIN_DIR=%%~dpsi
-        for %%f in ("!_LLVM_BIN_DIR!..") do set _LLVM_HOME=%%~sf
-    ) else (
-        set _PATH=C:\Progra~1
-        for /f "delims=" %%f in ('dir /ad /b "!_PATH!\LLVM*" 2^>NUL') do set _LLVM_HOME=!_PATH!\%%f
-        if not defined _LLVM_HOME (
-           set _PATH=C:\opt
-           for /f %%f in ('dir /ad /b "!_PATH!\LLVM*" 2^>NUL') do set _LLVM_HOME=!_PATH!\%%f
-        )
-        if defined _LLVM_HOME (
-            if %_DEBUG%==1 echo [%_BASENAME%] Using default LLVM installation directory !_LLVM_HOME!
-        )
+    set _PATH=C:\Progra~1
+    for /f "delims=" %%f in ('dir /ad /b "!_PATH!\LLVM*" 2^>NUL') do set "_LLVM_HOME=!_PATH!\%%f"
+    if not defined _LLVM_HOME (
+        set _PATH=C:\opt
+        for /f %%f in ('dir /ad /b "!_PATH!\LLVM*" 2^>NUL') do set "_LLVM_HOME=!_PATH!\%%f"
     )
 )
 if not exist "%_LLVM_HOME%\bin\clang.exe" (
@@ -102,6 +105,10 @@ if not exist "%_LLVM_HOME%\bin\clang.exe" (
     set _EXITCODE=1
     goto :eof
 )
+rem path name of installation directory may contain spaces
+for /f "delims=" %%f in ("%_LLVM_HOME%") do set _LLVM_HOME=%%~sf
+if %_DEBUG%==1 echo [%_BASENAME%] Using default LLVM installation directory %_LLVM_HOME%
+
 set "_LLVM_PATH=;%_LLVM_HOME%\bin"
 goto :eof
 
@@ -189,30 +196,41 @@ if not defined __SUBST_PATH (
 set _MSVS_HOME=%__DRIVE_NAME%
 goto :eof
 
+rem output parameter(s): _GIT_PATH
 :git
-if defined GIT_HOME (
-    set _GIT_HOME=%GIT_HOME%
+set _GIT_PATH=
+
+set __GIT_HOME=
+set __GIT_EXE=
+for /f %%f in ('where git.exe 2^>NUL') do set __GIT_EXE=%%f
+if defined __GIT_EXE (
+    if %_DEBUG%==1 echo [%_BASENAME%] Using path of Git executable found in PATH
+    rem keep _GIT_PATH undefined since executable already in path
+    goto :eof
+) else if defined GIT_HOME (
+    set "__GIT_HOME=%GIT_HOME%"
     if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable GIT_HOME
 ) else (
     set __PATH=C:\opt
-    if exist "!__PATH!\Git\" ( set _GIT_HOME=!__PATH!\Git
+    if exist "!__PATH!\Git\" ( set __GIT_HOME=!__PATH!\Git
     ) else (
-        for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set _GIT_HOME=!__PATH!\%%f
-        if not defined _GIT_HOME (
+        for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "__GIT_HOME=!__PATH!\%%f"
+        if not defined __GIT_HOME (
             set __PATH=C:\Progra~1
-            for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set _GIT_HOME=!__PATH!\%%f
+            for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "__GIT_HOME=!__PATH!\%%f"
         )
     )
-    if defined _GIT_HOME (
-        if %_DEBUG%==1 echo [%_BASENAME%] Using default Git installation directory !_GIT_HOME!
-    )
 )
-if not exist "%_GIT_HOME%\bin\git.exe" (
-    echo Git executable not found ^(%_GIT_HOME%^)
+if not exist "%__GIT_HOME%\bin\git.exe" (
+    echo Error: Git executable not found ^(%__GIT_HOME%^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
-set "_GIT_PATH=;%_GIT_HOME%\bin;%_GIT_HOME%\usr\bin;%_GIT_HOME%\mingw64\bin"
+rem path name of installation directory may contain spaces
+for /f "delims=" %%f in ("%__GIT_HOME%") do set __GIT_HOME=%%~sf
+if %_DEBUG%==1 echo [%_BASENAME%] Using default Git installation directory %__GIT_HOME%
+
+set "_GIT_PATH=;%__GIT_HOME%\bin;%__GIT_HOME%\usr\bin;%__GIT_HOME%\mingw64\bin"
 goto :eof
 
 :clean
@@ -234,10 +252,10 @@ goto :eof
 
 :print_env
 set __VERBOSE=%1
-set __VERSIONS_LINE1=
-set __VERSIONS_LINE2=
-set __VERSIONS_LINE3=
-set __VERSIONS_LINE4=
+set "__VERSIONS_LINE1=  "
+set "__VERSIONS_LINE2=  "
+set "__VERSIONS_LINE3=  "
+set "__VERSIONS_LINE4=  "
 set __WHERE_ARGS=
 where /q clang.exe
 if %ERRORLEVEL%==0 (
@@ -282,6 +300,11 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% git %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% git.exe
 )
+where /q diff.exe
+if %ERRORLEVEL%==0 (
+   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% diff %%l,"
+    set __WHERE_ARGS=%__WHERE_ARGS% diff.exe
+)
 rem see https://github.com/Microsoft/vswhere/releases
 where /q vswhere.exe
 if %ERRORLEVEL%==0 (
@@ -289,11 +312,11 @@ if %ERRORLEVEL%==0 (
     set __WHERE_ARGS=%__WHERE_ARGS% vswhere.exe
 )
 echo Tool versions:
-echo   %__VERSIONS_LINE1%
-echo   %__VERSIONS_LINE2%
-echo   %__VERSIONS_LINE3%
-echo   %__VERSIONS_LINE4%
-if %__VERBOSE%==1 (
+echo %__VERSIONS_LINE1%
+echo %__VERSIONS_LINE2%
+echo %__VERSIONS_LINE3%
+echo %__VERSIONS_LINE4%
+if %__VERBOSE%==1 if defined __WHERE_ARGS (
     rem if %_DEBUG%==1 echo [%_BASENAME%] where %__WHERE_ARGS%
     echo Tool paths:
     for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p

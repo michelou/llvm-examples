@@ -86,7 +86,7 @@ rem ## Cleanups</i>
 <b>exit</b> /b %_EXITCODE%
 </pre>
 
-Running command [**`build`**](JITTutorial1/build.bat) in project directory [**`JITTutorial1\`**](JITTutorial1/) displays the available options and subcommands:
+Running command [**`build`**](JITTutorial1/build.bat) in project directory [**`examples\JITTutorial1\`**](JITTutorial1/) displays the available options and subcommands:
 
 <pre>
 $ build
@@ -138,13 +138,13 @@ entry:
 }                                                           
 </pre>
 
-Finally, running command [**`build`**](JITTutorial1/build.bat) with option **`-debug`** in project directory [**`JITTutorial1\`**](JITTutorial1/) also displays internal steps of the build process:
+Finally, running command [**`build`**](JITTutorial1/build.bat) with option **`-debug`** in project directory [**`examples\JITTutorial1\`**](JITTutorial1/) also displays internal steps of the build process:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug clean compile run</b> 
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
-[build] call cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.0" ..
+[build] call cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.1" ..
 -- Building for: Visual Studio 16 2019
 -- The CXX compiler identification is MSVC 19.21.27702.2
 -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.21.27702/bin/Hostx64/x64/cl.exe
@@ -153,9 +153,9 @@ Finally, running command [**`build`**](JITTutorial1/build.bat) with option **`-d
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- LLVM installation directory: C:\opt\LLVM-8.0.0
+-- LLVM installation directory: C:\opt\LLVM-8.0.1
 -- Found LLVM 8.0.1
--- Using LLVMConfig.cmake in: C:/opt/LLVM-8.0.0/lib/cmake/llvm 
+-- Using LLVMConfig.cmake in: C:/opt/LLVM-8.0.1/lib/cmake/llvm 
 -- Using header files in: L:/llvm-8.0.1.src/include;L:/llvm-8.0.1.src/build/include 
 -- Configuring done
 -- Generating done

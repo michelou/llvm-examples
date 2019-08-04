@@ -14,14 +14,7 @@
 This project repository relies on two external software for the **Microsoft Windows** plaform:
 
 - [LLVM 8 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1) ([*release notes*](https://releases.llvm.org/8.0.0/docs/ReleaseNotes.html))
-- [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes))
-
-> **:mag_right:** Command [**`vswhere.exe`**](https://github.com/microsoft/vswhere) displays VS properties, including the exact version of our Visual Studio installation (starting with VS 2017):
-> <pre style="font-size:80%;">
-> <b>&gt; bin\vswhere -property installationVersion</b>
-> 16.2.29123.88
-> </pre>
-<!-- old: 16.1.29102.190 -->
+- [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes)) <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup>
 
 Optionally one may also install the following software:
 
@@ -32,7 +25,7 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*August 2019*):
 
 <pre style="font-size:80%;">
-C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_01"><a href="#footnote_01">[1]</a></sup>
+C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
 C:\opt\Git-2.22.0\                                              <i>( 271 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
@@ -49,7 +42,7 @@ This project is organized as follows:
 bin\llvm\build.bat
 docs\
 examples\{JITTutorial1, ..}
-llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_02"><a href="#footnote_02">[1]</a></sup>
+llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 README.md
 setenv.bat
 </pre>
@@ -116,10 +109,10 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;">
 <b>&gt; setenv</b>
 Tool versions:
-    clang 8.0.1, lli 8.0.1, opt 8.0.1,
-    cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
-    msbuild 16.200.19.32702, nmake 14.22.27905.0
-    git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
+   clang 8.0.1, lli 8.0.1, opt 8.0.1,
+   cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
+   msbuild 16.200.19.32702, nmake 14.22.27905.0
+   git 2.22.0.windows.1, diff 3.7, vswhere 2.7.1+180c706d56
 
 <b>&gt; where clang cmake vswhere</b>
 C:\opt\LLVM-8.0.1\bin\clang.exe
@@ -135,7 +128,7 @@ Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1,
    cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
    msbuild 16.200.19.32702, nmake 14.22.27905.0
-   git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
+   git 2.22.0.windows.1, diff 3.7, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
    C:\opt\LLVM-8.0.1\bin\lli.exe
@@ -146,6 +139,7 @@ Tool paths:
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
    C:\opt\Git-2.22.0\bin\git.exe
    C:\opt\Git-2.22.0\mingw64\bin\git.exe
+   C:\opt\Git-2.22.0\usr\bin\diff.exe
    L:\bin\vswhere.exe
 </pre>
 
@@ -161,7 +155,7 @@ Directory **`llvm-8.0.1.src\`** is setup as follows:
 <b>&gt; cd llvm-8.0.1.src</b>
 </pre>
 
-Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (**`.exe`** and **`.lib`** files) into directory **`build\Release\`**.
+Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**.
 
 <pre>
 <b>&gt; cd</b>
@@ -211,13 +205,17 @@ We list below several executables in the LLVM installation directory; e.g. comma
 
 ### Books
 
-- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (ISBN 978-1-78528-080-1).
-- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (ISBN 978-1-78528-598-1).
-- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314p, ISBN 978-1-78216-692-4).
+- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
+- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (296 p., ISBN 978-1-78528-598-1).
+- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314 p., ISBN 978-1-78216-692-4).
 
 ### News
 
 - [*LLVM Weekly*](http://llvmweekly.org/) - A weekly newsletter covering developments in LLVM, Clang, and related projects.
+
+<!--
+- [LLVM Archive](https://www.linux-magazin.de/tag/llvm/) - Linux-Magazin.
+-->
 
 
 ## Footnotes
@@ -225,10 +223,24 @@ We list below several executables in the LLVM installation directory; e.g. comma
 <a name="footnote_01">[1]</a>  [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
+Command <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> displays VS properties, including the exact version of our Visual Studio installation (starting with VS 2017):
+<pre style="margin:0 0 1em 20px; font-size:80%;">
+<b>&gt; where vswhere</b>
+L:\bin\vswhere.exe
+
+<b>&gt; vswhere -property installationVersion</b>
+16.2.29123.88
+</pre>
+<!-- old: 16.1.29102.190 -->
+</p>
+
+<a name="footnote_02">[2]</a>  [↩](#anchor_02)
+
+<p style="margin:0 0 1em 20px;">
 The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 2.18 GB.
 </p>
 
-<a name="footnote_01">[2]</a>  [↩](#anchor_02)
+<a name="footnote_03">[3]</a>  [↩](#anchor_03)
 
 <p style="margin:0 0 1em 20px;">
 In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
