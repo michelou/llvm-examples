@@ -25,13 +25,15 @@ set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
 set _TARGET_DIR=%_ROOT_DIR%build
-set _TARGET_DEBUG_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 
 set _CMAKE_CMD=cmake.exe
-set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
+set _CMAKE_OPTS=
+
+set _MAKE_CMD=make.exe
+set _MAKE_OPTS=
 
 set _MSBUILD_CMD=msbuild.exe
-set _MSBUILD_OPTS=/p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
+set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
 call :args %*
 if not %_EXITCODE%==0 goto end
@@ -68,6 +70,7 @@ set _COMPILE=0
 set _RUN=0
 set _DEBUG=0
 set _HELP=0
+set _MAKE=0
 set _VERBOSE=0
 set __N=0
 :args_loop
@@ -82,6 +85,7 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 ) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
 ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
 ) else if /i "%__ARG%"=="run" ( set _COMPILE=1 & set _RUN=1
+) else if /i "%__ARG%"=="-make" ( set _MAKE=1
 ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
 ) else if /i "%__ARG%"=="-help" ( set _HELP=1
 ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
@@ -100,6 +104,7 @@ goto :eof
 echo Usage: %_BASENAME% { options ^| subcommands }
 echo Options:
 echo   -debug      show commands executed by this script
+echo   -make       use GNU Make instead of MSBuild
 echo   -verbose    display progress messages
 echo Subcommands:
 echo   clean       delete generated files
@@ -129,27 +134,82 @@ goto :eof
 :compile
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
-if %_VERBOSE%==1 echo Project: %_PROJ_NAME%, Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM%
+if %_MAKE%==1 ( call :compile_make
+) else ( call :compile_msbuild
+)
+goto :eof
+
+:compile_make
+setlocal
+set CC=clang.exe
+set CXX=clang++.exe
+
+set __CMAKE_OPTS=-G "Unix Makefiles" -DCMAKE_MAKE_PROGRAM=make.exe -DCMAKE_RC_COMPILER=windres.exe
 
 pushd "%_TARGET_DIR%"
-if %_DEBUG%==1 ( echo [%_BASENAME%] call %_CMAKE_CMD% %_CMAKE_OPTS% ..
+if %_DEBUG%==1 echo [%_BASENAME%] Current directory is: %CD%
+
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_CMAKE_CMD% %__CMAKE_OPTS% ..
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
 )
-call "%_CMAKE_CMD%" %_CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+call "%_CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
+    endlocal
+    echo Error: Generation of build configuration failed 1>&2
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo [%_BASENAME%] call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln"
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MAKE_CMD% %_MAKE_OPTS% 
+) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe
+)
+call %_MAKE_CMD% %_MAKE_OPTS% %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+popd
+endlocal
+goto :eof
+
+:compile_msbuild
+set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
+
+if %_VERBOSE%==1 echo Project: %_PROJ_NAME%, Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM%
+
+pushd "%_TARGET_DIR%"
+if %_DEBUG%==1 echo [%_BASENAME%] Current directory is: %CD%
+
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_CMAKE_CMD% %__CMAKE_OPTS% ..
+) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
+)
+call "%_CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo Error: Generation of build configuration failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln"
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe
 )
 call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 popd
 goto :eof
 
 :run
-set __EXE_FILE=%_TARGET_DEBUG_DIR%\%_PROJ_NAME%.exe
+if %_MAKE%==1 ( set __TARGET_DIR=%_TARGET_DIR%
+) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
+)
+set __EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe
 if not exist "%__EXE_FILE%" (
     echo Error: Executable %_PROJ_NAME%.exe not found 1>&2
     set _EXITCODE=1

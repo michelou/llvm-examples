@@ -193,7 +193,9 @@ We list below several executables in the LLVM installation directory; e.g. comma
 
 ### Blogs
 
+- [*A look at LLVM Advanced Data Types*](https://developers.redhat.com/blog/2019/04/01/a-look-at-llvm-advanced-data-types-and-trivially-copyable-types/) by Serge Guelton, April 2019.
 - [*Compiler Performance and LLVM*](http://pling.jondgoodwin.com/post/compiler-performance/) by Jonathan Goodwin, March 2019.
+- [*LLVM IR and Go*](https://blog.gopheracademy.com/advent-2018/llvm-ir-and-go/) by Robin Eklind, December 2018.
 - [*How LLVM optimizes a function*](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
 - [*How LLVM optimizes power sums*](https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html) by Krister Walfridsson, April 2018.
 - [*Adventures in JIT compilation: Part 3 - LLVM*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
@@ -202,6 +204,10 @@ We list below several executables in the LLVM installation directory; e.g. comma
 - [*A Tourist’s Guide to the LLVM Source Code*](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
 - [*A deeper look into the LLVM code generator, Part 1*](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, Feburary 2013.
 - [*Life of an instruction in LLVM*](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
+- [*Create a working compiler with the LLVM framework, Part 2*](https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html) by Arpan Sen, June 2012.
+- [*Create a working compiler with the LLVM framework, Part 1*](https://www.ibm.com/developerworks/library/os-createcompilerllvm1/index.html) by Arpan Sen, June 2012.
+- [*Writing Your Own Toy Compiler Using Flex, Bison and LLVM*](https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/), by Loren Segal, September 2009.
+
 
 ### Books
 
@@ -212,10 +218,16 @@ We list below several executables in the LLVM installation directory; e.g. comma
 ### News
 
 - [*LLVM Weekly*](http://llvmweekly.org/) - A weekly newsletter covering developments in LLVM, Clang, and related projects.
+- [*Planet Clang*](http://planet.clang.org/) - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
 
 <!--
 - [LLVM Archive](https://www.linux-magazin.de/tag/llvm/) - Linux-Magazin.
 -->
+
+
+### Papers
+
+- [*LLVM: An infrastructure for Multi-Stage Optimization*](http://llvm.org/pubs/2002-12-LattnerMSThesis.html) *(Master Thesis)* by Chris Lattner, December 2002.
 
 
 ## Footnotes
@@ -248,8 +260,11 @@ In our case we downloaded the following installation files (see <a href="#sectio
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>   <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>  <i>( 29 MB)</i>
-vs_2019_community.exe  <i>(no offline installer)</i>
+vs_2019_community.exe  
 </pre>
+<p style="margin:0 0 1em 20px;">
+Microsoft doesn't provide an offline installer for VS 2019 but we can follow the <a href="https://docs.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019">following instructions</a> to create a local installer (so called <i>layout cache</i>) for later (re-)installation.
+</p>
 
 ***
 
