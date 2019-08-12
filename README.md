@@ -41,7 +41,7 @@ This project is organized as follows:
 <pre style="font-size:80%;">
 bin\llvm\build.bat
 docs\
-examples\{JITTutorial1, ..}
+examples\{hello, JITTutorial1, ..}
 llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 README.md
 setenv.bat
@@ -109,10 +109,11 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;">
 <b>&gt; setenv</b>
 Tool versions:
-   clang 8.0.1, lli 8.0.1, opt 8.0.1,
-   cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
-   msbuild 16.200.19.32702, nmake 14.22.27905.0
-   git 2.22.0.windows.1, diff 3.7, vswhere 2.7.1+180c706d56
+   clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
+   dumpbin 14.22.27905.0, msbuild 16.200.19.32702
+   cmake 3.15.1, nmake 14.22.27905.0, make 4.2.1
+   python 3.7.4, git 2.22.0.windows.1, diff 3.7
+   vswhere 2.7.1+180c706d56
 
 <b>&gt; where clang cmake vswhere</b>
 C:\opt\LLVM-8.0.1\bin\clang.exe
@@ -125,20 +126,26 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; setenv -verbose</b>
 Tool versions:
-   clang 8.0.1, lli 8.0.1, opt 8.0.1,
-   cl version 19.22.27905, cmake 3.14.19060802-MSVC_2
-   msbuild 16.200.19.32702, nmake 14.22.27905.0
-   git 2.22.0.windows.1, diff 3.7, vswhere 2.7.1+180c706d56
+   clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
+   dumpbin 14.22.27905.0, msbuild 16.200.19.32702
+   cmake 3.15.1, nmake 14.22.27905.0, make 4.2.1
+   python 3.7.4, git 2.22.0.windows.1, diff 3.7
+   vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
    C:\opt\LLVM-8.0.1\bin\lli.exe
    C:\opt\LLVM-8.0.1\bin\opt.exe
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\cl.exe
-   X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
+   X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\dumpbin.exe
    X:\MSBuild\Current\Bin\amd64\MSBuild.exe
+   C:\opt\cmake-3.15.1\bin\cmake.exe
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
+   C:\opt\msys64\usr\bin\make.exe
+   C:\opt\msys64\usr\bin\python.exe
+   C:\opt\Python-3.7.4\python.exe
    C:\opt\Git-2.22.0\bin\git.exe
    C:\opt\Git-2.22.0\mingw64\bin\git.exe
+   C:\opt\msys64\usr\bin\diff.exe
    C:\opt\Git-2.22.0\usr\bin\diff.exe
    L:\bin\vswhere.exe
 </pre>

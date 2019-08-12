@@ -27,7 +27,8 @@ set _PROJ_PLATFORM=x64
 set _TARGET_DIR=%_ROOT_DIR%build
 set _TARGET_DEBUG_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 
-set _CMAKE_CMD=cmake.exe
+rem set _CMAKE_CMD=cmake.exe
+set _CMAKE_CMD=%MSVS_HOME%\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
 set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated -DLLVM_INSTALL_DIR="%LLVM_HOME%"
 
 set _MSBUILD_CMD=msbuild.exe
@@ -141,6 +142,7 @@ if %_DEBUG%==1 ( echo [%_BASENAME%] call %_CMAKE_CMD% %_CMAKE_OPTS% ..
 call "%_CMAKE_CMD%" %_CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
+    echo Error: Generation of build configuration failed 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -157,6 +159,7 @@ if %_DEBUG%==1 ( echo [%_BASENAME%] call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_
 )
 call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
+    echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
     set _EXITCODE=1
     goto :eof
 )

@@ -35,7 +35,7 @@ Subcommands:
   clean       delete generated files
   compile     generate executable
   help        display this help message
-  run         run executable
+  run         run the generated executable
 </pre>
 
 Command [**`build clean run`**](JITTutorial1/build.bat) produces the following output:
@@ -45,11 +45,10 @@ Command [**`build clean run`**](JITTutorial1/build.bat) produces the following o
 Hello world !
 </pre>
 
-Command [**`build -verbose clean run`**](JITTutorial1/build.bat) also displays progress messages:
+Command [**`build -verbose run`**](JITTutorial1/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
-Delete directory "build"
 Project: hello, Configuration: Release, Platform: x64
 Generate configuration files into directory "build"
 Generate executable hello.exe
@@ -57,15 +56,34 @@ Execute build\Release\hello.exe
 Hello world !
 </pre>
 
-Command [**`build -verbose -make clean run`**](JITTutorial1/build.bat) further uses [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) to generate executable **`hello.exe`**:
+Command [**`build -debug -make run`**](JITTutorial1/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
-<b>&gt; build -verbose -make clean run</b>
-Delete directory "build"
-Generate configuration files into directory "build"
-Generate executable hello.exe
-Execute build\hello.exe
+<b>&gt; build -verbose -make run</b>
+[build] _CLEAN=0 _COMPILE=1 _RUN=1 _MAKE=1 _VERBOSE=0
+[build] Current directory is: L:\examples\hello\build
+[build] cmake.exe -G "Unix Makefiles" -DCMAKE_MAKE_PROGRAM=make.exe -DCMAKE_RC_COMPILER=windres.exe ..
+-- The C compiler identification is Clang 8.0.1 with GNU-like command-line
+-- The CXX compiler identification is Clang 8.0.1 with GNU-like command-line
+-- Check for working C compiler: C:/opt/LLVM-8.0.1/bin/clang.exe
+-- Check for working C compiler: C:/opt/LLVM-8.0.1/bin/clang.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+[...]
+-- Configuring done
+-- Generating done
+-- Build files have been written to: L:/examples/hello/build
+[build] make.exe
+[...]
+Scanning dependencies of target hello
+[ 75%] Building C object CMakeFiles/hello.dir/src/main/c/hello.c.obj
+[100%] Linking C executable hello.exe
+[100%] Built target hello
+[build] call build\hello.exe
 Hello world !
+[build] _EXITCODE=0
 </pre>
 
 
@@ -165,6 +183,33 @@ entry:
 [build] _EXITCODE=0
 </pre>
 
+Finally, command [**`llc`**](https://llvm.org/docs/CommandGuide/llc.html) transforms the above bitcode into assembly langage for a specified architecture (eg. **`arm`**, **`x86`**, **`mips64`**).
+<pre style="font-size:80%;">
+<b>&gt; build run &gt; build\hello.bc</b>
+&nbsp;
+<b>&gt; llc -march=x86 -o - build\hello.bc</b>
+        .text
+        .def     @feat.00;
+        .scl    3;
+        .type   0;
+        .endef
+        .globl  @feat.00
+.set @feat.00, 1
+        .file   "tut1"
+        .def     _mul_add;
+        .scl    2;
+        .type   32;
+        .endef
+        .globl  _mul_add                # -- Begin function mul_add
+        .p2align        4, 0x90
+_mul_add:                               # @mul_add
+# %bb.0:                                # %entry
+        movl    4(%esp), %eax
+        imull   8(%esp), %eax
+        addl    12(%esp), %eax
+        retl
+                                        # -- End function
+</pre>
 
 ## Footnotes
 

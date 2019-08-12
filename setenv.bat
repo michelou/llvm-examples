@@ -201,12 +201,12 @@ if %_DEBUG%==1 echo [%_BASENAME%] Using default LLVM installation directory %_LL
 set "_LLVM_PATH=;%_LLVM_HOME%\bin"
 goto :eof
 
-rem output paramter(s): _MSVC_HOME, _MSVS_PATH, _MSVS_HOME
+rem output paramter(s): _MSVC_HOME, _MSVS_HOME, _MSVS_PATH
 rem Visual Studio 10
 :msvs
 set _MSVC_HOME=
-set _MSVS_PATH=
 set _MSVS_HOME=
+set _MSVS_PATH=
 
 for /f "delims=" %%f in ("%_PROGRAM_FILES_X86%\Microsoft Visual Studio 10.0") do set _MSVS_HOME=%%~sf
 if not exist "%_MSVS_HOME%" (
@@ -239,7 +239,7 @@ if not exist "%__MSBUILD_HOME%\MSBuild.exe" (
 set "_MSVS_PATH=;%_MSVC_HOME%\bin%__MSVC_ARCH%;%__MSBUILD_HOME%"
 goto :eof
 
-rem output parameter(s): _MSBUILD_HOME, _MSBUILD_PATH, _MSVC_HOME, _MSVC_PATH, _MSVS_HOME
+rem output parameter(s): _MSBUILD_HOME, _MSBUILD_PATH, _MSVC_HOME, _MSVS_HOME, _MSVC_PATH
 rem Visual Studio 2019
 :msvs_2019
 set _MSVC_HOME=
@@ -274,6 +274,13 @@ for /f "delims=" %%i in ('where /r "!__PATH!" msbuild.exe ^| findstr amd64') do 
 if not exist "%__MSBUILD_BIN_DIR%\MSBuild.exe" (
     echo Error: Could not find Microsoft builder 1>&2
     set _MSBUILD_HOME=
+    set _EXITCODE=1
+    goto :eof
+)
+set "__PATH=%_MSVS_HOME%\Common7\IDE\CommonExtensions\Microsoft\CMake"
+for /f "delims=" %%i in ('where /r "!__PATH!" cmake.exe') do set "__CMAKE_BIN_DIR=%%~dpi"
+if not exist "%__CMAKE_BIN_DIR%\cmake.exe" (
+    echo Error: Could not find Microsoft CMake 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -486,7 +493,7 @@ rem ## Cleanups
 endlocal & (
     if not defined CMAKE_HOME set CMAKE_HOME=%_CMAKE_HOME%
     if not defined LLVM_HOME set LLVM_HOME=%_LLVM_HOME%
-    rem if not defined MSVS_HOME set MSVS_HOME=%_MSVS_HOME%
+    if not defined MSVS_HOME set MSVS_HOME=%_MSVS_HOME%
     if not defined MSVC_HOME set MSVC_HOME=%_MSVC_HOME%
     set "PATH=%PATH%%_CMAKE_PATH%%_MSYS_PATH%%_LLVM_PATH%%_MSVS_PATH%%_PYTHON_PATH%%_GIT_PATH%"
     call :print_env %_VERBOSE%

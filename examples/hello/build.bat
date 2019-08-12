@@ -84,7 +84,7 @@ if not defined __ARG (
 if /i "%__ARG%"=="help" ( set _HELP=1
 ) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
 ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
-) else if /i "%__ARG%"=="run" ( set _COMPILE=1 & set _RUN=1
+) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
 ) else if /i "%__ARG%"=="-make" ( set _MAKE=1
 ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
 ) else if /i "%__ARG%"=="-help" ( set _HELP=1
@@ -97,7 +97,7 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 shift
 goto :args_loop
 :args_done
-if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _VERBOSE=%_VERBOSE%
+if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _MAKE=%_MAKE% _VERBOSE=%_VERBOSE%
 goto :eof
 
 :help
@@ -110,7 +110,7 @@ echo Subcommands:
 echo   clean       delete generated files
 echo   compile     generate executable
 echo   help        display this help message
-echo   run         run executable
+echo   run         run the generated executable
 goto :eof
 
 :clean
