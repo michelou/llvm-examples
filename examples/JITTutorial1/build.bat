@@ -136,7 +136,7 @@ if %_VERBOSE%==1 echo Project: %_PROJ_NAME%, Configuration: %_PROJ_CONFIG%, Plat
 pushd "%_TARGET_DIR%"
 if %_VERBOSE%==1 echo Current directory: %CD%
 
-if %_DEBUG%==1 ( echo [%_BASENAME%] call %_CMAKE_CMD% %_CMAKE_OPTS% ..
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_CMAKE_CMD% %_CMAKE_OPTS% ..
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
 )
 call "%_CMAKE_CMD%" %_CMAKE_OPTS% .. %_STDOUT_REDIRECT%
@@ -154,7 +154,7 @@ call :config
 if not %_EXITCODE%==0 goto :eof
 
 set "__SLN_FILE=%_TARGET_DIR%\%_PROJ_NAME%.sln"
-if %_DEBUG%==1 ( echo [%_BASENAME%] call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%"
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%"
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe
 )
 call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%" %_STDOUT_REDIRECT%

@@ -18,15 +18,21 @@ This project repository relies on two external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
+- [CMake 3.15](https://cmake.org/download/) ([*release notes*](https://cmake.org/cmake/help/v3.15/release/3.15.html))
 - [Git 2.22](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.22.0.txt))
+- [MSYS2](http://repo.msys2.org/distrib/x86_64/)
 
+<!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
+-->
 
 For instance our development environment looks as follows (*August 2019*):
 
 <pre style="font-size:80%;">
+C:\opt\cmake-3.15.1\                                            <i>(  75 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
 C:\opt\Git-2.22.0\                                              <i>( 271 MB)</i>
+C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
 
@@ -54,7 +60,7 @@ setenv.bat
 
 where
 
-- directory [**`bin\`**](bin/) contains utility batch files and tools.
+- directory [**`bin\`**](bin/) contains a batch file and the <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> tool.
 - directory [**`docs\`**](docs/) contains several LLVM related papers/articles.
 - directory [**`examples\`**](examples/) contains LLVM code examples (see [**`examples\README.md`**](examples/README.md)).
 - directory **`llvm-8.0.1.src\`** contains the LLVM source code distribution.
@@ -115,14 +121,14 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; setenv</b>
 Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
-   dumpbin 14.22.27905.0, msbuild 16.200.19.32702
-   cmake 3.15.1, nmake 14.22.27905.0, make 4.2.1
-   python 3.7.4, git 2.22.0.windows.1, diff 3.7
+   dumpbin 14.22.27905.0, nmake 14.22.27905.0
+   msbuild 16.200.19.32702 make 4.2.1
+   gcc 9.1.0, python 3.7.4, diff 3.7, git 2.22.0.windows.1
    vswhere 2.7.1+180c706d56
 
-<b>&gt; where clang cmake vswhere</b>
+<b>&gt; where clang nmake vswhere</b>
 C:\opt\LLVM-8.0.1\bin\clang.exe
-X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
+X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
 L:\bin\vswhere.exe
 </pre>
 
@@ -132,26 +138,26 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; setenv -verbose</b>
 Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
-   dumpbin 14.22.27905.0, msbuild 16.200.19.32702
-   cmake 3.15.1, nmake 14.22.27905.0, make 4.2.1
-   python 3.7.4, git 2.22.0.windows.1, diff 3.7
-   vswhere 2.7.1+180c706d56
+   dumpbin 14.22.27905.0, nmake 14.22.27905.0
+   msbuild 16.200.19.32702 make 4.2.1
+   gcc 9.1.0, python 3.7.4, diff 3.7, git 2.22.0.windows.1
+   vswhere 2.7.1+180c706d566
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
    C:\opt\LLVM-8.0.1\bin\lli.exe
    C:\opt\LLVM-8.0.1\bin\opt.exe
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\cl.exe
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\dumpbin.exe
-   X:\MSBuild\Current\Bin\amd64\MSBuild.exe
-   C:\opt\cmake-3.15.1\bin\cmake.exe
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
+   X:\MSBuild\Current\Bin\amd64\MSBuild.exe
    C:\opt\msys64\usr\bin\make.exe
-   C:\opt\msys64\usr\bin\python.exe
+   C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.7.4\python.exe
+   C:\opt\msys64\usr\bin\python.exe
+   C:\opt\msys64\mingw64\bin\python.exe
+   C:\opt\msys64\usr\bin\diff.exe
    C:\opt\Git-2.22.0\bin\git.exe
    C:\opt\Git-2.22.0\mingw64\bin\git.exe
-   C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.22.0\usr\bin\diff.exe
    L:\bin\vswhere.exe
 </pre>
 
@@ -275,8 +281,10 @@ The original size of the LLVM installation directory is 1.1 GB. The installation
 In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>   <i>(131 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>  <i>( 29 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.15.1-win64-x64.zip</a>  <i>( 30 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>        <i>(131 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>       <i>( 29 MB)</i>
+<a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>   <i>( 86 MB)</i>
 vs_2019_community.exe  
 </pre>
 <p style="margin:0 0 1em 20px;">

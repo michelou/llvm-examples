@@ -16,7 +16,7 @@ In the following we present in more detail the two examples [**`hello`**](hello/
 
 ## `hello`
 
-Example [**`hello`**](hello/src(main/c/hello.c) simply prints the message **`"Hello world !"`** to the console.
+Example [**`hello`**](hello/src/main/c/hello.c) simply prints the message **`"Hello world !"`** to the console.
 
 The goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019). 
 
@@ -60,7 +60,7 @@ Command [**`build -debug run`**](hello/build.bat) calls [**`MSBuild`**](https://
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
-[build] _CLEAN=0 _COMPILE=1 _RUN=1 _MAKE=0 _VERBOSE=0
+[build] _CLEAN=0 _COMPILE=1 _RUN=1 _TOOLSET=0 _VERBOSE=0
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated ..
 -- Building for: Visual Studio 16 2019
@@ -93,13 +93,13 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Command [**`build -debug -make run`**](hello/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
+Command [**`build -debug -clang run`**](hello/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug -make run</b>
-[build] _CLEAN=0 _COMPILE=1 _RUN=1 _MAKE=1 _VERBOSE=0
+<b>&gt; build -debug -clang run</b>
+[build] _CLEAN=0 _COMPILE=1 _RUN=1 _TOOLSET=1 _VERBOSE=0
 [build] Current directory is: L:\examples\hello\build
-[build] cmake.exe -G "Unix Makefiles" -DCMAKE_MAKE_PROGRAM=make.exe -DCMAKE_RC_COMPILER=windres.exe ..
+[build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is Clang 8.0.1 with GNU-like command-line
 -- The CXX compiler identification is Clang 8.0.1 with GNU-like command-line
 -- Check for working C compiler: C:/opt/LLVM-8.0.1/bin/clang.exe
@@ -123,6 +123,34 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
+Finally, command [**`build -debug -gcc run`**](hello/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) to generate executable **`hello.exe`**:
+
+<pre style="font-size:80%;">
+<b>&gt; build -debug -gcc run</b>
+[build] _CLEAN=0 _COMPILE=1 _RUN=1 _TOOLSET=2 _VERBOSE=0
+[build] Current directory is: L:\examples\hello\build
+[build] C:\opt\CMAKE-~1.1\bin\cmake.exe -G "Unix Makefiles" ..
+-- The C compiler identification is GNU 9.1.0
+-- The CXX compiler identification is GNU 9.1.0
+-- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe
+-- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+[...]
+-- Configuring done
+-- Generating done
+-- Build files have been written to: L:/examples/hello/build
+[build] make.exe
+[...]
+Scanning dependencies of target hello
+[ 75%] Building C object CMakeFiles/hello.dir/src/main/c/hello.c.obj
+[100%] Linking C executable hello.exe
+[100%] Built target hello
+[build] build\hello.exe
+Hello world !
+[build] _EXITCODE=0
+</pre>
 
 ## `JITTutorial1`
 
@@ -180,13 +208,13 @@ entry:
 }                                                           
 </pre>
 
-Finally, command [**`build -debug`**](JITTutorial1/build.bat) displays command executed during the build process:
+Finally, command [**`build -debug`**](JITTutorial1/build.bat) displays the commands executed during the build process:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug clean compile run</b> 
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
-[build] call cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.1" ..
+[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.1" ..
 -- Building for: Visual Studio 16 2019
 -- The CXX compiler identification is MSVC 19.21.27702.2
 -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.21.27702/bin/Hostx64/x64/cl.exe
