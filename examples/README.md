@@ -14,9 +14,9 @@
 In the following we present in more detail the two examples [**`hello`**](hello/) and [**`JITTutorial1\`**](JITTutorial1/); other examples in directory [**`examples\`**](./) behave the same.
 
 
-## `hello` Example
+## `hello`
 
-This first example simply prints the message **`"Hello world !"`** to the console.
+Example [**`hello`**](hello/src(main/c/hello.c) simply prints the message **`"Hello world !"`** to the console.
 
 The goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019). 
 
@@ -38,14 +38,14 @@ Subcommands:
   run         run the generated executable
 </pre>
 
-Command [**`build clean run`**](JITTutorial1/build.bat) produces the following output:
+Command [**`build clean run`**](hello/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
 <b>&gt; build clean run</b>
 Hello world !
 </pre>
 
-Command [**`build -verbose run`**](JITTutorial1/build.bat) also displays progress messages:
+Command [**`build -verbose run`**](hello/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
@@ -56,10 +56,47 @@ Execute build\Release\hello.exe
 Hello world !
 </pre>
 
-Command [**`build -debug -make run`**](JITTutorial1/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
+Command [**`build -debug run`**](hello/build.bat) calls [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**
 
 <pre style="font-size:80%;">
-<b>&gt; build -verbose -make run</b>
+<b>&gt; build -debug run</b>
+[build] _CLEAN=0 _COMPILE=1 _RUN=1 _MAKE=0 _VERBOSE=0
+[build] Current directory is: L:\examples\hello\build
+[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated ..
+-- Building for: Visual Studio 16 2019
+-- The C compiler identification is MSVC 19.22.27905.0
+-- The CXX compiler identification is MSVC 19.22.27905.0
+-- Check for working C compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe
+-- Check for working C compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe
+-- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: L:/examples/hello/build
+[build] msbuild.exe /nologo /p:Configuration=Release /p:Platform="x64" "hello.sln"
+[...]
+[... many warnings (eg. C4514) ...]
+    1043 Warning(s)
+    0 Error(s)
+&nbsp;
+Elapsed time 00:00:03.19
+[build] build\Release\hello.exe
+Hello world !
+[build] _EXITCODE=0
+</pre>
+
+Command [**`build -debug -make run`**](hello/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
+
+<pre style="font-size:80%;">
+<b>&gt; build -debug -make run</b>
 [build] _CLEAN=0 _COMPILE=1 _RUN=1 _MAKE=1 _VERBOSE=0
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" -DCMAKE_MAKE_PROGRAM=make.exe -DCMAKE_RC_COMPILER=windres.exe ..
@@ -87,7 +124,9 @@ Hello world !
 </pre>
 
 
-## `JITTutorial1` Example
+## `JITTutorial1`
+
+Example [**`JITTutorial1`**](JITTutorial/src/tut1.cpp) defines a **`mul_add`** function and generates its [LLVM IR](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see LLVM tutorial [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html)).
 
 Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands:
 
@@ -185,9 +224,9 @@ entry:
 
 Finally, command [**`llc`**](https://llvm.org/docs/CommandGuide/llc.html) transforms the above bitcode into assembly langage for a specified architecture (eg. **`arm`**, **`x86`**, **`mips64`**).
 <pre style="font-size:80%;">
-<b>&gt; build run &gt; build\hello.bc</b>
+<b>&gt; build run &gt; build\JITTutorial1.bc</b>
 &nbsp;
-<b>&gt; llc -march=x86 -o - build\hello.bc</b>
+<b>&gt; llc -march=x86 -o - build\JITTutorial1.bc</b>
         .text
         .def     @feat.00;
         .scl    3;

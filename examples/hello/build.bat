@@ -26,9 +26,6 @@ set _PROJ_PLATFORM=x64
 
 set _TARGET_DIR=%_ROOT_DIR%build
 
-set _CMAKE_CMD=cmake.exe
-set _CMAKE_OPTS=
-
 set _MAKE_CMD=make.exe
 set _MAKE_OPTS=
 
@@ -63,14 +60,14 @@ rem ##########################################################################
 rem ## Subroutines
 
 rem input parameter: %*
-rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
+rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TOOLSET, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
 set _RUN=0
 set _DEBUG=0
 set _HELP=0
-set _MAKE=0
+set _TOOLSET=0
 set _VERBOSE=0
 set __N=0
 :args_loop
@@ -85,8 +82,10 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 ) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
 ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
 ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
-) else if /i "%__ARG%"=="-make" ( set _MAKE=1
+) else if /i "%__ARG%"=="-cl" ( set _TOOLSET=0
+) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=1
 ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
+) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=2
 ) else if /i "%__ARG%"=="-help" ( set _HELP=1
 ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
 ) else (
@@ -97,14 +96,19 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 shift
 goto :args_loop
 :args_done
-if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _MAKE=%_MAKE% _VERBOSE=%_VERBOSE%
+if %_TOOLSET%==1 ( set _TOOLSET_NAME=LLVM/Clang
+) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=MSYS/GCC
+) else ( set _TOOLSET_NAME=MSBuild/CL
+)
+if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE%
 goto :eof
 
 :help
 echo Usage: %_BASENAME% { options ^| subcommands }
 echo Options:
 echo   -debug      show commands executed by this script
-echo   -make       use GNU Make instead of MSBuild
+echo   -clang      use Clang (GNU Make) instead of CL (MSBuild)
+echo   -gcc        use GCC (GNU Make) instead of CL (MSBuild)
 echo   -verbose    display progress messages
 echo Subcommands:
 echo   clean       delete generated files
@@ -132,30 +136,36 @@ if not %ERRORLEVEL%==0 (
 goto :eof
 
 :compile
+setlocal
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
-if %_MAKE%==1 ( call :compile_make
-) else ( call :compile_msbuild
+if %_VERBOSE%==1 echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME%
+
+if %_TOOLSET%==1 ( call :compile_clang
+) else if %_TOOLSET%==2 ( call :compile_gcc
+) else ( call :compile_cl
 )
+endlocal
 goto :eof
 
-:compile_make
-setlocal
+:compile_clang
 set CC=clang.exe
 set CXX=clang++.exe
+set MAKE=make.exe
+set RC=windres.exe
 
-set __CMAKE_OPTS=-G "Unix Makefiles" -DCMAKE_MAKE_PROGRAM=make.exe -DCMAKE_RC_COMPILER=windres.exe
+set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
+set __CMAKE_OPTS=-G "Unix Makefiles"
 
 pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 echo [%_BASENAME%] Current directory is: %CD%
 
-if %_DEBUG%==1 ( echo [%_BASENAME%] %_CMAKE_CMD% %__CMAKE_OPTS% ..
+if %_DEBUG%==1 ( echo [%_BASENAME%] %__CMAKE_CMD% %__CMAKE_OPTS% ..
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
 )
-call "%_CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    endlocal
     echo Error: Generation of build configuration failed 1>&2
     set _EXITCODE=1
     goto :eof
@@ -171,21 +181,56 @@ if not %ERRORLEVEL%==0 (
     goto :eof
 )
 popd
-endlocal
 goto :eof
 
-:compile_msbuild
-set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
+:compile_gcc
+set CC=gcc.exe
+set CXX=g++.exe
+set MAKE=make.exe
+set RC=windres.exe
 
-if %_VERBOSE%==1 echo Project: %_PROJ_NAME%, Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM%
+set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
+set __CMAKE_OPTS=-G "Unix Makefiles"
 
 pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 echo [%_BASENAME%] Current directory is: %CD%
 
-if %_DEBUG%==1 ( echo [%_BASENAME%] %_CMAKE_CMD% %__CMAKE_OPTS% ..
+if %_DEBUG%==1 ( echo [%_BASENAME%] %__CMAKE_CMD% %__CMAKE_OPTS% ..
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
 )
-call "%_CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo Error: Generation of build configuration failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MAKE_CMD% %_MAKE_OPTS% 
+) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe
+)
+call %_MAKE_CMD% %_MAKE_OPTS% %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+popd
+goto :eof
+
+:compile_cl
+set "__CMAKE_CMD=%MSVS_CMAKE_CMD%"
+set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
+
+if %_VERBOSE%==1 echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM%
+
+pushd "%_TARGET_DIR%"
+if %_DEBUG%==1 echo [%_BASENAME%] Current directory is: %CD%
+
+if %_DEBUG%==1 ( echo [%_BASENAME%] %__CMAKE_CMD% %__CMAKE_OPTS% ..
+) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
+)
+call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo Error: Generation of build configuration failed 1>&2
@@ -206,7 +251,7 @@ popd
 goto :eof
 
 :run
-if %_MAKE%==1 ( set __TARGET_DIR=%_TARGET_DIR%
+if not %_TOOLSET%==0 ( set __TARGET_DIR=%_TARGET_DIR%
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
 set __EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe
@@ -215,7 +260,7 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo [%_BASENAME%] call !__EXE_FILE:%_ROOT_DIR%=!
+if %_DEBUG%==1 ( echo [%_BASENAME%] !__EXE_FILE:%_ROOT_DIR%=!
 ) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=!
 )
 call "%__EXE_FILE%

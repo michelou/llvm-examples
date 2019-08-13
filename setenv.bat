@@ -25,7 +25,6 @@ if %_HELP%==1 call :help & exit /b %_EXITCODE%
 rem ##########################################################################
 rem ## Main
 
-set _CMAKE_PATH=
 set _MSYS_PATH=
 set _LLVM_PATH=
 set _MSVS_PATH=
@@ -33,6 +32,9 @@ set _PYTHON_PATH=
 set _GIT_PATH=
 
 call :cmake
+if not %_EXITCODE%==0 goto end
+
+call :python
 if not %_EXITCODE%==0 goto end
 
 call :msys
@@ -43,9 +45,6 @@ if not %_EXITCODE%==0 goto end
 
 rem call :msvs
 call :msvs_2019
-if not %_EXITCODE%==0 goto end
-
-call :python
 if not %_EXITCODE%==0 goto end
 
 call :git
@@ -90,10 +89,10 @@ echo   Subcommands:
 echo     help        display this help message
 goto :eof
 
-rem output parameter(s): _CMAKE_HOME, _CMAKE_PATH
+rem output parameter(s): _CMAKE_HOME
 :cmake
 set _CMAKE_HOME=
-set _CMAKE_PATH=
+rem set _CMAKE_PATH=
 
 set __CMAKE_EXE=
 for /f %%f in ('where cmake.exe 2^>NUL') do set __CMAKE_EXE=%%f
@@ -124,7 +123,50 @@ rem path name of installation directory may contain spaces
 for /f "delims=" %%f in ("%_CMAKE_HOME%") do set _CMAKE_HOME=%%~sf
 if %_DEBUG%==1 echo [%_BASENAME%] Using default CMake installation directory %_CMAKE_HOME%
 
-set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
+rem set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
+goto :eof
+
+rem output parameter(s): _PYTHON_PATH
+:python
+set _PYTHON_PATH=
+
+set __PYTHON_HOME=
+set __PYTHON_EXE=
+for /f %%f in ('where python.exe 2^>NUL') do set __PYTHON_EXE=%%f
+if defined __PYTHON_EXE (
+    if %_DEBUG%==1 echo [%_BASENAME%] Using path of Python executable found in PATH
+    rem keep _PYTHON_PATH undefined since executable already in path
+    goto :eof
+) else if defined PYTHON_HOME (
+    set "__PYTHON_HOME=%PYTHON_HOME%"
+    if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable PYTHON_HOME
+) else (
+    set __PATH=C:\opt
+    if exist "!__PATH!\Python\" ( set __PYTHON_HOME=!__PATH!\Python
+    ) else (
+        for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "__PYTHON_HOME=!__PATH!\%%f"
+        if not defined __PYTHON_HOME (
+            set "__PATH=%_PROGRAM_FILES%"
+            for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "__PYTHON_HOME=!__PATH!\%%f"
+        )
+    )
+)
+if not exist "%__PYTHON_HOME%\python.exe" (
+    echo Error: Python executable not found ^(%__PYTHON_HOME%^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if not exist "%__PYTHON_HOME%\Scripts\pylint.exe" (
+    echo Error: Pylint executable not found ^(%__PYTHON_HOME^) 1>&2
+    echo ^(execute command: python -m pip install pylint^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+rem path name of installation directory may contain spaces
+for /f "delims=" %%f in ("%__PYTHON_HOME%") do set __PYTHON_HOME=%%~sf
+if %_DEBUG%==1 echo [%_BASENAME%] Using default Python installation directory %__PYTHON_HOME%
+
+set "_PYTHON_PATH=;%__PYTHON_HOME%;%__PYTHON_HOME%\Scripts"
 goto :eof
 
 rem output parameter(s): _MSYS_HOME, _MSYS_PATH
@@ -161,7 +203,8 @@ rem path name of installation directory may contain spaces
 for /f "delims=" %%f in ("%_MSYS_HOME%") do set _MSYS_HOME=%%~sf
 if %_DEBUG%==1 echo [%_BASENAME%] Using default MSYS installation directory %_MSYS_HOME%
 
-set "_MSYS_PATH=;%_MSYS_HOME%\usr\bin"
+rem 1st path -> (make.exe, python.exe), 2nd path -> gcc.exe
+set "_MSYS_PATH=;%_MSYS_HOME%\usr\bin;%_MSYS_HOME%\mingw64\bin"
 goto :eof
 
 rem output parameter(s): _LLVM_HOME, _LLVM_PATH
@@ -236,13 +279,15 @@ if not exist "%__MSBUILD_HOME%\MSBuild.exe" (
     set _EXITCODE=1
     goto :eof
 )
+rem 1st path -> (cl.exe, nmake.exe), 2nd path -> msbuild.exe
 set "_MSVS_PATH=;%_MSVC_HOME%\bin%__MSVC_ARCH%;%__MSBUILD_HOME%"
 goto :eof
 
-rem output parameter(s): _MSBUILD_HOME, _MSBUILD_PATH, _MSVC_HOME, _MSVS_HOME, _MSVC_PATH
+rem output parameter(s): _MSBUILD_HOME, _MSBUILD_PATH, _MSVC_HOME, _MSVS_CMAKE_CMD, _MSVS_HOME, _MSVC_PATH
 rem Visual Studio 2019
 :msvs_2019
 set _MSVC_HOME=
+set _MSVS_CMAKE_CMD=
 set _MSVS_HOME=
 set _MSVS_PATH=
 
@@ -264,7 +309,7 @@ if "%PROCESSOR_ARCHITECTURE%"=="AMD64" ( set __MSVC_ARCH=\Hostx64\x64
 ) else ( set __MSVC_ARCH=\Hostx86\x86
 )
 if not exist "%_MSVC_HOME%\bin%__MSVC_ARCH%\" (
-    echo Error: Could not find installation directory for Microsoft C/C++ compiler 1>&2
+    echo Error: Could not find installation directory for MSVC compiler 1>&2
     echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
     set _EXITCODE=1
     goto :eof
@@ -279,11 +324,12 @@ if not exist "%__MSBUILD_BIN_DIR%\MSBuild.exe" (
 )
 set "__PATH=%_MSVS_HOME%\Common7\IDE\CommonExtensions\Microsoft\CMake"
 for /f "delims=" %%i in ('where /r "!__PATH!" cmake.exe') do set "__CMAKE_BIN_DIR=%%~dpi"
-if not exist "%__CMAKE_BIN_DIR%\cmake.exe" (
+if not exist "%__CMAKE_BIN_DIR%cmake.exe" (
     echo Error: Could not find Microsoft CMake 1>&2
     set _EXITCODE=1
     goto :eof
 )
+set "_MSVS_CMAKE_CMD=%__CMAKE_BIN_DIR%cmake.exe"
 set "_MSVS_PATH=;%_MSVC_HOME%\bin%__MSVC_ARCH%;%__MSBUILD_BIN_DIR%"
 goto :eof
 
@@ -310,49 +356,6 @@ if not defined __ASSIGNED_PATH (
     )
 )
 set _SUBST_PATH=%__DRIVE_NAME%
-goto :eof
-
-rem output parameter(s): _PYTHON_PATH
-:python
-set _PYTHON_PATH=
-
-set __PYTHON_HOME=
-set __PYTHON_EXE=
-for /f %%f in ('where python.exe 2^>NUL') do set __PYTHON_EXE=%%f
-if defined __PYTHON_EXE (
-    if %_DEBUG%==1 echo [%_BASENAME%] Using path of Python executable found in PATH
-    rem keep _PYTHON_PATH undefined since executable already in path
-    goto :eof
-) else if defined PYTHON_HOME (
-    set "__PYTHON_HOME=%PYTHON_HOME%"
-    if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable PYTHON_HOME
-) else (
-    set __PATH=C:\opt
-    if exist "!__PATH!\Python\" ( set __PYTHON_HOME=!__PATH!\Python
-    ) else (
-        for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "__PYTHON_HOME=!__PATH!\%%f"
-        if not defined __PYTHON_HOME (
-            set "__PATH=%_PROGRAM_FILES%"
-            for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "__PYTHON_HOME=!__PATH!\%%f"
-        )
-    )
-)
-if not exist "%__PYTHON_HOME%\python.exe" (
-    echo Error: Python executable not found ^(%__PYTHON_HOME%^) 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-if not exist "%__PYTHON_HOME%\Scripts\pylint.exe" (
-    echo Error: Pylint executable not found ^(%__PYTHON_HOME^) 1>&2
-    echo ^(execute command: python -m pip install pylint^) 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-rem path name of installation directory may contain spaces
-for /f "delims=" %%f in ("%__PYTHON_HOME%") do set __PYTHON_HOME=%%~sf
-if %_DEBUG%==1 echo [%_BASENAME%] Using default Python installation directory %__PYTHON_HOME%
-
-set "_PYTHON_PATH=;%__PYTHON_HOME%;%__PYTHON_HOME%\Scripts"
 goto :eof
 
 rem output parameter(s): _GIT_PATH
@@ -389,7 +392,8 @@ rem path name of installation directory may contain spaces
 for /f "delims=" %%f in ("%__GIT_HOME%") do set __GIT_HOME=%%~sf
 if %_DEBUG%==1 echo [%_BASENAME%] Using default Git installation directory %__GIT_HOME%
 
-set "_GIT_PATH=;%__GIT_HOME%\bin;%__GIT_HOME%\usr\bin;%__GIT_HOME%\mingw64\bin;%~dp0bin"
+rem We don't add ;%__GIT_HOME%\usr\bin which is redundant with ;%_MSYS_HOME%\usr\bin
+set "_GIT_PATH=;%__GIT_HOME%\bin;%__GIT_HOME%\mingw64\bin;%~dp0bin"
 goto :eof
 
 :print_env
@@ -428,9 +432,14 @@ if %ERRORLEVEL%==0 (
    for /f "tokens=1-5,*" %%i in ('dumpbin.exe 2^>^&1 ^| findstr Version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% dumpbin %%n,"
     set __WHERE_ARGS=%__WHERE_ARGS% dumpbin.exe
 )
+where /q nmake.exe
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1-7,*" %%i in ('nmake.exe /? 2^>^&1 ^| findstr Version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% nmake %%o"
+    set __WHERE_ARGS=%__WHERE_ARGS% nmake.exe
+)
 where /q msbuild.exe
 if %ERRORLEVEL%==0 (
-    for /f %%i in ('msbuild.exe -version ^| findstr /b "[0-9]"') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% msbuild %%i"
+    for /f %%i in ('msbuild.exe -version ^| findstr /b "[0-9]"') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% msbuild %%i"
     set __WHERE_ARGS=%__WHERE_ARGS% msbuild.exe
 )
 where /q cmake.exe
@@ -438,30 +447,30 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('cmake.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% cmake %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% cmake.exe
 )
-where /q nmake.exe
-if %ERRORLEVEL%==0 (
-    for /f "tokens=1-7,*" %%i in ('nmake.exe /? 2^>^&1 ^| findstr Version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% nmake %%o,"
-    set __WHERE_ARGS=%__WHERE_ARGS% nmake.exe
-)
 where /q make.exe
 if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% make %%k"
     set __WHERE_ARGS=%__WHERE_ARGS% make.exe
+)
+where /q gcc.exe
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1-7,*" %%i in ('gcc.exe --version 2^>^&1 ^| findstr gcc') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% gcc %%o,"
+    set __WHERE_ARGS=%__WHERE_ARGS% gcc.exe
 )
 where /q python.exe
 if %ERRORLEVEL%==0 (
     for /f "tokens=1,*" %%i in ('python.exe --version 2^>^&1') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% python %%j,"
     set __WHERE_ARGS=%__WHERE_ARGS% python.exe
 )
-where /q git.exe
-if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% git %%k,"
-    set __WHERE_ARGS=%__WHERE_ARGS% git.exe
-)
 where /q diff.exe
 if %ERRORLEVEL%==0 (
-   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% diff %%l"
+   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% diff %%l,"
     set __WHERE_ARGS=%__WHERE_ARGS% diff.exe
+)
+where /q git.exe
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% git %%k"
+    set __WHERE_ARGS=%__WHERE_ARGS% git.exe
 )
 rem see https://github.com/Microsoft/vswhere/releases
 where /q vswhere.exe
@@ -493,9 +502,10 @@ rem ## Cleanups
 endlocal & (
     if not defined CMAKE_HOME set CMAKE_HOME=%_CMAKE_HOME%
     if not defined LLVM_HOME set LLVM_HOME=%_LLVM_HOME%
+    if not defined MSVS_CMAKE_CMD set "MSVS_CMAKE_CMD=%_MSVS_CMAKE_CMD%"
     if not defined MSVS_HOME set MSVS_HOME=%_MSVS_HOME%
     if not defined MSVC_HOME set MSVC_HOME=%_MSVC_HOME%
-    set "PATH=%PATH%%_CMAKE_PATH%%_MSYS_PATH%%_LLVM_PATH%%_MSVS_PATH%%_PYTHON_PATH%%_GIT_PATH%"
+    set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_MSVS_PATH%%_GIT_PATH%"
     call :print_env %_VERBOSE%
     if %_DEBUG%==1 echo [%_BASENAME%] _EXITCODE=%_EXITCODE%
     for /f "delims==" %%i in ('set ^| findstr /b "_"') do set %%i=

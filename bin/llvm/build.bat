@@ -111,7 +111,7 @@ echo Subcommands:
 echo   clean       delete generated files
 echo   compile     generate executable
 echo   help        display this help message
-echo   install     install generated directory !_TARGET_OUTPUT_DIR:%_ROOT_DIR%=!
+echo   install     install files generated in directory !_TARGET_DIR:%_ROOT_DIR%=!
 echo   run         run executable
 goto :eof
 
@@ -173,6 +173,7 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
+rem input parameter(s): %1=source directory, %2=target directory, %3=recursive
 :xcopy
 set __SOURCE_DIR=%~1
 set __TARGET_DIR=%~2
@@ -191,7 +192,7 @@ if not exist "%__SOURCE_DIR%" (
 if %_DEBUG%==1 ( echo [%_BASENAME%] xcopy %__XCOPY_OPTS% "%__SOURCE_DIR%" "%__TARGET_DIR%\"
 ) else if %_VERBOSE%==1 ( echo Copy files from directory !__SOURCE_DIR:%_ROOT_DIR%=! to %__TARGET_DIR%\
 )
-xcopy %__XCOPY_OPTS% "%__SOURCE_DIR%" "%__TARGET_DIR%\"
+xcopy %__XCOPY_OPTS% "%__SOURCE_DIR%" "%__TARGET_DIR%\" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof

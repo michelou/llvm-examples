@@ -4,7 +4,7 @@
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/">LLVM</a> examples coming from various websites and books.<br/>
-  It also includes several batch scripts for experimenting with the LLVM infrastructure on the <b>Microsoft Windows</b> platform.
+  It also includes several batch scripts for experimenting with the LLVM infrastructure on a Windows machine.
   </td>
   </tr>
 </table>
@@ -30,6 +30,10 @@ C:\opt\Git-2.22.0\                                              <i>( 271 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
 
+<!--
+https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
+-->
+
 > **&#9755;** ***Installation policy***<br/>
 > When possible we install software from a [Zip archive](https://www.howtogeek.com/178146/htg-explains-everything-you-need-to-know-about-zipped-files/) rather than via a Windows installer. In our case we defined **`C:\opt\`** as the installation directory for optional software tools (*in reference to* the [`/opt/`](http://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html) directory on Unix).
 
@@ -39,6 +43,7 @@ We further recommand using an advanced console emulator such as [ComEmu](https:/
 
 This project is organized as follows:
 <pre style="font-size:80%;">
+bin\vswhere.exe
 bin\llvm\build.bat
 docs\
 examples\{hello, JITTutorial1, ..}
@@ -49,7 +54,7 @@ setenv.bat
 
 where
 
-- directory [**`bin\`**](bin/) contains utility batch files.
+- directory [**`bin\`**](bin/) contains utility batch files and tools.
 - directory [**`docs\`**](docs/) contains several LLVM related papers/articles.
 - directory [**`examples\`**](examples/) contains LLVM code examples (see [**`examples\README.md`**](examples/README.md)).
 - directory **`llvm-8.0.1.src\`** contains the LLVM source code distribution.
@@ -194,6 +199,11 @@ We list below several executables in the LLVM installation directory; e.g. comma
   16918528   02.08.2019      17:50:27  C:\opt\LLVM-8.0.1\bin\lli.exe
   42942976   02.08.2019      17:56:01  C:\opt\LLVM-8.0.1\bin\opt.exe
 </pre>
+
+
+#### `examples\JITTutorial1\build.bat`
+
+See file [**`examples\README.md`**](examples/README.md).
 
 ## Resources
 
