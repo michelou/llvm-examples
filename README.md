@@ -164,7 +164,7 @@ Tool paths:
    C:\opt\Git-2.22.0\bin\git.exe
    C:\opt\Git-2.22.0\mingw64\bin\git.exe
    L:\bin\vswhere.exe
-Important notice:
+Important note:
    MSVC CMake and GNU Cmake were not added to PATH (name conflict).
    Use either %MSVS_CMAKE_CMD% or %CMAKE_HOME%\bin\cmake.exe.
 </pre>
