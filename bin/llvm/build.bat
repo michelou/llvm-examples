@@ -31,7 +31,7 @@ set _CMAKE_CMD=cmake.exe
 set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM%  -A %_PROJ_PLATFORM% -Wdeprecated
 
 set _MSBUILD_CMD=msbuild.exe
-set _MSBUILD_OPTS=/p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
+set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
 call :args %*
 if not %_EXITCODE%==0 goto end
@@ -112,7 +112,7 @@ echo   clean       delete generated files
 echo   compile     generate executable
 echo   help        display this help message
 echo   install     install files generated in directory !_TARGET_DIR:%_ROOT_DIR%=!
-echo   run         run executable
+echo   run         run the generated executable
 goto :eof
 
 :clean
@@ -139,19 +139,26 @@ if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 if %_VERBOSE%==1 echo Project: %_PROJ_NAME%, Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM%
 
 pushd "%_TARGET_DIR%"
-if %_DEBUG%==1 ( echo [%_BASENAME%] call %_CMAKE_CMD% %_CMAKE_OPTS% .. 1^>NUL
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_CMAKE_CMD% %_CMAKE_OPTS% ..
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
 )
 call "%_CMAKE_CMD%" %_CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
+    echo Error: Generation of build configuration failed 1>&2
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo [%_BASENAME%] call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1^>NUL
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln"
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe
 )
 call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 popd
 goto :eof
 

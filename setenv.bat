@@ -126,11 +126,11 @@ if %_DEBUG%==1 echo [%_BASENAME%] Using default CMake installation directory %_C
 rem set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
 goto :eof
 
-rem output parameter(s): _PYTHON_PATH
+rem output parameter(s): _PYTHON_HOME, _PYTHON_PATH
 :python
+set _PYTHON_HOME=
 set _PYTHON_PATH=
 
-set __PYTHON_HOME=
 set __PYTHON_EXE=
 for /f %%f in ('where python.exe 2^>NUL') do set __PYTHON_EXE=%%f
 if defined __PYTHON_EXE (
@@ -138,35 +138,35 @@ if defined __PYTHON_EXE (
     rem keep _PYTHON_PATH undefined since executable already in path
     goto :eof
 ) else if defined PYTHON_HOME (
-    set "__PYTHON_HOME=%PYTHON_HOME%"
+    set "_PYTHON_HOME=%PYTHON_HOME%"
     if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable PYTHON_HOME
 ) else (
     set __PATH=C:\opt
-    if exist "!__PATH!\Python\" ( set __PYTHON_HOME=!__PATH!\Python
+    if exist "!__PATH!\Python\" ( set _PYTHON_HOME=!__PATH!\Python
     ) else (
-        for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "__PYTHON_HOME=!__PATH!\%%f"
-        if not defined __PYTHON_HOME (
+        for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
+        if not defined _PYTHON_HOME (
             set "__PATH=%_PROGRAM_FILES%"
-            for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "__PYTHON_HOME=!__PATH!\%%f"
+            for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
         )
     )
 )
-if not exist "%__PYTHON_HOME%\python.exe" (
-    echo Error: Python executable not found ^(%__PYTHON_HOME%^) 1>&2
+if not exist "%_PYTHON_HOME%\python.exe" (
+    echo Error: Python executable not found ^(%_PYTHON_HOME%^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
-if not exist "%__PYTHON_HOME%\Scripts\pylint.exe" (
-    echo Error: Pylint executable not found ^(%__PYTHON_HOME^) 1>&2
+if not exist "%_PYTHON_HOME%\Scripts\pylint.exe" (
+    echo Error: Pylint executable not found ^(%_PYTHON_HOME^) 1>&2
     echo ^(execute command: python -m pip install pylint^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
 rem path name of installation directory may contain spaces
-for /f "delims=" %%f in ("%__PYTHON_HOME%") do set __PYTHON_HOME=%%~sf
-if %_DEBUG%==1 echo [%_BASENAME%] Using default Python installation directory %__PYTHON_HOME%
+for /f "delims=" %%f in ("%_PYTHON_HOME%") do set _PYTHON_HOME=%%~sf
+if %_DEBUG%==1 echo [%_BASENAME%] Using default Python installation directory %_PYTHON_HOME%
 
-set "_PYTHON_PATH=;%__PYTHON_HOME%;%__PYTHON_HOME%\Scripts"
+set "_PYTHON_PATH=;%_PYTHON_HOME%;%_PYTHON_HOME%\Scripts"
 goto :eof
 
 rem output parameter(s): _MSYS_HOME, _MSYS_PATH
@@ -505,6 +505,7 @@ endlocal & (
     if not defined MSVS_CMAKE_CMD set "MSVS_CMAKE_CMD=%_MSVS_CMAKE_CMD%"
     if not defined MSVS_HOME set MSVS_HOME=%_MSVS_HOME%
     if not defined MSVC_HOME set MSVC_HOME=%_MSVC_HOME%
+    if not defined PYTHON_HOME set PYTHON_HOME=%_PYTHON_HOME%
     set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_MSVS_PATH%%_GIT_PATH%"
     call :print_env %_VERBOSE%
     if %_DEBUG%==1 echo [%_BASENAME%] _EXITCODE=%_EXITCODE%

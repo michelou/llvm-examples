@@ -18,7 +18,7 @@ In the following we present in more detail the two examples [**`hello`**](hello/
 
 Example [**`hello`**](hello/src/main/c/hello.c) simply prints the message **`"Hello world !"`** to the console.
 
-The goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019). 
+The goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019). 
 
 Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
 
@@ -29,7 +29,8 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 Usage: build { options | subcommands }
 Options:
   -debug      show commands executed by this script
-  -make       use GNU Make instead of MSBuild
+  -clang      use Clang (GNU Make) instead of CL (MSBuild)
+  -gcc        use GCC (GNU Make) instead of CL (MSBuild)
   -verbose    display progress messages
 Subcommands:
   clean       delete generated files
@@ -72,12 +73,7 @@ Command [**`build -debug run`**](hello/build.bat) calls [**`MSBuild`**](https://
 -- Detecting C compiler ABI info - done
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe
--- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe -- works
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Detecting CXX compile features
--- Detecting CXX compile features - done
+[...]
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/hello/build
@@ -278,6 +274,43 @@ _mul_add:                               # @mul_add
                                         # -- End function
 </pre>
 
+
+## `JITTutorial2`
+
+Example [**`JITTutorial2`**](JITTutoria2/src/tut2.cpp) defines a **`mul_add`** function and generates its [LLVM IR](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see LLVM tutorial [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html)).
+
+Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
+
+<pre style="font-size:80%;">
+<b>&gt; build clean run</b>
+; ModuleID = 'tut2'
+source_filename = "tut2"
+
+define i32 @gcd(i32 %x, i32 %y) {
+entry:
+  %tmp = icmp eq i32 %x, %y
+  br i1 %tmp, label %return, label %cond_false
+
+return:                                           ; preds = %entry
+  ret i32 %x
+
+cond_false:                                       ; preds = %entry
+  %tmp2 = icmp ult i32 %x, %y
+  br i1 %tmp2, label %cond_true, label %cond_false1
+
+cond_true:                                        ; preds = %cond_false
+  %tmp3 = sub i32 %y, %x
+  %tmp4 = call i32 @gcd(i32 %x, i32 %tmp3)
+  ret i32 %tmp4
+
+cond_false1:                                      ; preds = %cond_false
+  %tmp5 = sub i32 %x, %y
+  %tmp6 = call i32 @gcd(i32 %tmp5, i32 %y)
+  ret i32 %tmp6
+}
+</pre>
+
+
 ## Footnotes
 
 <a name="footnote_01">[1]</a> [↩](#anchor_01)
@@ -312,16 +345,16 @@ rem ## Environment setup</i>
 rem ## Main</i>
 
 <b>if</b> %_CLEAN%==1 (
-    <b>call :clean</b>
-    <b>if not</b> !_EXITCODE!==0 <b>goto end</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call :clean</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>if</b> %_COMPILE%==1 (
-    <b>call <span style="color:#9966ff;">:compile</span></b>
-    <b>if not</b> !_EXITCODE!==0 <b>goto end</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:compile</span></b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>if</b> %_RUN%==1 (
-    <b>call <span style="color:#9966ff;">:run</span></b>
-    <b>if not</b> !_EXITCODE!==0 <b>goto end</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:run</span></b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>goto <span style="color:#9966ff;">end</span></b>
 
