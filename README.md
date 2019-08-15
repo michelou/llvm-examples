@@ -29,7 +29,7 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*August 2019*):
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.15.1\                                            <i>(  75 MB)</i>
+C:\opt\cmake-3.15.2\                                            <i>(  75 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
 C:\opt\Git-2.22.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
@@ -122,15 +122,18 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
-   msbuild 16.200.19.32702 make 4.2.1
-   gcc 9.1.0, python 3.7.4, diff 3.7, git 2.22.0.windows.1
-   vswhere 2.7.1+180c706d56
+   msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
+   cmake 3.15.2, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
+   git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
 
 <b>&gt; where clang nmake vswhere</b>
 C:\opt\LLVM-8.0.1\bin\clang.exe
 X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
 L:\bin\vswhere.exe
 </pre>
+
+> **&#9755;** ***Important note***<br/>
+> Command [**`setenv`**](setenv.bat) does not add MSVC CMake and GNU Cmake to the **`PATH`** environment variable because of name conflict. Use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
 
 Command **`setenv -verbose`** also displays the tool paths:
 
@@ -139,9 +142,9 @@ Command **`setenv -verbose`** also displays the tool paths:
 Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
-   msbuild 16.200.19.32702 make 4.2.1
-   gcc 9.1.0, python 3.7.4, diff 3.7, git 2.22.0.windows.1
-   vswhere 2.7.1+180c706d566
+   msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
+   cmake 3.15.2, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
+   git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
    C:\opt\LLVM-8.0.1\bin\lli.exe
@@ -150,6 +153,8 @@ Tool paths:
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\dumpbin.exe
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
    X:\MSBuild\Current\Bin\amd64\MSBuild.exe
+   X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
+   C:\opt\cmake-3.15.2\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.7.4\python.exe
@@ -159,6 +164,9 @@ Tool paths:
    C:\opt\Git-2.22.0\bin\git.exe
    C:\opt\Git-2.22.0\mingw64\bin\git.exe
    L:\bin\vswhere.exe
+Important notice:
+   MSVC CMake and GNU Cmake were not added to PATH (name conflict).
+   Use either %MSVS_CMAKE_CMD% or %CMAKE_HOME%\bin\cmake.exe.
 </pre>
 
 #### `llvm-8.0.1.src\build.bat`

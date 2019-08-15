@@ -439,17 +439,23 @@ if %ERRORLEVEL%==0 (
 )
 where /q msbuild.exe
 if %ERRORLEVEL%==0 (
-    for /f %%i in ('msbuild.exe -version ^| findstr /b "[0-9]"') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% msbuild %%i"
+    for /f %%i in ('msbuild.exe -version ^| findstr /b "[0-9]"') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% msbuild %%i,"
     set __WHERE_ARGS=%__WHERE_ARGS% msbuild.exe
 )
-where /q cmake.exe
-if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('cmake.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% cmake %%k,"
-    set __WHERE_ARGS=%__WHERE_ARGS% cmake.exe
-)
+for %%i in (%MSVS_CMAKE_CMD%) do set __BIN_DIR=%%~dpi
+set __BIN_DIR=%__BIN_DIR:~0,-1%
+rem if %ERRORLEVEL%==0 (
+    for /f "tokens=1,2,3,*" %%i in ('%MSVS_CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% cmake %%k"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%__BIN_DIR%:cmake.exe"
+rem )
+set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
+rem if %ERRORLEVEL%==0 (
+    for /f "tokens=1,2,3,*" %%i in ('%__CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% cmake %%k,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%CMAKE_HOME%\bin:cmake.exe"
+rem )
 where /q make.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% make %%k"
+    for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% make %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% make.exe
 )
 where /q gcc.exe
@@ -464,12 +470,12 @@ if %ERRORLEVEL%==0 (
 )
 where /q diff.exe
 if %ERRORLEVEL%==0 (
-   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% diff %%l,"
+   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% diff %%l"
     set __WHERE_ARGS=%__WHERE_ARGS% diff.exe
 )
 where /q git.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% git %%k"
+    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE5=%__VERSIONS_LINE5% git %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% git.exe
 )
 rem see https://github.com/Microsoft/vswhere/releases
@@ -488,6 +494,9 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
     rem if %_DEBUG%==1 echo [%_BASENAME%] where %__WHERE_ARGS%
     echo Tool paths:
     for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p
+    echo Important note:
+    echo    MSVC CMake and GNU Cmake were not added to PATH ^(name conflict^).
+    echo    Use either %%MSVS_CMAKE_CMD%% or %%CMAKE_HOME%%\bin\cmake.exe.
     rem echo Environment variables:
     rem echo    LLVM_HOME=%LLVM_HOME%
     rem echo    MSVC_HOME=%MSVC_HOME%

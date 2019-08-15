@@ -11,7 +11,7 @@
   </tr>
 </table>
 
-In the following we present in more detail the two examples [**`hello`**](hello/) and [**`JITTutorial1\`**](JITTutorial1/); other examples in directory [**`examples\`**](./) behave the same.
+In the following we present in more detail the two examples [**`hello\`**](hello/) and [**`JITTutorial1\`**](JITTutorial1/); other examples in directory [**`examples\`**](./) behave the same.
 
 
 ## `hello`
@@ -277,7 +277,7 @@ _mul_add:                               # @mul_add
 
 ## `JITTutorial2`
 
-Example [**`JITTutorial2`**](JITTutoria2/src/tut2.cpp) defines a **`mul_add`** function and generates its [LLVM IR](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see LLVM tutorial [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html)).
+Example [**`JITTutorial2`**](JITTutoria2/src/tut2.cpp) defines a **`gcd`** function (*greatest common denominator*) and generates its [LLVM IR](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see LLVM tutorial [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html)).
 
 Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
 
@@ -313,7 +313,7 @@ cond_false1:                                      ; preds = %cond_false
 
 ## Footnotes
 
-<a name="footnote_01">[1]</a> [↩](#anchor_01)
+<a name="footnote_01">[1]</a> ***Coding conventions*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
 Batch file <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a> does obey the following coding conventions:
@@ -321,7 +321,7 @@ Batch file <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a> do
 <li>We use at most 80 characters per line. In general we would say that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
 <li>We organize our code in 4 sections: <code>Environment setup</code>, <code>Main</code>, <code>Subroutines</code> and <code>Cleanups</code>.</li>
 <li>We write exactly <i>one exit instruction</i> (label <b><code>end</code></b> in section <b><code>Cleanups</code></b>).</li>
-<li>We adopt the following naming conventions: global variables start with character <code>_</code> (shell variables defined in the user environment start with a letter) and local variables (e.g. inside subroutines or  <b><code>if/for</code></b> constructs) start with <code>__</code> (two <code>_</code> characters).</li>
+<li>We adopt the following conventions for variables: global variables start with character <code>_</code> (shell variables defined in the user environment start with a letter) and local variables (e.g. inside subroutines or  <b><code>if/for</code></b> constructs) start with <code>__</code> (two <code>_</code> characters).</li>
 </ul>
 </p>
 <pre style="margin:0 0 1em 20px;font-size:80%;">
