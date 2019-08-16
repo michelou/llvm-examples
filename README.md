@@ -32,7 +32,7 @@ For instance our development environment looks as follows (*August 2019*):
 C:\opt\cmake-3.15.2\                                            <i>(  75 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
 C:\opt\Git-2.22.0\                                              <i>( 271 MB)</i>
-C:\opt\msys64\                                                  <i>(2.85 GB)</i>
+C:\opt\msys64\<sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>                                               <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
 
@@ -53,7 +53,7 @@ bin\vswhere.exe
 bin\llvm\build.bat
 docs\
 examples\{hello, JITTutorial1, ..}
-llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
+llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
 README.md
 setenv.bat
 </pre>
@@ -264,7 +264,7 @@ See file [**`examples\README.md`**](examples/README.md).
 
 ## Footnotes
 
-<a name="footnote_01">[1]</a>  [↩](#anchor_01)
+<a name="footnote_01">[1]</a> ***Visual Studio Locator*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
 Command <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> displays VS properties, including the exact version of our Visual Studio installation (starting with VS 2017):
@@ -278,13 +278,51 @@ L:\bin\vswhere.exe
 <!-- old: 16.1.29102.190 -->
 </p>
 
-<a name="footnote_02">[2]</a>  [↩](#anchor_02)
+<a name="footnote_02">[2]</a> ***LLVM installation*** [↩](#anchor_02)
 
 <p style="margin:0 0 1em 20px;">
 The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 2.18 GB.
 </p>
 
-<a name="footnote_03">[3]</a>  [↩](#anchor_03)
+<a name="footnote_03">[3]</a> ***MSYS2 versus MinGW*** [↩](#anchor_03)
+
+<p style="margin:0 0 1em 20px;">
+We give here two criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS2</a> and <a href="https://sourceforge.net/projects/mingw/">MingGW</a>:
+</p>
+<ul style="margin:0 0 1em 20px;">
+<li>Installation size: 2.85 GB versus 216 MB.</li>
+<li>Available version/architecture (x86/x64) of needed tools.</li>
+</ul>
+<p style="margin:0 0 1em 20px;">
+MSYS2 tools (installation manager: <a href="https://github.com/msys2/msys2/wiki/Using-packages"><b><code>pacman</code></b></a>):
+</p>
+<pre style="margin:0 0 1em 20px; font-size:80%;">
+<b>&gt; where gcc make</b>
+C:\opt\msys64\mingw64\bin\gcc.exe
+C:\opt\msys64\usr\bin\make.exe
+&nbsp;
+<b>&gt; gcc --version | findstr gcc</b>
+gcc (Rev3, Built by MSYS2 project) 9.1.0
+&nbsp;
+<b>&gt; make --version | findstr Make</b>
+GNU Make 4.2.1
+</pre>
+<p style="margin:0 0 1em 20px;">
+MinGW tools (installation manager: <a href="http://www.mingw.org/wiki/Getting_Started"><b><code>mingw-get</code></b></a>):
+</p>
+<pre style="margin:0 0 1em 20px; font-size:80%;">
+<b>&gt; where gcc mingw32-make</b>
+c:\opt\MinGW\bin\gcc.exe
+c:\opt\MinGW\bin\mingw32-make.exe
+&nbsp;
+<b>&gt; gcc --version | findstr gcc</b>
+gcc (MinGW.org GCC-6.3.0-1) 6.3.0
+&nbsp;
+<b>&gt; mingw32-make --version | findstr Make</b>
+GNU Make 3.82.90
+</pre>
+
+<a name="footnote_04">[4]</a>  [↩](#anchor_04)
 
 <p style="margin:0 0 1em 20px;">
 In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
