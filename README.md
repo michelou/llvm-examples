@@ -20,7 +20,7 @@ Optionally one may also install the following software:
 
 - [CMake 3.15](https://cmake.org/download/) ([*release notes*](https://cmake.org/cmake/help/v3.15/release/3.15.html))
 - [Git 2.22](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.22.0.txt))
-- [MSYS2](http://repo.msys2.org/distrib/x86_64/)
+- [MSYS2](http://repo.msys2.org/distrib/x86_64/) <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
@@ -30,9 +30,9 @@ For instance our development environment looks as follows (*August 2019*):
 
 <pre style="font-size:80%;">
 C:\opt\cmake-3.15.2\                                            <i>(  75 MB)</i>
-C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
+C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 C:\opt\Git-2.22.0\                                              <i>( 271 MB)</i>
-C:\opt\msys64\<sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>                                               <i>(2.85 GB)</i>
+C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
 
@@ -109,7 +109,7 @@ We distinguish different sets of batch commands:
       run         run executable
     </pre>
 
-    > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode runner) are not part of the LLVM binary distribution (e.g. [LLVM-8.0.1-win64.exe](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1)).
+    > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode interpreter) are not part of the LLVM binary distribution (e.g. [LLVM-8.0.1-win64.exe](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1)).
 
 ## Usage examples
 
@@ -133,7 +133,7 @@ L:\bin\vswhere.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
-> Command [**`setenv`**](setenv.bat) does not add MSVC CMake and GNU Cmake to the **`PATH`** environment variable because of name conflict. Use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
+> Command [**`setenv`**](setenv.bat) does not add MSVC CMake and GNU Cmake to the **`PATH`** environment variable because of name conflict. We use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
 
 Command **`setenv -verbose`** also displays the tool paths:
 
@@ -181,7 +181,7 @@ Directory **`llvm-8.0.1.src\`** is setup as follows:
 <b>&gt; cd llvm-8.0.1.src</b>
 </pre>
 
-Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**. Be patient, build time is about 55 minutes.
+Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**. Be patient, build time is about 55 minutes (Intel i7 with 16 GB memory).
 
 <pre>
 <b>&gt; cd</b>
@@ -278,23 +278,17 @@ L:\bin\vswhere.exe
 <!-- old: 16.1.29102.190 -->
 </p>
 
-<a name="footnote_02">[2]</a> ***LLVM installation*** [↩](#anchor_02)
+<a name="footnote_02">[2]</a> ***MSYS2 versus MinGW*** [↩](#anchor_02)
 
 <p style="margin:0 0 1em 20px;">
-The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 2.18 GB.
-</p>
-
-<a name="footnote_03">[3]</a> ***MSYS2 versus MinGW*** [↩](#anchor_03)
-
-<p style="margin:0 0 1em 20px;">
-We give here two criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS2</a> and <a href="https://sourceforge.net/projects/mingw/">MingGW</a>:
+We give here two criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/">MingGW-w64</a>:
 </p>
 <ul style="margin:0 0 1em 20px;">
-<li>Installation size: 2.85 GB versus 216 MB.</li>
-<li>Available version/architecture (x86/x64) of needed tools.</li>
+<li>Installation size: 2.85 GB versus 438 MB.</li>
+<li>Available version/architecture (x86/x64) of the needed tools.</li>
 </ul>
 <p style="margin:0 0 1em 20px;">
-MSYS2 tools (installation manager: <a href="https://github.com/msys2/msys2/wiki/Using-packages"><b><code>pacman</code></b></a>):
+MSYS64 tools:
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <b>&gt; where gcc make</b>
@@ -308,19 +302,25 @@ gcc (Rev3, Built by MSYS2 project) 9.1.0
 GNU Make 4.2.1
 </pre>
 <p style="margin:0 0 1em 20px;">
-MinGW tools (installation manager: <a href="http://www.mingw.org/wiki/Getting_Started"><b><code>mingw-get</code></b></a>):
+MinGW-w64 tools:
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <b>&gt; where gcc mingw32-make</b>
-c:\opt\MinGW\bin\gcc.exe
-c:\opt\MinGW\bin\mingw32-make.exe
+c:\opt\mingw-w64\mingw64\bin\gcc.exe
+c:\opt\mingw-w64\mingw64\bin\make
 &nbsp;
 <b>&gt; gcc --version | findstr gcc</b>
-gcc (MinGW.org GCC-6.3.0-1) 6.3.0
+gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
 &nbsp;
 <b>&gt; mingw32-make --version | findstr Make</b>
-GNU Make 3.82.90
+GNU Make 4.2.1
 </pre>
+
+<a name="footnote_03">[3]</a> ***LLVM installation*** [↩](#anchor_03)
+
+<p style="margin:0 0 1em 20px;">
+The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 2.18 GB.
+</p>
 
 <a name="footnote_04">[4]</a>  [↩](#anchor_04)
 
@@ -328,7 +328,7 @@ GNU Make 3.82.90
 In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.15.1-win64-x64.zip</a>  <i>( 30 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.15.2-win64-x64.zip</a>  <i>( 30 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>        <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>       <i>( 29 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>   <i>( 86 MB)</i>
