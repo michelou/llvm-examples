@@ -29,13 +29,13 @@ static LLVMContext TheContext;
 Module* makeLLVMModule() {
     // Module Construction
     Module* mod = new Module("tut1", TheContext);
-  
+
     Constant* c = mod->getOrInsertFunction("mul_add",
     /*ret type*/                           IntegerType::get(TheContext, 32),
     /*args*/  /*x*/                        IntegerType::get(TheContext, 32),
               /*y*/                        IntegerType::get(TheContext, 32),
               /*z*/                        IntegerType::get(TheContext, 32));
-  
+
     Function* mul_add = cast<Function>(c);
     mul_add->setCallingConv(CallingConv::C);
 
@@ -46,14 +46,14 @@ Module* makeLLVMModule() {
     y->setName("y");
     Value* z = args++;
     z->setName("z");
-  
+
     BasicBlock* block = BasicBlock::Create(TheContext, "entry", mul_add);
     IRBuilder<> builder(block);
-  
+
     Value* tmp = builder.CreateBinOp(Instruction::Mul, x, y, "tmp");
     Value* tmp2 = builder.CreateBinOp(Instruction::Add, tmp, z, "tmp2");
 
     builder.CreateRet(tmp2);
-  
+
     return mod;
 }

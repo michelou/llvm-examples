@@ -16,7 +16,7 @@ In the following we present in more detail the two examples [**`hello\`**](hello
 
 ## `hello`
 
-Example [**`hello`**](hello/src/main/c/hello.c) simply prints the message **`"Hello world !"`** to the console.
+Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** to the console (sources: [**`hello.c`**](hello/src/main/c/hello.c) or [**`hello.cpp`**](hello/src/main/cpp/hello.cpp)).
 
 The goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019). 
 
@@ -125,7 +125,7 @@ Finally, command [**`build -debug -gcc run`**](hello/build.bat) relies on [**`GN
 <b>&gt; build -debug -gcc run</b>
 [build] _CLEAN=0 _COMPILE=1 _RUN=1 _TOOLSET=2 _VERBOSE=0
 [build] Current directory is: L:\examples\hello\build
-[build] C:\opt\CMAKE-~1.1\bin\cmake.exe -G "Unix Makefiles" ..
+[build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is GNU 9.1.0
 -- The CXX compiler identification is GNU 9.1.0
 -- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe
@@ -150,7 +150,7 @@ Hello world !
 
 ## `JITTutorial1`
 
-Example [**`JITTutorial1`**](JITTutorial/src/tut1.cpp) defines a **`mul_add`** function and generates its [LLVM IR](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see LLVM tutorial [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html)).
+Example [**`JITTutorial1\`**](JITTutorial1/) defines a function **`mul_add`** and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)); we updated the (*old*) example given in the LLVM tutorial [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html).
 
 Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands:
 
@@ -246,38 +246,63 @@ entry:
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`llc`**](https://llvm.org/docs/CommandGuide/llc.html) transforms the above bitcode into assembly langage for a specified architecture (eg. **`arm`**, **`x86`**, **`mips64`**).
+Finally, we'd like to transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
+
 <pre style="font-size:80%;">
-<b>&gt; build run &gt; build\JITTutorial1.bc</b>
+<b>&gt; build run &gt; tut1.ll</b>
 &nbsp;
-<b>&gt; llc -march=x86 -o - build\JITTutorial1.bc</b>
-        .text
-        .def     @feat.00;
-        .scl    3;
-        .type   0;
-        .endef
-        .globl  @feat.00
-.set @feat.00, 1
-        .file   "tut1"
-        .def     _mul_add;
-        .scl    2;
-        .type   32;
-        .endef
-        .globl  _mul_add                # -- Begin function mul_add
-        .p2align        4, 0x90
-_mul_add:                               # @mul_add
-# %bb.0:                                # %entry
-        movl    4(%esp), %eax
-        imull   8(%esp), %eax
-        addl    12(%esp), %eax
-        retl
-                                        # -- End function
+<b>&gt; clang -Wno-override-module -o tut1.exe tut1.ll</b>
+LINK : fatal error LNK1561: entry point must be defined
+clang: error: linker command failed with exit code 1561 (use -v to see invocation)
+</pre>
+
+The LLVM linker requires an entry point to successfully generate an executable. We need to add a function **`main`** to the above code; our solution is presented in example [**`JITTutorial1_main\`**](JITTutorial1_main/).
+
+## `JITTutorial1_main`
+
+Example [**`JITTutorial1_main\`**](JITTutorial1_main/) defines the three functions **`mul_add`**, **`main`** *and* **`printf`**; we also reorganized the source code ([**`tut1_main.cpp`**](JITTutorial1_main/src/tut1_main.cpp)) in order to provide a better distinction between prototype definition and code generation.
+
+Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
+
+<pre style="font-size:80%;">
+ build clean run
+; ModuleID = 'tut1_main'
+source_filename = "tut1_main"
+
+@.str = private constant [4 x i8] c"%d\0A\00"
+
+define i32 @main() {
+entry:
+  %mul_add = call i32 (i32, i32, i32, ...) @mul_add(i32 10, i32 2, i32 3)
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str, i32 0, i32 0), i32 %mul_add)
+  ret i32 0
+}
+
+define private i32 @mul_add(i32 %x, i32 %y, i32 %z, ...) {
+entry:
+  %tmp = mul i32 %x, %y
+  %tmp2 = add i32 %tmp, %z
+  ret i32 %tmp2
+}
+
+declare i32 @printf(i8*, ...)
+</pre>
+
+Now, we can transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
+
+<pre style="font-size:80%;">
+<b>&gt; build run &gt; tut1.ll</b>
+&nbsp;
+<b>&gt; clang -Wno-override-module -o tut1.exe tut1.ll</b>
+&nbsp;
+<b>&gt; tut1.exe</b>
+23
 </pre>
 
 
 ## `JITTutorial2`
 
-Example [**`JITTutorial2`**](JITTutoria2/src/tut2.cpp) defines a **`gcd`** function (*greatest common denominator*) and generates its [LLVM IR](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see LLVM tutorial [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html)).
+Example [**`JITTutorial2\`**](JITTutorial2/) defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)); we updated the (*old*) example from the LLVM tutorial [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html).
 
 Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
 
@@ -316,7 +341,7 @@ cond_false1:                                      ; preds = %cond_false
 <a name="footnote_01">[1]</a> ***Coding conventions*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-Batch file <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a> does obey the following coding conventions:
+Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a>) do obey the following coding conventions:
 <ul>
 <li>We use at most 80 characters per line. In general we would say that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
 <li>We organize our code in 4 sections: <code>Environment setup</code>, <code>Main</code>, <code>Subroutines</code> and <code>Cleanups</code>.</li>
