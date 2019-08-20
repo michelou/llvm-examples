@@ -3,7 +3,7 @@
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;">
-    <a href="http://dotty.epfl.ch/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM"/></a>
+    <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
     Directory <strong><code>examples\</code></strong> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM">LLVM</a> examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM project</a>.
@@ -11,7 +11,7 @@
   </tr>
 </table>
 
-In the following we present in more detail the two examples [**`hello\`**](hello/) and [**`JITTutorial1\`**](JITTutorial1/); other examples in directory [**`examples\`**](./) behave the same.
+In the following we present in more detail the examples [**`hello\`**](hello/), [**`JITTutorial1\`**](JITTutorial1/), [**`JITTutorial1_main\`**](JITTutorial1_main/) and [**`JITTutorial2\`**](JITTutorial2/).
 
 
 ## `hello`
@@ -57,7 +57,7 @@ Execute build\Release\hello.exe
 Hello world !
 </pre>
 
-Command [**`build -debug run`**](hello/build.bat) calls [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**
+Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) toolset to generate executable **`hello.exe`**
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
@@ -119,7 +119,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`build -debug -gcc run`**](hello/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) to generate executable **`hello.exe`**:
+Finally, command [**`build -debug -gcc run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) toolset to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -gcc run</b>
@@ -150,7 +150,9 @@ Hello world !
 
 ## `JITTutorial1`
 
-Example [**`JITTutorial1\`**](JITTutorial1/) defines a function **`mul_add`** and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)); we updated the (*old*) example given in the LLVM tutorial [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html).
+Example [**`JITTutorial1\`**](JITTutorial1/) is based on the (*outdated*) example [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html) from the LLVM 2.6 tutorial.
+
+It defines a function **`mul_add`** and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
 
 Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands:
 
@@ -277,7 +279,10 @@ The LLVM linker requires an entry point to successfully generate an executable, 
 
 ## `JITTutorial1_main`
 
-Example [**`JITTutorial1_main\`**](JITTutorial1_main/) defines the three functions **`mul_add`**, **`main`** *and* **`printf`**; we also reorganized the source code ([**`tut1_main.cpp`**](JITTutorial1_main/src/tut1_main.cpp)) in order to provide a better distinction between prototype definition and code generation.
+[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of the previous example [**`JITTutorial1\`**](JITTutorial1/):
+
+- It defines the three functions **`mul_add`**, **`main`** and **`printf`** (to print out the result !).
+- The source code ([**`tut1_main.cpp`**](JITTutorial1_main/src/tut1_main.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
 
 Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
 
@@ -305,7 +310,7 @@ entry:
 declare i32 @printf(i8*, ...)
 </pre>
 
-Now, we can transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
+Now, let's transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
 
 <pre style="font-size:80%;">
 <b>&gt; build run &gt; tut1.ll</b>
@@ -319,7 +324,9 @@ Now, we can transform the above [IR code](https://releases.llvm.org/8.0.1/docs/L
 
 ## `JITTutorial2`
 
-Example [**`JITTutorial2\`**](JITTutorial2/) defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)); we updated the (*old*) example from the LLVM tutorial [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html).
+[**`JITTutorial2\`**](JITTutorial2/) is based on the (*outdated*) example [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html) from the LLVM 2.6 tutorial.
+
+It defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)).
 
 Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
 
@@ -360,7 +367,7 @@ cond_false1:                                      ; preds = %cond_false
 <p style="margin:0 0 1em 20px;">
 Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a>) do obey the following coding conventions:
 <ul>
-<li>We use at most 80 characters per line. In general we would say that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
+<li>We use at most 80 characters per line. Concretely we observe that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
 <li>We organize our code in 4 sections: <code>Environment setup</code>, <code>Main</code>, <code>Subroutines</code> and <code>Cleanups</code>.</li>
 <li>We write exactly <i>one exit instruction</i> (label <b><code>end</code></b> in section <b><code>Cleanups</code></b>).</li>
 <li>We adopt the following conventions for variables: global variables start with character <code>_</code> (shell variables defined in the user environment start with a letter) and local variables (e.g. inside subroutines or  <b><code>if/for</code></b> constructs) start with <code>__</code> (two <code>_</code> characters).</li>
