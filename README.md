@@ -19,7 +19,7 @@ This project repository relies on two external software for the **Microsoft Wind
 Optionally one may also install the following software:
 
 - [CMake 3.15](https://cmake.org/download/) ([*release notes*](https://cmake.org/cmake/help/v3.15/release/3.15.html))
-- [Git 2.22](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.22.0.txt))
+- [Git 2.23](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.23.0.txt))
 - [MSYS2](http://repo.msys2.org/distrib/x86_64/) <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
 
 <!--
@@ -31,7 +31,7 @@ For instance our development environment looks as follows (*August 2019*):
 <pre style="font-size:80%;">
 C:\opt\cmake-3.15.2\                                            <i>(  75 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
-C:\opt\Git-2.22.0\                                              <i>( 271 MB)</i>
+C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
@@ -81,7 +81,7 @@ In the next section we give a brief description of the batch files present in th
 
 We distinguish different sets of batch commands:
 
-1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019), [**`git.exe`**](https://git-scm.com/docs/git), etc. directly available from the command prompt (see section [**Project dependencies**](#section_01)).
+1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) and [**`git.exe`**](https://git-scm.com/docs/git) directly available from the command prompt (see section [**Project dependencies**](#section_01)).
 
     <pre style="font-size:80%;">
     <b>&gt; setenv help</b>
@@ -124,7 +124,7 @@ Tool versions:
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
    cmake 3.15.2, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
-   git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
+   git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
 
 <b>&gt; where clang nmake vswhere</b>
 C:\opt\LLVM-8.0.1\bin\clang.exe
@@ -133,7 +133,7 @@ L:\bin\vswhere.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
-> Command [**`setenv`**](setenv.bat) does not add MSVC CMake and GNU Cmake to the **`PATH`** environment variable because of name conflict. We use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
+> Command [**`setenv`**](setenv.bat) does not add [MSVC CMake](https://devblogs.microsoft.com/cppblog/cmake-support-in-visual-studio/) and [GNU Cmake](https://cmake.org/) to the **`PATH`** environment variable because of name conflict. We use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
 
 Command **`setenv -verbose`** also displays the tool paths:
 
@@ -144,7 +144,7 @@ Tool versions:
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
    cmake 3.15.2, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
-   git 2.22.0.windows.1, vswhere 2.7.1+180c706d56
+   git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
    C:\opt\LLVM-8.0.1\bin\lli.exe
@@ -161,8 +161,8 @@ Tool paths:
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.22.0\bin\git.exe
-   C:\opt\Git-2.22.0\mingw64\bin\git.exe
+   C:\opt\Git-2.23.0\bin\git.exe
+   C:\opt\Git-2.23.0\mingw64\bin\git.exe
    L:\bin\vswhere.exe
 Important note:
    MSVC CMake and GNU Cmake were not added to PATH (name conflict).
@@ -243,6 +243,7 @@ See file [**`examples\README.md`**](examples/README.md).
 
 ### Books
 
+- [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
 - [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
 - [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (296 p., ISBN 978-1-78528-598-1).
 - [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314 p., ISBN 978-1-78216-692-4).
@@ -257,9 +258,18 @@ See file [**`examples\README.md`**](examples/README.md).
 -->
 
 
+### Online Tools
+
+- [Compiler Explorer](https://www.godbolt.org/) (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
+
+
 ### Papers
 
-- [*LLVM: An infrastructure for Multi-Stage Optimization*](http://llvm.org/pubs/2002-12-LattnerMSThesis.html) *(Master Thesis)* by Chris Lattner, December 2002.
+<p style="margin:0 0 1em 20px;">
+See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/">LLVM</a> website.
+</p>
+<p style="margin:0 0 1em 20px;">
+Everything started with <a href="http://nondot.org/~sabre/">Chris Lattner</a>'s Master Thesis <a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html"><i>"LLVM: An infrastructure for Multi-Stage Optimization"</i></a> (December 2002).
 
 
 ## Footnotes
@@ -285,7 +295,7 @@ We give here two criteria for choosing between <a href="http://repo.msys2.org/di
 </p>
 <ul style="margin:0 0 1em 20px;">
 <li>Installation size: 2.85 GB versus 438 MB.</li>
-<li>Available version/architecture (x86/x64) of the needed tools.</li>
+<li>Available version/architecture (x86/x64) of used tools.</li>
 </ul>
 <p style="margin:0 0 1em 20px;">
 MSYS64 tools:
@@ -322,7 +332,7 @@ GNU Make 4.2.1
 The original size of the LLVM installation directory is 1.1 GB. The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 2.18 GB.
 </p>
 
-<a name="footnote_04">[4]</a>  [↩](#anchor_04)
+<a name="footnote_04">[4]</a> ***Downloads*** [↩](#anchor_04)
 
 <p style="margin:0 0 1em 20px;">
 In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):

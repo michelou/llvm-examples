@@ -18,7 +18,7 @@ In the following we present in more detail the two examples [**`hello\`**](hello
 
 Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** to the console (sources: [**`hello.c`**](hello/src/main/c/hello.c) or [**`hello.cpp`**](hello/src/main/cpp/hello.cpp)).
 
-The goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019). 
+Our main goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) (see also the page [*"Getting Started with the LLVM System using Microsoft Visual Studio"*](https://llvm.org/docs/GettingStartedVS.html) from the [LLVM documentation](https://llvm.org/docs/index.html)). 
 
 Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
 
@@ -232,7 +232,7 @@ The generation has started 02.08.2019 19:36:32.
     33 Warning(s)
     0 Error(s)
 
-Temps écoulé 00:00:03.65
+Elapsed time 00:00:03.65
 [build] call build\Release\JITTutorial1.exe
 ; ModuleID = 'tut1'
 source_filename = "tut1"
@@ -256,7 +256,24 @@ LINK : fatal error LNK1561: entry point must be defined
 clang: error: linker command failed with exit code 1561 (use -v to see invocation)
 </pre>
 
-The LLVM linker requires an entry point to successfully generate an executable. We need to add a function **`main`** to the above code; our solution is presented in example [**`JITTutorial1_main\`**](JITTutorial1_main/).
+<!--
+> **:mag_right:** we use option **`-Wno-override-module`** ...
+> <pre style="font-size:80%;">
+<b>&gt; llvm-config --host-target</b>
+x86_64-pc-windows-msvc
+&nbsp;
+<b>&gt; clang -print-target-triple</b>
+x86_64-pc-windows-msvc
+&nbsp;
+<b>&gt; clang -print-effective-triple</b>
+x86_64-pc-windows-msvc19.22.27905
+</pre>
+<p>
+In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basics">The Basics</a> of the LLVM documentation we can read: "Make sure that your Modules contain both a data layout specification and target triple. Without these pieces, none of the target specific optimization will be enabled. This can have a major effect on the generated code quality."
+</p>
+-->
+
+The LLVM linker requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our code; we present our solution in example [**`JITTutorial1_main\`**](JITTutorial1_main/).
 
 ## `JITTutorial1_main`
 
@@ -352,23 +369,23 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <pre style="margin:0 0 1em 20px;font-size:80%;">
 <b>@echo off</b>
 <b>setlocal enabledelayedexpansion</b>
-...
+&nbsp;
 <i>rem ##########################################################################
 rem ## Environment setup</i>
-
+&nbsp;
 <b>set</b> _EXITCODE=0
-
+&nbsp;
 <b>for</b> %%f <b>in</b> ("%~dp0") <b>do set</b> _ROOT_DIR=%%~sf
-
+&nbsp;
 <b>call <span style="color:#9966ff;">:props</span></b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
-
+&nbsp;
 <b>call <span style="color:#9966ff;">:args</span> %*</b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
-
+&nbsp;
 <i>rem ##########################################################################
 rem ## Main</i>
-
+&nbsp;
 <b>if</b> %_CLEAN%==1 (
 &nbsp;&nbsp;&nbsp;&nbsp;<b>call :clean</b>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
@@ -382,15 +399,15 @@ rem ## Main</i>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>goto <span style="color:#9966ff;">end</span></b>
-
+&nbsp;
 <i>rem ##########################################################################
 rem ## Subroutines</i>
-
+&nbsp;
 <span style="color:#9966ff;">:props</span>
-...
+... <i>(read property file)</i> ...
 <b>goto :eof</b>
 <span style="color:#9966ff;">:args</span>
-...
+... <i>(handle program arguments)</i> ...
 <b>goto :eof</b>
 <span style="color:#9966ff;">:clean</span>
 ...
@@ -401,10 +418,10 @@ rem ## Subroutines</i>
 <span style="color:#9966ff;">:run</span>
 ...
 <b>goto :eof</b>
-
+&nbsp;
 <i>rem ##########################################################################
 rem ## Cleanups</i>
-
+&nbsp;
 <span style="color:#9966ff;">:end</span>
 ...
 <b>exit</b> /b %_EXITCODE%

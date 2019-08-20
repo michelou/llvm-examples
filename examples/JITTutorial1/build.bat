@@ -33,7 +33,6 @@ set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated -DLLVM_
 
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
-rem set _MSBUILD_OPTS=-nologo -property:Configuration=%_PROJ_CONFIG%;Platform="%_PROJ_PLATFORM%"
 
 call :args %*
 if not %_EXITCODE%==0 goto end
@@ -136,7 +135,7 @@ if %_VERBOSE%==1 echo Project: %_PROJ_NAME%, Configuration: %_PROJ_CONFIG%, Plat
 pushd "%_TARGET_DIR%"
 if %_VERBOSE%==1 echo Current directory: %CD%
 
-if %_DEBUG%==1 ( echo [%_BASENAME%] %_CMAKE_CMD% %_CMAKE_OPTS% ..
+if %_DEBUG%==1 ( echo [%_BASENAME%] cmake.exe %_CMAKE_OPTS% ..
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!"
 )
 call "%_CMAKE_CMD%" %_CMAKE_OPTS% .. %_STDOUT_REDIRECT%
