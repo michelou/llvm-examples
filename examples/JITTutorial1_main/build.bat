@@ -27,13 +27,11 @@ set _PROJ_PLATFORM=x64
 set _TARGET_DIR=%_ROOT_DIR%build
 set _TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 
-rem set _CMAKE_CMD=cmake.exe
-set _CMAKE_CMD=%MSVS_HOME%\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
-set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated -DLLVM_INSTALL_DIR="%LLVM_HOME%"
+set _CMAKE_CMD=%MSVS_CMAKE_CMD%
+set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
-rem set _MSBUILD_OPTS=-nologo -property:Configuration=%_PROJ_CONFIG%;Platform="%_PROJ_PLATFORM%"
 
 set _CLANG_CMD=%LLVM_HOME%\bin\clang.exe
 set _CLANG_OPTS=
@@ -116,8 +114,8 @@ echo Subcommands:
 echo   clean       delete generated files
 echo   compile     generate executable
 echo   help        display this help message
-echo   run         run the generated executable
-echo   test        test the generated IR code
+echo   run         run generated executable
+echo   test        test generated IR code
 goto :eof
 
 :clean

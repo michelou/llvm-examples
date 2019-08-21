@@ -19,7 +19,7 @@ if not exist "%_CMAKE_LIST_FILE%" (
     set _EXITCODE=1
     goto end
 )
-set _PROJ_NAME=tut2
+set _PROJ_NAME=tut2_main
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%_CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
 set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
@@ -32,6 +32,9 @@ set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
+
+set _CLANG_CMD=%LLVM_HOME%\bin\clang.exe
+set _CLANG_OPTS=
 
 call :args %*
 if not %_EXITCODE%==0 goto end
@@ -55,6 +58,10 @@ if %_RUN%==1 (
     call :run
     if not !_EXITCODE!==0 goto end
 )
+if %_TEST%==1 (
+    call :test
+    if not !_EXITCODE!==0 goto end
+)
 goto end
 
 rem ##########################################################################
@@ -66,6 +73,7 @@ rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
 set _CLEAN=0
 set _COMPILE=0
 set _RUN=0
+set _TEST=0
 set _DEBUG=0
 set _HELP=0
 set _VERBOSE=0
@@ -82,6 +90,7 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 ) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
 ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
 ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
+) else if /i "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=0& set _TEST=1
 ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
 ) else if /i "%__ARG%"=="-help" ( set _HELP=1
 ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
@@ -93,6 +102,7 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 shift
 goto :args_loop
 :args_done
+set _TOOLSET_NAME=MSBuild/CL
 if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _VERBOSE=%_VERBOSE% 1>&2
 goto :eof
 
@@ -106,6 +116,7 @@ echo   clean       delete generated files
 echo   compile     generate executable
 echo   help        display this help message
 echo   run         run generated executable
+echo   test        test generated IR code
 goto :eof
 
 :clean
@@ -126,10 +137,21 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
-:config
+:compile
+set LLVM_TARGET_TRIPLE=
+for /f %%i in ('%LLVM_HOME%\bin\clang.exe -print-effective-triple') do set LLVM_TARGET_TRIPLE=%%i
+if %_DEBUG%==1 echo [%_BASENAME%] LLVM_TARGET_TRIPLE=%LLVM_TARGET_TRIPLE% 1>&2
+
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
-if %_VERBOSE%==1 echo Project: %_PROJ_NAME%, Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
+if %_VERBOSE%==1 echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME%
+
+call :compile_cl
+
+goto :eof
+
+:compile_cl
+if %_VERBOSE%==1 echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
 
 pushd "%_TARGET_DIR%"
 if %_VERBOSE%==1 echo Current directory: %CD% 1>&2
@@ -144,23 +166,17 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-popd
-goto :eof
-
-:compile
-call :config
-if not %_EXITCODE%==0 goto :eof
-
-set "__SLN_FILE=%_TARGET_DIR%\%_PROJ_NAME%.sln"
-if %_DEBUG%==1 ( echo [%_BASENAME%] %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%" 1>&2
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%" %_STDOUT_REDIRECT%
+call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
+    popd
     echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
     set _EXITCODE=1
     goto :eof
 )
+popd
 goto :eof
 
 :run
@@ -174,6 +190,43 @@ if %_DEBUG%==1 ( echo [%_BASENAME%] !__EXE_FILE:%_ROOT_DIR%=! 1>&2
 ) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=! 1>&2
 )
 call "%__EXE_FILE%
+if not %ERRORLEVEL%==0 (
+    echo Error: Execution status is %ERRORLEVEL% 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
+:test
+set __EXE_FILE=%_TARGET_EXE_DIR%\%_PROJ_NAME%.exe
+if not exist "%__EXE_FILE%" (
+    echo Error: Executable %_PROJ_NAME%.exe not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set __IR_OUTFILE=%_TARGET_DIR%\tut2.ll
+if %_DEBUG%==1 ( echo [%_BASENAME%] !__EXE_FILE:%_ROOT_DIR%=! 1^> %__IR_OUTFILE% 1>&2
+) else if %_VERBOSE%==1 ( echo Generate IR code to file !__IR_OUTFILE:%_ROOT_DIR%=! 1>&2
+)
+call "%__EXE_FILE%" 1> %__IR_OUTFILE%
+if not %ERRORLEVEL%==0 (
+    echo Error: Execution status is %ERRORLEVEL% 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set __EXE_OUTFILE=%_TARGET_DIR%\tut2.exe
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_CLANG_CMD% %_CLANG_OPTS% -o %__EXE_OUTFILE% %__IR_OUTFILE% 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable from file !__IR_OUTFILE:%_ROOT_DIR%=! 1>&2
+)
+call %_CLANG_CMD% %_CLANG_OPTS% -o %__EXE_OUTFILE% %__IR_OUTFILE%
+if not %ERRORLEVEL%==0 (
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo [%_BASENAME%] !__EXE_OUTFILE:%_ROOT_DIR%=! 12 4 1>&2
+) else if %_VERBOSE%==1 ( echo Execute !__EXE_OUTFILE:%_ROOT_DIR%=! 1>&2
+)
+call "%__EXE_OUTFILE%" 12 4
 if not %ERRORLEVEL%==0 (
     echo Error: Execution status is %ERRORLEVEL% 1>&2
 )
