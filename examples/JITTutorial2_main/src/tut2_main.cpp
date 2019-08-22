@@ -12,8 +12,6 @@
 
 using namespace llvm;
 
-#define CONST_INT32(X) ConstantInt::get(ctx, APInt(32, X))
-
 Module* makeLLVMModule();
 
 int main(int argc, char**argv) {
@@ -29,6 +27,8 @@ int main(int argc, char**argv) {
     return 0;
 }
 
+#define CONST_INT32(X) ConstantInt::get(ctx, APInt(32, X))
+
 static LLVMContext TheContext;
 static Type* TYPE_INT32 = Type::getInt32Ty(TheContext);
 // or: static Type* TYPE_INT32 = IntegerType::get(TheContext, 32);
@@ -36,11 +36,11 @@ static Type* TYPE_CHAR_PTR = Type::getInt8PtrTy(TheContext);
 
 // int gcd(int, int)
 static Function* createGCDPrototype(Module* mod) {
-    std::vector<Type*> gcd_arg_types = { /*x*/TYPE_INT32, /*y*/TYPE_INT32 };
-    FunctionType* gcd_type =
-        FunctionType::get(/*ret_type*/TYPE_INT32, gcd_arg_types, true);
+    std::vector<Type*> arg_types = { /*x*/TYPE_INT32, /*y*/TYPE_INT32 };
+    FunctionType* func_type =
+        FunctionType::get(/*ret_type*/TYPE_INT32, arg_types, /*isVarArg*/false);
     Function* func = Function::Create(
-        gcd_type, Function::PrivateLinkage, Twine("gcd"), mod);
+        func_type, Function::PrivateLinkage, Twine("gcd"), mod);
     func->setCallingConv(CallingConv::C);
 
     return func;
@@ -97,24 +97,24 @@ static void makeGCD(Module* mod) {
     builder.CreateRet(recur_2);
 }
 
-LoadInst* loadArrayElement(Module* mod, IRBuilder<> builder, LoadInst* arr_base, unsigned i) {
+static LoadInst* loadArrayElement(Module* mod, IRBuilder<> builder, LoadInst* arr_base, unsigned i) {
     LLVMContext& ctx = mod->getContext();
     ConstantInt* offset = ConstantInt::get(ctx, APInt(64, i));
     Value* elemAddr = builder.CreateInBoundsGEP(arr_base, { offset }); // addr = base + offset
     LoadInst* elem_i = builder.CreateLoad(elemAddr, "elem_i");
-    elem_i->setAlignment(8); // argv[idx]
+    elem_i->setAlignment(8); // arr[idx]
     
     return elem_i;
  }
 
 // int main(int argc, char* argv[])
 static Function* createMainPrototype(Module* mod) {
-    std::vector<Type*> main_arg_types =
+    std::vector<Type*> arg_types =
         { /*argc*/TYPE_INT32, /*argv*/PointerType::get(TYPE_CHAR_PTR, 0) };
-    FunctionType* main_type =
-        FunctionType::get(/*ret_type*/TYPE_INT32, main_arg_types, false);
+    FunctionType* func_type =
+        FunctionType::get(/*ret_type*/TYPE_INT32, arg_types, /*isVarArg*/false);
     Function* func = Function::Create(
-        main_type, Function::ExternalLinkage, Twine("main"), mod);
+        func_type, Function::ExternalLinkage, Twine("main"), mod);
     func->setCallingConv(CallingConv::C);
     func->setDSOLocal(true);
 
@@ -132,18 +132,7 @@ static MainFrame createMainPrologue(Module* mod, IRBuilder<> builder, Function* 
     argc->setName("argc");
     Value* argv = args++;
     argv->setName("argv");
-    /*
-     * %3 = alloca i32, align 4
-     * %4 = alloca i32, align 4
-     * %5 = alloca i8**, align 8
-     * store i32 0, i32* %3, align 4
-     * store i32 %0, i32* %4, align 4
-     * store i8** %1, i8*** %5, align 8
-     * %6 = load i8**, i8*** %5, align 8
-     * %7 = getelementptr inbounds i8*, i8** %6, i64 0
-     * %8 = load i8*, i8** %7, align 8
-      * %9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str, i32 0, i32 0), i8* %8)
-    */
+
     AllocaInst* a0 = builder.CreateAlloca(TYPE_INT32); a0->setAlignment(4);
     AllocaInst* a1 = builder.CreateAlloca(TYPE_INT32); a1->setAlignment(4);
     Type* argvType = PointerType::get(TYPE_CHAR_PTR, 0);
@@ -154,9 +143,7 @@ static MainFrame createMainPrologue(Module* mod, IRBuilder<> builder, Function* 
     StoreInst* s1 = builder.CreateStore(argc, a1); s1->setAlignment(4);
     StoreInst* s2 = builder.CreateStore(argv, a2); s2->setAlignment(8);
     
-    MainFrame frame;
-    frame.argc = builder.CreateLoad(a1);
-    frame.argv = builder.CreateLoad(a2);
+    MainFrame frame = { builder.CreateLoad(a1), builder.CreateLoad(a2) };
     frame.argv->setAlignment(8);
 
     return frame;
@@ -164,8 +151,13 @@ static MainFrame createMainPrologue(Module* mod, IRBuilder<> builder, Function* 
 
 /*
 int main(int argc, char* argv[]) {
-    int res = gcd(argv[1], argv[2]);
-    printf("%d\n", res);
+    printf("%s", "argc="); printf("%d\n", argc);
+    printf("%s", "argv1="); printf("%s\n", argv[1]);
+    printf("%s", "argv2="); printf("%s\n", argv[2]);
+    int x = strtol(argv[1]);
+    int y = strtol(argv[2]);
+    int result = gcd(x, y);
+    printf("%s", "result="); printf("%d\n", result);
     return 0;
 }
 */
@@ -175,8 +167,8 @@ static void makeMain(Module* mod) {
 
     BasicBlock* block = BasicBlock::Create(ctx, "entry", mainFun);
     IRBuilder<> builder(block);
-
     MainFrame frame = createMainPrologue(mod, builder, mainFun);
+
     createPrintStr(mod, builder, "argc=");
     createPrintIntLn(mod, builder, frame.argc);
 

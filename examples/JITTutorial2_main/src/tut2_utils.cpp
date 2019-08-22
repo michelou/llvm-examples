@@ -1,16 +1,12 @@
-#include "stdlib.h"
+#include "stdlib.h" // getenv
 
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
 
-#include "llvm-c/Core.h"
-
 #include "tut2_utils.h"
 
 using namespace llvm;
-
-#define CONST_INT32(X) ConstantInt::get(ctx, APInt(32, X))
 
 #define TYPE_CHAR     Type::getInt8Ty(ctx)
 #define TYPE_CHAR_PTR Type::getInt8PtrTy(ctx)
@@ -19,7 +15,7 @@ using namespace llvm;
 // Without this initialization, none of the target specific optimizations will be enabled
 // (see http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic)
 void initModule(Module* mod) {
-    // format:
+    // Format:
     // (see http://llvm.org/docs/LangRef.html#langref-datalayout)
     //    <endianness>  = E | e where E=big endian, e=little endian
     //    <mangling>    = e | m | o | x | w  where x,w = Windows COFF with/without prefix
@@ -29,10 +25,10 @@ void initModule(Module* mod) {
     //    S<size>       = 0 (stack alignment in bits)
     //    P<size>       = 0 (code and data share the same space)
     //    A<size>       = 0 (address space of objects created by 'alloca')
-
+#ifdef _WIN64
     // eg. "e-m:w-i64:64-f80:128-n8:16:32:64-S128"
     mod->setDataLayout("e-m:w-i64:64-f80:128-n8:16:32:64-S128");
-
+#endif
     char* value = std::getenv("LLVM_TARGET_TRIPLE");
     if (value != NULL) {
         // eg. "x86_64-pc-windows-msvc19.22.27905"
@@ -51,11 +47,11 @@ static Function* strtol_func      = NULL;
 // (adapted from https://github.com/thomaslee/llvm-demo)
 static Function* printf_prototype(Module* mod) {
     LLVMContext& ctx = mod->getContext();
-    std::vector<Type*> printf_arg_types = { /*fmt*/TYPE_CHAR_PTR };
-    FunctionType* printf_type =
-        FunctionType::get(/*ret_type*/TYPE_INT32, printf_arg_types, true);
+    std::vector<Type*> arg_types = { /*fmt*/TYPE_CHAR_PTR };
+    FunctionType* func_type =
+        FunctionType::get(/*ret_type*/TYPE_INT32, arg_types, /*isVarArg*/true);
     Function* func = Function::Create(
-        printf_type, Function::ExternalLinkage, Twine("printf"), mod);
+        func_type, Function::ExternalLinkage, Twine("printf"), mod);
     func->setCallingConv(CallingConv::C);
     func->setDSOLocal(true);
 
@@ -200,18 +196,18 @@ CallInst* createPrintStrLn(Module* mod, IRBuilder<> builder, Value* v) {
 // StrToInt
 
 /* private */
-// long strtol (const char* str, char** endptr, int base);
+// int strtol (const char* str, char** endptr, int base);
 static Function* strtol_prototype(Module* mod) {
     LLVMContext& ctx = mod->getContext();
-    std::vector<Type*> printf_arg_types = {
+    std::vector<Type*> arg_types = {
         /*str*/TYPE_CHAR_PTR,
         /*endptr*/PointerType::get(TYPE_CHAR_PTR, 0),
         /*base*/TYPE_INT32
     };
-    FunctionType* printf_type =
-        FunctionType::get(/*ret_type*/TYPE_INT32, printf_arg_types, true);
+    FunctionType* func_type =
+        FunctionType::get(/*ret_type*/TYPE_INT32, arg_types, true);
     Function* func = Function::Create(
-        printf_type, Function::ExternalLinkage, Twine("strtol"), mod);
+        func_type, Function::ExternalLinkage, Twine("strtol"), mod);
     func->setCallingConv(CallingConv::C);
     func->setDSOLocal(true);
 
@@ -223,7 +219,11 @@ CallInst* createStrToInt(Module* mod, IRBuilder<> builder, Value* v) {
     LLVMContext& ctx = mod->getContext();
     if (strtol_func == NULL) { strtol_func = strtol_prototype(mod); }
     Constant* zero = Constant::getNullValue(PointerType::get(TYPE_CHAR_PTR, 0));
-    std::vector<Value *> strtol_args = { v, zero, /*base*/CONST_INT32(10) };
+    ConstantInt* base = ConstantInt::get(ctx, APInt(32, 10));
+    std::vector<Value *> strtol_args = { v, zero, base };
 
     return builder.CreateCall(strtol_func, strtol_args, "strtol");
 }
+
+//////////////////////////////////////////////////////////////////////////////
+// END
