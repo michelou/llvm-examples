@@ -6,12 +6,18 @@
     <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
-    Directory <strong><code>examples\</code></strong> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM">LLVM</a> examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM project</a>.
+    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM">LLVM</a> examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM project</a> and tested on a Windows machine.
   </td>
   </tr>
 </table>
 
-In the following we present in more detail the examples [**`hello\`**](hello/), [**`JITTutorial1\`**](JITTutorial1/), [**`JITTutorial1_main\`**](JITTutorial1_main/) and [**`JITTutorial2\`**](JITTutorial2/).
+In the following we present in more detail five examples (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project):
+
+- [**`hello\`**](hello/),
+- [**`JITTutorial1\`**](JITTutorial1/),
+- [**`JITTutorial1_main\`**](JITTutorial1_main/) *(extended version of [**`JITTutorial1\`**](JITTutorial1/))*
+- [**`JITTutorial2\`**](JITTutorial2/) and
+- [**`JITTutorial2_main\`**](JITTutorial2_main/) *(extended version of [**`JITTutorial2\`**](JITTutorial2/))*
 
 
 ## `hello`
@@ -150,7 +156,7 @@ Hello world !
 
 ## `JITTutorial1`
 
-Example [**`JITTutorial1\`**](JITTutorial1/) is based on the (*outdated*) example [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html) from the LLVM 2.6 tutorial.
+Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html) (*outdated*) from the LLVM 2.6 tutorial.
 
 It defines a function **`mul_add`** and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
 
@@ -248,7 +254,7 @@ entry:
 [build] _EXITCODE=0
 </pre>
 
-Finally, we'd like to transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
+Finally, one may wonder what's happen if we transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
 
 <pre style="font-size:80%;">
 <b>&gt; build run &gt; tut1.ll</b>
@@ -279,10 +285,13 @@ The LLVM linker requires an entry point to successfully generate an executable, 
 
 ## `JITTutorial1_main`
 
-[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of the previous example [**`JITTutorial1\`**](JITTutorial1/):
+[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of previous example [**`JITTutorial1\`**](JITTutorial1/):
 
-- It defines the three functions **`mul_add`**, **`main`** and **`printf`** (to print out the result !).
-- The source code ([**`tut1_main.cpp`**](JITTutorial1_main/src/tut1_main.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
+- it defines the same function **`mul_add`** as in example [**`JITTutorial1\`**](JITTutorial1/),
+- it defines a **`main`** function (with no parameter) as program entry point and
+- it defines a **`printf`** function to print out the result.
+
+> **:mag_right:** The source code ([**`tut1_main.cpp`**](JITTutorial1_main/src/tut1_main.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
 
 Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
 
@@ -324,7 +333,7 @@ Now, let's transform the above [IR code](https://releases.llvm.org/8.0.1/docs/La
 
 ## `JITTutorial2`
 
-[**`JITTutorial2\`**](JITTutorial2/) is based on the (*outdated*) example [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html) from the LLVM 2.6 tutorial.
+[**`JITTutorial2\`**](JITTutorial2/) is based on example [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html) (*outdated*) from the LLVM 2.6 tutorial.
 
 It defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)).
 
@@ -359,6 +368,101 @@ cond_false1:                                      ; preds = %cond_false
 }
 </pre>
 
+## `JITTutorial2_main`
+
+[**`JITTutorial2_main\`**](JITTutorial2_main/) is an extended version of previous example [**`JITTutorial2\`**](JITTutorial2/):
+
+- it defines the same function **`gcd`** as in example [**`JITTutorial2\`**](JITTutorial2/),
+- it defines a **`main`** function with parameters **`argc`** and **`argv`** as program entry point and
+- it defines several **`printf`** functions to print out both string and integer values.
+- it defined a **`strtol`** function to convert string values to integer values.
+
+> **:mag_right:** The **`printf`** functions are implemented in the separate source file ([**`tut2_utils.cpp`**](JITTutorial2_main/src/tut2_utils.cpp)) to keep the main source file ([**`tut2_main.cpp`**](JITTutorial2_main/src/tut2_main.cpp)) more readable. The corresponding include file ([**`tut2_utils.h`**](JITTutorial2_main/src/tut2_utils.h)) defines the following function headers:
+><pre style="font-size:80%;">
+><b>void</b> initModule(Module* mod);
+>CallInst* createPrintInt(Module* mod, IRBuilder<> builder, Value* v);
+>CallInst* createPrintStr(Module* mod, IRBuilder<> builder, const char* s);
+>CallInst* createPrintStr(Module* mod, IRBuilder<> builder, Value* v);
+>CallInst* createPrintIntLn(Module* mod, IRBuilder<> builder, Value* v);
+>CallInst* createPrintStrLn(Module* mod, IRBuilder<> builder, const char* s);
+>CallInst* createPrintStrLn(Module* mod, IRBuilder<> builder, Value* v);
+>CallInst* createStrToInt(Module* mod, IRBuilder<> builder, Value* str);
+> </pre>
+
+Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
+
+<pre style="font-size:80%;">
+<b>&gt; build clean run</b>
+; ModuleID = 'tut2_main'
+source_filename = "tut2_main"
+target datalayout = "e-m:w-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-pc-windows-msvc19.22.27905"
+
+@.str = private constant [6 x i8] c"argc=\00"
+@.str_s = private constant [3 x i8] c"%s\00"
+@.str_d = private constant [4 x i8] c"%d\0A\00"
+@.str.1 = private constant [7 x i8] c"argv1=\00"
+@.str_s.2 = private constant [4 x i8] c"%s\0A\00"
+@.str.3 = private constant [7 x i8] c"argv2=\00"
+@.str.4 = private constant [8 x i8] c"result=\00"
+
+define private i32 @gcd(i32 %x, i32 %y, ...) {
+// same as before
+}
+
+define dso_local i32 @main(i32 %argc, i8** %argv) {
+entry:
+  %0 = alloca i32, align 4
+  %1 = alloca i32, align 4
+  %2 = alloca i8**, align 8
+  store i32 0, i32* %0, align 4
+  store i32 %argc, i32* %1, align 4
+  store i8** %argv, i8*** %2, align 8
+  %3 = load i32, i32* %1
+  %4 = load i8**, i8*** %2, align 8
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str_s, i32 0, i32 0), [6 x i8]* @.str)
+  %printf1 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str_d, i32 0, i32 0), i32 %3)
+  %5 = getelementptr inbounds i8*, i8** %4, i64 1
+  %elem_i = load i8*, i8** %5, align 8
+  %6 = getelementptr inbounds i8*, i8** %4, i64 2
+  %elem_i2 = load i8*, i8** %6, align 8
+  %printf3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str_s, i32 0, i32 0), [7 x i8]* @.str.1)
+  %printf4 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str_s.2, i32 0, i32 0), i8* %elem_i)
+  %printf5 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str_s, i32 0, i32 0), [7 x i8]* @.str.3)
+  %printf6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str_s.2, i32 0, i32 0), i8* %elem_i2)
+  %strtol = call i32 (i8*, i8**, i32, ...) @strtol(i8* %elem_i, i8** null, i32 10)
+  %strtol7 = call i32 (i8*, i8**, i32, ...) @strtol(i8* %elem_i2, i8** null, i32 10)
+  %7 = call i32 (i32, i32, ...) @gcd(i32 %strtol, i32 %strtol7)
+  %printf8 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str_s, i32 0, i32 0), [8 x i8]* @.str.4)
+  %printf9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str_d, i32 0, i32 0), i32 %7)
+  ret i32 0
+}
+
+declare dso_local i32 @printf(i8*, ...)
+
+declare dso_local i32 @strtol(i8*, i8**, i32, ...)
+</pre>
+
+Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
+
+<pre style="font-size:80%;">
+<b>&gt; build clean test</b>
+argc=3
+argv1=12
+argv2=4
+result=4
+</pre>
+
+And obviously, we can also run the generated executable directly with two numbers of our choice as arguments:
+
+<pre style="font-size:80%;">
+<b>&gt; build\tut2.exe 210 45</b>
+argc=3
+argv1=210
+argv2=45
+result=15
+</pre>
+
 
 ## Footnotes
 
@@ -370,7 +474,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <li>We use at most 80 characters per line. Concretely we observe that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
 <li>We organize our code in 4 sections: <code>Environment setup</code>, <code>Main</code>, <code>Subroutines</code> and <code>Cleanups</code>.</li>
 <li>We write exactly <i>one exit instruction</i> (label <b><code>end</code></b> in section <b><code>Cleanups</code></b>).</li>
-<li>We adopt the following conventions for variables: global variables start with character <code>_</code> (shell variables defined in the user environment start with a letter) and local variables (e.g. inside subroutines or  <b><code>if/for</code></b> constructs) start with <code>__</code> (two <code>_</code> characters).</li>
+<li>We adopt the following naming conventions for variables: global variables start with character <code>_</code> (shell variables defined in the user environment start with a letter) and local variables (e.g. inside subroutines or  <b><code>if/for</code></b> constructs) start with <code>__</code> (two <code>_</code> characters).</li>
 </ul>
 </p>
 <pre style="margin:0 0 1em 20px;font-size:80%;">

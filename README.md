@@ -11,7 +11,7 @@
 
 ## <span id="section_01">Project dependencies</span>
 
-This project repository relies on two external software for the **Microsoft Windows** plaform:
+This project repository depends on two external software for the **Microsoft Windows** plaform:
 
 - [LLVM 8 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1) ([*release notes*](https://releases.llvm.org/8.0.0/docs/ReleaseNotes.html))
 - [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes)) <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup>
