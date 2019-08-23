@@ -181,7 +181,7 @@ Directory **`llvm-8.0.1.src\`** is setup as follows:
 <b>&gt; cd llvm-8.0.1.src</b>
 </pre>
 
-Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**. Be patient, build time is about 55 minutes (Intel i7 with 16 GB memory).
+Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**. Be patient, build time is about 55 minutes on an Intel i7 with 16 GB of memory.
 
 <pre>
 <b>&gt; cd</b>

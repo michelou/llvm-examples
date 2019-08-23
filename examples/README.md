@@ -11,13 +11,13 @@
   </tr>
 </table>
 
-In the following we present in more detail five examples (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project):
+In the following we present in more detail five examples (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
 
-- [**`hello\`**](hello/),
-- [**`JITTutorial1\`**](JITTutorial1/),
-- [**`JITTutorial1_main\`**](JITTutorial1_main/) *(extended version of [**`JITTutorial1\`**](JITTutorial1/))*
-- [**`JITTutorial2\`**](JITTutorial2/) and
-- [**`JITTutorial2_main\`**](JITTutorial2_main/) *(extended version of [**`JITTutorial2\`**](JITTutorial2/))*
+- [**`hello`**](#hello),
+- [**`JITTutorial1`**](#tut1),
+- [**`JITTutorial1_main\`**](#tut1_main/) *(extended version of* [**`JITTutorial1\`**](#tut1)*)*
+- [**`JITTutorial2`**](#tut2) and
+- [**`JITTutorial2_main`**](#tut2_main) *(extended version of* [**`JITTutorial2\`**](#tut2)*)*
 
 
 ## <span id="hello">`hello`</span>
@@ -28,7 +28,7 @@ Our main goal here is to refresh our knowledge of the build tools [**`Clang`**](
 
 Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
 
-> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~230 lines of code <sup id="anchor_01">[[1]](#footnote_01)</sup>.
+> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~230 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>.
 
 <pre>
 <b>&gt; build</b>
@@ -64,7 +64,7 @@ Execute build\Release\hello.exe
 Hello world !
 </pre>
 
-Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) toolset to generate executable **`hello.exe`**
+Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)/[**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) toolset to generate executable **`hello.exe`**
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
@@ -96,7 +96,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Command [**`build -debug -clang run`**](hello/build.bat) relies on [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) / [**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
+Command [**`build -debug -clang run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) toolset instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)/[**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -clang run</b>
@@ -126,7 +126,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`build -debug -gcc run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) / [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) toolset to generate executable **`hello.exe`**:
+Finally, command [**`build -debug -gcc run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) toolset to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -gcc run</b>
@@ -282,14 +282,14 @@ In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic
 </p>
 -->
 
-The LLVM linker requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our code; we present our solution in example [**`JITTutorial1_main\`**](JITTutorial1_main/).
+The LLVM linker requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our code; we present our solution in example [**`JITTutorial1_main`**](#tut1_main/).
 
 
 ## <span id="tut1_main">`JITTutorial1_main`</span>
 
-[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of previous example [**`JITTutorial1\`**](JITTutorial1/):
+[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of previous example [**`JITTutorial1\`**](#tut1):
 
-- it defines the same function **`mul_add`** as in example [**`JITTutorial1\`**](JITTutorial1/),
+- it defines the same function **`mul_add`** as in example [**`JITTutorial1`**](#tut1),
 - it defines a **`main`** function (with [no parameter](https://en.cppreference.com/w/cpp/language/main_function)) as program entry point and
 - it defines a **`printf`** function to print out the result.
 
@@ -384,7 +384,7 @@ cond_false1:                                      ; preds = %cond_false
 
 ## <span id="tut2_main">`JITTutorial2_main`</span>
 
-[**`JITTutorial2_main\`**](JITTutorial2_main/) is an extended version of previous example [**`JITTutorial2\`**](JITTutorial2/):
+[**`JITTutorial2_main\`**](JITTutorial2_main/) is an extended version of previous example [**`JITTutorial2\`**](#tut2):
 
 - it defines the same function **`gcd`** as in example [**`JITTutorial2\`**](JITTutorial2/),
 - it defines a **`main`** function with [parameters **`argc`** and **`argv`**](https://en.cppreference.com/w/cpp/language/main_function) as program entry point and
@@ -479,9 +479,13 @@ result=15
 </pre>
 
 
-## Footnotes
+## <span id="footnotes">Footnotes</a>
 
-<a name="footnote_01">[1]</a> ***Coding conventions*** [↩](#anchor_01)
+<a name="footnote_01">[1]</a> ***C++ Standards*** [↩](#anchor_01)
+
+Clang and LLVM are using C++14 since August 14, 2019 (see Bastien's post on the <a href="http://lists.llvm.org/pipermail/llvm-dev/2019-August/134577.html"><b>llvm-dev</b></a> mailing list). We thus specify either C++14 (GNU Make) or C++17 (MSBuild) in our CMake configuration files.
+
+<a name="footnote_02">[2]</a> ***Coding conventions*** [↩](#anchor_02)
 
 <p style="margin:0 0 1em 20px;">
 Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a>) do obey the following coding conventions:
