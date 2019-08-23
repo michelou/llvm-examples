@@ -107,8 +107,9 @@ goto :eof
 echo Usage: %_BASENAME% { options ^| subcommands }
 echo Options:
 echo   -debug      show commands executed by this script
-echo   -clang      use Clang (GNU Make) instead of CL (MSBuild)
-echo   -gcc        use GCC (GNU Make) instead of CL (MSBuild)
+echo   -cl         use CL/MSBuild toolset (default)
+echo   -clang      use Clang/GNU Make toolset instead of CL/MSBuild
+echo   -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
 echo   -verbose    display progress messages
 echo Subcommands:
 echo   clean       delete generated files

@@ -20,7 +20,7 @@ In the following we present in more detail five examples (each of them is a [**`
 - [**`JITTutorial2_main\`**](JITTutorial2_main/) *(extended version of [**`JITTutorial2\`**](JITTutorial2/))*
 
 
-## `hello`
+## <span id="hello">`hello`</span>
 
 Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** to the console (sources: [**`hello.c`**](hello/src/main/c/hello.c) or [**`hello.cpp`**](hello/src/main/cpp/hello.cpp)).
 
@@ -35,8 +35,9 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 Usage: build { options | subcommands }
 Options:
   -debug      show commands executed by this script
-  -clang      use Clang (GNU Make) instead of CL (MSBuild)
-  -gcc        use GCC (GNU Make) instead of CL (MSBuild)
+  -cl         use CL/MSBuild toolset (default)
+  -clang      use Clang/GNU Make toolset instead of CL/MSBuild
+  -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
   -verbose    display progress messages
 Subcommands:
   clean       delete generated files
@@ -154,7 +155,8 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-## `JITTutorial1`
+
+## <span id="tut1">`JITTutorial1`</span>
 
 Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html) (*outdated*) from the LLVM 2.6 tutorial.
 
@@ -178,44 +180,43 @@ Subcommands:
 Command [**`build clean run`**](JITTutorial1/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
-<b>&gt; build clean run</b>                            
-; ModuleID = 'tut1'                            
-source_filename = "tut1"                       
-                                               
-define i32 @mul_add(i32 %x, i32 %y, i32 %z) {  
-entry:                                         
-  %tmp = mul i32 %x, %y                        
-  %tmp2 = add i32 %tmp, %z                     
-  ret i32 %tmp2                                
-}                                              
+<b>&gt; build clean run</b>
+; ModuleID = 'tut1'
+source_filename = "tut1"
+&nbsp;
+define i32 @mul_add(i32 %x, i32 %y, i32 %z) {
+entry:
+  %tmp = mul i32 %x, %y
+  %tmp2 = add i32 %tmp, %z
+  ret i32 %tmp2
+}
 </pre>
 
-
-Command [**`build -verbose`**](JITTutorial1/build.bat) also displays progress messages:
+Command [**`build -verbose clean run`**](JITTutorial1/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
-<b>&gt; build -verbose clean compile run</b>                         
-Delete directory "build"                                    
+<b>&gt; build -verbose clean run</b>
+Delete directory "build"      
 Project: JITTutorial1, Configuration: Release, Platform: x64
-Current directory: L:\examples\JITTUT~1\build               
-Generate configuration files into directory "build"         
-Generate executable JITTutorial1.exe                        
-Execute build\Release\JITTutorial1.exe                      
-; ModuleID = 'tut1'                                         
-source_filename = "tut1"                                    
-                                                            
-define i32 @mul_add(i32 %x, i32 %y, i32 %z) {               
-entry:                                                      
-  %tmp = mul i32 %x, %y                                     
-  %tmp2 = add i32 %tmp, %z                                  
-  ret i32 %tmp2                                             
-}                                                           
+Current directory: L:\examples\JITTUT~1\build   
+Generate configuration files into directory "build"
+Generate executable JITTutorial1.exe
+Execute build\Release\JITTutorial1.exe
+; ModuleID = 'tut1'
+source_filename = "tut1"
+&nbsp;
+define i32 @mul_add(i32 %x, i32 %y, i32 %z) {
+entry:      
+  %tmp = mul i32 %x, %y   
+  %tmp2 = add i32 %tmp, %z 
+  ret i32 %tmp2
+} 
 </pre>
 
-Finally, command [**`build -debug`**](JITTutorial1/build.bat) displays the commands executed during the build process:
+Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays the commands executed during the build process:
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug clean compile run</b> 
+<b>&gt; build -debug clean run</b> 
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.1" ..
@@ -283,12 +284,13 @@ In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic
 
 The LLVM linker requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our code; we present our solution in example [**`JITTutorial1_main\`**](JITTutorial1_main/).
 
-## `JITTutorial1_main`
+
+## <span id="tut1_main">`JITTutorial1_main`</span>
 
 [**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of previous example [**`JITTutorial1\`**](JITTutorial1/):
 
 - it defines the same function **`mul_add`** as in example [**`JITTutorial1\`**](JITTutorial1/),
-- it defines a **`main`** function (with no parameter) as program entry point and
+- it defines a **`main`** function (with [no parameter](https://en.cppreference.com/w/cpp/language/main_function)) as program entry point and
 - it defines a **`printf`** function to print out the result.
 
 > **:mag_right:** The source code ([**`tut1_main.cpp`**](JITTutorial1_main/src/tut1_main.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
@@ -319,19 +321,30 @@ entry:
 declare i32 @printf(i8*, ...)
 </pre>
 
+> **:mag_right:** In the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) we can recognize the  call to function **`mul_add`** (ie. **`call .. @mul_add(i32 10, i32 2, i32 3)`**); the three arguments are **`10`**, **`2`** and **`3`**; so the result should be **`(10 * 2) + 3 = 23`**.
+
 Now, let's transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
 
 <pre style="font-size:80%;">
-<b>&gt; build run &gt; tut1.ll</b>
+<b>&gt; build run &gt; build\tut1.ll</b>
 &nbsp;
-<b>&gt; clang -Wno-override-module -o tut1.exe tut1.ll</b>
+<b>&gt; clang -Wno-override-module -o build\tut1.exe build\tut1.ll</b>
 &nbsp;
 <b>&gt; tut1.exe</b>
 23
 </pre>
 
+> **:mag_right:** We use Clang option **`-Wno-override-module` to hide the following warning:
+> <pre style="font-size:80%;">
+> clang -o build\tut1.exe build\tut1.ll
+> warning: overriding the module target triple with x86_64-pc-windows-msvc19.22.27905
+>      [-Woverride-module]
+> 1 warning generated.
+></pre>
+> We will address that (small) issue in example [**`JITTutorial2_main\`**](JITTutorial2_main/).
 
-## `JITTutorial2`
+
+## <span id="tut2">`JITTutorial2`</span>
 
 [**`JITTutorial2\`**](JITTutorial2/) is based on example [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html) (*outdated*) from the LLVM 2.6 tutorial.
 
@@ -368,16 +381,17 @@ cond_false1:                                      ; preds = %cond_false
 }
 </pre>
 
-## `JITTutorial2_main`
+
+## <span id="tut2_main">`JITTutorial2_main`</span>
 
 [**`JITTutorial2_main\`**](JITTutorial2_main/) is an extended version of previous example [**`JITTutorial2\`**](JITTutorial2/):
 
 - it defines the same function **`gcd`** as in example [**`JITTutorial2\`**](JITTutorial2/),
-- it defines a **`main`** function with parameters **`argc`** and **`argv`** as program entry point and
-- it defines several **`printf`** functions to print out both string and integer values.
-- it defined a **`strtol`** function to convert string values to integer values.
+- it defines a **`main`** function with [parameters **`argc`** and **`argv`**](https://en.cppreference.com/w/cpp/language/main_function) as program entry point and
+- it defines several [**`printf`**](http://www.cplusplus.com/reference/cstdio/printf/) functions to print out both string and integer values.
+- it defined a [**`strtol`**](http://www.cplusplus.com/reference/cstdlib/strtol/) function to convert string values to integer values.
 
-> **:mag_right:** The **`printf`** functions are implemented in the separate source file ([**`tut2_utils.cpp`**](JITTutorial2_main/src/tut2_utils.cpp)) to keep the main source file ([**`tut2_main.cpp`**](JITTutorial2_main/src/tut2_main.cpp)) more readable. The corresponding include file ([**`tut2_utils.h`**](JITTutorial2_main/src/tut2_utils.h)) defines the following function headers:
+> **:mag_right:** The **`printf`** functions are implemented in the separate source file ([**`tut2_utils.cpp`**](JITTutorial2_main/src/tut2_utils.cpp)) to keep the main source file ([**`tut2_main.cpp`**](JITTutorial2_main/src/tut2_main.cpp)) more readable. The corresponding include file ([**`tut2_utils.h`**](JITTutorial2_main/src/tut2_utils.h)) defines the following functions:
 ><pre style="font-size:80%;">
 ><b>void</b> initModule(Module* mod);
 >CallInst* createPrintInt(Module* mod, IRBuilder<> builder, Value* v);
@@ -388,6 +402,7 @@ cond_false1:                                      ; preds = %cond_false
 >CallInst* createPrintStrLn(Module* mod, IRBuilder<> builder, Value* v);
 >CallInst* createStrToInt(Module* mod, IRBuilder<> builder, Value* str);
 > </pre>
+> We use function **`initModule(Module* mod)`** to include the two fields **`target datalayout`** and **`target triple`** into the generated [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see below); that solves the warning "**`warning: overriding the module target triple`**" we encountered in example [**`JITTutorial1_main`**](#tut1_main).
 
 Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
 
@@ -443,7 +458,7 @@ declare dso_local i32 @printf(i8*, ...)
 declare dso_local i32 @strtol(i8*, i8**, i32, ...)
 </pre>
 
-Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
+Command [**`build clean test`**](JITTutorial2_main/build.bat) produces the following output (arguments **`12`** and **`4`** are hard-coded in subcommand **`test`**):
 
 <pre style="font-size:80%;">
 <b>&gt; build clean test</b>
