@@ -25,12 +25,16 @@ set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
 set _TARGET_DIR=%_ROOT_DIR%build
+set _TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 
 set _MAKE_CMD=make.exe
 set _MAKE_OPTS=
 
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
+
+set _PELOOK_CMD=pelook.exe
+set _PELOOK_OPTS=
 
 call :args %*
 if not %_EXITCODE%==0 goto end
@@ -50,6 +54,10 @@ if %_COMPILE%==1 (
     call :compile
     if not !_EXITCODE!==0 goto end
 )
+if %_DUMP%==1 (
+    call :dump
+    if not !_EXITCODE!==0 goto end
+)
 if %_RUN%==1 (
     call :run
     if not !_EXITCODE!==0 goto end
@@ -64,6 +72,7 @@ rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TOOLSET, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
+set _DUMP=0
 set _RUN=0
 set _DEBUG=0
 set _HELP=0
@@ -81,12 +90,14 @@ if not defined __ARG (
 if /i "%__ARG%"=="help" ( set _HELP=1
 ) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
 ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
+) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
 ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
 ) else if /i "%__ARG%"=="-cl" ( set _TOOLSET=0
 ) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=1
 ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
 ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=2
 ) else if /i "%__ARG%"=="-help" ( set _HELP=1
+) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=0
 ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
 ) else (
     echo Error: Unknown subcommand %__ARG% 1>&2
@@ -100,7 +111,7 @@ if %_TOOLSET%==1 ( set _TOOLSET_NAME=LLVM/Clang
 ) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=MSYS/GCC
 ) else ( set _TOOLSET_NAME=MSBuild/CL
 )
-if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
 goto :eof
 
 :help
@@ -110,10 +121,12 @@ echo   -debug      show commands executed by this script
 echo   -cl         use CL/MSBuild toolset (default)
 echo   -clang      use Clang/GNU Make toolset instead of CL/MSBuild
 echo   -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
+echo   -msvc       use CL/MSBuild toolset ^(alias for option -cl^)
 echo   -verbose    display progress messages
 echo Subcommands:
 echo   clean       delete generated files
 echo   compile     generate executable
+echo   dump        dump PE/COFF infos for generated executable
 echo   help        display this help message
 echo   run         run the generated executable
 goto :eof
@@ -249,6 +262,28 @@ if not %ERRORLEVEL%==0 (
     goto :eof
 )
 popd
+goto :eof
+
+:dump
+if not %_TOOLSET%==0 ( set __TARGET_DIR=%_TARGET_DIR%
+) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
+)
+set __EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe
+if not exist "%__EXE_FILE%" (
+    echo Error: Executable %_PROJ_NAME%.exe not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+) else if %_VERBOSE%==1 ( echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+)
+echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
+call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+if not %ERRORLEVEL%==0 (
+    echo Error: Dump of executable %_PROJ_NAME%.exe failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 goto :eof
 
 :run

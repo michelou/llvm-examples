@@ -33,6 +33,9 @@ set _CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
+set _PELOOK_CMD=pelook.exe
+set _PELOOK_OPTS=
+
 set _LLI_CMD=lli.exe
 set _LLI_OPTS=
 
@@ -54,6 +57,10 @@ if %_COMPILE%==1 (
     call :compile
     if not !_EXITCODE!==0 goto end
 )
+if %_DUMP%==1 (
+    call :dump
+    if not !_EXITCODE!==0 goto end
+)
 if %_RUN%==1 (
     call :run
     if not !_EXITCODE!==0 goto end
@@ -72,6 +79,7 @@ rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
+set _DUMP=0
 set _RUN=0
 set _DEBUG=0
 set _HELP=0
@@ -89,6 +97,7 @@ if not defined __ARG (
 if /i "%__ARG%"=="help" ( set _HELP=1
 ) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
 ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
+) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
 ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
 ) else if /i "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=1& set _TEST=1
 ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
@@ -113,6 +122,7 @@ echo   -verbose    display progress messages
 echo Subcommands:
 echo   clean       delete generated files
 echo   compile     generate executable
+echo   dump        dump PE/COFF infos for generated executable
 echo   help        display this help message
 echo   run         run executable
 echo   test        test executable
@@ -168,6 +178,25 @@ if %_DEBUG%==1 ( echo [%_BASENAME%] %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%
 call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%__SLN_FILE%" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
+:dump
+set __EXE_FILE=%_TARGET_EXE_DIR%\%_PROJ_NAME%.exe
+if not exist "%__EXE_FILE%" (
+    echo Error: Executable %_PROJ_NAME%.exe not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+) else if %_VERBOSE%==1 ( echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+)
+echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
+call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+if not %ERRORLEVEL%==0 (
+    echo Error: Dump of executable %_PROJ_NAME%.exe failed 1>&2
     set _EXITCODE=1
     goto :eof
 )

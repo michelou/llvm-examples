@@ -11,13 +11,13 @@
   </tr>
 </table>
 
-In the following we present in more detail five examples (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
+In the following we present five examples in more detail (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
 
 - [**`hello`**](#hello),
 - [**`JITTutorial1`**](#tut1),
-- [**`JITTutorial1_main\`**](#tut1_main/) *(extended version of* [**`JITTutorial1\`**](#tut1)*)*
+- [**`JITTutorial1_main`**](#tut1_main/) *(extended version of* [**`JITTutorial1`**](#tut1)*)*
 - [**`JITTutorial2`**](#tut2) and
-- [**`JITTutorial2_main`**](#tut2_main) *(extended version of* [**`JITTutorial2\`**](#tut2)*)*
+- [**`JITTutorial2_main`**](#tut2_main) *(extended version of* [**`JITTutorial2`**](#tut2)*)*
 
 
 ## <span id="hello">`hello`</span>
@@ -38,9 +38,11 @@ Options:
   -cl         use CL/MSBuild toolset (default)
   -clang      use Clang/GNU Make toolset instead of CL/MSBuild
   -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
+  -msvc       use CL/MSBuild toolset (alias for option -cl)
   -verbose    display progress messages
 Subcommands:
   clean       delete generated files
+  dump        dump PE/COFF infos for generated executable
   compile     generate executable
   help        display this help message
   run         run the generated executable
@@ -57,7 +59,8 @@ Command [**`build -verbose run`**](hello/build.bat) also displays progress messa
 
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
-Project: hello, Configuration: Release, Platform: x64
+Toolset: MSBuild/CL, Project: hello
+Configuration: Release, Platform: x64
 Generate configuration files into directory "build"
 Generate executable hello.exe
 Execute build\Release\hello.exe
@@ -68,7 +71,7 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
-[build] _CLEAN=0 _COMPILE=1 _RUN=1 _TOOLSET=0 _VERBOSE=0
+[build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=0 _VERBOSE=0
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated ..
 -- Building for: Visual Studio 16 2019
@@ -173,6 +176,7 @@ Options:
 Subcommands:
   clean       delete generated files
   compile     generate executable
+  dump        dump PE/COFF infos for generated executable
   help        display this help message
   run         run executable
 </pre>
@@ -287,13 +291,13 @@ The LLVM linker requires an entry point to successfully generate an executable, 
 
 ## <span id="tut1_main">`JITTutorial1_main`</span>
 
-[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of previous example [**`JITTutorial1\`**](#tut1):
+[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of previous example [**`JITTutorial1`**](#tut1):
 
 - it defines the same function **`mul_add`** as in example [**`JITTutorial1`**](#tut1),
 - it defines a **`main`** function (with [no parameter](https://en.cppreference.com/w/cpp/language/main_function)) as program entry point and
 - it defines a **`printf`** function to print out the result.
 
-> **:mag_right:** The source code ([**`tut1_main.cpp`**](JITTutorial1_main/src/tut1_main.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
+> **:mag_right:** The source code ([**`main.cpp`**](JITTutorial1_main/src/main.cpp), [**`tut1.cpp`**](JITTutorial1_main/src/tut1.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
 
 Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
 
@@ -334,14 +338,14 @@ Now, let's transform the above [IR code](https://releases.llvm.org/8.0.1/docs/La
 23
 </pre>
 
-> **:mag_right:** We use Clang option **`-Wno-override-module` to hide the following warning:
+> **:mag_right:** We use Clang option **`-Wno-override-module`** to hide the following warning:
 > <pre style="font-size:80%;">
 > clang -o build\tut1.exe build\tut1.ll
 > warning: overriding the module target triple with x86_64-pc-windows-msvc19.22.27905
 >      [-Woverride-module]
 > 1 warning generated.
 ></pre>
-> We will address that (small) issue in example [**`JITTutorial2_main\`**](JITTutorial2_main/).
+> We will address that (small) issue in example [**`JITTutorial2_main`**](#tut2_main).
 
 
 ## <span id="tut2">`JITTutorial2`</span>
@@ -384,23 +388,28 @@ cond_false1:                                      ; preds = %cond_false
 
 ## <span id="tut2_main">`JITTutorial2_main`</span>
 
-[**`JITTutorial2_main\`**](JITTutorial2_main/) is an extended version of previous example [**`JITTutorial2\`**](#tut2):
+[**`JITTutorial2_main\`**](JITTutorial2_main/) is an extended version of previous example [**`JITTutorial2`**](#tut2):
 
-- it defines the same function **`gcd`** as in example [**`JITTutorial2\`**](JITTutorial2/),
+- it defines the same function **`gcd`** as in example [**`JITTutorial2`**](#tut2),
 - it defines a **`main`** function with [parameters **`argc`** and **`argv`**](https://en.cppreference.com/w/cpp/language/main_function) as program entry point and
 - it defines several [**`printf`**](http://www.cplusplus.com/reference/cstdio/printf/) functions to print out both string and integer values.
 - it defined a [**`strtol`**](http://www.cplusplus.com/reference/cstdlib/strtol/) function to convert string values to integer values.
 
-> **:mag_right:** The **`printf`** functions are implemented in the separate source file ([**`tut2_utils.cpp`**](JITTutorial2_main/src/tut2_utils.cpp)) to keep the main source file ([**`tut2_main.cpp`**](JITTutorial2_main/src/tut2_main.cpp)) more readable. The corresponding include file ([**`tut2_utils.h`**](JITTutorial2_main/src/tut2_utils.h)) defines the following functions:
+> **:mag_right:** The source files are organized as follows:
+> - The **`gcd`** function is defined/implemented in [**`tut2.h`**](JITTutorial2_main/src/tut2.h) resp. [**`tut2.cpp`**](JITTutorial2_main/src/tut2.cpp)
+> - The **`printf`** functions are defined/implemented in [**`utils.h`**](JITTutorial2_main/src/utils.h) resp. [**`utils.cpp`**](JITTutorial2_main/src/utils.cpp)
+> - The main source file [**`main.cpp`**](JITTutorial2_main/src/main.cpp) is thus more readable (e.g. function **`emitMain`**).
+>
+> For instance include file [**`utils.h`**](JITTutorial2_main/src/utils.h) defines the following functions:
 ><pre style="font-size:80%;">
-><b>void</b> initModule(Module* mod);
->CallInst* createPrintInt(Module* mod, IRBuilder<> builder, Value* v);
->CallInst* createPrintStr(Module* mod, IRBuilder<> builder, const char* s);
->CallInst* createPrintStr(Module* mod, IRBuilder<> builder, Value* v);
->CallInst* createPrintIntLn(Module* mod, IRBuilder<> builder, Value* v);
->CallInst* createPrintStrLn(Module* mod, IRBuilder<> builder, const char* s);
->CallInst* createPrintStrLn(Module* mod, IRBuilder<> builder, Value* v);
->CallInst* createStrToInt(Module* mod, IRBuilder<> builder, Value* str);
+><b>void</b> initModule(Module* Mod);
+>CallInst* createPrintInt(Module* Mod, IRBuilder<> Builder, Value* Arg);
+>CallInst* createPrintStr(Module* Mod, IRBuilder<> Builder, const char* ArgStr);
+>CallInst* createPrintStr(Module* Mod, IRBuilder<> Builder, Value* Arg);
+>CallInst* createPrintIntLn(Module* Mod, IRBuilder<> Builder, Value* Arg);
+>CallInst* createPrintStrLn(Module* Mod, IRBuilder<> Builder, const char* ArgStr);
+>CallInst* createPrintStrLn(Module* Mod, IRBuilder<> Builder, Value* Arg);
+>CallInst* createStrToInt(Module* Mod, IRBuilder<> Builder, Value* ArgStr);
 > </pre>
 > We use function **`initModule(Module* mod)`** to include the two fields **`target datalayout`** and **`target triple`** into the generated [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see below); that solves the warning "**`warning: overriding the module target triple`**" we encountered in example [**`JITTutorial1_main`**](#tut1_main).
 
@@ -483,7 +492,7 @@ result=15
 
 <a name="footnote_01">[1]</a> ***C++ Standards*** [↩](#anchor_01)
 
-Clang and LLVM are using C++14 since August 14, 2019 (see Bastien's post on the <a href="http://lists.llvm.org/pipermail/llvm-dev/2019-August/134577.html"><b>llvm-dev</b></a> mailing list). We thus specify either C++14 (GNU Make) or C++17 (MSBuild) in our CMake configuration files.
+Clang and LLVM are using C++14 since August 14, 2019 (see Bastien's post on the <a href="http://lists.llvm.org/pipermail/llvm-dev/2019-August/134577.html"><b>llvm-dev</b></a> mailing list). We thus specify either C++14 ([**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)) or C++17 ([**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)) in our CMake configuration files.
 
 <a name="footnote_02">[2]</a> ***Coding conventions*** [↩](#anchor_02)
 

@@ -33,7 +33,8 @@ svmbuild/
 test-suite-*.src/
 core.*
 env
-hs_err_pid*.log
-workingsets.xml
 bench-results.json
+hs_err_pid*.log
 jmh_result.json
+llvm-*.src.tar.xz
+workingsets.xml
