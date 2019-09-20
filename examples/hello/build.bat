@@ -31,7 +31,7 @@ set _MAKE_CMD=make.exe
 set _MAKE_OPTS=
 
 set _MSBUILD_CMD=msbuild.exe
-set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
+set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
 set _PELOOK_CMD=pelook.exe
 set _PELOOK_OPTS=
@@ -41,7 +41,7 @@ if not %_EXITCODE%==0 goto end
 if %_HELP%==1 call :help & exit /b %_EXITCODE%
 
 set _STDOUT_REDIRECT=1^>NUL
-if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
+if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
 rem ##########################################################################
 rem ## Main
@@ -107,8 +107,8 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 shift
 goto :args_loop
 :args_done
-if %_TOOLSET%==1 ( set _TOOLSET_NAME=LLVM/Clang
-) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=MSYS/GCC
+if %_TOOLSET%==1 ( set _TOOLSET_NAME=Make/Clang
+) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=Make/GCC
 ) else ( set _TOOLSET_NAME=MSBuild/CL
 )
 if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
@@ -153,13 +153,15 @@ goto :eof
 setlocal
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
-if %_VERBOSE%==1 echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
-
+if %_DEBUG%==1 ( echo [%_BASENAME%] Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
+) else if %_VERBOSE%==1 ( echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
+)
 if %_TOOLSET%==1 ( call :compile_clang
 ) else if %_TOOLSET%==2 ( call :compile_gcc
 ) else ( call :compile_cl
 )
-endlocal
+rem save _EXITCODE value into parent environment
+endlocal & set _EXITCODE=%_EXITCODE%
 goto :eof
 
 :compile_clang
@@ -184,10 +186,13 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo [%_BASENAME%] %_MAKE_CMD% %_MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
+) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+)
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MAKE_CMD% %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %_MAKE_OPTS% %_STDOUT_REDIRECT%
+call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -219,10 +224,13 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo [%_BASENAME%] %_MAKE_CMD% %_MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
+) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+)
+if %_DEBUG%==1 ( echo [%_BASENAME%] %_MAKE_CMD% %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %_MAKE_OPTS% %_STDOUT_REDIRECT%
+call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -239,7 +247,7 @@ set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 if %_VERBOSE%==1 echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
 
 pushd "%_TARGET_DIR%"
-if %_DEBUG%==1 echo [%_BASENAME%] Current directory is: %CD%
+if %_DEBUG%==1 echo [%_BASENAME%] Current directory is: %CD% 1>&2
 
 if %_DEBUG%==1 ( echo [%_BASENAME%] %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
@@ -299,7 +307,7 @@ if not exist "%__EXE_FILE%" (
 if %_DEBUG%==1 ( echo [%_BASENAME%] !__EXE_FILE:%_ROOT_DIR%=! 1>&2
 ) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=! 1>&2
 )
-call "%__EXE_FILE%
+call "%__EXE_FILE%"
 if not %ERRORLEVEL%==0 (
     echo Error: Execution status is %ERRORLEVEL% 1>&2
 )

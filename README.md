@@ -61,7 +61,7 @@ setenv.bat
 
 where
 
-- directory [**`bin\`**](bin/) contains a batch file and the tools <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> and <a href="http://bytepointer.com/tools/index.htm#pelook"><b><code>pelook</code></b></a>.
+- directory [**`bin\`**](bin/) contains a batch file and the tools <a href="https://github.com/microsoft/vswhere"><b><code>vswhere</code></b></a> and <a href="http://bytepointer.com/tools/index.htm#pelook"><b><code>pelook</code></b></a>.
 - directory [**`docs\`**](docs/) contains several LLVM related papers/articles.
 - directory [**`examples\`**](examples/) contains LLVM code examples (see [**`examples\README.md`**](examples/README.md)).
 - directory **`llvm-8.0.1.src\`** contains the LLVM source code distribution.
@@ -241,6 +241,9 @@ See file [**`examples\README.md`**](examples/README.md).
 - [*Create a working compiler with the LLVM framework, Part 1*](https://www.ibm.com/developerworks/library/os-createcompilerllvm1/index.html) by Arpan Sen, June 2012.
 - [*Writing Your Own Toy Compiler Using Flex, Bison and LLVM*](https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/), by Loren Segal, September 2009.
 
+<!--
+- [*Building an LLVM-based tool. Lessons learned*](https://lowlevelbits.org/building-an-llvm-based-tool.-lessons-learned/) by Alex Denisov, April 2019 ([EuroLLVM 2019](http://llvm.org/devmtg/2019-04/)).
+-->
 
 ### Books
 

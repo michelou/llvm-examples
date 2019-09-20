@@ -8,7 +8,7 @@ list(APPEND CMAKE_MODULE_PATH "${LLVM_DIR}")
 #message(STATUS "[DEBUG] CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}")
 
 # macro "add_llvm_example"
-include("${LLVM_DIR}/AddLLVM.cmake")
+include(AddLLVM)
 
 add_definitions(${LLVM_DEFINITIONS})
 include_directories(${LLVM_INCLUDE_DIRS})

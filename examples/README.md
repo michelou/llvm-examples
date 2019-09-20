@@ -1,4 +1,4 @@
-# <span id="top">LLVM examples</span>
+# <span id="top">LLVM examples</span> <span style="size:30%;"><a href="../README.md">⬆</a></span>
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
@@ -55,10 +55,11 @@ Command [**`build clean run`**](hello/build.bat) produces the following output:
 Hello world !
 </pre>
 
-Command [**`build -verbose run`**](hello/build.bat) also displays progress messages:
+Command [**`build -verbose clean run`**](hello/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
+Delete directory "build"
 Toolset: MSBuild/CL, Project: hello
 Configuration: Release, Platform: x64
 Generate configuration files into directory "build"
@@ -72,6 +73,7 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
 [build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=0 _VERBOSE=0
+[build] Toolset: MSBuild/CL, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated ..
 -- Building for: Visual Studio 16 2019
@@ -89,11 +91,11 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https
 -- Build files have been written to: L:/examples/hello/build
 [build] msbuild.exe /nologo /p:Configuration=Release /p:Platform="x64" "hello.sln"
 [...]
-[... many warnings (eg. C4514) ...]
-    1043 Warning(s)
+Generation was successful
+    0 Warning(s)
     0 Error(s)
 &nbsp;
-Elapsed time 00:00:03.19
+Elapsed time 00:00:01.02
 [build] build\Release\hello.exe
 Hello world !
 [build] _EXITCODE=0
@@ -102,8 +104,10 @@ Hello world !
 Command [**`build -debug -clang run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) toolset instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)/[**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug -clang run</b>
-[build] _CLEAN=0 _COMPILE=1 _RUN=1 _TOOLSET=1 _VERBOSE=0
+<b>&gt; build -debug -clang clean run</b>
+[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=1 _VERBOSE=0
+[build] rmdir /s /q "L:\examples\hello\build"
+[build] Toolset: Make/Clang, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is Clang 8.0.1 with GNU-like command-line
@@ -118,7 +122,7 @@ Command [**`build -debug -clang run`**](hello/build.bat) uses the [**`GNU Make`*
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/hello/build
-[build] make.exe
+[build] make.exe --debug=v
 [...]
 Scanning dependencies of target hello
 [ 75%] Building C object CMakeFiles/hello.dir/src/main/c/hello.c.obj
@@ -132,8 +136,10 @@ Hello world !
 Finally, command [**`build -debug -gcc run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) toolset to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug -gcc run</b>
-[build] _CLEAN=0 _COMPILE=1 _RUN=1 _TOOLSET=2 _VERBOSE=0
+<b>&gt; build -debug -gcc clean run</b>
+[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=2 _VERBOSE=0
+[build] rmdir /s /q "L:\examples\hello\build"
+[build] Toolset: Make/GCC, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is GNU 9.1.0
@@ -147,7 +153,7 @@ Finally, command [**`build -debug -gcc run`**](hello/build.bat) uses the [**`GNU
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/hello/build
-[build] make.exe
+[build] make.exe --debug=v
 [...]
 Scanning dependencies of target hello
 [ 75%] Building C object CMakeFiles/hello.dir/src/main/c/hello.c.obj
@@ -201,7 +207,8 @@ Command [**`build -verbose clean run`**](JITTutorial1/build.bat) also displays p
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
 Delete directory "build"      
-Project: JITTutorial1, Configuration: Release, Platform: x64
+Toolset: MSBuild/CL, Project: JITTutorial1
+Configuration: Release, Platform: x64
 Current directory: L:\examples\JITTUT~1\build   
 Generate configuration files into directory "build"
 Generate executable JITTutorial1.exe
@@ -223,6 +230,8 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 <b>&gt; build -debug clean run</b> 
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
+[build] Toolset: MSBuild/CL, Project: JITTutorial1
+[build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.1" ..
 -- Building for: Visual Studio 16 2019
 -- The CXX compiler identification is MSVC 19.21.27702.2
@@ -258,6 +267,20 @@ entry:
 }
 [build] _EXITCODE=0
 </pre>
+
+> **:mag_right:** Output generated by options **`-verbose`** and **`-debug`** are redirected to [stderr](https://support.microsoft.com/en-us/help/110930/redirecting-error-messages-from-command-prompt-stderr-stdout) and can be discarded by adding **`2>NUL`**, e.g.:
+> <pre style="font-size:80%;">
+> <b>&gt; build -debug clean run 2>NUL</b>
+> ; ModuleID = 'tut1'
+> source_filename = "tut1"
+> &nbsp;
+> define i32 @mul_add(i32 %x, i32 %y, i32 %z) {
+> entry:
+>   %tmp = mul i32 %x, %y
+>   %tmp2 = add i32 %tmp, %z
+>   ret i32 %tmp2
+> }
+> </pre>
 
 Finally, one may wonder what's happen if we transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
 
@@ -302,7 +325,7 @@ The LLVM linker requires an entry point to successfully generate an executable, 
 Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
- build clean run
+<b>&gt; build clean run</b>
 ; ModuleID = 'tut1_main'
 source_filename = "tut1_main"
 

@@ -7,8 +7,8 @@ find_package(LLVM REQUIRED CONFIG)
 list(APPEND CMAKE_MODULE_PATH "${LLVM_DIR}")
 #message(STATUS "[DEBUG] CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}")
 
-# macro "add_llvm_example"
-include("${LLVM_DIR}/AddLLVM.cmake")
+# macro "add_llvm_executable"
+include(AddLLVM)
 
 add_definitions(${LLVM_DEFINITIONS})
 include_directories(${LLVM_INCLUDE_DIRS})
@@ -26,4 +26,4 @@ set(LLVM_LINK_COMPONENTS Core)
 
 file(GLOB SOURCE_FILES src/*.cpp src/*.h)
 
-add_llvm_example(JITTutorial2 ${SOURCE_FILES})
+add_llvm_executable(JITTutorial2 ${SOURCE_FILES})

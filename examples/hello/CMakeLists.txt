@@ -2,16 +2,16 @@ cmake_minimum_required(VERSION 3.14)
 
 project(hello VERSION 1.0.0 LANGUAGES C CXX)
 
-#set(CMAKE_C_STANDARD 14)
-set(CMAKE_C_FLAGS "-std=c17 -Wall -O2")
+if(MSVC)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_FLAGS "/O2 /wd4141 /wd4146 /wd4244 /wd4267 /wd4624 /wd4996")
+else()
+    set(CMAKE_CXX_STANDARD 14)
+    set(CMAKE_CXX_FLAGS "-O2 -Wall")
+endif()
 
-#set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -O2")
-
-#include_directory(include)
-
-file(GLOB SOURCES src/main/c/*.c src/main/c/*.h)
+file(GLOB C_SOURCES src/main/c/*.c src/main/c/*.h)
 file(GLOB CPP_SOURCES src/main/cpp/*.cpp src/main/cpp/*.h)
 
-add_executable(hello ${SOURCES})
+add_executable(hello ${C_SOURCES})
 add_executable(hello2 ${CPP_SOURCES})
