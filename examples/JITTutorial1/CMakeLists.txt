@@ -5,14 +5,14 @@ project(JITTutorial1 VERSION 1.0.0 LANGUAGES CXX)
 find_package(LLVM REQUIRED CONFIG)
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_DIR}")
-message(STATUS "[DEBUG] CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}") # e.g. C:/opt/LLVM-8.0.1/lib/cmake/llvm
+#message(STATUS "[DEBUG] CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}")
 
 # macro "add_llvm_executable"
 include(AddLLVM)
 
 add_definitions(${LLVM_DEFINITIONS})
 include_directories(${LLVM_INCLUDE_DIRS})
-link_directories(${LLVM_LIBRARY_DIRS}) # e.g. C:/opt/llvm-8.0.1/lib
+link_directories(${LLVM_LIBRARY_DIRS})
 
 if(MSVC)
     set(CMAKE_CXX_STANDARD 17)

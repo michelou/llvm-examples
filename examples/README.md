@@ -11,13 +11,14 @@
   </tr>
 </table>
 
-In the following we present five examples in more detail (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
+In the following we present the following examples in more detail (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
 
-- [**`hello`**](#hello),
-- [**`JITTutorial1`**](#tut1),
+- [**`hello`**](#hello)
+- [**`JITTutorial1`**](#tut1)
 - [**`JITTutorial1_main`**](#tut1_main/) *(extended version of* [**`JITTutorial1`**](#tut1)*)*
-- [**`JITTutorial2`**](#tut2) and
+- [**`JITTutorial2`**](#tut2)
 - [**`JITTutorial2_main`**](#tut2_main) *(extended version of* [**`JITTutorial2`**](#tut2)*)*
+- [**`llvm-hello`**](#llvm-hello)
 
 
 ## <span id="hello">`hello`</span>
@@ -34,11 +35,11 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 <b>&gt; build</b>
 Usage: build { options | subcommands }
 Options:
+  -cl         use MSBuild/CL toolset (default)
+  -clang      use GNU Make/Clang toolset instead of MSBuild/CL
   -debug      show commands executed by this script
-  -cl         use CL/MSBuild toolset (default)
-  -clang      use Clang/GNU Make toolset instead of CL/MSBuild
-  -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
-  -msvc       use CL/MSBuild toolset (alias for option -cl)
+  -gcc        use GNU Make/GCC toolset instead of MSBuild/CL
+  -msvc       use MSBuild/CL toolset (alias for option -cl)
   -verbose    display progress messages
 Subcommands:
   clean       delete generated files
@@ -101,13 +102,13 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Command [**`build -debug -clang run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) toolset instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)/[**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
+Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) toolset instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)/[**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -clang clean run</b>
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=1 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
-[build] Toolset: Make/Clang, Project: hello
+[build] Toolset: GNU Make/Clang, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is Clang 8.0.1 with GNU-like command-line
@@ -133,13 +134,13 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`build -debug -gcc run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) toolset to generate executable **`hello.exe`**:
+Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) toolset to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -gcc clean run</b>
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=2 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
-[build] Toolset: Make/GCC, Project: hello
+[build] Toolset: GNU Make/GCC, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is GNU 9.1.0
@@ -177,7 +178,10 @@ Command [**`build`**](JITTutorial1/build.bat) with no argument displays the avai
 <b>&gt; build</b>
 Usage: build { options | subcommands }
 Options:
+  -cl         use MSBuild/CL toolset (default)
+  -clang      use GNU Make/Clang toolset instead of MSBuild/CL
   -debug      show commands executed by this script
+  -msvc       use MSBuild/CL toolset (alias for option -cl)
   -verbose    display progress messages
 Subcommands:
   clean       delete generated files
@@ -248,14 +252,14 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/JITTutorial1/build
-[build] call msbuild.exe /nologo /m /p:Configuration=Release /p:Platform="x64" "L:\example\JITTUT~1\build\JITTutorial1.sln"
+[build] msbuild.exe /nologo /m /p:Configuration=Release /p:Platform="x64" "L:\example\JITTUT~1\build\JITTutorial1.sln"
 The generation has started 02.08.2019 19:36:32.
 [...]
     33 Warning(s)
     0 Error(s)
 
 Elapsed time 00:00:03.65
-[build] call build\Release\JITTutorial1.exe
+[build] build\Release\JITTutorial1.exe
 ; ModuleID = 'tut1'
 source_filename = "tut1"
 
@@ -309,12 +313,12 @@ In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic
 </p>
 -->
 
-The LLVM linker requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our code; we present our solution in example [**`JITTutorial1_main`**](#tut1_main/).
+The LLVM linker requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html); we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
 
 
 ## <span id="tut1_main">`JITTutorial1_main`</span>
 
-[**`JITTutorial1_main\`**](JITTutorial1_main/) is an extended version of previous example [**`JITTutorial1`**](#tut1):
+[**`JITTutorial1_main\`**](JITTutorial1_main/) is our extended version of previous example [**`JITTutorial1`**](#tut1):
 
 - it defines the same function **`mul_add`** as in example [**`JITTutorial1`**](#tut1),
 - it defines a **`main`** function (with [no parameter](https://en.cppreference.com/w/cpp/language/main_function)) as program entry point and
@@ -368,7 +372,7 @@ Now, let's transform the above [IR code](https://releases.llvm.org/8.0.1/docs/La
 >      [-Woverride-module]
 > 1 warning generated.
 ></pre>
-> We will address that (small) issue in example [**`JITTutorial2_main`**](#tut2_main).
+> We will address that warning message in our extended example [**`JITTutorial2_main`**](#tut2_main).
 
 
 ## <span id="tut2">`JITTutorial2`</span>
@@ -411,7 +415,7 @@ cond_false1:                                      ; preds = %cond_false
 
 ## <span id="tut2_main">`JITTutorial2_main`</span>
 
-[**`JITTutorial2_main\`**](JITTutorial2_main/) is an extended version of previous example [**`JITTutorial2`**](#tut2):
+[**`JITTutorial2_main\`**](JITTutorial2_main/) is our extended version of previous example [**`JITTutorial2`**](#tut2):
 
 - it defines the same function **`gcd`** as in example [**`JITTutorial2`**](#tut2),
 - it defines a **`main`** function with [parameters **`argc`** and **`argv`**](https://en.cppreference.com/w/cpp/language/main_function) as program entry point and
@@ -510,6 +514,36 @@ argv2=45
 result=15
 </pre>
 
+
+## <span id="llvm-hello">`llvm-hello`</span>
+
+Example [**`llvm-hello\`**](llvm-hello/) is based on the simple [C++ example](https://github.com/zilder/llvm-hello-world-example) from [Ildar Musin](https://www.linkedin.com/in/ildar-musin-8586985b/) (February 2016).
+
+It generates a file **`program.ll`** which simply prints message **`"hello world!"`** to the console (source: [**`main.cpp`**](llvm-hello/src/main/cpp/main.cpp)).
+
+<pre style="font-size:80%;">
+<b>&gt; build clean run</b>
+Generate file program.ll
+
+<b>&gt; cat program.ll</b>
+; ModuleID = 'top'
+source_filename = "top"
+
+@0 = private unnamed_addr constant [14 x i8] c"hello world!\0A\00", align 1
+
+define i32 @main() {
+entrypoint:
+  %0 = call i32 @puts(i8* getelementptr inbounds ([14 x i8], [14 x i8]* @0, i32 0, i32 0))
+  ret i32 0
+}
+
+declare i32 @puts(i8*)
+</pre>
+Command **`lli program.ll`** prints the message **`"hello world !"`** to the console:
+<pre style="font-size:80%;">
+<b>&gt; lli program.ll</b>
+hello world!
+</pre>
 
 ## <span id="footnotes">Footnotes</a>
 
