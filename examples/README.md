@@ -15,9 +15,9 @@ In the following we present the following examples in more detail (each of them 
 
 - [**`hello`**](#hello)
 - [**`JITTutorial1`**](#tut1)
-- [**`JITTutorial1_main`**](#tut1_main/) *(extended version of* [**`JITTutorial1`**](#tut1)*)*
+- [**`JITTutorial1_main`**](#tut1_main/) *(our extended version of* [**`JITTutorial1`**](#tut1)*)*
 - [**`JITTutorial2`**](#tut2)
-- [**`JITTutorial2_main`**](#tut2_main) *(extended version of* [**`JITTutorial2`**](#tut2)*)*
+- [**`JITTutorial2_main`**](#tut2_main) *(our extended version of* [**`JITTutorial2`**](#tut2)*)*
 - [**`llvm-hello`**](#llvm-hello)
 
 
@@ -29,17 +29,17 @@ Our main goal here is to refresh our knowledge of the build tools [**`Clang`**](
 
 Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
 
-> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~230 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>.
+> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~320 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets CL/MSBuild, Clang/GNU Make and GCC/GNU Make.
 
-<pre>
+<pre style="font-size:80%;">
 <b>&gt; build</b>
 Usage: build { options | subcommands }
 Options:
-  -cl         use MSBuild/CL toolset (default)
-  -clang      use GNU Make/Clang toolset instead of MSBuild/CL
+  -cl         use CL/MSBuild toolset (default)
+  -clang      use Clang/GNU Make toolset instead of CL/MSBuild
   -debug      show commands executed by this script
-  -gcc        use GNU Make/GCC toolset instead of MSBuild/CL
-  -msvc       use MSBuild/CL toolset (alias for option -cl)
+  -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
+  -msvc       use CL/MSBuild toolset (alias for option -cl)
   -verbose    display progress messages
 Subcommands:
   clean       delete generated files
@@ -61,7 +61,7 @@ Command [**`build -verbose clean run`**](hello/build.bat) also displays progress
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
 Delete directory "build"
-Toolset: MSBuild/CL, Project: hello
+Toolset: CL/MSBuild, Project: hello
 Configuration: Release, Platform: x64
 Generate configuration files into directory "build"
 Generate executable hello.exe
@@ -74,7 +74,7 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
 [build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=0 _VERBOSE=0
-[build] Toolset: MSBuild/CL, Project: hello
+[build] Toolset: CL/MSBuild, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated ..
 -- Building for: Visual Studio 16 2019
@@ -108,7 +108,7 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`GNU 
 <b>&gt; build -debug -clang clean run</b>
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=1 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
-[build] Toolset: GNU Make/Clang, Project: hello
+[build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is Clang 8.0.1 with GNU-like command-line
@@ -140,7 +140,7 @@ Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [
 <b>&gt; build -debug -gcc clean run</b>
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=2 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
-[build] Toolset: GNU Make/GCC, Project: hello
+[build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
 -- The C compiler identification is GNU 9.1.0
@@ -178,10 +178,10 @@ Command [**`build`**](JITTutorial1/build.bat) with no argument displays the avai
 <b>&gt; build</b>
 Usage: build { options | subcommands }
 Options:
-  -cl         use MSBuild/CL toolset (default)
-  -clang      use GNU Make/Clang toolset instead of MSBuild/CL
+  -cl         use CL/MSBuild toolset (default)
+  -clang      use Clang/GNU Make toolset instead of CL/MSBuild
   -debug      show commands executed by this script
-  -msvc       use MSBuild/CL toolset (alias for option -cl)
+  -msvc       use CL/MSBuild toolset (alias for option -cl)
   -verbose    display progress messages
 Subcommands:
   clean       delete generated files
@@ -211,7 +211,7 @@ Command [**`build -verbose clean run`**](JITTutorial1/build.bat) also displays p
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
 Delete directory "build"      
-Toolset: MSBuild/CL, Project: JITTutorial1
+Toolset: CL/MSBuild, Project: JITTutorial1
 Configuration: Release, Platform: x64
 Current directory: L:\examples\JITTUT~1\build   
 Generate configuration files into directory "build"
@@ -234,7 +234,7 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 <b>&gt; build -debug clean run</b> 
 [build] _CLEAN=1 _COMPILE=1 _RUN=1 _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
-[build] Toolset: MSBuild/CL, Project: JITTutorial1
+[build] Toolset: CL/MSBuild, Project: JITTutorial1
 [build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.1" ..
 -- Building for: Visual Studio 16 2019
@@ -313,7 +313,7 @@ In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic
 </p>
 -->
 
-The LLVM linker requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html); we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
+The [LLVM linker](https://lld.llvm.org/) requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html); we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
 
 
 ## <span id="tut1_main">`JITTutorial1_main`</span>
@@ -625,4 +625,4 @@ rem ## Cleanups</i>
 
 ***
 
-*[mics](http://lampwww.epfl.ch/~michelou/)/August 2019* [**&#9650;**](#top)
+*[mics](http://lampwww.epfl.ch/~michelou/)/October 2019* [**&#9650;**](#top)

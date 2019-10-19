@@ -26,10 +26,10 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*August 2019*):
+For instance our development environment looks as follows (*October 2019*):
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.15.2\                                            <i>(  75 MB)</i>
+C:\opt\cmake-3.15.4\                                            <i>(  75 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
@@ -96,7 +96,7 @@ We distinguish different sets of batch commands:
 
 2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, CMake modules) not available in LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
 
-    <pre>
+    <pre style="font-size:80%;">
     <b>&gt; build help</b>
     Usage: build { options | subcommands }
     Options:
@@ -124,7 +124,7 @@ Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
-   cmake 3.15.2, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
+   cmake 3.15.4, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
    git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
 
 <b>&gt; where clang nmake vswhere</b>
@@ -144,7 +144,7 @@ Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
-   cmake 3.15.2, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
+   cmake 3.15.4, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
    git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
@@ -155,7 +155,7 @@ Tool paths:
    X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
    X:\MSBuild\Current\Bin\amd64\MSBuild.exe
    X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
-   C:\opt\cmake-3.15.2\bin\cmake.exe
+   C:\opt\cmake-3.15.4\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.7.4\python.exe
@@ -175,7 +175,7 @@ Important note:
 We make use of the LLVM source distribution to build the addtional binaries not available in the LLVM installation directory (in our case **`C:\opt\LLVM-8.0.1\`**).
 
 Directory **`llvm-8.0.1.src\`** is setup as follows:
-<pre>
+<pre style="font-size:80%;">
 <b>&gt; curl -L --silent --output llvm-8.0.1.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz</b>
 <b>&gt; tar xzvf llvm-8.0.1.src.tar.xz</b>
 <b>&gt; cp bin\llvm\build.bat llvm-8.0.1.src</b>
@@ -184,7 +184,7 @@ Directory **`llvm-8.0.1.src\`** is setup as follows:
 
 Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**. Be patient, build time is about 55 minutes on an Intel i7 with 16 GB of memory.
 
-<pre>
+<pre style="font-size:80%;">
 <b>&gt; cd</b>
 L:\llvm-8.0.1.src
 <b>&gt; build -verbose compile</b>
@@ -222,63 +222,7 @@ See file [**`examples\README.md`**](examples/README.md).
 
 ## Resources
 
-
-### Blogs
-
-- [*A look at LLVM Advanced Data Types*](https://developers.redhat.com/blog/2019/04/01/a-look-at-llvm-advanced-data-types-and-trivially-copyable-types/) by Serge Guelton, April 2019.
-- [*Compiler Performance and LLVM*](http://pling.jondgoodwin.com/post/compiler-performance/) by Jonathan Goodwin, March 2019.
-- [*LLVM IR and Go*](https://blog.gopheracademy.com/advent-2018/llvm-ir-and-go/) by Robin Eklind, December 2018.
-- [*How LLVM optimizes a function*](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
-- [*How LLVM optimizes power sums*](https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html) by Krister Walfridsson, April 2018.
-- [*Adventures in JIT compilation: Part 3 - LLVM*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
-- [*Adventures in JIT compilation: Part 2 - an x64 JIT*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-2-an-x64-jit/) by Eli Bendersky, March 2017.
-- [*Adventures in JIT compilation: Part 1 - an interpreter*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-1-an-interpreter/) by Eli Bendersky, March 2017.
-- [*A Tourist’s Guide to the LLVM Source Code*](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
-- [*LLVM for Grad Students*](http://www.cs.cornell.edu/~asampson/blog/llvm.html) by Adrian Sampson, August 2015.
-- [*A deeper look into the LLVM code generator, Part 1*](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, Feburary 2013.
-- [*Life of an instruction in LLVM*](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
-- [*Create a working compiler with the LLVM framework, Part 2*](https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html) by Arpan Sen, June 2012.
-- [*Create a working compiler with the LLVM framework, Part 1*](https://www.ibm.com/developerworks/library/os-createcompilerllvm1/index.html) by Arpan Sen, June 2012.
-- [*Writing Your Own Toy Compiler Using Flex, Bison and LLVM*](https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/), by Loren Segal, September 2009.
-
-<!--
-- [*Building an LLVM-based tool. Lessons learned*](https://lowlevelbits.org/building-an-llvm-based-tool.-lessons-learned/) by Alex Denisov, April 2019 ([EuroLLVM 2019](http://llvm.org/devmtg/2019-04/)).
--->
-
-### Books
-
-- [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
-- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
-- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (296 p., ISBN 978-1-78528-598-1).
-- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314 p., ISBN 978-1-78216-692-4).
-
-### News
-
-- [*LLVM Weekly*](http://llvmweekly.org/) - A weekly newsletter covering developments in LLVM, Clang, and related projects.
-- [*Planet Clang*](http://planet.clang.org/) - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
-
-<!--
-- [LLVM Archive](https://www.linux-magazin.de/tag/llvm/) - Linux-Magazin.
--->
-
-
-### Online Tools
-
-- [Compiler Explorer](https://www.godbolt.org/) (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
-
-
-### Papers
-
-<p style="margin:0 0 1em 20px;">
-See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/">LLVM</a> website.
-</p>
-<p style="margin:0 0 1em 20px;">
-We mention here only the publications from <a href="http://nondot.org/~sabre/">Chris Lattner</a>'s and [Vikram Adve](https://vikram.cs.illinois.edu/):
-</p>
-<ul style="margin:0 0 1em 20px;">
-<li><a href="https://llvm.org/pubs/2002-08-09-LLVMCompilationStrategy.pdf"><i>The LLVM Instruction Set and Compilation Strategy</i></a> by Chris Lattner and Vikram Adve (August 2002).</li>
-<li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
-</ul>
+See file [**`RESOURCES.md`**](RESOURCES.md).
 
 
 ## Footnotes
@@ -300,11 +244,12 @@ L:\bin\vswhere.exe
 <a name="footnote_02">[2]</a> ***MSYS2 versus MinGW*** [↩](#anchor_02)
 
 <p style="margin:0 0 1em 20px;">
-We give here two criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/">MingGW-w64</a>:
+We give here three criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/">MingGW-w64</a>:
 </p>
 <ul style="margin:0 0 1em 20px;">
 <li>Installation size: 2.85 GB versus 438 MB.</li>
 <li>Available version/architecture (x86/x64) of used tools.</li>
+<li>Installation update: MSYS64 provides command <a href="https://wiki.archlinux.org/index.php/Pacman"><b><code>pacman -Syu</code></b></a>.</li>
 </ul>
 <p style="margin:0 0 1em 20px;">
 MSYS64 tools:
@@ -347,7 +292,7 @@ The original size of the LLVM installation directory is 1.1 GB. The installation
 In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.15.2-win64-x64.zip</a>  <i>( 30 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.15.4-win64-x64.zip</a>  <i>( 30 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>        <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>       <i>( 29 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>   <i>( 86 MB)</i>
@@ -359,5 +304,5 @@ Microsoft doesn't provide an offline installer for VS 2019 but we can follow the
 
 ***
 
-*[mics](http://lampwww.epfl.ch/~michelou/)/August 2019* [**&#9650;**](#top)
+*[mics](http://lampwww.epfl.ch/~michelou/)/October 2019* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>

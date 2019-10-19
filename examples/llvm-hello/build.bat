@@ -28,7 +28,7 @@ set _TARGET_DIR=%_ROOT_DIR%build
 set _TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 
 set _MAKE_CMD=make.exe
-set _MAKE_OPTS=
+set _MAKE_OPTS=--quiet
 
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
@@ -75,7 +75,7 @@ rem ##########################################################################
 rem ## Subroutines
 
 rem input parameter: %*
-rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
+rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TEST, _TOOLSET, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
@@ -116,29 +116,29 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 shift
 goto :args_loop
 :args_done
-if %_TOOLSET%==1 ( set _TOOLSET_NAME=GNU Make/Clang
-) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=GNU Make/GCC
-) else ( set _TOOLSET_NAME=MSBuild/CL
+if %_TOOLSET%==1 ( set _TOOLSET_NAME=Clang/GNU Make
+) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=GCC/GNU Make
+) else ( set _TOOLSET_NAME=CL/MSBuild
 )
-if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
 goto :eof
 
 :help
 echo Usage: %_BASENAME% { options ^| subcommands }
 echo Options:
-echo   -cl         use MSBuild/CL toolset (default)
-echo   -clang      use GNU Make/Clang toolset instead of MSBuild/CL
+echo   -cl         use CL/MSBuild toolset (default)
+echo   -clang      use Clang/GNU Make toolset instead of CL/MSBuild
 echo   -debug      show commands executed by this script
-echo   -gcc        use GNU Make/GCC toolset instead of MSBuild/CL
-echo   -msvc       use MSBuild/CL toolset ^(alias for option -cl^)
+echo   -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
+echo   -msvc       use CL/MSBuild toolset ^(alias for option -cl^)
 echo   -verbose    display progress messages
 echo Subcommands:
 echo   clean       delete generated files
 echo   compile     generate executable
 echo   dump        dump PE/COFF infos for generated executable
 echo   help        display this help message
-echo   run         run executable
-echo   test        test executable
+echo   run         run generated executable
+echo   test        test generated executable
 goto :eof
 
 :clean
@@ -213,7 +213,7 @@ popd
 goto :eof
 
 :compile_gcc
-echo Error: GNU Make/GCC toolset not supported 1>&2
+echo Error: GCC/GNU Make toolset not supported 1>&2
 set _EXITCODE=1
 goto :eof
 
@@ -263,11 +263,14 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo [%_BASENAME%] %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-) else if %_VERBOSE%==1 ( echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+if %_DEBUG%==1 (
+    echo [%_BASENAME%] %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%"
+) else (
+    if %_VERBOSE%==1 echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+    echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
+    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
-echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 if not %ERRORLEVEL%==0 (
     echo Error: Dump of executable %_PROJ_NAME%.exe failed 1>&2
     set _EXITCODE=1
@@ -285,27 +288,32 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
+set __LL_FILE=%_TARGET_DIR%\program.ll
+pushd "%_TARGET_DIR%"
+
 if %_DEBUG%==1 ( echo [%_BASENAME%] !__EXE_FILE:%_ROOT_DIR%=! 1>&2
 ) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-) else ( echo Generate file program.ll
+) else ( echo Generate file !__LL_FILE:%_ROOT_DIR%=!
 )
 call "%__EXE_FILE%
 if not %ERRORLEVEL%==0 (
+    popd
     echo Error: Execution status is %ERRORLEVEL% 1>&2
     set _EXITCODE=1
     goto :eof
 )
+popd
 goto :eof
 
 :test
-set __LL_FILE=%_ROOT_DIR%program.ll
+set __LL_FILE=%_TARGET_DIR%\program.ll
 if not exist "%__LL_FILE%" (
     echo Error: File program.ll not found 1>&2
     set _EXITCODE=1
     goto :eof
 )
 if %_DEBUG%==1 ( echo [%_BASENAME%] %_LLI_CMD% %_LLI_OPTS% %__LL_FILE%! 1>&2
-) else if %_VERBOSE%==1 ( echo Execute %__LL_FILE% with LL interpreter 1>&2
+) else if %_VERBOSE%==1 ( echo Execute !__LL_FILE:%_ROOT_DIR%=! with LLVM interpreter 1>&2
 )
 call %_LLI_CMD% %_LLI_OPTS% %__LL_FILE%
 if not %ERRORLEVEL%==0 (

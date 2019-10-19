@@ -119,9 +119,9 @@ if /i "%__ARG%"=="help" ( set _HELP=1
 shift
 goto :args_loop
 :args_done
-if %_TOOLSET%==1 ( set _TOOLSET_NAME=GNU Make/Clang
-) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=GNU Make/GCC
-) else ( set _TOOLSET_NAME=MSBuild/CL
+if %_TOOLSET%==1 ( set _TOOLSET_NAME=Clang/GNU Make
+) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=GCC/GNU Make
+) else ( set _TOOLSET_NAME=CL/MSBuild
 )
 if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
 goto :eof
@@ -129,11 +129,11 @@ goto :eof
 :help
 echo Usage: %_BASENAME% { options ^| subcommands }
 echo Options:
-echo   -cl         use MSBuild/CL toolset (default)
-echo   -clang      use GNU Make/Clang toolset instead of MSBuild/CL
+echo   -cl         use CL/MSBuild toolset (default)
+echo   -clang      use Clang/GNU Make toolset instead of CL/MSBuild
 echo   -debug      show commands executed by this script
-echo   -gcc        use GNU Make/GCC toolet instead of MSBuild/CL
-echo   -msvc       use MSBuild/CL toolset ^(alias for option -cl^)
+echo   -gcc        use GCC/GNU Make toolet instead of CL/MSBuild
+echo   -msvc       use CL/MSBuild toolset ^(alias for option -cl^)
 echo   -verbose    display progress messages
 echo Subcommands:
 echo   clean       delete generated files
@@ -206,7 +206,7 @@ if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 if %_DEBUG%==1 ( echo [%_BASENAME%] %_MAKE_CMD% %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+call %_MAKE_CMD% %__MAKE_OPTS% JITTutorial1 %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo Error: Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -217,7 +217,7 @@ popd
 goto :eof
 
 :compile_gcc
-echo Error: GNU Make/GCC toolset not supported 1>&2
+echo Error: GCC/GNU Make toolset not supported 1>&2
 set _EXITCODE=1
 goto :eof
 

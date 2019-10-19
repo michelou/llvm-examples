@@ -95,7 +95,8 @@ static void emitMain(Module* Mod) {
     Value* Result = builder.CreateCall(Mod->getFunction("mul_add"), MulAddArgs, "mul_add");
 
     std::vector<Value *> PrintfArgs = { PrintfFmt, Result };
-    CallInst* call = builder.CreateCall(PrintfFunc, PrintfArgs, "printf");
+    CallInst* Call = builder.CreateCall(PrintfFunc, PrintfArgs, "printf");
+    assert(Call != NULL); // avoid warning message "Unused variable" 
 
     builder.CreateRet(CONST_INT32(0));
 }

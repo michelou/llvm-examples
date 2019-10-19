@@ -1,0 +1,90 @@
+# <span id="top">LLVM Resources</span>
+
+<table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
+  <tr>
+  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM"/></a></td>
+  <td style="border:0;padding:0;vertical-align:text-top;">This page gathers <a href="https://llvm.org/">LLVM</a> related resources.
+  </td>
+  </tr>
+</table>
+
+
+## Blogs
+
+- [*A look at LLVM Advanced Data Types*](https://developers.redhat.com/blog/2019/04/01/a-look-at-llvm-advanced-data-types-and-trivially-copyable-types/) by Serge Guelton, April 2019.
+- [*Compiler Performance and LLVM*](http://pling.jondgoodwin.com/post/compiler-performance/) by Jonathan Goodwin, March 2019.
+- [*LLVM IR and Go*](https://blog.gopheracademy.com/advent-2018/llvm-ir-and-go/) by Robin Eklind, December 2018.
+- [*How LLVM optimizes a function*](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
+- [*How LLVM optimizes power sums*](https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html) by Krister Walfridsson, April 2018.
+- [*Adventures in JIT compilation: Part 3 - LLVM*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
+- [*Adventures in JIT compilation: Part 2 - an x64 JIT*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-2-an-x64-jit/) by Eli Bendersky, March 2017.
+- [*Adventures in JIT compilation: Part 1 - an interpreter*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-1-an-interpreter/) by Eli Bendersky, March 2017.
+- [*A Tourist’s Guide to the LLVM Source Code*](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
+- [*LLVM for Grad Students*](http://www.cs.cornell.edu/~asampson/blog/llvm.html) by Adrian Sampson, August 2015.
+- [*A deeper look into the LLVM code generator, Part 1*](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, Feburary 2013.
+- [*Life of an instruction in LLVM*](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
+- [*Create a working compiler with the LLVM framework, Part 2*](https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html) by Arpan Sen, June 2012.
+- [*Create a working compiler with the LLVM framework, Part 1*](https://www.ibm.com/developerworks/library/os-createcompilerllvm1/index.html) by Arpan Sen, June 2012.
+- [*Writing Your Own Toy Compiler Using Flex, Bison and LLVM*](https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/), by Loren Segal, September 2009.
+
+<!--
+- [*Building an LLVM-based tool. Lessons learned*](https://lowlevelbits.org/building-an-llvm-based-tool.-lessons-learned/) by Alex Denisov, April 2019 ([EuroLLVM 2019](http://llvm.org/devmtg/2019-04/)).
+-->
+
+## Books
+
+- [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
+- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
+- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (296 p., ISBN 978-1-78528-598-1).
+- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314 p., ISBN 978-1-78216-692-4).
+
+## News
+
+- [*LLVM Weekly*](http://llvmweekly.org/) - A weekly newsletter covering developments in LLVM, Clang, and related projects.
+- [*Planet Clang*](http://planet.clang.org/) - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
+
+<!--
+- [LLVM Archive](https://www.linux-magazin.de/tag/llvm/) - Linux-Magazin.
+-->
+
+
+## Online Tools
+
+- [Compiler Explorer](https://www.godbolt.org/) (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
+
+
+## Papers
+
+<p style="margin:0 0 1em 20px;">
+See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/">LLVM</a> website.
+</p>
+<p style="margin:0 0 1em 20px;">
+We mention here only the publications from <a href="http://nondot.org/~sabre/">Chris Lattner</a>'s and [Vikram Adve](https://vikram.cs.illinois.edu/):
+</p>
+<ul style="margin:0 0 1em 20px;">
+<li><a href="https://llvm.org/pubs/2002-08-09-LLVMCompilationStrategy.pdf"><i>The LLVM Instruction Set and Compilation Strategy</i></a> by Chris Lattner and Vikram Adve (August 2002).</li>
+<li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
+</ul>
+
+
+## Footnotes
+<!--
+<a name="footnote_01">[1]</a> ***Visual Studio Locator*** [↩](#anchor_01)
+
+<p style="margin:0 0 1em 20px;">
+Command <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> displays VS properties, including the exact version of our Visual Studio installation (starting with VS 2017):
+<pre style="margin:0 0 1em 20px; font-size:80%;">
+<b>&gt; where vswhere</b>
+L:\bin\vswhere.exe
+
+<b>&gt; vswhere -property installationVersion</b>
+16.2.29123.88
+</pre>
+
+</p>
+-->
+
+***
+
+*[mics](http://lampwww.epfl.ch/~michelou/)/October 2019* [**&#9650;**](#top)
+<span id="bottom">&nbsp;</span>
