@@ -11,14 +11,14 @@
 
 ## <span id="section_01">Project dependencies</span>
 
-This project repository depends on two external software for the **Microsoft Windows** plaform:
+This project repository depends on the following external software for the **Microsoft Windows** plaform:
 
+- [CMake 3.15](https://cmake.org/download/) ([*release notes*](https://cmake.org/cmake/help/v3.15/release/3.15.html))
 - [LLVM 8 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1) ([*release notes*](https://releases.llvm.org/8.0.0/docs/ReleaseNotes.html))
 - [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes)) <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup>
 
 Optionally one may also install the following software:
 
-- [CMake 3.15](https://cmake.org/download/) ([*release notes*](https://cmake.org/cmake/help/v3.15/release/3.15.html))
 - [Git 2.23](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.23.0.txt))
 - [MSYS2](http://repo.msys2.org/distrib/x86_64/) <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
 
@@ -29,7 +29,7 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*October 2019*):
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.15.4\                                            <i>(  75 MB)</i>
+C:\opt\cmake-3.15.4\                                            <i>(  74 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 2.18 GB)</i><sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
@@ -51,7 +51,7 @@ This project is organized as follows:
 <pre style="font-size:80%;">
 bin\pelook.exe
 bin\vswhere.exe
-bin\llvm\build.bat
+bin/llvm/build.bat">bin\llvm\build.bat
 docs\
 examples\{hello, JITTutorial1, ..}
 llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i><sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
@@ -124,7 +124,7 @@ Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
-   cmake 3.15.4, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
+   cmake 3.15.4, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
    git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
 
 <b>&gt; where clang nmake vswhere</b>
@@ -144,7 +144,7 @@ Tool versions:
    clang 8.0.1, lli 8.0.1, opt 8.0.1, cl version 19.22.27905
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
-   cmake 3.15.4, make 4.2.1, gcc 9.1.0, python 3.7.4, diff 3.7
+   cmake 3.15.4, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
    git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-8.0.1\bin\clang.exe
@@ -188,7 +188,8 @@ Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates
 <b>&gt; cd</b>
 L:\llvm-8.0.1.src
 <b>&gt; build -verbose compile</b>
-Project: LLVM, Configuration: Release, Platform: x64
+Toolset: CL/MSBuild, Project: LLVM
+Configuration: Debug, Platform: x64
 Generate configuration files into directory "build"
 [...]
 </pre>
@@ -230,7 +231,7 @@ See file [**`RESOURCES.md`**](RESOURCES.md).
 <a name="footnote_01">[1]</a> ***Visual Studio Locator*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-Command <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> displays VS properties, including the exact version of our Visual Studio installation (starting with VS 2017):
+Command <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> displays VS properties, including the exact version of our <a href="https://visualstudio.microsoft.com/en/downloads/">Visual Studio</a> installation (starting with VS 2017):
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <b>&gt; where vswhere</b>
 L:\bin\vswhere.exe
@@ -249,7 +250,7 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 <ul style="margin:0 0 1em 20px;">
 <li>Installation size: 2.85 GB versus 438 MB.</li>
 <li>Available version/architecture (x86/x64) of used tools.</li>
-<li>Installation update: MSYS64 provides command <a href="https://wiki.archlinux.org/index.php/Pacman"><b><code>pacman -Syu</code></b></a>.</li>
+<li>Installation update: <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> provides command <a href="https://wiki.archlinux.org/index.php/Pacman"><b><code>pacman -Syu</code></b></a>.</li>
 </ul>
 <p style="margin:0 0 1em 20px;">
 MSYS64 tools:
@@ -260,7 +261,7 @@ C:\opt\msys64\mingw64\bin\gcc.exe
 C:\opt\msys64\usr\bin\make.exe
 &nbsp;
 <b>&gt; gcc --version | findstr gcc</b>
-gcc (Rev3, Built by MSYS2 project) 9.1.0
+gcc (Rev3, Built by MSYS2 project) 9.2.0
 &nbsp;
 <b>&gt; make --version | findstr Make</b>
 GNU Make 4.2.1
