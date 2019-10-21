@@ -21,7 +21,8 @@ if not exist "%_CMAKE_LIST_FILE%" (
 )
 set _PROJ_NAME=tut1
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%_CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
-set _PROJ_CONFIG=Release
+set _PROJ_CONFIG=Debug
+rem set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
 set _TARGET_DIR=%_ROOT_DIR%build
@@ -76,33 +77,45 @@ set _DUMP=0
 set _RUN=0
 set _DEBUG=0
 set _HELP=0
+set _TIMER=0
 set _TOOLSET=0
 set _VERBOSE=0
 set __N=0
 :args_loop
-set __ARG=%~1
+set "__ARG=%~1"
 if not defined __ARG (
     if !__N!==0 set _HELP=1
     goto args_done
-) else if not "%__ARG:~0,1%"=="-" (
-    set /a __N=!__N!+1
 )
-if /i "%__ARG%"=="help" ( set _HELP=1
-) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
-) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
-) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
-) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
-) else if /i "%__ARG%"=="-cl" ( set _TOOLSET=0
-) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=1
-) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
-) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=2
-) else if /i "%__ARG%"=="-help" ( set _HELP=1
-) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=0
-) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+
+if "%__ARG:~0,1%"=="-" (
+    rem option
+    if /i "%__ARG%"=="-cl" ( set _TOOLSET=0
+    ) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=1
+    ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
+    ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=2
+    ) else if /i "%__ARG%"=="-help" ( set _HELP=1
+    ) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=0
+    ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
+    ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+    ) else (
+        echo Error: Unknown option %__ARG% 1>&2
+        set _EXITCODE=1
+        goto args_done
+    )
 ) else (
-    echo Error: Unknown subcommand %__ARG% 1>&2
-    set _EXITCODE=1
-    goto :eof
+    rem subcommand
+    set /a __N=!__N!+1
+    if /i "%__ARG%"=="clean" ( set _CLEAN=1
+    ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
+    ) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
+    ) else if /i "%__ARG%"=="help" ( set _HELP=1
+    ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
+    ) else (
+        echo Error: Unknown subcommand %__ARG% 1>&2
+        set _EXITCODE=1
+        goto args_done
+    )
 )
 shift
 goto :args_loop
@@ -112,22 +125,23 @@ if %_TOOLSET%==1 ( set _TOOLSET_NAME=Clang/GNU Make
 ) else ( set _TOOLSET_NAME=CL/MSBuild
 )
 if %_DEBUG%==1 echo [%_BASENAME%] _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TOTAL_TIME_START=%%i
 goto :eof
 
 :help
 echo Usage: %_BASENAME% { options ^| subcommands }
-echo Options:
-echo   -cl         use CL/MSBuild toolset (default)
-echo   -clang      use Clang/GNU Make toolset instead of CL/MSBuild
-echo   -debug      show commands executed by this script
-echo   -msvc       use CL/MSBuild toolset ^(alias for option -cl^)
-echo   -verbose    display progress messages
-echo Subcommands:
-echo   clean       delete generated files
-echo   compile     generate executable
-echo   dump        dump PE/COFF infos for generated executable
-echo   help        display this help message
-echo   run         run generated executable
+echo   Options:
+echo     -cl         use CL/MSBuild toolset (default)
+echo     -clang      use Clang/GNU Make toolset instead of CL/MSBuild
+echo     -debug      show commands executed by this script
+echo     -msvc       use CL/MSBuild toolset ^(alias for option -cl^)
+echo     -verbose    display progress messages
+echo   Subcommands:
+echo     clean       delete generated files
+echo     compile     generate executable
+echo     dump        dump PE/COFF infos for generated executable
+echo     help        display this help message
+echo     run         run generated executable
 goto :eof
 
 :clean
@@ -284,10 +298,25 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
+rem output parameter: _DURATION
+:duration
+set __START=%~1
+set __END=%~2
+
+for /f "delims=" %%i in ('powershell -c "$interval = New-TimeSpan -Start '%__START%' -End '%__END%'; Write-Host $interval"') do set _DURATION=%%i
+goto :eof
+
 rem ##########################################################################
 rem ## Cleanups
 
 :end
+if %_TIMER%==1 (
+    for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TOTAL_TIME_END=%%i
+    call :duration "%_TOTAL_TIME_START%" "!_TOTAL_TIME_END!"
+    if %_DEBUG%==1 ( echo [%_BASENAME%] Total duration: !_DURATION! 1>&2
+    ) else if %_VERBOSE%==1 ( echo Total duration: !_DURATION! 1>&2
+    )
+)
 if %_DEBUG%==1 echo [%_BASENAME%] _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%
 endlocal

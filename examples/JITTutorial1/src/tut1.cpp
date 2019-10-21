@@ -1,3 +1,4 @@
+#include "llvm/Config/llvm-config.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/LegacyPassManager.h"
@@ -30,6 +31,15 @@ Module* makeLLVMModule() {
     // Module Construction
     Module* mod = new Module("tut1", TheContext);
 
+#if (LLVM_VERSION_MAJOR > 8)
+    FunctionCallee c = mod->getOrInsertFunction("mul_add",
+    /*ret type*/                           IntegerType::get(TheContext, 32),
+    /*args*/  /*x*/                        IntegerType::get(TheContext, 32),
+              /*y*/                        IntegerType::get(TheContext, 32),
+              /*z*/                        IntegerType::get(TheContext, 32));
+
+    Function* mul_add = cast<Function>(c.getCallee());
+#else
     Constant* c = mod->getOrInsertFunction("mul_add",
     /*ret type*/                           IntegerType::get(TheContext, 32),
     /*args*/  /*x*/                        IntegerType::get(TheContext, 32),
@@ -37,6 +47,7 @@ Module* makeLLVMModule() {
               /*z*/                        IntegerType::get(TheContext, 32));
 
     Function* mul_add = cast<Function>(c);
+#endif
     mul_add->setCallingConv(CallingConv::C);
 
     Function::arg_iterator args = mul_add->arg_begin();

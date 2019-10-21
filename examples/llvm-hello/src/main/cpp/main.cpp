@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <fstream>
+#include "llvm/Config/llvm-config.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
@@ -36,10 +37,15 @@ std::unique_ptr<Module> buildModule()
 	putsArgs.push_back(Builder.getInt8Ty()->getPointerTo());
 	ArrayRef<Type*> argsRef(putsArgs);
 	FunctionType *putsType = FunctionType::get(Builder.getInt32Ty(), argsRef, false);
+#if (LLVM_VERSION_MAJOR > 8)
+    FunctionCallee putsFunc = module->getOrInsertFunction("puts", putsType);
+	/* Invoke it */
+	Builder.CreateCall(putsFunc.getCallee(), helloWorldStr);
+#else
 	Constant *putsFunc = module->getOrInsertFunction("puts", putsType);
-
 	/* Invoke it */
 	Builder.CreateCall(putsFunc, helloWorldStr);
+#endif
 
 	/* Return zero */
 	Builder.CreateRet(ConstantInt::get(TheContext, APInt(32, 0)));

@@ -4,7 +4,7 @@ project(hello VERSION 1.0.0 LANGUAGES C CXX)
 
 if(MSVC)
     set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_FLAGS "/O2 /wd4141 /wd4146 /wd4244 /wd4267 /wd4624 /wd4996")
+    set(CMAKE_CXX_FLAGS "/O2 /EHsc /wd4141 /wd4146 /wd4244 /wd4267 /wd4624 /wd4996")
 else()
     set(CMAKE_CXX_STANDARD 14)
     set(CMAKE_CXX_FLAGS "-O2 -Wall")

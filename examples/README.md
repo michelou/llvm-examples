@@ -111,10 +111,10 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`GNU 
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is Clang 8.0.1 with GNU-like command-line
--- The CXX compiler identification is Clang 8.0.1 with GNU-like command-line
--- Check for working C compiler: C:/opt/LLVM-8.0.1/bin/clang.exe
--- Check for working C compiler: C:/opt/LLVM-8.0.1/bin/clang.exe -- works
+-- The C compiler identification is Clang 9.0.0 with GNU-like command-line
+-- The CXX compiler identification is Clang 9.0.0 with GNU-like command-line
+-- Check for working C compiler: C:/opt/LLVM-9.0.0/bin/clang.exe
+-- Check for working C compiler: C:/opt/LLVM-9.0.0/bin/clang.exe -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Detecting C compile features
@@ -143,8 +143,8 @@ Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is GNU 9.1.0
--- The CXX compiler identification is GNU 9.1.0
+-- The C compiler identification is GNU 9.2.0
+-- The CXX compiler identification is GNU 9.2.0
 -- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe
 -- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe -- works
 -- Detecting C compiler ABI info
@@ -170,11 +170,11 @@ Hello world !
 
 Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html) (*outdated*) from the LLVM 2.6 tutorial.
 
-It defines a function **`mul_add`** and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
+It defines a function **`mul_add`** and generates its [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
 
 Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands:
 
-<pre>
+<pre style="font-size:80%;">
 <b>&gt; build</b>
 Usage: build { options | subcommands }
 Options:
@@ -236,7 +236,7 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: CL/MSBuild, Project: JITTutorial1
 [build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
-[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-8.0.1" ..
+[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-9.0.0" ..
 -- Building for: Visual Studio 16 2019
 -- The CXX compiler identification is MSVC 19.21.27702.2
 -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.21.27702/bin/Hostx64/x64/cl.exe
@@ -245,10 +245,10 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- LLVM installation directory: C:\opt\LLVM-8.0.1
--- Found LLVM 8.0.1
--- Using LLVMConfig.cmake in: C:/opt/LLVM-8.0.1/lib/cmake/llvm 
--- Using header files in: L:/llvm-8.0.1.src/include;L:/llvm-8.0.1.src/build/include 
+-- LLVM installation directory: C:\opt\LLVM-9.0.0
+-- Found LLVM 9.0.0
+-- Using LLVMConfig.cmake in: C:/opt/LLVM-9.0.0/lib/cmake/llvm 
+-- Using header files in: L:/llvm-9.0.0.src/include;L:/llvm-9.0.0.src/build/include 
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/JITTutorial1/build
@@ -286,7 +286,7 @@ entry:
 > }
 > </pre>
 
-Finally, one may wonder what's happen if we transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
+Finally, one may wonder what's happen if we transform the above [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) into an executable:
 
 <pre style="font-size:80%;">
 <b>&gt; build run &gt; tut1.ll</b>
@@ -313,7 +313,7 @@ In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic
 </p>
 -->
 
-The [LLVM linker](https://lld.llvm.org/) requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html); we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
+The [LLVM linker](https://lld.llvm.org/) requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html); we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
 
 
 ## <span id="tut1_main">`JITTutorial1_main`</span>
@@ -352,9 +352,9 @@ entry:
 declare i32 @printf(i8*, ...)
 </pre>
 
-> **:mag_right:** In the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) we can recognize the  call to function **`mul_add`** (ie. **`call .. @mul_add(i32 10, i32 2, i32 3)`**); the three arguments are **`10`**, **`2`** and **`3`**; so the result should be **`(10 * 2) + 3 = 23`**.
+> **:mag_right:** In the above [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) we can recognize the  call to function **`mul_add`** (ie. **`call .. @mul_add(i32 10, i32 2, i32 3)`**); the three arguments are **`10`**, **`2`** and **`3`**; so the result should be **`(10 * 2) + 3 = 23`**.
 
-Now, let's transform the above [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) into an executable:
+Now, let's transform the above [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) into an executable:
 
 <pre style="font-size:80%;">
 <b>&gt; build run &gt; build\tut1.ll</b>
@@ -379,7 +379,7 @@ Now, let's transform the above [IR code](https://releases.llvm.org/8.0.1/docs/La
 
 [**`JITTutorial2\`**](JITTutorial2/) is based on example [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html) (*outdated*) from the LLVM 2.6 tutorial.
 
-It defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)).
+It defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)).
 
 Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
 
@@ -438,7 +438,7 @@ cond_false1:                                      ; preds = %cond_false
 >CallInst* createPrintStrLn(Module* Mod, IRBuilder<> Builder, Value* Arg);
 >CallInst* createStrToInt(Module* Mod, IRBuilder<> Builder, Value* ArgStr);
 > </pre>
-> We use function **`initModule(Module* mod)`** to include the two fields **`target datalayout`** and **`target triple`** into the generated [IR code](https://releases.llvm.org/8.0.1/docs/LangRef.html) (see below); that solves the warning "**`warning: overriding the module target triple`**" we encountered in example [**`JITTutorial1_main`**](#tut1_main).
+> We use function **`initModule(Module* mod)`** to include the two fields **`target datalayout`** and **`target triple`** into the generated [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) (see below); that solves the warning "**`warning: overriding the module target triple`**" we encountered in example [**`JITTutorial1_main`**](#tut1_main).
 
 Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
 
@@ -566,7 +566,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <b>@echo off</b>
 <b>setlocal enabledelayedexpansion</b>
 &nbsp;
-<i>rem ##########################################################################
+<i style="color:#66aa66;">rem ##########################################################################
 rem ## Environment setup</i>
 &nbsp;
 <b>set</b> _EXITCODE=0
@@ -579,7 +579,7 @@ rem ## Environment setup</i>
 <b>call <span style="color:#9966ff;">:args</span> %*</b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
-<i>rem ##########################################################################
+<i style="color:#66aa66;">rem ##########################################################################
 rem ## Main</i>
 &nbsp;
 <b>if</b> %_CLEAN%==1 (
@@ -596,7 +596,7 @@ rem ## Main</i>
 )
 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
-<i>rem ##########################################################################
+<i style="color:#66aa66;">rem ##########################################################################
 rem ## Subroutines</i>
 &nbsp;
 <span style="color:#9966ff;">:props</span>
@@ -615,7 +615,7 @@ rem ## Subroutines</i>
 ...
 <b>goto :eof</b>
 &nbsp;
-<i>rem ##########################################################################
+<i style="color:#66aa66;">rem ##########################################################################
 rem ## Cleanups</i>
 &nbsp;
 <span style="color:#9966ff;">:end</span>

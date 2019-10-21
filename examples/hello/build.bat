@@ -80,29 +80,38 @@ set _TOOLSET=0
 set _VERBOSE=0
 set __N=0
 :args_loop
-set __ARG=%~1
+set "__ARG=%~1"
 if not defined __ARG (
     if !__N!==0 set _HELP=1
     goto args_done
-) else if not "%__ARG:~0,1%"=="-" (
-    set /a __N=!__N!+1
 )
-if /i "%__ARG%"=="help" ( set _HELP=1
-) else if /i "%__ARG%"=="clean" ( set _CLEAN=1
-) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
-) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
-) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
-) else if /i "%__ARG%"=="-cl" ( set _TOOLSET=0
-) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=1
-) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
-) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=2
-) else if /i "%__ARG%"=="-help" ( set _HELP=1
-) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=0
-) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+if "%__ARG:~0,1%"=="-" (
+    rem option
+    if /i "%__ARG%"=="-cl" ( set _TOOLSET=0
+    ) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=1
+    ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
+    ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=2
+    ) else if /i "%__ARG%"=="-help" ( set _HELP=1
+    ) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=0
+    ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+    ) else (
+        echo Error: Unknown option %__ARG% 1>&2
+        set _EXITCODE=1
+        goto args_done
+    )
 ) else (
-    echo Error: Unknown subcommand %__ARG% 1>&2
-    set _EXITCODE=1
-    goto :eof
+    rem subcommand
+    set /a __N=!__N!+1
+    if /i "%__ARG%"=="clean" ( set _CLEAN=1
+    ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
+    ) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
+    ) else if /i "%__ARG%"=="help" ( set _HELP=1
+    ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
+    ) else (
+        echo Error: Unknown subcommand %__ARG% 1>&2
+        set _EXITCODE=1
+        goto args_done
+    )
 )
 shift
 goto :args_loop

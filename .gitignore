@@ -36,5 +36,5 @@ env
 bench-results.json
 hs_err_pid*.log
 jmh_result.json
-llvm-*.src.tar.xz
+*.src.tar.xz
 workingsets.xml

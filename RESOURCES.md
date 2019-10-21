@@ -3,7 +3,7 @@
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM"/></a></td>
-  <td style="border:0;padding:0;vertical-align:text-top;">This page gathers <a href="https://llvm.org/">LLVM</a> related resources.
+  <td style="border:0;padding:0;vertical-align:text-top;">This document gathers <a href="https://llvm.org/">LLVM</a> related resources.
   </td>
   </tr>
 </table>
@@ -31,12 +31,19 @@
 - [*Building an LLVM-based tool. Lessons learned*](https://lowlevelbits.org/building-an-llvm-based-tool.-lessons-learned/) by Alex Denisov, April 2019 ([EuroLLVM 2019](http://llvm.org/devmtg/2019-04/)).
 -->
 
+
 ## Books
 
 - [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
 - [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
 - [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (296 p., ISBN 978-1-78528-598-1).
 - [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314 p., ISBN 978-1-78216-692-4).
+
+
+## Courses
+
+- [Compilers](https://anoopsarkar.github.io/compilers-class/index.html): [Code Generation with LLVM](https://anoopsarkar.github.io/compilers-class/llvm-practice.html)
+
 
 ## News
 
@@ -65,6 +72,11 @@ We mention here only the publications from <a href="http://nondot.org/~sabre/">C
 <li><a href="https://llvm.org/pubs/2002-08-09-LLVMCompilationStrategy.pdf"><i>The LLVM Instruction Set and Compilation Strategy</i></a> by Chris Lattner and Vikram Adve (August 2002).</li>
 <li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
 </ul>
+
+## TableGen
+
+- [Utilizing TableGen for Non-Compiling Processes](https://www.embecosm.com/2015/04/14/utilizing-tablegen-for-non-compiling-processes/) by Simon Cook, April 2015.
+- [LLVM TableGen](https://wiki.aalto.fi/display/t1065450/LLVM+TableGen) by Sami Teräväinen, February 2015.
 
 
 ## Footnotes
