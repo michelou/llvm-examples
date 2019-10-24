@@ -55,6 +55,7 @@ bin\llvm\build.bat
 docs\
 examples\{hello, JITTutorial1, ..}
 llvm-9.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>)</i><sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>
+llvm-9.0.0.src.tar.xz
 README.md
 setenv.bat
 </pre>
@@ -94,20 +95,21 @@ We distinguish different sets of batch commands:
         help        display this help message
     </pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, CMake modules) not available in LLVM installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules](https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html)) not available in LLVM installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
     <pre style="font-size:80%;">
     <b>&gt; build help</b>
     Usage: build { options | subcommands }
-    Options:
-      -debug      show commands executed by this script
-      -verbose    display progress messages
-    Subcommands:
-      clean       delete generated files
-      compile     generate executable
-      help        display this help message
-      install     install files generated in directory build
-      run         run executable
+      Options:
+        -debug      show commands executed by this script
+        -timer      print total elapsed time
+        -verbose    display progress messages
+      Subcommands:
+        clean       delete generated files
+        compile     generate executable
+        help        display this help message
+        install     install files generated in directory build
+        run         run executable
     </pre>
 
     > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode interpreter) are not part of the LLVM binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
@@ -182,7 +184,7 @@ Directory **`llvm-9.0.0.src\`** is setup as follows:
 <b>&gt; cd llvm-9.0.0.src</b>
 </pre>
 
-Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**. Be patient, build time is about 55 minutes on an Intel i7 with 16 GB of memory.
+Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`**. Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
 <pre style="font-size:80%;">
 <b>&gt; cd</b>
@@ -290,7 +292,7 @@ GNU Make 4.2.1
 <a name="footnote_04">[4]</a> ***LLVM installation*** [↩](#anchor_04)
 
 <p style="margin:0 0 1em 20px;">
-The original size of the LLVM 9 installation directory is 1.3 GB (1.1 GB for LLVM 8). The installation of the additional files (i.e. executables, header files, library files and CMake modules) increases its size to 17.3 GB (14.2 GB for LLVM 8).
+The original size of the LLVM 9 installation directory is 1.3 GB (1.1 GB for LLVM 8). The installation of the additional files (i.e. executables, header files, library files and <a href="https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html">CMake modules</a>) increases its size to 17.3 GB (14.2 GB for LLVM 8).
 </p>
 
 <a name="footnote_05">[5]</a> ***Downloads*** [↩](#anchor_05)
