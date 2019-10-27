@@ -6,7 +6,7 @@
     <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
-    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM">LLVM</a> examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM project</a> and tested on a Windows machine.
+    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM</a> project and tested on a Windows machine.
   </td>
   </tr>
 </table>
@@ -34,19 +34,19 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 <pre style="font-size:80%;">
 <b>&gt; build</b>
 Usage: build { options | subcommands }
-Options:
-  -cl         use CL/MSBuild toolset (default)
-  -clang      use Clang/GNU Make toolset instead of CL/MSBuild
-  -debug      show commands executed by this script
-  -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
-  -msvc       use CL/MSBuild toolset (alias for option -cl)
-  -verbose    display progress messages
-Subcommands:
-  clean       delete generated files
-  dump        dump PE/COFF infos for generated executable
-  compile     generate executable
-  help        display this help message
-  run         run the generated executable
+  Options:
+    -cl         use CL/MSBuild toolset (default)
+    -clang      use Clang/GNU Make toolset instead of CL/MSBuild
+    -debug      show commands executed by this script
+    -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
+    -msvc       use CL/MSBuild toolset (alias for option -cl)
+    -verbose    display progress messages
+  Subcommands:
+    clean       delete generated files
+    dump        dump PE/COFF infos for generated executable
+    compile     generate executable
+    help        display this help message
+    run         run the generated executable
 </pre>
 
 Command [**`build clean run`**](hello/build.bat) produces the following output:
@@ -549,7 +549,9 @@ hello world!
 
 <a name="footnote_01">[1]</a> ***C++ Standards*** [↩](#anchor_01)
 
-Clang and LLVM are using C++14 since August 14, 2019 (see Bastien's post on the <a href="http://lists.llvm.org/pipermail/llvm-dev/2019-August/134577.html"><b>llvm-dev</b></a> mailing list). We thus specify either C++14 ([**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)) or C++17 ([**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)) in our CMake configuration files.
+<p style="margin:0 0 1em 20px;">
+Clang and <a href="https://llvm.org/">LLVM</a> are using C++14 since August 14, 2019 (see Bastien's post on the <a href="http://lists.llvm.org/pipermail/llvm-dev/2019-August/134577.html"><b>llvm-dev</b></a> mailing list). We thus specify either C++14 (<a href="https://www.gnu.org/software/make/manual/html_node/Options-Summary.html"><b><code>GNU Make</code></b></a>) or C++17 (<a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019"><b><code>MSBuild</code></b></a>) in our CMake configuration files.
+</p>
 
 <a name="footnote_02">[2]</a> ***Coding conventions*** [↩](#anchor_02)
 
