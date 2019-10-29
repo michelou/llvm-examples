@@ -3,8 +3,8 @@
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM"/></a></td>
-  <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/">LLVM</a> examples coming from various websites and books.<br/>
-  It also includes several batch scripts for experimenting with the LLVM infrastructure on a Windows machine.
+  <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/">LLVM</a> code examples coming from various websites and books.<br/>
+  It also includes several batch scripts for experimenting with the <a href="https://llvm.org/">LLVM</a> infrastructure on a Windows machine.
   </td>
   </tr>
 </table>
@@ -30,7 +30,9 @@ For instance our development environment looks as follows (*October 2019*):
 
 <pre style="font-size:80%;">
 C:\opt\cmake-3.16.0\                                            <i>(  74 MB)</i>
-C:\opt\LLVM-9.0.0\                                              <i>(1.3 resp. 17.3 GB)</i><sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
+C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
+C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)
+C:\opt\LLVM-9.0.0\                                              <i>(1.3 resp. 17.3 GB)
 C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
@@ -54,7 +56,7 @@ bin\vswhere.exe
 bin\llvm\build.bat
 docs\
 examples\{hello, JITTutorial1, ..}
-llvm-9.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>)</i><sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>
+llvm-9.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>)</i><sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
 llvm-9.0.0.src.tar.xz
 README.md
 setenv.bat
@@ -92,8 +94,7 @@ We distinguish different sets of batch commands:
         -debug      show commands executed by this script
         -verbose    display progress messages
       Subcommands:
-        help        display this help message
-    </pre>
+        help        display this help message</pre>
 
 2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules](https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html)) not available in LLVM installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
@@ -264,9 +265,10 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 MSYS64 tools:
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<b>&gt; where gcc make</b>
+<b>&gt; where gcc make pacman</b>
 C:\opt\msys64\mingw64\bin\gcc.exe
 C:\opt\msys64\usr\bin\make.exe
+C:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; gcc --version | findstr gcc</b>
 gcc (Rev3, Built by MSYS2 project) 9.2.0
@@ -289,20 +291,16 @@ gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
 GNU Make 4.2.1
 </pre>
 
-<a name="footnote_04">[4]</a> ***LLVM installation*** [↩](#anchor_04)
-
-<p style="margin:0 0 1em 20px;">
-The original size of the LLVM 9 installation directory is 1.3 GB (1.1 GB for LLVM 8). The installation of the additional files (i.e. executables, header files, library files and <a href="https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html">CMake modules</a>) increases its size to 17.3 GB (14.2 GB for LLVM 8).
-</p>
-
-<a name="footnote_05">[5]</a> ***Downloads*** [↩](#anchor_05)
+<a name="footnote_04">[4]</a> ***Downloads*** [↩](#anchor_04)
 
 <p style="margin:0 0 1em 20px;">
 In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <a href="https://cmake.org/download/">cmake-3.16.0-win64-x64.zip</a>  <i>( 30 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>        <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">LLVM-9.0.0-win64.exe</a>        <i>(150 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>       <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>       <i>( 31 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>   <i>( 86 MB)</i>
 vs_2019_community.exe  
