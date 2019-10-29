@@ -31,8 +31,8 @@ For instance our development environment looks as follows (*October 2019*):
 <pre style="font-size:80%;">
 C:\opt\cmake-3.16.0\                                            <i>(  74 MB)</i>
 C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
-C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)
-C:\opt\LLVM-9.0.0\                                              <i>(1.3 resp. 17.3 GB)
+C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)</i>
+C:\opt\LLVM-9.0.0\                                              <i>(1.3 resp. 17.3 GB)</i>
 C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
@@ -96,7 +96,7 @@ We distinguish different sets of batch commands:
       Subcommands:
         help        display this help message</pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules](https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html)) not available in LLVM installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules](https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html)) not available in [LLVM](https://llvm.org/) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
     <pre style="font-size:80%;">
     <b>&gt; build help</b>
@@ -112,7 +112,7 @@ We distinguish different sets of batch commands:
         install     install files generated in directory build
         run         run executable</pre>
 
-    > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode interpreter) are not part of the LLVM binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
+    > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode interpreter) are not part of the [LLVM](https://llvm.org/) binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
 
 ## Usage examples
 
@@ -178,7 +178,7 @@ We make use of the [LLVM](https://llvm.org/) source distribution to build the ad
 
 Directory **`llvm-9.0.0.src\`** is setup as follows:
 <pre style="font-size:80%;">
-<b>&gt; curl -L --silent --output llvm-9.0.0.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.0/llvm-9.0.0.src.tar.xz</b>
+<b>&gt; curl -sL -o llvm-9.0.0.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.0/llvm-9.0.0.src.tar.xz</b>
 <b>&gt; tar xzvf llvm-9.0.0.src.tar.xz</b>
 <b>&gt; cp bin\llvm\build.bat llvm-9.0.0.src</b>
 <b>&gt; cd llvm-9.0.0.src</b>
@@ -221,11 +221,11 @@ We list below several executables in the [LLVM](https://llvm.org/) installation 
 
 #### `examples\JITTutorial1\build.bat`
 
-See file [**`examples\README.md`**](examples/README.md).
+See document [**`examples\README.md`**](examples/README.md).
 
 ## Resources
 
-See file [**`RESOURCES.md`**](RESOURCES.md).
+See document [**`RESOURCES.md`**](RESOURCES.md).
 
 
 ## Footnotes
