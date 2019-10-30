@@ -44,8 +44,9 @@ https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
 
 > **&#9755;** ***Installation policy***<br/>
 > When possible we install software from a [Zip archive](https://www.howtogeek.com/178146/htg-explains-everything-you-need-to-know-about-zipped-files/) rather than via a Windows installer. In our case we defined **`C:\opt\`** as the installation directory for optional software tools (*in reference to* the [`/opt/`](http://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html) directory on Unix).
-
+<!--
 We further recommand using an advanced console emulator such as [ComEmu](https://conemu.github.io/) (or [Cmdr](http://cmder.net/)) which features [Unicode support](https://conemu.github.io/en/UnicodeSupport.html).
+-->
 
 ## Directory structure
 
@@ -76,7 +77,7 @@ We also define a virtual drive **`L:`** in our working environment in order to r
 > **:mag_right:** We use the Windows external command [**`subst`**](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/subst) to create virtual drives; for instance:
 >
 > <pre style="font-size:80%;">
-> <b>&gt; subst L: %USERPROFILE%\workspace\graalvm\llvm-examples</b>
+> <b>&gt; subst L: %USERPROFILE%\workspace\llvm-examples</b>
 > </pre>
 
 In the next section we give a brief description of the batch files present in this project.
@@ -206,7 +207,7 @@ Copy files from directory build\lib\cmake to C:\opt\LLVM-9.0.0\lib\cmake\
 Copy files from directory include to C:\opt\LLVM-9.0.0\include\
 </pre>
 
-We list below several executables in the [LLVM](https://llvm.org/) installation directory; e.g. commands like [**`clang.exe`**](https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html), [**`lld.exe`**](https://lld.llvm.org/)  and [**`lldb.exe`**](https://lldb.llvm.org/) belong to the orginal distribution while commands like [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html), [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) and [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) were build/added from the LLVM source distribution.
+We list below several executables in the [LLVM](https://llvm.org/) installation directory; e.g. commands like [**`clang.exe`**](https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html), [**`lld.exe`**](https://lld.llvm.org/)  and [**`lldb.exe`**](https://lldb.llvm.org/) belong to the orginal distribution while commands like [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html), [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) and [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) were build/added from the [LLVM](https://llvm.org/) source distribution.
 
 <pre style="font-size:80%;">
 <b>&gt; where /t clang llc lld lldb lli opt</b>
@@ -258,8 +259,8 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 <table style="margin:0 0 1em 20px;">
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
 <tr><td>Installation size</td><td>2.85 GB</td><td>438 MB</td></tr>
-<tr><td>Version/architecture</td><td>e.g. <code>gcc 9.2</code></td><td>e.g. <code>gcc 8.1</code></td></tr>
-<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><b><code>pacman -Syu</code></b></a></td><td><i>none</i> (?!)</td></tr>
+<tr><td>Version/architecture</td><td><code>gcc 9.2</code></td><td><code>gcc 8.1</code></td></tr>
+<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a></td><td><i>none</i> (?!)</td></tr>
 </table>
 <p style="margin:0 0 1em 20px;">
 MSYS64 tools:
