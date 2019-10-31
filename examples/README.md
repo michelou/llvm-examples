@@ -11,7 +11,7 @@
   </tr>
 </table>
 
-In the following we present the following examples in more detail (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
+In this document we present the following examples in more detail (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
 
 - [**`hello`**](#hello)
 - [**`JITTutorial1`**](#tut1)

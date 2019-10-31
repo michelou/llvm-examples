@@ -185,7 +185,7 @@ Directory **`llvm-9.0.0.src\`** is setup as follows:
 <b>&gt; cd llvm-9.0.0.src</b>
 </pre>
 
-Running command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
+Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
 <pre style="font-size:80%;">
 <b>&gt; cd</b>
@@ -234,7 +234,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md).
 <a name="footnote_01">[1]</a> ***LLVM version*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-Either LLVM 8 or LLVM 9 are supported. Command <b><code>setenv</code></b> selects the bigger version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8.
+Either LLVM 8 or LLVM 9 is supported. Command <b><code>setenv</code></b> selects the bigger available version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 in the case a LLVM 9 installation is also present.
 </p>
 
 <a name="footnote_02">[2]</a> ***Visual Studio Locator*** [↩](#anchor_02)
@@ -260,8 +260,11 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
 <tr><td>Installation size</td><td>2.85 GB</td><td>438 MB</td></tr>
 <tr><td>Version/architecture</td><td><code>gcc 9.2</code></td><td><code>gcc 8.1</code></td></tr>
-<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a></td><td><i>none</i> (?!)</td></tr>
+<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get update</code></a> <sup>(1)</sup></td></tr>
 </table>
+<p style="margin:-16px 0 1em 30px; font-size:80%;">
+<sup>(1)</sup> <a href="https://www.sqlpac.com/referentiel/docs/mingw-minimalist-gnu-pour-windows.html">Minimalist GNU for Windows</a>
+
 <p style="margin:0 0 1em 20px;">
 MSYS64 tools:
 </p>
