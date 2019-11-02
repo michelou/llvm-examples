@@ -9,7 +9,7 @@
   </tr>
 </table>
 
-## <span id="section_01">Project dependencies</span>
+## <span id="proj_deps">Project dependencies</span>
 
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
@@ -26,7 +26,7 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*October 2019*):
+For instance our development environment looks as follows (*November 2019*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
 
 <pre style="font-size:80%;">
 C:\opt\cmake-3.16.0\                                            <i>(  74 MB)</i>
@@ -57,7 +57,7 @@ bin\vswhere.exe
 bin\llvm\build.bat
 docs\
 examples\{hello, JITTutorial1, ..}
-llvm-9.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>)</i><sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
+llvm-9.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>)</i>
 llvm-9.0.0.src.tar.xz
 README.md
 setenv.bat
@@ -86,32 +86,32 @@ In the next section we give a brief description of the batch files present in th
 
 We distinguish different sets of batch commands:
 
-1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) and [**`git.exe`**](https://git-scm.com/docs/git) directly available from the command prompt (see section [**Project dependencies**](#section_01)).
+1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) and [**`git.exe`**](https://git-scm.com/docs/git) directly available from the command prompt (see section [**Project dependencies**](#proj_deps)).
 
-    <pre style="font-size:80%;">
-    <b>&gt; setenv help</b>
-    Usage: setenv { options | subcommands }
-      Options:
-        -debug      show commands executed by this script
-        -verbose    display progress messages
-      Subcommands:
-        help        display this help message</pre>
+   <pre style="font-size:80%;">
+   <b>&gt; setenv help</b>
+   Usage: setenv { options | subcommands }
+     Options:
+       -debug      show commands executed by this script
+       -verbose    display progress messages
+     Subcommands:
+       help        display this help message</pre>
 
 2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules](https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html)) not available in [LLVM](https://llvm.org/) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
-    <pre style="font-size:80%;">
-    <b>&gt; build help</b>
-    Usage: build { options | subcommands }
-      Options:
-        -debug      show commands executed by this script
-        -timer      print total elapsed time
-        -verbose    display progress messages
-      Subcommands:
-        clean       delete generated files
-        compile     generate executable
-        help        display this help message
-        install     install files generated in directory build
-        run         run executable</pre>
+   <pre style="font-size:80%;">
+   <b>&gt; build help</b>
+   Usage: build { options | subcommands }
+     Options:
+       -debug      show commands executed by this script
+       -timer      print total elapsed time
+       -verbose    display progress messages
+     Subcommands:
+       clean       delete generated files
+       compile     generate executable
+       help        display this help message
+       install     install files generated in directory build
+       run         run executable</pre>
 
     > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode interpreter) are not part of the [LLVM](https://llvm.org/) binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
 
@@ -234,7 +234,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md).
 <a name="footnote_01">[1]</a> ***LLVM version*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-Either LLVM 8 or LLVM 9 is supported. Command <b><code>setenv</code></b> selects the bigger available version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 in the case a LLVM 9 installation is also present.
+Either LLVM 8 or LLVM 9 is supported. Command <b><code>setenv</code></b> selects the bigger available version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 if a LLVM 9 installation is also present.
 </p>
 
 <a name="footnote_02">[2]</a> ***Visual Studio Locator*** [↩](#anchor_02)
@@ -298,7 +298,7 @@ GNU Make 4.2.1
 <a name="footnote_04">[4]</a> ***Downloads*** [↩](#anchor_04)
 
 <p style="margin:0 0 1em 20px;">
-In our case we downloaded the following installation files (see <a href="#section_01">section 1</a>):
+In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <a href="https://cmake.org/download/">cmake-3.16.0-win64-x64.zip</a>  <i>( 30 MB)</i>
@@ -310,10 +310,10 @@ In our case we downloaded the following installation files (see <a href="#sectio
 vs_2019_community.exe  
 </pre>
 <p style="margin:0 0 1em 20px;">
-Microsoft doesn't provide an offline installer for VS 2019 but we can follow the <a href="https://docs.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019">following instructions</a> to create a local installer (so called <i>layout cache</i>) for later (re-)installation.
+Microsoft doesn't provide an offline installer for <a href="https://visualstudio.microsoft.com/vs/2019/">VS 2019</a> but we can follow the <a href="https://docs.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019">following instructions</a> to create a local installer (so called <i>layout cache</i>) for later (re-)installation.
 </p>
 
 ***
 
-*[mics](http://lampwww.epfl.ch/~michelou/)/October 2019* [**&#9650;**](#top)
+*[mics](http://lampwww.epfl.ch/~michelou/)/November 2019* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>

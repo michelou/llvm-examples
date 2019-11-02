@@ -134,7 +134,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html) toolset to generate executable **`hello.exe`**:
+Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html)/[**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) toolset to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -gcc clean run</b>
@@ -627,4 +627,5 @@ rem ## Cleanups</i>
 
 ***
 
-*[mics](http://lampwww.epfl.ch/~michelou/)/October 2019* [**&#9650;**](#top)
+*[mics](http://lampwww.epfl.ch/~michelou/)/November 2019* [**&#9650;**](#top)
+<span id="bottom">&nbsp;</span>
