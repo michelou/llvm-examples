@@ -9,6 +9,8 @@
   </tr>
 </table>
 
+[Dotty](https://github.com/michelou/dotty-examples), [GraalSqueak](https://github.com/michelou/graalsqueak-examples) and [GraalVM](https://github.com/michelou/graalvm-examples) are other topics we are currently investigating.
+
 ## <span id="proj_deps">Project dependencies</span>
 
 This project depends on the following external software for the **Microsoft Windows** plaform:
