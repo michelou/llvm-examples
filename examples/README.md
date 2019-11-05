@@ -33,7 +33,7 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 
 <pre style="font-size:80%;">
 <b>&gt; build</b>
-Usage: build { options | subcommands }
+Usage: build { option | subcommand }
   Options:
     -cl         use CL/MSBuild toolset (default)
     -clang      use Clang/GNU Make toolset instead of CL/MSBuild

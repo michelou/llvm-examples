@@ -21,7 +21,7 @@ This project depends on the following external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
-- [Git 2.23](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.23.0.txt))
+- [Git 2.24](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.24.0.txt))
 - [MSYS2](http://repo.msys2.org/distrib/x86_64/) <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 
 <!--
@@ -32,10 +32,10 @@ For instance our development environment looks as follows (*November 2019*) <sup
 
 <pre style="font-size:80%;">
 C:\opt\cmake-3.16.0\                                            <i>(  74 MB)</i>
-C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
+C:\opt\Git-2.24.0\                                              <i>( 271 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)</i>
 C:\opt\LLVM-9.0.0\                                              <i>(1.3 resp. 17.3 GB)</i>
-C:\opt\Git-2.23.0\                                              <i>( 271 MB)</i>
+C:\opt\Git-2.24.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
@@ -50,7 +50,7 @@ https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
 We further recommand using an advanced console emulator such as [ComEmu](https://conemu.github.io/) (or [Cmdr](http://cmder.net/)) which features [Unicode support](https://conemu.github.io/en/UnicodeSupport.html).
 -->
 
-## Directory structure
+## <span id="structure">Directory structure</span>
 
 This project is organized as follows:
 <pre style="font-size:80%;">
@@ -117,7 +117,7 @@ We distinguish different sets of batch commands:
 
     > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode interpreter) are not part of the [LLVM](https://llvm.org/) binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
 
-## Usage examples
+## <span id="usage">Usage examples</span>
 
 #### `setenv.bat`
 
@@ -130,7 +130,7 @@ Tool versions:
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
    cmake 3.16.0, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
-   git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
+   git 2.24.0.windows.1, vswhere 2.7.1+180c706d56
 
 <b>&gt; where clang nmake vswhere</b>
 C:\opt\LLVM-9.0.0\bin\clang.exe
@@ -150,7 +150,7 @@ Tool versions:
    dumpbin 14.22.27905.0, nmake 14.22.27905.0
    msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
    cmake 3.16.0, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
-   git 2.23.0.windows.1, vswhere 2.7.1+180c706d56
+   git 2.24.0.windows.1, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-9.0.0\bin\clang.exe
    C:\opt\LLVM-9.0.0\bin\lli.exe
@@ -167,8 +167,8 @@ Tool paths:
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.23.0\bin\git.exe
-   C:\opt\Git-2.23.0\mingw64\bin\git.exe
+   C:\opt\Git-2.24.0\bin\git.exe
+   C:\opt\Git-2.24.0\mingw64\bin\git.exe
    L:\bin\vswhere.exe
 Important note:
    MSVC CMake and GNU Cmake were not added to PATH (name conflict).
@@ -231,7 +231,7 @@ See document [**`examples\README.md`**](examples/README.md).
 See document [**`RESOURCES.md`**](RESOURCES.md).
 
 
-## Footnotes
+## <span id="footnotes">Footnotes</span>
 
 <a name="footnote_01">[1]</a> ***LLVM version*** [↩](#anchor_01)
 
