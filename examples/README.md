@@ -34,6 +34,7 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 <pre style="font-size:80%;">
 <b>&gt; build</b>
 Usage: build { option | subcommand }
+&nbsp;
   Options:
     -cl         use CL/MSBuild toolset (default)
     -clang      use Clang/GNU Make toolset instead of CL/MSBuild
@@ -41,6 +42,7 @@ Usage: build { option | subcommand }
     -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
     -msvc       use CL/MSBuild toolset (alias for option -cl)
     -verbose    display progress messages
+&nbsp;
   Subcommands:
     clean       delete generated files
     dump        dump PE/COFF infos for generated executable
@@ -176,13 +178,15 @@ Command [**`build`**](JITTutorial1/build.bat) with no argument displays the avai
 
 <pre style="font-size:80%;">
 <b>&gt; build</b>
-Usage: build { options | subcommands }
+Usage: build { option | subcommand }
+&nbsp;
 Options:
   -cl         use CL/MSBuild toolset (default)
   -clang      use Clang/GNU Make toolset instead of CL/MSBuild
   -debug      show commands executed by this script
   -msvc       use CL/MSBuild toolset (alias for option -cl)
   -verbose    display progress messages
+&nbsp;
 Subcommands:
   clean       delete generated files
   compile     generate executable
@@ -420,7 +424,7 @@ cond_false1:                                      ; preds = %cond_false
 - it defines the same function **`gcd`** as in example [**`JITTutorial2`**](#tut2),
 - it defines a **`main`** function with [parameters **`argc`** and **`argv`**](https://en.cppreference.com/w/cpp/language/main_function) as program entry point and
 - it defines several [**`printf`**](http://www.cplusplus.com/reference/cstdio/printf/) functions to print out both string and integer values.
-- it defined a [**`strtol`**](http://www.cplusplus.com/reference/cstdlib/strtol/) function to convert string values to integer values.
+- it defines a [**`strtol`**](http://www.cplusplus.com/reference/cstdlib/strtol/) function to convert string values to integer values.
 
 > **:mag_right:** The source files are organized as follows:
 > - The **`gcd`** function is defined/implemented in [**`tut2.h`**](JITTutorial2_main/src/tut2.h) resp. [**`tut2.cpp`**](JITTutorial2_main/src/tut2.cpp)
@@ -431,10 +435,10 @@ cond_false1:                                      ; preds = %cond_false
 ><pre style="font-size:80%;">
 ><b>void</b> initModule(Module* Mod);
 >CallInst* createPrintInt(Module* Mod, IRBuilder<> Builder, Value* Arg);
->CallInst* createPrintStr(Module* Mod, IRBuilder<> Builder, const char* ArgStr);
+>CallInst* createPrintStr(Module* Mod, IRBuilder<> Builder, <b>const char*</b> ArgStr);
 >CallInst* createPrintStr(Module* Mod, IRBuilder<> Builder, Value* Arg);
 >CallInst* createPrintIntLn(Module* Mod, IRBuilder<> Builder, Value* Arg);
->CallInst* createPrintStrLn(Module* Mod, IRBuilder<> Builder, const char* ArgStr);
+>CallInst* createPrintStrLn(Module* Mod, IRBuilder<> Builder, <b>const char*</b> ArgStr);
 >CallInst* createPrintStrLn(Module* Mod, IRBuilder<> Builder, Value* Arg);
 >CallInst* createStrToInt(Module* Mod, IRBuilder<> Builder, Value* ArgStr);
 > </pre>
@@ -558,7 +562,7 @@ Clang and <a href="https://llvm.org/">LLVM</a> are using C++14 since August 14, 
 <p style="margin:0 0 1em 20px;">
 Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a>) do obey the following coding conventions:
 <ul>
-<li>We use at most 80 characters per line. Concretely we observe that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
+<li>We use at most 80 characters per line. In practice we observe that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
 <li>We organize our code in 4 sections: <code>Environment setup</code>, <code>Main</code>, <code>Subroutines</code> and <code>Cleanups</code>.</li>
 <li>We write exactly <i>one exit instruction</i> (label <b><code>end</code></b> in section <b><code>Cleanups</code></b>).</li>
 <li>We adopt the following naming conventions for variables: global variables start with character <code>_</code> (shell variables defined in the user environment start with a letter) and local variables (e.g. inside subroutines or  <b><code>if/for</code></b> constructs) start with <code>__</code> (two <code>_</code> characters).</li>

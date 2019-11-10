@@ -92,10 +92,12 @@ We distinguish different sets of batch commands:
 
    <pre style="font-size:80%;">
    <b>&gt; setenv help</b>
-   Usage: setenv { options | subcommands }
+   Usage: setenv { option | subcommand }
+   &nbsp;
      Options:
        -debug      show commands executed by this script
        -verbose    display progress messages
+   &nbsp;
      Subcommands:
        help        display this help message</pre>
 
@@ -103,11 +105,13 @@ We distinguish different sets of batch commands:
 
    <pre style="font-size:80%;">
    <b>&gt; build help</b>
-   Usage: build { options | subcommands }
+   Usage: build { option | subcommand }
+   &nbsp;
      Options:
        -debug      show commands executed by this script
        -timer      print total elapsed time
        -verbose    display progress messages
+   &nbsp;
      Subcommands:
        clean       delete generated files
        compile     generate executable
@@ -226,7 +230,7 @@ We list below several executables in the [LLVM](https://llvm.org/) installation 
 
 See document [**`examples\README.md`**](examples/README.md).
 
-## Resources
+## <span id="resources">Resources</span>
 
 See document [**`RESOURCES.md`**](RESOURCES.md).
 
