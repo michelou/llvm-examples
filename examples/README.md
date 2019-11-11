@@ -33,14 +33,14 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 
 <pre style="font-size:80%;">
 <b>&gt; build</b>
-Usage: build { option | subcommand }
+Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
   Options:
-    -cl         use CL/MSBuild toolset (default)
-    -clang      use Clang/GNU Make toolset instead of CL/MSBuild
+    -cl         use MSVC/MSBuild toolset (default)
+    -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
     -debug      show commands executed by this script
-    -gcc        use GCC/GNU Make toolset instead of CL/MSBuild
-    -msvc       use CL/MSBuild toolset (alias for option -cl)
+    -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
+    -msvc       use MSVC/MSBuild toolset (alias for option -cl)
     -verbose    display progress messages
 &nbsp;
   Subcommands:
@@ -63,7 +63,7 @@ Command [**`build -verbose clean run`**](hello/build.bat) also displays progress
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
 Delete directory "build"
-Toolset: CL/MSBuild, Project: hello
+Toolset: MSVC/MSBuild, Project: hello
 Configuration: Release, Platform: x64
 Generate configuration files into directory "build"
 Generate executable hello.exe
@@ -75,8 +75,8 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
-[build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=0 _VERBOSE=0
-[build] Toolset: CL/MSBuild, Project: hello
+[build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=msvc _VERBOSE=0
+[build] Toolset: MSVC/MSBuild, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated ..
 -- Building for: Visual Studio 16 2019
@@ -108,7 +108,7 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`GNU 
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -clang clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=1 _VERBOSE=0
+[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=clang _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -140,7 +140,7 @@ Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -gcc clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=2 _VERBOSE=0
+[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=gcc _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -178,21 +178,22 @@ Command [**`build`**](JITTutorial1/build.bat) with no argument displays the avai
 
 <pre style="font-size:80%;">
 <b>&gt; build</b>
-Usage: build { option | subcommand }
+Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
-Options:
-  -cl         use CL/MSBuild toolset (default)
-  -clang      use Clang/GNU Make toolset instead of CL/MSBuild
-  -debug      show commands executed by this script
-  -msvc       use CL/MSBuild toolset (alias for option -cl)
-  -verbose    display progress messages
+  Options:
+    -cl         use MSVC/MSBuild toolset (default)
+    -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
+    -debug      show commands executed by this script
+    -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
+    -msvc       use MSVC/MSBuild toolset (alias for option -cl)
+    -verbose    display progress messages
 &nbsp;
-Subcommands:
-  clean       delete generated files
-  compile     generate executable
-  dump        dump PE/COFF infos for generated executable
-  help        display this help message
-  run         run executable
+  Subcommands:
+    clean       delete generated files
+    compile     generate executable
+    dump        dump PE/COFF infos for generated executable
+    help        display this help message
+    run         run executable
 </pre>
 
 Command [**`build clean run`**](JITTutorial1/build.bat) produces the following output:
@@ -215,7 +216,7 @@ Command [**`build -verbose clean run`**](JITTutorial1/build.bat) also displays p
 <pre style="font-size:80%;">
 <b>&gt; build -verbose clean run</b>
 Delete directory "build"      
-Toolset: CL/MSBuild, Project: JITTutorial1
+Toolset: MSVC/MSBuild, Project: JITTutorial1
 Configuration: Release, Platform: x64
 Current directory: L:\examples\JITTUT~1\build   
 Generate configuration files into directory "build"
@@ -236,9 +237,9 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug clean run</b> 
-[build] _CLEAN=1 _COMPILE=1 _RUN=1 _VERBOSE=0
+[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=msvc _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
-[build] Toolset: CL/MSBuild, Project: JITTutorial1
+[build] Toolset: MSVC/MSBuild, Project: JITTutorial1
 [build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-9.0.0" ..
 -- Building for: Visual Studio 16 2019

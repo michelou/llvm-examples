@@ -9,7 +9,7 @@
 </table>
 
 
-## Blogs
+## <span id="blogs">Blogs</span>
 
 - [*A look at LLVM Advanced Data Types*](https://developers.redhat.com/blog/2019/04/01/a-look-at-llvm-advanced-data-types-and-trivially-copyable-types/) by Serge Guelton, April 2019.
 - [*Compiler Performance and LLVM*](http://pling.jondgoodwin.com/post/compiler-performance/) by Jonathan Goodwin, March 2019.
@@ -32,7 +32,7 @@
 -->
 
 
-## Books
+## <span id="books">Books</span>
 
 - [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
 - [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
@@ -40,7 +40,7 @@
 - [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314 p., ISBN 978-1-78216-692-4).
 
 
-## Courses
+## <span id="courses">Courses</span>
 
 - [Compilers](https://anoopsarkar.github.io/compilers-class/index.html): [Code Generation with LLVM](https://anoopsarkar.github.io/compilers-class/llvm-practice.html) by [Anoop Sarkar](https://www2.cs.sfu.ca/~anoop/) (instructor), Summer 2019.
 - [EEECS 582: Advanced Compilers](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
@@ -61,7 +61,7 @@
 - [Compiler Explorer](https://www.godbolt.org/) (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
 
 
-## Papers
+## <span id="papers">Papers</span>
 
 <p style="margin:0 0 1em 20px;">
 See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/">LLVM</a> website.
@@ -79,25 +79,16 @@ We mention here only the publications from <a href="http://nondot.org/~sabre/">C
 - [Utilizing TableGen for Non-Compiling Processes](https://www.embecosm.com/2015/04/14/utilizing-tablegen-for-non-compiling-processes/) by Simon Cook, April 2015.
 - [LLVM TableGen](https://wiki.aalto.fi/display/t1065450/LLVM+TableGen) by Sami Teräväinen, February 2015.
 
-
-## Footnotes
 <!--
+## Footnotes
+
 <a name="footnote_01">[1]</a> ***Visual Studio Locator*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-Command <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> displays VS properties, including the exact version of our Visual Studio installation (starting with VS 2017):
-<pre style="margin:0 0 1em 20px; font-size:80%;">
-<b>&gt; where vswhere</b>
-L:\bin\vswhere.exe
-
-<b>&gt; vswhere -property installationVersion</b>
-16.2.29123.88
-</pre>
-
 </p>
 -->
 
 ***
 
-*[mics](http://lampwww.epfl.ch/~michelou/)/October 2019* [**&#9650;**](#top)
+*[mics](http://lampwww.epfl.ch/~michelou/)/November 2019* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
