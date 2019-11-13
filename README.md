@@ -4,7 +4,7 @@
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/">LLVM</a> code examples coming from various websites and books.<br/>
-  It also includes several batch scripts for experimenting with the <a href="https://llvm.org/">LLVM</a> infrastructure on a Windows machine.
+  It also includes several <a href="https://en.wikibooks.org/wiki/Windows_Batch_Scripting">batch files</a> for experimenting with the <a href="https://llvm.org/">LLVM</a> infrastructure on a Windows machine.
   </td>
   </tr>
 </table>
@@ -16,8 +16,8 @@
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
 - [CMake 3.16](https://cmake.org/download/) ([*release notes*](https://cmake.org/cmake/help/v3.16/release/3.16.html))
-- [LLVM 9 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0) ([*release notes*](https://releases.llvm.org/9.0.0/docs/ReleaseNotes.html)) <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup>
-- [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes)) <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>
+- [LLVM 9 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0) <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*](https://releases.llvm.org/9.0.0/docs/ReleaseNotes.html))
+- [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup> ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes))
 
 Optionally one may also install the following software:
 
@@ -92,7 +92,7 @@ We distinguish different sets of batch commands:
 
    <pre style="font-size:80%;">
    <b>&gt; setenv help</b>
-   Usage: setenv { option | subcommand }
+   Usage: setenv { &lt;option&gt; | &lt;subcommand&gt; }
    &nbsp;
      Options:
        -debug      show commands executed by this script
@@ -105,7 +105,7 @@ We distinguish different sets of batch commands:
 
    <pre style="font-size:80%;">
    <b>&gt; build help</b>
-   Usage: build { option | subcommand }
+   Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
    &nbsp;
      Options:
        -debug      show commands executed by this script
@@ -232,7 +232,7 @@ See document [**`examples\README.md`**](examples/README.md).
 
 ## <span id="resources">Resources</span>
 
-See document [**`RESOURCES.md`**](RESOURCES.md).
+See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM](https://llvm.org/) related resources.
 
 
 ## <span id="footnotes">Footnotes</span>
@@ -266,10 +266,12 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
 <tr><td>Installation size</td><td>2.85 GB</td><td>438 MB</td></tr>
 <tr><td>Version/architecture</td><td><code>gcc 9.2</code></td><td><code>gcc 8.1</code></td></tr>
-<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get update</code></a> <sup>(1)</sup></td></tr>
+<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get update</code></a> <sup>(2)</sup></td></tr>
 </table>
 <p style="margin:-16px 0 1em 30px; font-size:80%;">
-<sup>(1)</sup> <a href="https://www.sqlpac.com/referentiel/docs/mingw-minimalist-gnu-pour-windows.html">Minimalist GNU for Windows</a>
+<sup>(1)</sup> <a href="https://github.com/msys2/MSYS2-packages/issues/1298">pacman -Syu does nothing</a><br/>
+<sup>(2)</sup> <a href="https://www.sqlpac.com/referentiel/docs/mingw-minimalist-gnu-pour-windows.html">Minimalist GNU for Windows</a>
+</p>
 
 <p style="margin:0 0 1em 20px;">
 MSYS64 tools:

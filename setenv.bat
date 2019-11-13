@@ -91,7 +91,7 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     rem subcommand
-    set /a __N=!__N!+1
+    set /a __N+=1
     if /i "%__ARG%"=="help" ( set _HELP=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
@@ -106,11 +106,13 @@ if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% _HELP=%_HELP% _LLVM_PRE
 goto :eof
 
 :help
-echo Usage: %_BASENAME% { option ^| subcommand }
+echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
+echo.
 echo   Options:
 echo     -debug       show commands executed by this script
-echo     -llvm:^(8^|9^)  select version of LLVM installation 
+echo     -llvm:^<8^|9^>  select version of LLVM installation 
 echo     -verbose     display progress messages
+echo.
 echo   Subcommands:
 echo     help         display this help message
 goto :eof
@@ -121,16 +123,16 @@ set _CMAKE_HOME=
 rem set _CMAKE_PATH=
 
 set __CMAKE_EXE=
-for /f %%f in ('where cmake.exe 2^>NUL') do set __CMAKE_EXE=%%f
+for /f %%f in ('where cmake.exe 2^>NUL') do set "__CMAKE_EXE=%%f"
 if defined __CMAKE_EXE (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CMake executable found in PATH
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CMake executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__CMAKE_EXE%") do set __CMAKE_BIN_DIR=%%~dpi
     for %%f in ("!__CMAKE_BIN_DIR!..") do set _CMAKE_HOME=%%~sf
     rem keep _CMAKE_PATH undefined since executable already in path
     goto :eof
 ) else if defined CMAKE_HOME (
     set _CMAKE_HOME=%CMAKE_HOME%
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CMAKE_HOME
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CMAKE_HOME 1>&2
 ) else (
     set "__PATH=%_PROGRAM_FILES%"
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\cmake*" 2^>NUL') do set "_CMAKE_HOME=!__PATH!\%%f"
@@ -147,7 +149,7 @@ if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
 )
 rem path name of installation directory may contain spaces
 for /f "delims=" %%f in ("%_CMAKE_HOME%") do set _CMAKE_HOME=%%~sf
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default CMake installation directory %_CMAKE_HOME%
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default CMake installation directory %_CMAKE_HOME% 1>&2
 
 rem set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
 goto :eof
@@ -158,14 +160,14 @@ set _PYTHON_HOME=
 set _PYTHON_PATH=
 
 set __PYTHON_EXE=
-for /f %%f in ('where python.exe 2^>NUL') do set __PYTHON_EXE=%%f
+for /f %%f in ('where python.exe 2^>NUL') do set "__PYTHON_EXE=%%f"
 if defined __PYTHON_EXE (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Python executable found in PATH
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Python executable found in PATH 1>&2
     rem keep _PYTHON_PATH undefined since executable already in path
     goto :eof
 ) else if defined PYTHON_HOME (
     set "_PYTHON_HOME=%PYTHON_HOME%"
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable PYTHON_HOME
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable PYTHON_HOME 1>&2
 ) else (
     set __PATH=C:\opt
     if exist "!__PATH!\Python\" ( set _PYTHON_HOME=!__PATH!\Python
@@ -190,7 +192,7 @@ if not exist "%_PYTHON_HOME%\Scripts\pylint.exe" (
 )
 rem path name of installation directory may contain spaces
 for /f "delims=" %%f in ("%_PYTHON_HOME%") do set _PYTHON_HOME=%%~sf
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Python installation directory %_PYTHON_HOME%
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Python installation directory %_PYTHON_HOME% 1>&2
 
 set "_PYTHON_PATH=;%_PYTHON_HOME%;%_PYTHON_HOME%\Scripts"
 goto :eof
@@ -201,16 +203,16 @@ set _MSYS_HOME=
 set _MSYS_PATH=
 
 set __MAKE_EXE=
-for /f %%f in ('where make.exe 2^>NUL') do set __MAKE_EXE=%%f
+for /f %%f in ('where make.exe 2^>NUL') do set "__MAKE_EXE=%%f"
 if defined __MAKE_EXE (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of GNU Make executable found in PATH
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of GNU Make executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__MAKE_EXE%") do set __MAKE_BIN_DIR=%%~dpi
     for %%f in ("!__MAKE_BIN_DIR!..\..") do set _MSYS_HOME=%%~sf
     rem keep _MSYS_PATH undefined since executable already in path
     goto :eof
 ) else if defined MSYS_HOME (
     set _MSYS_HOME=%MSYS_HOME%
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable MSYS_HOME
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable MSYS_HOME 1>&2
 ) else (
     set "__PATH=%_PROGRAM_FILES%"
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\msys*" 2^>NUL') do set "_MSYS_HOME=!__PATH!\%%f"
@@ -239,16 +241,16 @@ set _LLVM_HOME=
 set _LLVM_PATH=
 
 set __CLANG_EXE=
-for /f %%f in ('where clang.exe 2^>NUL') do set __CLANG_EXE=%%f
+for /f %%f in ('where clang.exe 2^>NUL') do set "__CLANG_EXE=%%f"
 if defined __CLANG_EXE (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Clang executable found in PATH
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Clang executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__CLANG_EXE%") do set __LLVM_BIN_DIR=%%~dpi
     for %%f in ("!__LLVM_BIN_DIR!..") do set _LLVM_HOME=%%~sf
     rem keep _LLVM_PATH undefined since executable already in path
     goto :eof
 ) else if defined LLVM_HOME (
     set _LLVM_HOME=%LLVM_HOME%
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable LLVM_HOME
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable LLVM_HOME 1>&2
 ) else (
     set "__PATH=%_PROGRAM_FILES%"
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\%_LLVM_PREFIX%*" 2^>NUL') do set "_LLVM_HOME=!__PATH!\%%f"
@@ -265,7 +267,7 @@ if not exist "%_LLVM_HOME%\bin\clang.exe" (
 )
 rem path name of installation directory may contain spaces
 for /f "delims=" %%f in ("%_LLVM_HOME%") do set _LLVM_HOME=%%~sf
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default LLVM installation directory %_LLVM_HOME%
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default LLVM installation directory %_LLVM_HOME% 1>&2
 
 set "_LLVM_PATH=;%_LLVM_HOME%\bin"
 goto :eof
@@ -330,7 +332,7 @@ if not %_EXITCODE%==0 goto :eof
 set "_MSVS_HOME=%_SUBST_PATH%"
 
 set "__PATH=%_MSVS_HOME%\VC\Tools\MSVC"
-for /f %%f in ('dir /ad /b "%__PATH%" 2^>NUL') do set _MSVC_HOME=%__PATH%\%%f
+for /f %%f in ('dir /ad /b "%__PATH%" 2^>NUL') do set "_MSVC_HOME=%__PATH%\%%f"
 if "%PROCESSOR_ARCHITECTURE%"=="AMD64" ( set __MSVC_ARCH=\Hostx64\x64
 ) else ( set __MSVC_ARCH=\Hostx86\x86
 )
@@ -368,13 +370,13 @@ set __DRIVE_NAME=X:
 set __ASSIGNED_PATH=
 for /f "tokens=1,2,*" %%f in ('subst ^| findstr /b "%__DRIVE_NAME%" 2^>NUL') do (
     if not "%%h"=="%_SUBST_PATH%" (
-        echo Warning: Drive %__DRIVE_NAME% already assigned to %%h
+        echo %_WARNING_LABEL% Drive %__DRIVE_NAME% already assigned to %%h 1>&2
         goto :eof
     )
     set "__ASSIGNED_PATH=%%h"
 )
 if not defined __ASSIGNED_PATH (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% subst "%__DRIVE_NAME%" "%_SUBST_PATH%"
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% subst "%__DRIVE_NAME%" "%_SUBST_PATH%" 1>&2
     subst "%__DRIVE_NAME%" "%_SUBST_PATH%"
     if not !ERRORLEVEL!==0 (
         set _EXITCODE=1
@@ -390,14 +392,14 @@ set _GIT_PATH=
 
 set __GIT_HOME=
 set __GIT_EXE=
-for /f %%f in ('where git.exe 2^>NUL') do set __GIT_EXE=%%f
+for /f %%f in ('where git.exe 2^>NUL') do set "__GIT_EXE=%%f"
 if defined __GIT_EXE (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Git executable found in PATH
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Git executable found in PATH 1>&2
     rem keep _GIT_PATH undefined since executable already in path
     goto :eof
 ) else if defined GIT_HOME (
     set "__GIT_HOME=%GIT_HOME%"
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable GIT_HOME
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable GIT_HOME 1>&2
 ) else (
     set __PATH=C:\opt
     if exist "!__PATH!\Git\" ( set __GIT_HOME=!__PATH!\Git
@@ -416,7 +418,7 @@ if not exist "%__GIT_HOME%\bin\git.exe" (
 )
 rem path name of installation directory may contain spaces
 for /f "delims=" %%f in ("%__GIT_HOME%") do set __GIT_HOME=%%~sf
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Git installation directory %__GIT_HOME%
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Git installation directory %__GIT_HOME% 1>&2
 
 rem We don't add ;%__GIT_HOME%\usr\bin which is redundant with ;%_MSYS_HOME%\usr\bin
 set "_GIT_PATH=;%__GIT_HOME%\bin;%__GIT_HOME%\mingw64\bin;%~dp0bin"
@@ -440,7 +442,7 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('lli.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% lli %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% lli.exe
 ) else (
-    echo Warning: lli executable not found in directory %_LLVM_HOME% 1>&2
+    echo %_WARNING_LABEL% lli executable not found in directory %_LLVM_HOME% 1>&2
     echo ^(LLVM installation directory needs additional binaries^) 1>&2
 )
 where /q opt.exe
@@ -518,11 +520,11 @@ echo %__VERSIONS_LINE4%
 echo %__VERSIONS_LINE5%
 if %__VERBOSE%==1 if defined __WHERE_ARGS (
     rem if %_DEBUG%==1 echo %_DEBUG_LABEL% where %__WHERE_ARGS%
-    echo Tool paths:
-    for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p
-    echo Important note:
-    echo    MSVC CMake and GNU Cmake were not added to PATH ^(name conflict^).
-    echo    Use either %%MSVS_CMAKE_CMD%% or %%CMAKE_HOME%%\bin\cmake.exe.
+    echo Tool paths: 1>&2
+    for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p 1>&2
+    echo Important note: 1>&2
+    echo    MSVC CMake and GNU Cmake were not added to PATH ^(name conflict^). 1>&2
+    echo    Use either %%MSVS_CMAKE_CMD%% or %%CMAKE_HOME%%\bin\cmake.exe. 1>&2
     rem echo Environment variables:
     rem echo    LLVM_HOME=%LLVM_HOME%
     rem echo    MSVC_HOME=%MSVC_HOME%
@@ -543,6 +545,6 @@ endlocal & (
     if not defined PYTHON_HOME set PYTHON_HOME=%_PYTHON_HOME%
     set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_MSVS_PATH%%_GIT_PATH%"
     if %_EXITCODE%==0 call :print_env %_VERBOSE%
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE%
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
     for /f "delims==" %%i in ('set ^| findstr /b "_"') do set %%i=
 )

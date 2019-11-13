@@ -18,11 +18,14 @@ if not %_EXITCODE%==0 goto end
 
 call :args %*
 if not %_EXITCODE%==0 goto end
-if %_HELP%==1 call :help & exit /b %_EXITCODE%
 
 rem ##########################################################################
 rem ## Main
 
+if %_HELP%==1 (
+    call :help
+    exit /b !_EXITCODE!
+)
 if %_CLEAN%==1 (
     call :clean
     if not !_EXITCODE!==0 goto end
@@ -155,8 +158,8 @@ echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     -debug      show commands executed by this script
 echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
-echo.
 echo     -verbose    display progress messages
+echo.
 echo   Subcommands:
 echo     clean       delete generated files
 echo     compile     generate executable
