@@ -11,7 +11,7 @@
   </tr>
 </table>
 
-In this document we present the following examples in more detail (each of them is a [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
+In this document we present the following examples in more detail (each of them is a [**`CMake`**](gnu_cmake) project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
 
 - [**`hello`**](#hello)
 - [**`JITTutorial1`**](#tut1)
@@ -25,11 +25,11 @@ In this document we present the following examples in more detail (each of them 
 
 Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** to the console (sources: [**`hello.c`**](hello/src/main/c/hello.c) or [**`hello.cpp`**](hello/src/main/cpp/hello.cpp)).
 
-Our main goal here is to refresh our knowledge of the build tools [**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html), [**`CMake`**](https://cmake.org/cmake/help/latest/manual/cmake.1.html), [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html), [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) and [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019) (see also the page [*"Getting Started with the LLVM System using Microsoft Visual Studio"*](https://llvm.org/docs/GettingStartedVS.html) from the [LLVM documentation](https://llvm.org/docs/index.html)). 
+Our main goal here is to refresh our knowledge of the build tools [**`Clang`**](llvm_clang), [**`CMake`**](gnu_cmake), [**`GCC`**](gnu_gcc), [**`GNU Make`**](gnu_make) and [**`MSBuild`**](windows_msbuild) (see also the page [*"Getting Started with the LLVM System using Microsoft Visual Studio"*](https://llvm.org/docs/GettingStartedVS.html) from the [LLVM documentation](llvm_docs)). 
 
 Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
 
-> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~320 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets CL/MSBuild, Clang/GNU Make and GCC/GNU Make.
+> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~370 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets MSVC/MSBuild, Clang/GNU Make and GCC/GNU Make.
 
 <pre style="font-size:80%;">
 <b>&gt; build</b>
@@ -41,6 +41,7 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
     -debug      show commands executed by this script
     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
     -msvc       use MSVC/MSBuild toolset (alias for option -cl)
+    -timer      display total elapsed time
     -verbose    display progress messages
 &nbsp;
   Subcommands:
@@ -71,12 +72,13 @@ Execute build\Release\hello.exe
 Hello world !
 </pre>
 
-Command [**`build -debug run`**](hello/build.bat) uses the [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)/[**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) toolset to generate executable **`hello.exe`**
+Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**](windows_msvc)/[**`MSBuild`**](windows_msbuild) toolset to generate executable **`hello.exe`**
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
 [build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=msvc _VERBOSE=0
 [build] Toolset: MSVC/MSBuild, Project: hello
+[build] Configuration: Release, Platform: x64
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated ..
 -- Building for: Visual Studio 16 2019
@@ -104,11 +106,11 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)/[**`Clang`**](https://clang.llvm.org/docs/ClangCommandLineReference.html) toolset instead of [**`MSBuild`**](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019)/[**`CL`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) to generate executable **`hello.exe`**:
+Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clang`**](llvm_clang)/[**`GNU Make`**](gnu_make) toolset instead of [**`MSVC`**](windows_msvc)/[**`MSBuild`**](windows_msbuild) to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -clang clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=clang _VERBOSE=0
+[build] _CLEAN=1 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=clang _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -131,16 +133,16 @@ Scanning dependencies of target hello
 [ 75%] Building C object CMakeFiles/hello.dir/src/main/c/hello.c.obj
 [100%] Linking C executable hello.exe
 [100%] Built target hello
-[build] call build\hello.exe
+[build] build\hello.exe
 Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html)/[**`GNU Make`**](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html) toolset to generate executable **`hello.exe`**:
+Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**](gnu_gcc)/[**`GNU Make`**](gnu_make) toolset to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug -gcc clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=gcc _VERBOSE=0
+[build] _CLEAN=1 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=gcc _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -172,7 +174,7 @@ Hello world !
 
 Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html) (*outdated*) from the LLVM 2.6 tutorial.
 
-It defines a function **`mul_add`** and generates its [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
+It defines a function **`mul_add`** and generates its [IR code](llvm_ir) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
 
 Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands:
 
@@ -186,6 +188,7 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
     -debug      show commands executed by this script
     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
     -msvc       use MSVC/MSBuild toolset (alias for option -cl)
+    -timer      display total elapsed time
     -verbose    display progress messages
 &nbsp;
   Subcommands:
@@ -237,9 +240,10 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug clean run</b> 
-[build] _CLEAN=1 _COMPILE=1 _RUN=1 _TOOLSET=msvc _VERBOSE=0
+[build] _CLEAN=1 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=msvc _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
+[build] Configuration: Debug, Platform: x64
 [build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
 [build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-9.0.0" ..
 -- Building for: Visual Studio 16 2019
@@ -260,7 +264,7 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 [build] msbuild.exe /nologo /m /p:Configuration=Release /p:Platform="x64" "L:\example\JITTUT~1\build\JITTutorial1.sln"
 The generation has started 02.08.2019 19:36:32.
 [...]
-    33 Warning(s)
+    0 Warning(s)
     0 Error(s)
 
 Elapsed time 00:00:03.65
@@ -277,7 +281,7 @@ entry:
 [build] _EXITCODE=0
 </pre>
 
-> **:mag_right:** Output generated by options **`-verbose`** and **`-debug`** are redirected to [stderr](https://support.microsoft.com/en-us/help/110930/redirecting-error-messages-from-command-prompt-stderr-stdout) and can be discarded by adding **`2>NUL`**, e.g.:
+> **:mag_right:** Output generated by options **`-verbose`** and **`-debug`** are redirected to [stderr](windows_stderr) and can be discarded by adding **`2>NUL`**, e.g.:
 > <pre style="font-size:80%;">
 > <b>&gt; build -debug clean run 2>NUL</b>
 > ; ModuleID = 'tut1'
@@ -291,7 +295,7 @@ entry:
 > }
 > </pre>
 
-Finally, one may wonder what's happen if we transform the above [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) into an executable:
+Finally, one may wonder what's happen if we transform the above [IR code](llvm_ir) into an executable:
 
 <pre style="font-size:80%;">
 <b>&gt; build run &gt; tut1.ll</b>
@@ -318,7 +322,7 @@ In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic
 </p>
 -->
 
-The [LLVM linker](https://lld.llvm.org/) requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html); we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
+The [LLVM linker](llvm_lld) requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code](llvm_ir); we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
 
 
 ## <span id="tut1_main">`JITTutorial1_main`</span>
@@ -357,9 +361,9 @@ entry:
 declare i32 @printf(i8*, ...)
 </pre>
 
-> **:mag_right:** In the above [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) we can recognize the  call to function **`mul_add`** (ie. **`call .. @mul_add(i32 10, i32 2, i32 3)`**); the three arguments are **`10`**, **`2`** and **`3`**; so the result should be **`(10 * 2) + 3 = 23`**.
+> **:mag_right:** In the above [IR code](llvm_ir) we can recognize the  call to function **`mul_add`** (ie. **`call .. @mul_add(i32 10, i32 2, i32 3)`**); the three arguments are **`10`**, **`2`** and **`3`**; so the result should be **`(10 * 2) + 3 = 23`**.
 
-Now, let's transform the above [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) into an executable:
+Now, let's transform the above [IR code](llvm_ir) into an executable:
 
 <pre style="font-size:80%;">
 <b>&gt; build run &gt; build\tut1.ll</b>
@@ -384,7 +388,7 @@ Now, let's transform the above [IR code](https://releases.llvm.org/9.0.0/docs/La
 
 [**`JITTutorial2\`**](JITTutorial2/) is based on example [*"A More Complicated Function"*](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html) (*outdated*) from the LLVM 2.6 tutorial.
 
-It defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)).
+It defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code](llvm_ir) (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)).
 
 Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
 
@@ -423,9 +427,9 @@ cond_false1:                                      ; preds = %cond_false
 [**`JITTutorial2_main\`**](JITTutorial2_main/) is our extended version of previous example [**`JITTutorial2`**](#tut2):
 
 - it defines the same function **`gcd`** as in example [**`JITTutorial2`**](#tut2),
-- it defines a **`main`** function with [parameters **`argc`** and **`argv`**](https://en.cppreference.com/w/cpp/language/main_function) as program entry point and
-- it defines several [**`printf`**](http://www.cplusplus.com/reference/cstdio/printf/) functions to print out both string and integer values.
-- it defines a [**`strtol`**](http://www.cplusplus.com/reference/cstdlib/strtol/) function to convert string values to integer values.
+- it defines a **`main`** function with [parameters **`argc`** and **`argv`**](cpp_main) as program entry point and
+- it defines several [**`printf`**](cpp_printf) functions to print out both string and integer values.
+- it defines a [**`strtol`**](cpp_strtol) function to convert string values to integer values.
 
 > **:mag_right:** The source files are organized as follows:
 > - The **`gcd`** function is defined/implemented in [**`tut2.h`**](JITTutorial2_main/src/tut2.h) resp. [**`tut2.cpp`**](JITTutorial2_main/src/tut2.cpp)
@@ -443,7 +447,7 @@ cond_false1:                                      ; preds = %cond_false
 >CallInst* createPrintStrLn(Module* Mod, IRBuilder<> Builder, Value* Arg);
 >CallInst* createStrToInt(Module* Mod, IRBuilder<> Builder, Value* ArgStr);
 > </pre>
-> We use function **`initModule(Module* mod)`** to include the two fields **`target datalayout`** and **`target triple`** into the generated [IR code](https://releases.llvm.org/9.0.0/docs/LangRef.html) (see below); that solves the warning "**`warning: overriding the module target triple`**" we encountered in example [**`JITTutorial1_main`**](#tut1_main).
+> We use function **`initModule(Module* mod)`** to include the two fields **`target datalayout`** and **`target triple`** into the generated [IR code](llvm_ir) (see below); that solves the warning "**`warning: overriding the module target triple`**" we encountered in example [**`JITTutorial1_main`**](#tut1_main).
 
 Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
 
@@ -522,7 +526,7 @@ result=15
 
 ## <span id="llvm-hello">`llvm-hello`</span>
 
-Example [**`llvm-hello\`**](llvm-hello/) is based on the simple [C++ example](https://github.com/zilder/llvm-hello-world-example) from [Ildar Musin](https://www.linkedin.com/in/ildar-musin-8586985b/) (February 2016).
+Example [**`llvm-hello\`**](llvm-hello/) is based on the simple [C++ example](llvm_hello) from [Ildar Musin](https://www.linkedin.com/in/ildar-musin-8586985b/) (February 2016).
 
 It generates a file **`program.ll`** which simply prints message **`"hello world!"`** to the console (source: [**`main.cpp`**](llvm-hello/src/main/cpp/main.cpp)).
 
@@ -634,3 +638,20 @@ rem ## Cleanups</i>
 
 *[mics](http://lampwww.epfl.ch/~michelou/)/November 2019* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
+
+<!-- link refs -->
+
+[cpp_main]: https://en.cppreference.com/w/cpp/language/main_function
+[cpp_printf]: http://www.cplusplus.com/reference/cstdio/printf/
+[cpp_strtol]: http://www.cplusplus.com/reference/cstdlib/strtol/
+[gnu_cmake]: https://cmake.org/cmake/help/latest/manual/cmake.1.html
+[gnu_gcc]: https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
+[gnu_make]: https://www.gnu.org/software/make/manual/html_node/Options-Summary.html
+[llvm_clang]: https://clang.llvm.org/docs/ClangCommandLineReference.html
+[llvm_docs]: https://llvm.org/docs/index.html
+[llvm_hello]: https://github.com/zilder/llvm-hello-world-example
+[llvm_lld]: https://lld.llvm.org/
+[llvm_ir]: https://releases.llvm.org/9.0.0/docs/LangRef.html
+[windows_msvc]: https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019
+[windows_msbuild]: https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019
+[windows_stderr]: https://support.microsoft.com/en-us/help/110930/redirecting-error-messages-from-command-prompt-stderr-stdout

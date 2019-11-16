@@ -9,20 +9,20 @@
   </tr>
 </table>
 
-[Dotty](https://github.com/michelou/dotty-examples), [GraalSqueak](https://github.com/michelou/graalsqueak-examples) and [GraalVM](https://github.com/michelou/graalvm-examples) are other topics we are currently investigating.
+[Dotty](dotty_examples), [GraalSqueak](graalsqueak_examples) and [GraalVM](graalvm_examples) are other topics we are currently investigating.
 
 ## <span id="proj_deps">Project dependencies</span>
 
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
-- [CMake 3.16](https://cmake.org/download/) ([*release notes*](https://cmake.org/cmake/help/v3.16/release/3.16.html))
-- [LLVM 9 Windows binaries](https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0) <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*](https://releases.llvm.org/9.0.0/docs/ReleaseNotes.html))
-- [Microsoft Visual Studio Community 2019](https://visualstudio.microsoft.com/en/downloads/) <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup> ([*release notes*](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes))
+- [CMake 3.16](cmake_downloads) ([*release notes*](cmake_relnotes))
+- [LLVM 9 Windows binaries](llvm_downloads) <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*](llvm_relnotes))
+- [Microsoft Visual Studio Community 2019](vs2019_downloads) <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup> ([*release notes*](vs2019_relnotes))
 
 Optionally one may also install the following software:
 
-- [Git 2.24](https://git-scm.com/download/win) ([*release notes*](https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.24.0.txt))
-- [MSYS2](http://repo.msys2.org/distrib/x86_64/) <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
+- [Git 2.24](git_downloads) ([*release notes*](git_relnotes))
+- [MSYS2](msys2_downloads) <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
@@ -45,10 +45,7 @@ https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
 -->
 
 > **&#9755;** ***Installation policy***<br/>
-> When possible we install software from a [Zip archive](https://www.howtogeek.com/178146/htg-explains-everything-you-need-to-know-about-zipped-files/) rather than via a Windows installer. In our case we defined **`C:\opt\`** as the installation directory for optional software tools (*in reference to* the [`/opt/`](http://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html) directory on Unix).
-<!--
-We further recommand using an advanced console emulator such as [ComEmu](https://conemu.github.io/) (or [Cmdr](http://cmder.net/)) which features [Unicode support](https://conemu.github.io/en/UnicodeSupport.html).
--->
+> When possible we install software from a [Zip archive](zip_archive) rather than via a Windows installer. In our case we defined **`C:\opt\`** as the installation directory for optional software tools (*in reference to* the [`/opt/`](linux_opt) directory on Unix).
 
 ## <span id="structure">Directory structure</span>
 
@@ -67,16 +64,16 @@ setenv.bat
 
 where
 
-- directory [**`bin\`**](bin/) contains a batch file and the tools <a href="https://github.com/microsoft/vswhere"><b><code>vswhere</code></b></a> and <a href="http://bytepointer.com/tools/index.htm#pelook"><b><code>pelook</code></b></a>.
-- directory [**`docs\`**](docs/) contains several [LLVM](https://llvm.org/) related papers/articles.
-- directory [**`examples\`**](examples/) contains [LLVM](https://llvm.org/) code examples (see [**`examples\README.md`**](examples/README.md)).
-- directory **`llvm-9.0.0.src\`** contains the [LLVM](https://llvm.org/) source code distribution.
+- directory [**`bin\`**](bin/) contains a batch file and the tools [**`vswhere`**](vswhere_exe) and [**`pelook`**](pelook_exe).
+- directory [**`docs\`**](docs/) contains several [LLVM](llvm) related papers/articles.
+- directory [**`examples\`**](examples/) contains [LLVM](llvm) code examples (see [**`examples\README.md`**](examples/README.md)).
+- directory **`llvm-9.0.0.src\`** contains the [LLVM](llvm) source code distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`setenv.bat`**](setenv.bat) is the batch script for setting up our environment.
 
-We also define a virtual drive **`L:`** in our working environment in order to reduce/hide the real path of our project directory (see article ["Windows command prompt limitation"](https://support.microsoft.com/en-gb/help/830473/command-prompt-cmd-exe-command-line-string-limitation) from Microsoft Support).
+We also define a virtual drive **`L:`** in our working environment in order to reduce/hide the real path of our project directory (see article ["Windows command prompt limitation"](windows_limitation) from Microsoft Support).
 
-> **:mag_right:** We use the Windows external command [**`subst`**](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/subst) to create virtual drives; for instance:
+> **:mag_right:** We use the Windows external command [**`subst`**](windows_subst) to create virtual drives; for instance:
 >
 > <pre style="font-size:80%;">
 > <b>&gt; subst L: %USERPROFILE%\workspace\llvm-examples</b>
@@ -88,7 +85,7 @@ In the next section we give a brief description of the batch files present in th
 
 We distinguish different sets of batch commands:
 
-1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) and [**`git.exe`**](https://git-scm.com/docs/git) directly available from the command prompt (see section [**Project dependencies**](#proj_deps)).
+1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**](llvm_clang_exe), [**`cl.exe`**](cl_exe) and [**`git.exe`**](git_exe) directly available from the command prompt (see section [**Project dependencies**](#proj_deps)).
 
    <pre style="font-size:80%;">
    <b>&gt; setenv help</b>
@@ -101,7 +98,7 @@ We distinguish different sets of batch commands:
      Subcommands:
        help        display this help message</pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules](https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html)) not available in [LLVM](https://llvm.org/) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules](https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html)) not available in [LLVM](llvm) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
    <pre style="font-size:80%;">
    <b>&gt; build help</b>
@@ -119,13 +116,13 @@ We distinguish different sets of batch commands:
        install     install files generated in directory build
        run         run executable</pre>
 
-    > **:mag_right:** For instance, [LLVM tools](https://llvm.org/docs/CommandGuide/) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) (optimizer), [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html) (static compiler) and [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) (bitcode interpreter) are not part of the [LLVM](https://llvm.org/) binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
+    > **:mag_right:** For instance, [LLVM tools](llvm_tools) such as [**`llvm-as.exe`**](https://llvm.org/docs/CommandGuide/llvm-as.html) (assembler), [**`llvm-dis.exe`**](https://llvm.org/docs/CommandGuide/llvm-dis.html) (disassembler), [**`opt.exe`**](llvm_opt_exe) (optimizer), [**`llc.exe`**](llvm_llc_exe) (static compiler) and [**`lli.exe`**](llvm_lli_exe) (bitcode interpreter) are not part of the [LLVM](llvm) binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
 
 ## <span id="usage">Usage examples</span>
 
 #### `setenv.bat`
 
-Command [**`setenv`**](setenv.bat) is executed once to setup our development environment; it makes external tools such as [**`clang.exe`**](https://clang.llvm.org/docs/ClangCommandLineReference.html#introduction), [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html), [**`cl.exe`**](https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019) and [**`git.exe`**](https://git-scm.com/docs/git) directly available from the command prompt:
+Command [**`setenv`**](setenv.bat) is executed once to setup our development environment; it makes external tools such as [**`clang.exe`**](llvm_clang_exe), [**`opt.exe`**](llvm_opt_exe), [**`cl.exe`**](cl_exe) and [**`git.exe`**](git_exe) directly available from the command prompt:
 
 <pre style="font-size:80%;">
 <b>&gt; setenv</b>
@@ -143,7 +140,7 @@ L:\bin\vswhere.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
-> Command [**`setenv`**](setenv.bat) does not add [MSVC CMake](https://devblogs.microsoft.com/cppblog/cmake-support-in-visual-studio/) and [GNU Cmake](https://cmake.org/) to the **`PATH`** environment variable because of name conflict. We use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
+> Command [**`setenv`**](setenv.bat) does not add [MSVC CMake](windows_cmake) and [GNU Cmake](gnu_cmake) to the **`PATH`** environment variable because of name conflict. We use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
 
 Command **`setenv -verbose`** also displays the tool paths:
 
@@ -181,7 +178,7 @@ Important note:
 
 #### `llvm-9.0.0.src\build.bat`
 
-We make use of the [LLVM](https://llvm.org/) source distribution to build the addtional binaries not available in the [LLVM](https://llvm.org/) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+We make use of the [LLVM](llvm) source distribution to build the addtional binaries not available in the [LLVM](llvm) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
 Directory **`llvm-9.0.0.src\`** is setup as follows:
 <pre style="font-size:80%;">
@@ -203,7 +200,7 @@ Generate configuration files into directory "build"
 [...]
 </pre>
 
-Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM](https://llvm.org/) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM](llvm) installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
 <pre style="font-size:80%;">
 <b>&gt; build -verbose install</b>
@@ -213,7 +210,7 @@ Copy files from directory build\lib\cmake to C:\opt\LLVM-9.0.0\lib\cmake\
 Copy files from directory include to C:\opt\LLVM-9.0.0\include\
 </pre>
 
-We list below several executables in the [LLVM](https://llvm.org/) installation directory; e.g. commands like [**`clang.exe`**](https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html), [**`lld.exe`**](https://lld.llvm.org/)  and [**`lldb.exe`**](https://lldb.llvm.org/) belong to the orginal distribution while commands like [**`llc.exe`**](https://llvm.org/docs/CommandGuide/llc.html), [**`lli.exe`**](https://llvm.org/docs/CommandGuide/lli.html) and [**`opt.exe`**](https://llvm.org/docs/CommandGuide/opt.html) were build/added from the [LLVM](https://llvm.org/) source distribution.
+We list below several executables in the [LLVM](llvm) installation directory; e.g. commands like [**`clang.exe`**](llvm_clang_exe), [**`lld.exe`**](https://lld.llvm.org/)  and [**`lldb.exe`**](https://lldb.llvm.org/) belong to the orginal distribution while commands like [**`llc.exe`**](llvm_llc_exe), [**`lli.exe`**](llvm_lli_exe) and [**`opt.exe`**](llvm_opt_exe) were build/added from the [LLVM](llvm) source distribution.
 
 <pre style="font-size:80%;">
 <b>&gt; where /t clang llc lld lldb lli opt</b>
@@ -232,7 +229,7 @@ See document [**`examples\README.md`**](examples/README.md).
 
 ## <span id="resources">Resources</span>
 
-See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM](https://llvm.org/) related resources.
+See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM](llvm) related resources.
 
 
 ## <span id="footnotes">Footnotes</span>
@@ -325,3 +322,34 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 *[mics](http://lampwww.epfl.ch/~michelou/)/November 2019* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
+
+<!-- link refs -->
+
+[cl_exe]: https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019
+[gnu_cmake]: https://cmake.org/
+[cmake_downloads]: https://cmake.org/download/
+[cmake_relnotes]: https://cmake.org/cmake/help/v3.16/release/3.16.html
+[dotty_examples]: https://github.com/michelou/dotty-examples
+[git_downloads]: https://git-scm.com/download/win
+[git_exe]: https://git-scm.com/docs/git
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.24.0.txt
+[graalsqueak_examples]: https://github.com/michelou/graalsqueak-examples
+[graalvm_examples]: https://github.com/michelou/graalvm-examples
+[linux_opt]: http://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html
+[llvm]: https://llvm.org/
+[llvm_clang_exe]: https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0
+[llvm_llc_exe]: https://llvm.org/docs/CommandGuide/llc.html
+[llvm_lli_exe]: https://llvm.org/docs/CommandGuide/lli.html
+[llvm_opt_exe]: https://llvm.org/docs/CommandGuide/opt.html
+[llvm_relnotes]: https://releases.llvm.org/9.0.0/docs/ReleaseNotes.html
+[llvm_tools]: https://llvm.org/docs/CommandGuide/
+[msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
+[pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
+[vs2019_downloads]: https://visualstudio.microsoft.com/en/downloads/
+[vs2019_relnotes]: https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes
+[vswhere_exe]: https://github.com/microsoft/vswhere
+[windows_cmake]: https://devblogs.microsoft.com/cppblog/cmake-support-in-visual-studio/
+[windows_limitation]: https://support.microsoft.com/en-gb/help/830473/command-prompt-cmd-exe-command-line-string-limitation
+[windows_subst]: https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/subst
+[zip_archive]: https://www.howtogeek.com/178146/htg-explains-everything-you-need-to-know-about-zipped-files/

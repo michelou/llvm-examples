@@ -98,6 +98,7 @@ set _RUN=0
 set _DEBUG=0
 set _HELP=0
 set _TEST=0
+set _TIMER=0
 set _TOOLSET=msvc
 set _VERBOSE=0
 set __N=0
@@ -115,6 +116,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=gcc
     ) else if /i "%__ARG%"=="-help" ( set _HELP=1
     ) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
+    ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
     ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -142,11 +144,8 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
-if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/GNU Make
-) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/GNU Make
-) else ( set _TOOLSET_NAME=MSVC/MSBuild
-)
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
 :help
@@ -158,6 +157,7 @@ echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     -debug      show commands executed by this script
 echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
+echo     -timer      display total elapsed time
 echo     -verbose    display progress messages
 echo.
 echo   Subcommands:
@@ -191,6 +191,10 @@ goto :eof
 setlocal
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
+if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/GNU Make
+) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/GNU Make
+) else ( set _TOOLSET_NAME=MSVC/MSBuild
+)
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 ) else if %_VERBOSE%==1 ( echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 )
@@ -247,8 +251,9 @@ goto :eof
 set "__CMAKE_CMD=%MSVS_CMAKE_CMD%"
 set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 
-if %_VERBOSE%==1 echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
-
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
+) else if %_VERBOSE%==1 ( echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
+)
 set LLVM_TARGET_TRIPLE=
 for /f %%i in ('%LLVM_HOME%\bin\clang.exe -print-effective-triple') do set LLVM_TARGET_TRIPLE=%%i
 if %_DEBUG%==1 echo %_DEBUG_LABEL% LLVM_TARGET_TRIPLE=%LLVM_TARGET_TRIPLE% 1>&2
@@ -283,7 +288,7 @@ goto :eof
 if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
-set __EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe
+set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
 if not exist "%__EXE_FILE%" (
     echo %_ERROR_LABEL% Executable %_PROJ_NAME%.exe not found 1>&2
     set _EXITCODE=1
@@ -308,13 +313,13 @@ goto :eof
 if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
-set __EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe
+set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
 if not exist "%__EXE_FILE%" (
     echo %_ERROR_LABEL% Executable %_PROJ_NAME%.exe not found 1>&2
     set _EXITCODE=1
     goto :eof
 )
-set __LL_FILE=%_TARGET_DIR%\program.ll
+set "__LL_FILE=%_TARGET_DIR%\program.ll"
 pushd "%_TARGET_DIR%"
 
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
@@ -332,7 +337,7 @@ popd
 goto :eof
 
 :test
-set __LL_FILE=%_TARGET_DIR%\program.ll
+set "__LL_FILE=%_TARGET_DIR%\program.ll"
 if not exist "%__LL_FILE%" (
     echo %_ERROR_LABEL% File program.ll not found 1>&2
     set _EXITCODE=1
@@ -348,10 +353,23 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
+rem output parameter: _DURATION
+:duration
+set __START=%~1
+set __END=%~2
+
+for /f "delims=" %%i in ('powershell -c "$interval = New-TimeSpan -Start '%__START%' -End '%__END%'; Write-Host $interval"') do set _DURATION=%%i
+goto :eof
+
 rem ##########################################################################
 rem ## Cleanups
 
 :end
+if %_TIMER%==1 (
+    for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
+    call :duration "%_TIMER_START%" "!__TIMER_END!"
+    echo Total elapsed time: !_DURATION! 1>&2
+)
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%
 endlocal

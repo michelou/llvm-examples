@@ -38,3 +38,7 @@ hs_err_pid*.log
 jmh_result.json
 *.src.tar.xz
 workingsets.xml
+
+# llvm-examples project
+*_LOCAL/
+.settings/

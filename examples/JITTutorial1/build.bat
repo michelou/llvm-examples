@@ -136,7 +136,7 @@ set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
-if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TOTAL_TIME_START=%%i
+if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
 :help
@@ -148,6 +148,7 @@ echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     -debug      show commands executed by this script
 echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
+echo     -timer      display total elapsed time
 echo     -verbose    display progress messages
 echo.
 echo   Subcommands:
@@ -241,8 +242,9 @@ goto :eof
 set "__CMAKE_CMD=%MSVS_CMAKE_CMD%"
 set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 
-if %_VERBOSE%==1 echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
-
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
+) else if %_VERBOSE%==1 ( echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
+)
 set LLVM_TARGET_TRIPLE=
 for /f %%i in ('%LLVM_HOME%\bin\clang.exe -print-effective-triple') do set LLVM_TARGET_TRIPLE=%%i
 if %_DEBUG%==1 echo %_DEBUG_LABEL% LLVM_TARGET_TRIPLE=%LLVM_TARGET_TRIPLE% 1>&2
@@ -277,7 +279,7 @@ goto :eof
 if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
-set __EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe
+set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
 if not exist "%__EXE_FILE%" (
     echo %_ERROR_LABEL% Executable %_PROJ_NAME%.exe not found 1>&2
     set _EXITCODE=1
@@ -299,7 +301,7 @@ goto :eof
 if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
-set __EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe
+set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
 if not exist "%__EXE_FILE%" (
     echo %_ERROR_LABEL% Executable %_PROJ_NAME%.exe not found 1>&2
     set _EXITCODE=1
@@ -329,11 +331,9 @@ rem ## Cleanups
 
 :end
 if %_TIMER%==1 (
-    for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TOTAL_TIME_END=%%i
-    call :duration "%_TOTAL_TIME_START%" "!_TOTAL_TIME_END!"
-    if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Total duration: !_DURATION! 1>&2
-    ) else if %_VERBOSE%==1 ( echo Total duration: !_DURATION! 1>&2
-    )
+    for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
+    call :duration "%_TIMER_START%" "!__TIMER_END!"
+    echo Total elapsed time: !_DURATION! 1>&2
 )
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%
