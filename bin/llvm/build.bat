@@ -20,9 +20,6 @@ call :args %*
 if not %_EXITCODE%==0 goto end
 if %_HELP%==1 call :help & exit /b %_EXITCODE%
 
-set _STDOUT_REDIRECT=1^>NUL
-if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
-
 rem ##########################################################################
 rem ## Main
 
@@ -50,6 +47,12 @@ rem ## Subroutines
 rem output parameter(s): _PROJ_NAME, _PROJ_CONFIG, _TARGET_DIR, _TARGET_OUTPUT_DIR
 rem                      _MSBUILD_CMD, _MSBUILD_OPTS, _DEBUG_LABEL, _ERROR_LABEL
 :env
+rem ANSI colors in standard Windows 10 shell
+rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _DEBUG_LABEL=[46m[%_BASENAME%][0m
+set _ERROR_LABEL=[91mError[0m:
+set _WARNING_LABEL=[93mWarning[0m:
+
 set __CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt
 if not exist "%__CMAKE_LIST_FILE%" (
     echo %_ERROR_LABEL% File CMakeLists.txt not found 1>&2
@@ -68,11 +71,6 @@ set _TARGET_OUTPUT_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
-rem ANSI colors in standard Windows 10 shell
-rem see https://gist.github.com/mlocati/#file-win10colors-cmd
-set _DEBUG_LABEL=[46m[%_BASENAME%][0m
-set _ERROR_LABEL=[91mError[0m:
-set _WARNING_LABEL=[93mWarning[0m:
 goto :eof
 
 rem input parameter: %*
@@ -85,7 +83,7 @@ set _RUN=0
 set _DEBUG=0
 set _HELP=0
 set _TIMER=0
-set _TOOLSET=0
+set _TOOLSET=msvc
 set _VERBOSE=0
 set __N=0
 :args_loop
@@ -107,7 +105,7 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     rem subcommand
-    set /a __N=+1
+    set /a __N+=1
     if /i "%__ARG%"=="clean" ( set _CLEAN=1
     ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
     ) else if /i "%__ARG%"=="help" ( set _HELP=1
@@ -122,20 +120,21 @@ if "%__ARG:~0,1%"=="-" (
 shift
 goto :args_loop
 :args_done
-if %_TOOLSET%==1 ( set _TOOLSET_NAME=Clang/GNU Make
-) else if %_TOOLSET%==2 (  set _TOOLSET_NAME=GCC/GNU Make
-) else ( set _TOOLSET_NAME=CL/MSBuild
-)
+set _STDOUT_REDIRECT=1^>NUL
+if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
+
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _INSTALL=%_INSTALL% _VERBOSE=%_VERBOSE% 1>&2
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
 :help
-echo Usage: %_BASENAME% { options ^| subcommands }
+echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
+echo.
 echo   Options:
 echo     -debug      show commands executed by this script
 echo     -timer      print total elapsed time
 echo     -verbose    display progress messages
+echo.
 echo   Subcommands:
 echo     clean       delete generated files
 echo     compile     generate executable
@@ -166,15 +165,19 @@ goto :eof
 setlocal
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
+if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/GNU Make
+) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/GNU Make
+) else ( set _TOOLSET_NAME=MSVC/MSBuild
+)
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 ) else if %_VERBOSE%==1 ( echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 )
-call :compile_cl
+call :compile_msvc
 
 endlocal
 goto :eof
 
-:compile_cl
+:compile_msvc
 set __PYTHON_CMD=%PYTHON_HOME%\python.exe
 rem set "__CMAKE_CMD=%MSVS_CMAKE_CMD%"
 set __CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe
@@ -302,9 +305,7 @@ rem ## Cleanups
 if %_TIMER%==1 (
     for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
     call :duration "%_TIMER_START%" "!__TIMER_END!"
-    if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Total duration: !_DURATION! 1>&2
-    ) else if %_VERBOSE%==1 ( echo Total duration: !_DURATION! 1>&2
-    )
+    echo Total elapsed time: !_DURATION! 1>&2
 )
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%
