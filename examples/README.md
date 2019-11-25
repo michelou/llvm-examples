@@ -6,7 +6,7 @@
     <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
-    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM</a> project and tested on a Windows machine.
+    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM</a> project and tested on a Windows machine.
   </td>
   </tr>
 </table>
@@ -25,7 +25,7 @@ In this document we present the following examples in more detail (each of them 
 
 Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** to the console (sources: [**`hello.c`**](hello/src/main/c/hello.c) or [**`hello.cpp`**](hello/src/main/cpp/hello.cpp)).
 
-Our main goal here is to refresh our knowledge of the build tools [**`Clang`**][llvm_clang], [**`CMake`**][gnu_cmake], [**`GCC`**][gnu_gcc], [**`GNU Make`**][gnu_make] and [**`MSBuild`**][windows_msbuild] (see also the page [*"Getting Started with the LLVM System using Microsoft Visual Studio"*](https://llvm.org/docs/GettingStartedVS.html) from the [LLVM documentation][llvm_docs]). 
+Our main goal here is to refresh our knowledge of the build tools [**`Clang`**][llvm_clang], [**`CMake`**][gnu_cmake], [**`GCC`**][gnu_gcc], [**`GNU Make`**][gnu_make] and [**`MSBuild`**][windows_msbuild] (see also the page [*"Getting Started with the LLVM System using Microsoft Visual Studio"*][llvm_msvs] from the [LLVM documentation][llvm_docs]). 
 
 Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
 
@@ -330,7 +330,7 @@ The [LLVM linker][llvm_lld] requires an entry point to successfully generate an 
 [**`JITTutorial1_main\`**](JITTutorial1_main/) is our extended version of previous example [**`JITTutorial1`**](#tut1):
 
 - it defines the same function **`mul_add`** as in example [**`JITTutorial1`**](#tut1),
-- it defines a **`main`** function (with [no parameter](https://en.cppreference.com/w/cpp/language/main_function)) as program entry point and
+- it defines a **`main`** function (with [no parameter][cpp_main] as program entry point and
 - it defines a **`printf`** function to print out the result.
 
 > **:mag_right:** The source code ([**`main.cpp`**](JITTutorial1_main/src/main.cpp), [**`tut1.cpp`**](JITTutorial1_main/src/tut1.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
@@ -652,6 +652,7 @@ rem ## Cleanups</i>
 [llvm_hello]: https://github.com/zilder/llvm-hello-world-example
 [llvm_lld]: https://lld.llvm.org/
 [llvm_ir]: https://releases.llvm.org/9.0.0/docs/LangRef.html
+[llvm_msvs]: https://llvm.org/docs/GettingStartedVS.html
 [llvm_tutorial1]: http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html
 [llvm_tutorial2]: http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html
 [windows_msvc]: https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019
