@@ -25,7 +25,6 @@ rem ## Main
 
 set _MSYS_PATH=
 set _LLVM_PATH=
-set _MSVS_PATH=
 set _PYTHON_PATH=
 set _GIT_PATH=
 
@@ -41,8 +40,8 @@ if not %_EXITCODE%==0 goto end
 call :llvm
 if not %_EXITCODE%==0 goto end
 
-rem call :msvs
-call :msvs_2019
+rem call :msvs_2010
+call :msvs
 if not %_EXITCODE%==0 goto end
 
 call :git
@@ -54,7 +53,6 @@ rem ##########################################################################
 rem ## Subroutines
 
 rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
-rem                    _PROGRAM_FILES, _PROGRAM_FILES_X86
 :env
 rem ANSI colors in standard Windows 10 shell
 rem see https://gist.github.com/mlocati/#file-win10colors-cmd
@@ -62,14 +60,12 @@ set _DEBUG_LABEL=[46m[%_BASENAME%][0m
 set _ERROR_LABEL=[91mError[0m:
 set _WARNING_LABEL=[93mWarning[0m:
 
-for %%f in ("%ProgramFiles%") do set _PROGRAM_FILES=%%~sf
-for %%f in ("%ProgramFiles(x86)%") do set _PROGRAM_FILES_X86=%%~sf
-
 set _WSWHERE_CMD=%_ROOT_DIR%bin\vswhere.exe
 goto :eof
 
 rem input parameter: %*
 :args
+set _BASH=0
 set _HELP=0
 set _LLVM_PREFIX=LLVM
 set _VERBOSE=0
@@ -80,7 +76,8 @@ if not defined __ARG goto args_done
 
 if "%__ARG:~0,1%"=="-" (
     rem option
-    if /i "%__ARG%"=="-debug" ( set _DEBUG=1
+    if /i "%__ARG%"=="-bash" ( set _BASH=1
+    ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
     ) else if /i "%__ARG%"=="-llvm:8" ( set _LLVM_PREFIX=LLVM-8
     ) else if /i "%__ARG%"=="-llvm:9" ( set _LLVM_PREFIX=LLVM-9
     ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
@@ -102,13 +99,14 @@ if "%__ARG:~0,1%"=="-" (
 shift
 goto :args_loop
 :args_done
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% _HELP=%_HELP% _LLVM_PREFIX=%_LLVM_PREFIX% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 echo %_DEBUG_LABEL% _BASH=%_BASH% _HELP=%_HELP% _LLVM_PREFIX=%_LLVM_PREFIX% _VERBOSE=%_VERBOSE% 1>&2
 goto :eof
 
 :help
 echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
 echo.
 echo   Options:
+echo     -bash        start Git bash shell instead of Windows command prompt
 echo     -debug       show commands executed by this script
 echo     -llvm:^<8^|9^>  select version of LLVM installation 
 echo     -verbose     display progress messages
@@ -122,11 +120,11 @@ rem output parameter(s): _CMAKE_HOME
 set _CMAKE_HOME=
 rem set _CMAKE_PATH=
 
-set __CMAKE_EXE=
-for /f %%f in ('where cmake.exe 2^>NUL') do set "__CMAKE_EXE=%%f"
-if defined __CMAKE_EXE (
+set __CMAKE_CMD=
+for /f %%f in ('where cmake.exe 2^>NUL') do set "__CMAKE_CMD=%%f"
+if defined __CMAKE_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CMake executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__CMAKE_EXE%") do set __CMAKE_BIN_DIR=%%~dpi
+    for /f "delims=" %%i in ("%__CMAKE_CMD%") do set __CMAKE_BIN_DIR=%%~dpi
     for %%f in ("!__CMAKE_BIN_DIR!..") do set _CMAKE_HOME=%%~sf
     rem keep _CMAKE_PATH undefined since executable already in path
     goto :eof
@@ -134,7 +132,7 @@ if defined __CMAKE_EXE (
     set _CMAKE_HOME=%CMAKE_HOME%
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CMAKE_HOME 1>&2
 ) else (
-    set "__PATH=%_PROGRAM_FILES%"
+    set "__PATH=%ProgramFiles%"
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\cmake*" 2^>NUL') do set "_CMAKE_HOME=!__PATH!\%%f"
     if not defined _CMAKE_HOME (
         set __PATH=C:\opt
@@ -240,11 +238,11 @@ rem output parameter(s): _LLVM_HOME, _LLVM_PATH
 set _LLVM_HOME=
 set _LLVM_PATH=
 
-set __CLANG_EXE=
-for /f %%f in ('where clang.exe 2^>NUL') do set "__CLANG_EXE=%%f"
-if defined __CLANG_EXE (
+set __CLANG_CMD=
+for /f %%f in ('where clang.exe 2^>NUL') do set "__CLANG_CMD=%%f"
+if defined __CLANG_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Clang executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__CLANG_EXE%") do set __LLVM_BIN_DIR=%%~dpi
+    for /f "delims=" %%i in ("%__CLANG_CMD%") do set __LLVM_BIN_DIR=%%~dpi
     for %%f in ("!__LLVM_BIN_DIR!..") do set _LLVM_HOME=%%~sf
     rem keep _LLVM_PATH undefined since executable already in path
     goto :eof
@@ -252,7 +250,7 @@ if defined __CLANG_EXE (
     set _LLVM_HOME=%LLVM_HOME%
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable LLVM_HOME 1>&2
 ) else (
-    set "__PATH=%_PROGRAM_FILES%"
+    set "__PATH=%ProgramFiles%"
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\%_LLVM_PREFIX%*" 2^>NUL') do set "_LLVM_HOME=!__PATH!\%%f"
     if not defined _LLVM_HOME (
         set __PATH=C:\opt
@@ -265,100 +263,63 @@ if not exist "%_LLVM_HOME%\bin\clang.exe" (
     set _EXITCODE=1
     goto :eof
 )
-rem path name of installation directory may contain spaces
-for /f "delims=" %%f in ("%_LLVM_HOME%") do set _LLVM_HOME=%%~sf
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default LLVM installation directory %_LLVM_HOME% 1>&2
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default LLVM installation directory "%_LLVM_HOME%" 1>&2
 
 set "_LLVM_PATH=;%_LLVM_HOME%\bin"
 goto :eof
 
-rem output paramter(s): _MSVC_HOME, _MSVS_HOME, _MSVS_PATH
+rem output paramters: _MSVC_HOME, _MSVS_HOME
 rem Visual Studio 10
-:msvs
+:msvs_2010
 set _MSVC_HOME=
 set _MSVS_HOME=
-set _MSVS_PATH=
 
-for /f "delims=" %%f in ("%_PROGRAM_FILES_X86%\Microsoft Visual Studio 10.0") do set _MSVS_HOME=%%~sf
+for /f "delims=" %%f in ("%ProgramFiles(x86)%\Microsoft Visual Studio 10.0") do set "_MSVS_HOME=%%f"
 if not exist "%_MSVS_HOME%" (
     echo %_ERROR_LABEL% Could not find installation directory for Microsoft Visual Studio 10 1>&2
     echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
-rem From now on use short name of MSVS installation path
-for %%f in ("%_MSVS_HOME%") do set _MSVS_HOME=%%~sf
-
+set __VC_BATCH_FILE=
+for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" vcvarsall.bat') do set "__VC_BATCH_FILE=%%f"
+if not exist "%__VC_BATCH_FILE%" (
+    echo %_ERROR_LABEL% Could not find file vcvarsall.bat in directory "%_MSVS_HOME%" 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 set _MSVC_HOME=%_MSVS_HOME%\VC
-if "%PROCESSOR_ARCHITECTURE%"=="AMD64" ( set __MSVC_ARCH=\amd64
-) else ( set __MSVC_ARCH=
-)
-if not exist "%_MSVC_HOME%\bin%__MSVC_ARCH%\" (
-    echo %_ERROR_LABEL% Could not find installation directory for Microsoft Visual Studio 10 1>&2
-    echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-set __MSBUILD_HOME=
-set "__FRAMEWORK_DIR=%SystemRoot%\Microsoft.NET\Framework"
-for /f %%f in ('dir /ad /b "%__FRAMEWORK_DIR%\*" 2^>NUL') do set "__MSBUILD_HOME=%__FRAMEWORK_DIR%\%%f"
-if not exist "%__MSBUILD_HOME%\MSBuild.exe" (
-    echo %_ERROR_LABEL% Could not find Microsoft builder 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-rem 1st path -> (cl.exe, nmake.exe), 2nd path -> msbuild.exe
-set "_MSVS_PATH=;%_MSVC_HOME%\bin%__MSVC_ARCH%;%__MSBUILD_HOME%"
+rem set __MSBUILD_HOME=
+rem set "__FRAMEWORK_DIR=%SystemRoot%\Microsoft.NET\Framework"
+rem for /f %%f in ('dir /ad /b "%__FRAMEWORK_DIR%\*" 2^>NUL') do set "__MSBUILD_HOME=%__FRAMEWORK_DIR%\%%f"
 goto :eof
 
-rem output parameter(s): _MSBUILD_HOME, _MSBUILD_PATH, _MSVC_HOME, _MSVS_CMAKE_CMD, _MSVS_HOME, _MSVC_PATH
-rem Visual Studio 2019
-:msvs_2019
+rem output parameters: _MSVC_HOME, _MSVC_HOME
+rem Visual Studio 2017/2019
+:msvs
 set _MSVC_HOME=
-set _MSVS_CMAKE_CMD=
 set _MSVS_HOME=
-set _MSVS_PATH=
 
-set __WSWHERE_CMD=%_ROOT_DIR%bin\vswhere.exe
-for /f "delims=" %%f in ('%__WSWHERE_CMD% -property installationPath 2^>NUL') do set _MSVS_HOME=%%~sf
+set __MSVS_VERSION=2019
+for /f "delims=" %%f in ("%ProgramFiles(x86)%\Microsoft Visual Studio\%__MSVS_VERSION%") do set "_MSVS_HOME=%%f"
 if not exist "%_MSVS_HOME%\" (
-    echo %_ERROR_LABEL% Could not find installation directory for Microsoft Visual Studio 2019 1>&2
-    echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
+    echo %_ERROR_LABEL% Could not find installation directory for Microsoft Visual Studio %__MSVS_VERSION% 1>&2
     set _EXITCODE=1
     goto :eof
 )
-call :subst_path "%_MSVS_HOME%"
-if not %_EXITCODE%==0 goto :eof
-set "_MSVS_HOME=%_SUBST_PATH%"
-
-set "__PATH=%_MSVS_HOME%\VC\Tools\MSVC"
-for /f %%f in ('dir /ad /b "%__PATH%" 2^>NUL') do set "_MSVC_HOME=%__PATH%\%%f"
-if "%PROCESSOR_ARCHITECTURE%"=="AMD64" ( set __MSVC_ARCH=\Hostx64\x64
-) else ( set __MSVC_ARCH=\Hostx86\x86
-)
-if not exist "%_MSVC_HOME%\bin%__MSVC_ARCH%\" (
-    echo %_ERROR_LABEL% Could not find installation directory for MSVC compiler 1>&2
-    echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
+set __VC_BATCH_FILE=
+for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" vcvarsall.bat') do set "__VC_BATCH_FILE=%%f"
+if not exist "%__VC_BATCH_FILE%" (
+    echo %_ERROR_LABEL% Could not find file vcvarsall.bat in directory "%_MSVS_HOME%" 1>&2
     set _EXITCODE=1
     goto :eof
 )
-set "__PATH=%_MSVS_HOME%\MSBuild\Current"
-for /f "delims=" %%i in ('where /r "!__PATH!" msbuild.exe ^| findstr amd64') do set "__MSBUILD_BIN_DIR=%%~dpi"
-if not exist "%__MSBUILD_BIN_DIR%\MSBuild.exe" (
-    echo %_ERROR_LABEL% Could not find Microsoft builder 1>&2
-    set _MSBUILD_HOME=
-    set _EXITCODE=1
-    goto :eof
+if "%__VC_BATCH_FILE:Community=%"=="%__VC_BATCH_FILE%" ( set "_MSVC_HOME=%_MSVS_HOME%\BuildTools\VC"
+) else ( set "_MSVC_HOME=%_MSVS_HOME%\Community\VC"
 )
-set "__PATH=%_MSVS_HOME%\Common7\IDE\CommonExtensions\Microsoft\CMake"
-for /f "delims=" %%i in ('where /r "!__PATH!" cmake.exe') do set "__CMAKE_BIN_DIR=%%~dpi"
-if not exist "%__CMAKE_BIN_DIR%cmake.exe" (
-    echo %_ERROR_LABEL% Could not find Microsoft CMake 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-set "_MSVS_CMAKE_CMD=%__CMAKE_BIN_DIR%cmake.exe"
-set "_MSVS_PATH=;%_MSVC_HOME%\bin%__MSVC_ARCH%;%__MSBUILD_BIN_DIR%"
+rem call :subst_path "%_MSVS_HOME%"
+rem if not %_EXITCODE%==0 goto :eof
+rem set "_MSVS_HOME=%_SUBST_PATH%"
 goto :eof
 
 rem input parameter: %1=directory path
@@ -386,51 +347,55 @@ if not defined __ASSIGNED_PATH (
 set _SUBST_PATH=%__DRIVE_NAME%
 goto :eof
 
-rem output parameter(s): _GIT_PATH
+rem output parameter(s): _GIT_HOME, _GIT_PATH
 :git
+set _GIT_HOME=
 set _GIT_PATH=
 
-set __GIT_HOME=
-set __GIT_EXE=
-for /f %%f in ('where git.exe 2^>NUL') do set "__GIT_EXE=%%f"
-if defined __GIT_EXE (
+set __GIT_CMD=
+for /f %%f in ('where git.exe 2^>NUL') do set "__GIT_CMD=%%f"
+if defined __GIT_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Git executable found in PATH 1>&2
+    for %%i in ("%__GIT_CMD%") do set __GIT_BIN_DIR=%%~dpsi
+    for %%f in ("!__GIT_BIN_DIR!..") do set _GIT_HOME=%%~sf
+    rem Executable git.exe is present both in bin\ and \mingw64\bin\
+    if not "!_GIT_HOME:mingw=!"=="!_GIT_HOME!" (
+        for %%f in ("!_GIT_HOME!\..") do set _GIT_HOME=%%~sf
+    )
     rem keep _GIT_PATH undefined since executable already in path
     goto :eof
 ) else if defined GIT_HOME (
-    set "__GIT_HOME=%GIT_HOME%"
+    set "_GIT_HOME=%GIT_HOME%"
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable GIT_HOME 1>&2
 ) else (
     set __PATH=C:\opt
-    if exist "!__PATH!\Git\" ( set __GIT_HOME=!__PATH!\Git
+    if exist "!__PATH!\Git\" ( set _GIT_HOME=!__PATH!\Git
     ) else (
-        for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "__GIT_HOME=!__PATH!\%%f"
-        if not defined __GIT_HOME (
-            set "__PATH=%_PROGRAM_FILES%"
-            for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "__GIT_HOME=!__PATH!\%%f"
+        for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "_GIT_HOME=!__PATH!\%%f"
+        if not defined _GIT_HOME (
+            set "__PATH=%ProgramFiles%"
+            for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "_GIT_HOME=!__PATH!\%%f"
         )
     )
 )
-if not exist "%__GIT_HOME%\bin\git.exe" (
-    echo %_ERROR_LABEL% Git executable not found ^(%__GIT_HOME%^) 1>&2
+if not exist "%_GIT_HOME%\bin\git.exe" (
+    echo %_ERROR_LABEL% Git executable not found ^(%_GIT_HOME%^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
 rem path name of installation directory may contain spaces
-for /f "delims=" %%f in ("%__GIT_HOME%") do set __GIT_HOME=%%~sf
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Git installation directory %__GIT_HOME% 1>&2
+for /f "delims=" %%f in ("%_GIT_HOME%") do set _GIT_HOME=%%~sf
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Git installation directory %_GIT_HOME% 1>&2
 
-rem We don't add ;%__GIT_HOME%\usr\bin which is redundant with ;%_MSYS_HOME%\usr\bin
-set "_GIT_PATH=;%__GIT_HOME%\bin;%__GIT_HOME%\mingw64\bin;%~dp0bin"
+set "_GIT_PATH=;%_GIT_HOME%\bin;%_GIT_HOME%\mingw64\bin;%_GIT_HOME%\usr\bin"
 goto :eof
 
 :print_env
 set __VERBOSE=%1
+set __GIT_HOME=%~2
 set "__VERSIONS_LINE1=  "
 set "__VERSIONS_LINE2=  "
 set "__VERSIONS_LINE3=  "
-set "__VERSIONS_LINE4=  "
-set "__VERSIONS_LINE5=  "
 set __WHERE_ARGS=
 where /q clang.exe
 if %ERRORLEVEL%==0 (
@@ -450,85 +415,60 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('opt.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% opt %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% opt.exe
 )
-where /q cl.exe
-if %ERRORLEVEL%==0 (
-    for /f "tokens=1-5,6,*" %%i in ('cl.exe 2^>^&1 ^| findstr version ^| findstr x64') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% cl %%n"
-    set __WHERE_ARGS=%__WHERE_ARGS% cl.exe
-)
-where /q dumpbin.exe
-if %ERRORLEVEL%==0 (
-   for /f "tokens=1-5,*" %%i in ('dumpbin.exe 2^>^&1 ^| findstr Version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% dumpbin %%n,"
-    set __WHERE_ARGS=%__WHERE_ARGS% dumpbin.exe
-)
-where /q nmake.exe
-if %ERRORLEVEL%==0 (
-    for /f "tokens=1-7,*" %%i in ('nmake.exe /? 2^>^&1 ^| findstr Version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% nmake %%o"
-    set __WHERE_ARGS=%__WHERE_ARGS% nmake.exe
-)
-where /q msbuild.exe
-if %ERRORLEVEL%==0 (
-    for /f %%i in ('msbuild.exe -version ^| findstr /b "[0-9]"') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% msbuild %%i,"
-    set __WHERE_ARGS=%__WHERE_ARGS% msbuild.exe
-)
-for %%i in (%MSVS_CMAKE_CMD%) do set __BIN_DIR=%%~dpi
-set __BIN_DIR=%__BIN_DIR:~0,-1%
-rem if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('%MSVS_CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% cmake %%k"
-    set __WHERE_ARGS=%__WHERE_ARGS% "%__BIN_DIR%:cmake.exe"
-rem )
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 rem if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('%__CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% cmake %%k,"
+    for /f "tokens=1,2,3,*" %%i in ('%__CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cmake %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%CMAKE_HOME%\bin:cmake.exe"
 rem )
 where /q make.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% make %%k,"
+    for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% make %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% make.exe
 )
 where /q gcc.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-7,*" %%i in ('gcc.exe --version 2^>^&1 ^| findstr gcc') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% gcc %%o,"
+    for /f "tokens=1-7,*" %%i in ('gcc.exe --version 2^>^&1 ^| findstr gcc') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% gcc %%o,"
     set __WHERE_ARGS=%__WHERE_ARGS% gcc.exe
 )
 where /q python.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,*" %%i in ('python.exe --version 2^>^&1') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% python %%j,"
+    for /f "tokens=1,*" %%i in ('python.exe --version 2^>^&1') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% python %%j,"
     set __WHERE_ARGS=%__WHERE_ARGS% python.exe
 )
 where /q diff.exe
 if %ERRORLEVEL%==0 (
-   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% diff %%l"
+   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% diff %%l"
     set __WHERE_ARGS=%__WHERE_ARGS% diff.exe
 )
 where /q git.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE5=%__VERSIONS_LINE5% git %%k,"
+    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% git %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% git.exe
+)
+where /q "%__GIT_HOME%\bin":bash.exe
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1-3,4,*" %%i in ('"%__GIT_HOME%\bin\bash.exe" --version ^| findstr bash') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% bash %%l"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%__GIT_HOME%\bin:bash.exe"
 )
 rem see https://github.com/Microsoft/vswhere/releases
 where /q vswhere.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-4,5,*" %%i in ('vswhere -help ^| findstr /R /C:"version [0-9][0-9.+]*"') do set "__VERSIONS_LINE5=%__VERSIONS_LINE5% vswhere %%m"
+    for /f "tokens=1-4,5,*" %%i in ('vswhere -help ^| findstr /R /C:"version [0-9][0-9.+]*"') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% vswhere %%m"
     set __WHERE_ARGS=%__WHERE_ARGS% vswhere.exe
 )
 echo Tool versions:
 echo %__VERSIONS_LINE1%
 echo %__VERSIONS_LINE2%
 echo %__VERSIONS_LINE3%
-echo %__VERSIONS_LINE4%
-echo %__VERSIONS_LINE5%
 if %__VERBOSE%==1 if defined __WHERE_ARGS (
     rem if %_DEBUG%==1 echo %_DEBUG_LABEL% where %__WHERE_ARGS%
     echo Tool paths: 1>&2
     for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p 1>&2
-    echo Important note: 1>&2
-    echo    MSVC CMake and GNU Cmake were not added to PATH ^(name conflict^). 1>&2
-    echo    Use either %%MSVS_CMAKE_CMD%% or %%CMAKE_HOME%%\bin\cmake.exe. 1>&2
-    rem echo Environment variables:
-    rem echo    LLVM_HOME=%LLVM_HOME%
-    rem echo    MSVC_HOME=%MSVC_HOME%
-    rem echo    CMAKE_HOME=%CMAKE_HOME%
+)
+if %__VERBOSE%==1 if defined MSVS_HOME (
+    echo Environment variables: 1>&2
+    echo    MSVC_HOME="%MSVC_HOME%" 1>&2
+    echo    MSVS_HOME="%MSVS_HOME%" 1>&2
 )
 goto :eof
 
@@ -537,14 +477,19 @@ rem ## Cleanups
 
 :end
 endlocal & (
-    if not defined CMAKE_HOME set CMAKE_HOME=%_CMAKE_HOME%
-    if not defined LLVM_HOME set LLVM_HOME=%_LLVM_HOME%
-    if not defined MSVS_CMAKE_CMD set "MSVS_CMAKE_CMD=%_MSVS_CMAKE_CMD%"
-    if not defined MSVS_HOME set MSVS_HOME=%_MSVS_HOME%
-    if not defined MSVC_HOME set MSVC_HOME=%_MSVC_HOME%
-    if not defined PYTHON_HOME set PYTHON_HOME=%_PYTHON_HOME%
-    set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_MSVS_PATH%%_GIT_PATH%"
-    if %_EXITCODE%==0 call :print_env %_VERBOSE%
+    if %_EXITCODE%==0 (
+        if not defined CMAKE_HOME set "CMAKE_HOME=%_CMAKE_HOME%"
+        if not defined LLVM_HOME set "LLVM_HOME=%_LLVM_HOME%"
+        if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
+        if not defined MSVC_HOME set "MSVC_HOME=%_MSVC_HOME%"
+        if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
+        set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%"
+        call :print_env %_VERBOSE% "%_GIT_HOME%"
+        if %_BASH%==1 (
+            if %_DEBUG%==1 echo %_DEBUG_LABEL% %_GIT_HOME%\usr\bin\bash.exe --login 1>&2
+            cmd.exe /c "%_GIT_HOME%\usr\bin\bash.exe --login"
+        )
+    )
     if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
     for /f "delims==" %%i in ('set ^| findstr /b "_"') do set %%i=
 )

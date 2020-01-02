@@ -17,25 +17,24 @@ This project depends on the following external software for the **Microsoft Wind
 
 - [CMake 3.16][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [LLVM 9 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
-- [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup> ([*release notes*][vs2019_relnotes])
+- [Microsoft Visual Studio Community 2019][vs2019_downloads]  ([*release notes*][vs2019_relnotes])
 
 Optionally one may also install the following software:
 
 - [Git 2.24][git_downloads] ([*release notes*][git_relnotes])
-- [MSYS2][msys2_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
+- [MSYS2][msys2_downloads] <sup id="anchor_03"><a href="#footnote_02">[2]</a></sup>
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*November 2019*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
+For instance our development environment looks as follows (*January 2020*) <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>:
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.16.0\                                            <i>(  74 MB)</i>
-C:\opt\Git-2.24.0\                                              <i>( 271 MB)</i>
+C:\opt\cmake-3.16.2\                                            <i>(  77 MB)</i>
+C:\opt\Git-2.24.1\                                              <i>( 277 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)</i>
 C:\opt\LLVM-9.0.0\                                              <i>(1.3 resp. 17.3 GB)</i>
-C:\opt\Git-2.24.0\                                              <i>( 271 MB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
@@ -56,8 +55,10 @@ bin\vswhere.exe
 bin\llvm\build.bat
 docs\
 examples\{hello, JITTutorial1, ..}
-llvm-9.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>)</i>
-llvm-9.0.0.src.tar.xz
+llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i>
+llvm-8.0.1.src.tar.xz
+llvm-9.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>)</i>
+llvm-9.0.1.src.tar.xz
 README.md
 setenv.bat
 </pre>
@@ -67,7 +68,7 @@ where
 - directory [**`bin\`**](bin/) contains a batch file and the tools [**`vswhere`**][vswhere_exe] and [**`pelook`**][pelook_exe].
 - directory [**`docs\`**](docs/) contains several [LLVM] related papers/articles.
 - directory [**`examples\`**](examples/) contains [LLVM] code examples (see [**`examples\README.md`**](examples/README.md)).
-- directory **`llvm-9.0.0.src\`** contains the [LLVM] source code distribution.
+- directory **`llvm-9.0.1.src\`** contains the [LLVM] source code distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`setenv.bat`**](setenv.bat) is the batch script for setting up our environment.
 
@@ -85,18 +86,20 @@ In the next section we give a brief description of the batch files present in th
 
 We distinguish different sets of batch commands:
 
-1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**][llvm_clang], [**`cl.exe`**][cl_exe] and [**`git.exe`**][git_exe] directly available from the command prompt (see section [**Project dependencies**](#proj_deps)).
+1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**][llvm_clang] and [**`git.exe`**][git_exe] directly available from the command prompt (see section [**Project dependencies**](#proj_deps)).
 
    <pre style="font-size:80%;">
    <b>&gt; setenv help</b>
    Usage: setenv { &lt;option&gt; | &lt;subcommand&gt; }
    &nbsp;
-     Options:
-       -debug      show commands executed by this script
-       -verbose    display progress messages
+     Options::
+       -bash        start Git bash shell instead of Windows command prompt
+       -debug       show commands executed by this script
+       -llvm:&lt;8|9&gt;  select version of LLVM installation
+       -verbose     display progress messages
    &nbsp;
      Subcommands:
-       help        display this help message</pre>
+       help         display this help message</pre>
 
 2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
@@ -104,7 +107,7 @@ We distinguish different sets of batch commands:
    <b>&gt; build help</b>
    Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
    &nbsp;
-     Options:
+     Options
        -debug      show commands executed by this script
        -timer      print total elapsed time
        -verbose    display progress messages
@@ -116,27 +119,25 @@ We distinguish different sets of batch commands:
        install     install files generated in directory build
        run         run executable</pre>
 
-    > **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [LLVM-9.0.0-win64.exe](https://releases.llvm.org/9.0.0/)).
+    > **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-9.0.0-win64.exe`](https://releases.llvm.org/9.0.0/)).
 
 ## <span id="usage">Usage examples</span>
 
 #### `setenv.bat`
 
-Command [**`setenv`**](setenv.bat) is executed once to setup our development environment; it makes external tools such as [**`clang.exe`**][llvm_clang], [**`opt.exe`**][llvm_opt], [**`cl.exe`**][cl_exe] and [**`git.exe`**][git_exe] directly available from the command prompt:
+Command [**`setenv`**](setenv.bat) is executed once to setup our development environment; it makes external tools such as [**`clang.exe`**][llvm_clang], [**`opt.exe`**][llvm_opt] and [**`git.exe`**][git_exe] directly available from the command prompt:
 
 <pre style="font-size:80%;">
 <b>&gt; setenv</b>
 Tool versions:
-   clang 9.0.0, lli 9.0.0, opt 9.0.0, cl version 19.22.27905
-   dumpbin 14.22.27905.0, nmake 14.22.27905.0
-   msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
-   cmake 3.16.0, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
-   git 2.24.0.windows.1, vswhere 2.7.1+180c706d56
+   clang 9.0.0, lli 9.0.0, opt 9.0.0,
+   cmake 3.16.2, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
+   git 2.24.1.windows.2, bash 4.4.23(1)-release
 
-<b>&gt; where clang nmake vswhere</b>
+<b>&gt; where clang git</b>
 C:\opt\LLVM-9.0.0\bin\clang.exe
-X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
-L:\bin\vswhere.exe
+C:\opt\Git-2.24.1\bin\git.exe
+C:\opt\Git-2.24.1\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -147,52 +148,46 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; setenv -verbose</b>
 Tool versions:
-   clang 9.0.0, lli 9.0.0, opt 9.0.0, cl version 19.22.27905
-   dumpbin 14.22.27905.0, nmake 14.22.27905.0
-   msbuild 16.200.19.32702, cmake 3.14.19060802-MSVC_2
-   cmake 3.16.0, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
-   git 2.24.0.windows.1, vswhere 2.7.1+180c706d56
+   clang 9.0.0, lli 9.0.0, opt 9.0.0,
+   cmake 3.16.2, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
+   git 2.24.1.windows.2, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-9.0.0\bin\clang.exe
    C:\opt\LLVM-9.0.0\bin\lli.exe
    C:\opt\LLVM-9.0.0\bin\opt.exe
-   X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\cl.exe
-   X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\dumpbin.exe
-   X:\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\nmake.exe
-   X:\MSBuild\Current\Bin\amd64\MSBuild.exe
-   X:\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
-   C:\opt\cmake-3.16.0\bin\cmake.exe
+   C:\opt\cmake-3.16.2\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.7.4\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.24.0\bin\git.exe
-   C:\opt\Git-2.24.0\mingw64\bin\git.exe
-   L:\bin\vswhere.exe
-Important note:
-   MSVC CMake and GNU Cmake were not added to PATH (name conflict).
-   Use either %MSVS_CMAKE_CMD% or %CMAKE_HOME%\bin\cmake.exe.
+   C:\opt\Git-2.24.1\usr\bin\diff.exe
+   C:\opt\Git-2.24.1\bin\git.exe
+   C:\opt\Git-2.24.1\mingw64\bin\git.exe
+   C:\opt\Git-2.24.1\bin\bash.exe
+Environment variables:
+   MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
+   MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
 </pre>
 
-#### `llvm-9.0.0.src\build.bat`
+#### `llvm-9.0.1.src\build.bat`
 
 We make use of the [LLVM] source distribution to build the addtional binaries not available in the [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
 
-Directory **`llvm-9.0.0.src\`** is setup as follows:
+Directory **`llvm-9.0.1.src\`** is setup as follows:
 <pre style="font-size:80%;">
-<b>&gt; curl -sL -o llvm-9.0.0.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.0/llvm-9.0.0.src.tar.xz</b>
-<b>&gt; tar xzvf llvm-9.0.0.src.tar.xz</b>
-<b>&gt; cp bin\llvm\build.bat llvm-9.0.0.src</b>
-<b>&gt; cd llvm-9.0.0.src</b>
+<b>&gt; curl -sL -o llvm-9.0.1.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.1/llvm-9.0.1.src.tar.xz</b>
+<b>&gt; tar xzvf llvm-9.0.1.src.tar.xz</b>
+<b>&gt; cp bin\llvm\build.bat llvm-9.0.1.src</b>
+<b>&gt; cd llvm-9.0.1.src</b>
 </pre>
 
 Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
 <pre style="font-size:80%;">
 <b>&gt; cd</b>
-L:\llvm-9.0.0.src
+L:\llvm-9.0.1.src
 <b>&gt; build -verbose compile</b>
 Toolset: MSVC/MSBuild, Project: LLVM
 Configuration: Debug, Platform: x64
@@ -240,21 +235,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 Either LLVM 8 or LLVM 9 is supported. Command <b><code>setenv</code></b> selects the bigger available version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 if a LLVM 9 installation is also present.
 </p>
 
-<a name="footnote_02">[2]</a> ***Visual Studio Locator*** [↩](#anchor_02)
-
-<p style="margin:0 0 1em 20px;">
-Command <a href="https://github.com/microsoft/vswhere"><b><code>vswhere.exe</code></b></a> displays VS properties, including the exact version of our <a href="https://visualstudio.microsoft.com/en/downloads/">Visual Studio</a> installation (starting with VS 2017):
-<pre style="margin:0 0 1em 20px; font-size:80%;">
-<b>&gt; where vswhere</b>
-L:\bin\vswhere.exe
-
-<b>&gt; vswhere -property installationVersion</b>
-16.2.29123.88
-</pre>
-<!-- old: 16.1.29102.190 -->
-</p>
-
-<a name="footnote_03">[3]</a> ***MSYS2 versus MinGW*** [↩](#anchor_03)
+<a name="footnote_02">[2]</a> ***MSYS2 versus MinGW*** [↩](#anchor_02)
 
 <p style="margin:0 0 1em 20px;">
 We give here three criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/">MingGW-w64</a>:
@@ -300,17 +281,17 @@ gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
 GNU Make 4.2.1
 </pre>
 
-<a name="footnote_04">[4]</a> ***Downloads*** [↩](#anchor_04)
+<a name="footnote_03">[3]</a> ***Downloads*** [↩](#anchor_03)
 
 <p style="margin:0 0 1em 20px;">
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.16.0-win64-x64.zip</a>  <i>( 30 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.16.2-win64-x64.zip</a>  <i>( 31 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>        <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">LLVM-9.0.0-win64.exe</a>        <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>       <i>( 29 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">llvm-9.0.0.src.tar.xz</a>       <i>( 31 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>       <i>( 31 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>   <i>( 86 MB)</i>
 vs_2019_community.exe  
 </pre>
@@ -320,12 +301,11 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](http://lampwww.epfl.ch/~michelou/)/November 2019* [**&#9650;**](#top)
+*[mics](http://lampwww.epfl.ch/~michelou/)/January 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
 
-[cl_exe]: https://docs.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=vs-2019
 [gnu_cmake]: https://cmake.org/
 [cmake_downloads]: https://cmake.org/download/
 [cmake_modules]: https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html
@@ -333,7 +313,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [dotty_examples]: https://github.com/michelou/dotty-examples
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.24.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.24.1.txt
 [graalsqueak_examples]: https://github.com/michelou/graalsqueak-examples
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples

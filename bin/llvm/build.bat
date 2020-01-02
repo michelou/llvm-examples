@@ -18,11 +18,14 @@ if not %_EXITCODE%==0 goto end
 
 call :args %*
 if not %_EXITCODE%==0 goto end
-if %_HELP%==1 call :help & exit /b %_EXITCODE%
 
 rem ##########################################################################
 rem ## Main
 
+if %_HELP%==1 (
+    call :help
+    exit /b !_EXITCODE!
+)
 if %_CLEAN%==1 (
     call :clean
     if not !_EXITCODE!==0 goto end
@@ -53,6 +56,12 @@ set _DEBUG_LABEL=[46m[%_BASENAME%][0m
 set _ERROR_LABEL=[91mError[0m:
 set _WARNING_LABEL=[93mWarning[0m:
 
+for /f "delims=" %%f in ('where /r "%MSVS_HOME%" vcvarsall.bat') do set "_VCVARSALL_FILE=%%f"
+if not exist "%_VCVARSALL_FILE%" (
+    echo %_ERROR_LABEL% Internal error ^(vcvarsall.bat not found^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 set __CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt
 if not exist "%__CMAKE_LIST_FILE%" (
     echo %_ERROR_LABEL% File CMakeLists.txt not found 1>&2
@@ -177,9 +186,24 @@ call :compile_msvc
 endlocal
 goto :eof
 
+:init_msvc
+call "%_VCVARSALL_FILE%" amd64
+if not %ERRORLEVEL%==0 (
+    set _EXITCODE=1
+    goto :eof
+)
+set /a __SHOW_ALL=_DEBUG+_VERBOSE
+if not %__SHOW_ALL%==0 (
+    echo INCLUDE="%INCLUDE%" 1>&2
+    echo LIB="%LIB%" 1>&2
+)
+goto :eof
+
 :compile_msvc
+call :init_msvc
+if not %_EXITCODE%==0 goto :eof
+
 set __PYTHON_CMD=%PYTHON_HOME%\python.exe
-rem set "__CMAKE_CMD=%MSVS_CMAKE_CMD%"
 set __CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe
 set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated -DPYTHON_EXECUTABLE=%__PYTHON_CMD%
 
