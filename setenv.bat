@@ -18,7 +18,6 @@ if not %_EXITCODE%==0 goto end
 
 call :args %*
 if not %_EXITCODE%==0 goto end
-if %_HELP%==1 call :help & exit /b %_EXITCODE%
 
 rem ##########################################################################
 rem ## Main
@@ -28,6 +27,10 @@ set _LLVM_PATH=
 set _PYTHON_PATH=
 set _GIT_PATH=
 
+if %_HELP%==1 (
+    call :help
+    exit /b !_EXITCODE!
+)
 call :cmake
 if not %_EXITCODE%==0 goto end
 
@@ -407,7 +410,7 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('lli.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% lli %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% lli.exe
 ) else (
-    echo %_WARNING_LABEL% lli executable not found in directory %_LLVM_HOME% 1>&2
+    echo Warning: lli executable not found in directory %_LLVM_HOME% 1>&2
     echo ^(LLVM installation directory needs additional binaries^) 1>&2
 )
 where /q opt.exe

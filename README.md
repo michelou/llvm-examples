@@ -21,7 +21,7 @@ This project depends on the following external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
-- [Git 2.24][git_downloads] ([*release notes*][git_relnotes])
+- [Git 2.25][git_downloads] ([*release notes*][git_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_03"><a href="#footnote_02">[2]</a></sup>
 
 <!--
@@ -32,9 +32,9 @@ For instance our development environment looks as follows (*January 2020*) <sup 
 
 <pre style="font-size:80%;">
 C:\opt\cmake-3.16.2\                                            <i>(  77 MB)</i>
-C:\opt\Git-2.24.1\                                              <i>( 277 MB)</i>
+C:\opt\Git-2.25.0\                                              <i>( 268 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)</i>
-C:\opt\LLVM-9.0.0\                                              <i>(1.3 resp. 17.3 GB)</i>
+C:\opt\LLVM-9.0.1\                                              <i>(1.3 resp. 21.2 GB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 </pre>
@@ -101,7 +101,7 @@ We distinguish different sets of batch commands:
      Subcommands:
        help         display this help message</pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.1\`**).
 
    <pre style="font-size:80%;">
    <b>&gt; build help</b>
@@ -119,7 +119,7 @@ We distinguish different sets of batch commands:
        install     install files generated in directory build
        run         run executable</pre>
 
-    > **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-9.0.0-win64.exe`](https://releases.llvm.org/9.0.0/)).
+    > **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-9.0.1-win64.exe`][llvm_downloads]).
 
 ## <span id="usage">Usage examples</span>
 
@@ -130,14 +130,14 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;">
 <b>&gt; setenv</b>
 Tool versions:
-   clang 9.0.0, lli 9.0.0, opt 9.0.0,
+   clang 9.0.1, lli 9.0.1, opt 9.0.1,
    cmake 3.16.2, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
-   git 2.24.1.windows.2, bash 4.4.23(1)-release
+   git 2.25.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; where clang git</b>
-C:\opt\LLVM-9.0.0\bin\clang.exe
-C:\opt\Git-2.24.1\bin\git.exe
-C:\opt\Git-2.24.1\mingw64\bin\git.exe
+C:\opt\LLVM-9.0.1\bin\clang.exe
+C:\opt\Git-2.25.0\bin\git.exe
+C:\opt\Git-2.25.0\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -148,13 +148,13 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; setenv -verbose</b>
 Tool versions:
-   clang 9.0.0, lli 9.0.0, opt 9.0.0,
+   clang 9.0.1, lli 9.0.1, opt 9.0.1,
    cmake 3.16.2, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
-   git 2.24.1.windows.2, bash 4.4.23(1)-release
+   git 2.25.0.windows.1, bash 4.4.23(1)-release
 Tool paths:
-   C:\opt\LLVM-9.0.0\bin\clang.exe
-   C:\opt\LLVM-9.0.0\bin\lli.exe
-   C:\opt\LLVM-9.0.0\bin\opt.exe
+   C:\opt\LLVM-9.0.1\bin\clang.exe
+   C:\opt\LLVM-9.0.1\bin\lli.exe
+   C:\opt\LLVM-9.0.1\bin\opt.exe
    C:\opt\cmake-3.16.2\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
@@ -162,10 +162,10 @@ Tool paths:
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.24.1\usr\bin\diff.exe
-   C:\opt\Git-2.24.1\bin\git.exe
-   C:\opt\Git-2.24.1\mingw64\bin\git.exe
-   C:\opt\Git-2.24.1\bin\bash.exe
+   C:\opt\Git-2.25.0\usr\bin\diff.exe
+   C:\opt\Git-2.25.0\bin\git.exe
+   C:\opt\Git-2.25.0\mingw64\bin\git.exe
+   C:\opt\Git-2.25.0\bin\bash.exe
 Environment variables:
    MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
@@ -173,7 +173,7 @@ Environment variables:
 
 #### `llvm-9.0.1.src\build.bat`
 
-We make use of the [LLVM] source distribution to build the addtional binaries not available in the [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+We make use of the [LLVM] source distribution to build the addtional binaries not available in the [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.1\`**).
 
 Directory **`llvm-9.0.1.src\`** is setup as follows:
 <pre style="font-size:80%;">
@@ -195,26 +195,26 @@ Generate configuration files into directory "build"
 [...]
 </pre>
 
-Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.0\`**).
+Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-9.0.1\`**).
 
 <pre style="font-size:80%;">
 <b>&gt; build -verbose install</b>
-Copy files from directory build\Release\bin to C:\opt\LLVM-9.0.0\bin\
-Copy files from directory build\Release\lib to C:\opt\LLVM-9.0.0\lib\
-Copy files from directory build\lib\cmake to C:\opt\LLVM-9.0.0\lib\cmake\
-Copy files from directory include to C:\opt\LLVM-9.0.0\include\
+Copy files from directory build\Release\bin to C:\opt\LLVM-9.0.1\bin\
+Copy files from directory build\Release\lib to C:\opt\LLVM-9.0.1\lib\
+Copy files from directory build\lib\cmake to C:\opt\LLVM-9.0.1\lib\cmake\
+Copy files from directory include to C:\opt\LLVM-9.0.1\include\
 </pre>
 
 We list below several executables in the [LLVM] installation directory; e.g. commands like [**`clang.exe`**][llvm_clang], [**`lld.exe`**][llvm_lld]  and [**`lldb.exe`**][llvm_lldb] belong to the orginal distribution while commands like [**`llc.exe`**][llvm_llc], [**`lli.exe`**][llvm_lli] and [**`opt.exe`**][llvm_opt] were build/added from the [LLVM] source distribution.
 
 <pre style="font-size:80%;">
 <b>&gt; where /t clang llc lld lldb lli opt</b>
-  76211200   20.09.2019      12:21:48  C:\opt\LLVM-9.0.0\bin\clang.exe
- 139676672   21.10.2019      13:24:32  C:\opt\LLVM-9.0.0\bin\llc.exe
-  53349376   20.09.2019      12:23:56  C:\opt\LLVM-9.0.0\bin\lld.exe
-    237056   20.09.2019      12:25:28  C:\opt\LLVM-9.0.0\bin\lldb.exe
-  71214080   21.10.2019      13:25:23  C:\opt\LLVM-9.0.0\bin\lli.exe
- 145755136   21.10.2019      13:43:09  C:\opt\LLVM-9.0.0\bin\opt.exe
+  76270080   20.12.2019      19:12:16  C:\opt\LLVM-9.0.1\bin\clang.exe
+ 140577792   22.01.2020      18:17:09  C:\opt\LLVM-9.0.1\bin\llc.exe
+  53390848   20.12.2019      19:14:38  C:\opt\LLVM-9.0.1\bin\lld.exe
+    237056   20.12.2019      19:15:54  C:\opt\LLVM-9.0.1\bin\lldb.exe
+  71633920   22.01.2020      18:17:37  C:\opt\LLVM-9.0.1\bin\lli.exe
+ 146696192   22.01.2020      18:22:53  C:\opt\LLVM-9.0.1\bin\opt.exe
 </pre>
 
 
@@ -232,7 +232,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 <a name="footnote_01">[1]</a> ***LLVM version*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-Either LLVM 8 or LLVM 9 is supported. Command <b><code>setenv</code></b> selects the bigger available version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 if a LLVM 9 installation is also present.
+Both LLVM 8 and LLVM 9 are supported. Command <b><code>setenv</code></b> selects the bigger available version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 if a LLVM 9 installation is also present.
 </p>
 
 <a name="footnote_02">[2]</a> ***MSYS2 versus MinGW*** [↩](#anchor_02)
@@ -261,7 +261,7 @@ C:\opt\msys64\usr\bin\make.exe
 C:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; gcc --version | findstr gcc</b>
-gcc (Rev3, Built by MSYS2 project) 9.2.0
+gcc (Rev2, Built by MSYS2 project) 9.2.0
 &nbsp;
 <b>&gt; make --version | findstr Make</b>
 GNU Make 4.2.1
@@ -289,7 +289,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <a href="https://cmake.org/download/">cmake-3.16.2-win64-x64.zip</a>  <i>( 31 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>        <i>(131 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0">LLVM-9.0.0-win64.exe</a>        <i>(150 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">LLVM-9.0.1-win64.exe</a>        <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>       <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>       <i>( 31 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>   <i>( 86 MB)</i>
@@ -308,12 +308,12 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 [gnu_cmake]: https://cmake.org/
 [cmake_downloads]: https://cmake.org/download/
-[cmake_modules]: https://cmake.org/cmake/help/v3.15/manual/cmake-modules.7.html
+[cmake_modules]: https://cmake.org/cmake/help/v3.16/manual/cmake-modules.7.html
 [cmake_relnotes]: https://cmake.org/cmake/help/v3.16/release/3.16.html
 [dotty_examples]: https://github.com/michelou/dotty-examples
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.24.1.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.25.0.txt
 [graalsqueak_examples]: https://github.com/michelou/graalsqueak-examples
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples
@@ -322,13 +322,13 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
 [llvm_clang]: https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.0
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
 [llvm_lli]: https://llvm.org/docs/CommandGuide/lli.html
 [llvm_opt]: https://llvm.org/docs/CommandGuide/opt.html
-[llvm_relnotes]: https://releases.llvm.org/9.0.0/docs/ReleaseNotes.html
+[llvm_relnotes]: https://releases.llvm.org/9.0.1/docs/ReleaseNotes.html
 [llvm_tools]: https://llvm.org/docs/CommandGuide/
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook

@@ -73,9 +73,6 @@ set _TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 set _MAKE_CMD=make.exe
 set _MAKE_OPTS=
 
-set _MSBUILD_CMD=msbuild.exe
-set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
-
 set _PELOOK_CMD=pelook.exe
 set _PELOOK_OPTS=
 goto :eof
@@ -270,8 +267,27 @@ if not %ERRORLEVEL%==0 (
 popd
 goto :eof
 
+:init_msvc
+set _CMAKE_CMD=
+for /f "delims=" %%f in ('where /r "%MSVS_HOME%" cmake.exe') do set "_CMAKE_CMD=%%f"
+if not defined _CMAKE_CMD (
+    echo %_ERROR_LABEL% Microsoft CMake tool not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set _MSBUILD_CMD=
+for /f "delims=" %%f in ('where /r "%MSVS_HOME%" MSBuild.exe ^| findstr amd64') do set "_MSBUILD_CMD=%%f"
+if not defined _MSBUILD_CMD (
+    echo %_ERROR_LABEL% Microsoft MSBuild tool not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
 :compile_msvc
-set "__CMAKE_CMD=%MSVS_CMAKE_CMD%"
+call :init_msvc
+if not %_EXITCODE%==0 goto :eof
+
 set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
@@ -280,20 +296,22 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Configuration: %_PROJ_CONFIG%, Platform: %_
 pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
 
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "!_CMAKE_CMD:%MSVS_HOME%\=!" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
-call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+call "%_CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of build configuration failed 1>&2
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1>&2
+set __MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
+
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "!_MSBUILD_CMD:%MSVS_HOME%\=!" %__MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
+call "%_MSBUILD_CMD%" %__MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -364,9 +382,7 @@ rem ## Cleanups
 if %_TIMER%==1 (
     for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
     call :duration "%_TIMER_START%" "!__TIMER_END!"
-    if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Total duration: !_DURATION! 1>&2
-    ) else if %_VERBOSE%==1 ( echo Total duration: !_DURATION! 1>&2
-    )
+    echo Elapsed time: !_DURATION! 1>&2
 )
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%
