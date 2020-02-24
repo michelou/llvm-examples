@@ -72,7 +72,7 @@ set _TARGET_DIR=%_ROOT_DIR%build
 set _TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
 
 set _MAKE_CMD=make.exe
-set _MAKE_OPTS=
+set _MAKE_OPTS=--quiet
 
 set _PELOOK_CMD=pelook.exe
 set _PELOOK_OPTS=
