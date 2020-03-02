@@ -127,8 +127,8 @@ set __CMAKE_CMD=
 for /f %%f in ('where cmake.exe 2^>NUL') do set "__CMAKE_CMD=%%f"
 if defined __CMAKE_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CMake executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__CMAKE_CMD%") do set __CMAKE_BIN_DIR=%%~dpi
-    for %%f in ("!__CMAKE_BIN_DIR!..") do set _CMAKE_HOME=%%~sf
+    for /f "delims=" %%i in ("%__CMAKE_CMD%") do set "__CMAKE_BIN_DIR=%%~dpi"
+    for %%f in ("!__CMAKE_BIN_DIR!..") do set "_CMAKE_HOME=%%~sf"
     rem keep _CMAKE_PATH undefined since executable already in path
     goto :eof
 ) else if defined CMAKE_HOME (
@@ -207,8 +207,8 @@ set __MAKE_EXE=
 for /f %%f in ('where make.exe 2^>NUL') do set "__MAKE_EXE=%%f"
 if defined __MAKE_EXE (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of GNU Make executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__MAKE_EXE%") do set __MAKE_BIN_DIR=%%~dpi
-    for %%f in ("!__MAKE_BIN_DIR!..\..") do set _MSYS_HOME=%%~sf
+    for /f "delims=" %%i in ("%__MAKE_EXE%") do set "__MAKE_BIN_DIR=%%~dpi"
+    for %%f in ("!__MAKE_BIN_DIR!..\..") do set "_MSYS_HOME=%%~sf"
     rem keep _MSYS_PATH undefined since executable already in path
     goto :eof
 ) else if defined MSYS_HOME (
@@ -245,8 +245,8 @@ set __CLANG_CMD=
 for /f %%f in ('where clang.exe 2^>NUL') do set "__CLANG_CMD=%%f"
 if defined __CLANG_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Clang executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__CLANG_CMD%") do set __LLVM_BIN_DIR=%%~dpi
-    for %%f in ("!__LLVM_BIN_DIR!..") do set _LLVM_HOME=%%~sf
+    for /f "delims=" %%i in ("%__CLANG_CMD%") do set "__LLVM_BIN_DIR=%%~dpi"
+    for %%f in ("!__LLVM_BIN_DIR!..") do set "_LLVM_HOME=%%~sf"
     rem keep _LLVM_PATH undefined since executable already in path
     goto :eof
 ) else if defined LLVM_HOME (
@@ -297,11 +297,12 @@ rem set "__FRAMEWORK_DIR=%SystemRoot%\Microsoft.NET\Framework"
 rem for /f %%f in ('dir /ad /b "%__FRAMEWORK_DIR%\*" 2^>NUL') do set "__MSBUILD_HOME=%__FRAMEWORK_DIR%\%%f"
 goto :eof
 
-rem output parameters: _MSVC_HOME, _MSVC_HOME
+rem output parameters: _MSVC_HOME, _MSVS_HOME, _MSVS_CMAKE_HOME
 rem Visual Studio 2017/2019
 :msvs
 set _MSVC_HOME=
 set _MSVS_HOME=
+set _MSVS_CMAKE_HOME=
 
 set __MSVS_VERSION=2019
 for /f "delims=" %%f in ("%ProgramFiles(x86)%\Microsoft Visual Studio\%__MSVS_VERSION%") do set "_MSVS_HOME=%%f"
@@ -320,6 +321,15 @@ if not exist "%__VC_BATCH_FILE%" (
 if "%__VC_BATCH_FILE:Community=%"=="%__VC_BATCH_FILE%" ( set "_MSVC_HOME=%_MSVS_HOME%\BuildTools\VC"
 ) else ( set "_MSVC_HOME=%_MSVS_HOME%\Community\VC"
 )
+set __VS_CMAKE_CMD=
+for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" cmake.exe') do set "__VS_CMAKE_CMD=%%f"
+if not exist "%__VS_CMAKE_CMD%" (
+    echo %_ERROR_LABEL% Could not find file cmake.exe in directory "%_MSVS_HOME%" 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+for /f "delims=" %%i in ("%__VS_CMAKE_CMD%") do set "__VS_CMAKE_BIN_DIR=%%~dpi"
+for %%f in ("!__VS_CMAKE_BIN_DIR!..") do set "_MSVS_CMAKE_HOME=%%~sf"
 rem call :subst_path "%_MSVS_HOME%"
 rem if not %_EXITCODE%==0 goto :eof
 rem set "_MSVS_HOME=%_SUBST_PATH%"
@@ -359,8 +369,8 @@ set __GIT_CMD=
 for /f %%f in ('where git.exe 2^>NUL') do set "__GIT_CMD=%%f"
 if defined __GIT_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Git executable found in PATH 1>&2
-    for %%i in ("%__GIT_CMD%") do set __GIT_BIN_DIR=%%~dpsi
-    for %%f in ("!__GIT_BIN_DIR!..") do set _GIT_HOME=%%~sf
+    for %%i in ("%__GIT_CMD%") do set "__GIT_BIN_DIR=%%~dpi"
+    for %%f in ("!__GIT_BIN_DIR!..") do set "_GIT_HOME=%%~sf"
     rem Executable git.exe is present both in bin\ and \mingw64\bin\
     if not "!_GIT_HOME:mingw=!"=="!_GIT_HOME!" (
         for %%f in ("!_GIT_HOME!\..") do set _GIT_HOME=%%~sf
@@ -472,6 +482,7 @@ if %__VERBOSE%==1 if defined MSVS_HOME (
     echo Environment variables: 1>&2
     echo    MSVC_HOME="%MSVC_HOME%" 1>&2
     echo    MSVS_HOME="%MSVS_HOME%" 1>&2
+    echo    MSVS_CMAKE_HOME="%MSVS_CMAKE_HOME%" 1>&2
 )
 goto :eof
 
@@ -483,8 +494,9 @@ endlocal & (
     if %_EXITCODE%==0 (
         if not defined CMAKE_HOME set "CMAKE_HOME=%_CMAKE_HOME%"
         if not defined LLVM_HOME set "LLVM_HOME=%_LLVM_HOME%"
-        if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
         if not defined MSVC_HOME set "MSVC_HOME=%_MSVC_HOME%"
+        if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
+        if not defined MSVS_CMAKE_HOME set "MSVS_CMAKE_HOME=%_MSVS_CMAKE_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
         set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%"
         call :print_env %_VERBOSE% "%_GIT_HOME%"

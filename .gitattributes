@@ -14,12 +14,16 @@
 *.scala text
 *.txt text
 *.xml text
+*.yaml text
 
 # Declare files that will always have CRLF line endings on checkout.
 *.bat eol=crlf linguist-detectable=false
 *.cmd eol=crlf
 *.ps1 eol=crlf
 *.sln text eol=crlf
+
+# Declare files that will always have LF line endings on checkout.
+*.sh eol=lf
 
 # Denote all files that are truly binary and should not be modified.
 *.class binary

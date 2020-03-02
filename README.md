@@ -9,7 +9,7 @@
   </tr>
 </table>
 
-[Dotty][dotty_examples], [GraalSqueak][graalsqueak_examples], [GraalVM][graalvm_examples] and [Kotlin][kotlin_examples] are other topics we are currently investigating.
+[Dotty][dotty_examples], [GraalSqueak][graalsqueak_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples] and [Node.js][nodeje_examples] are other topics we are currently investigating.
 
 ## <span id="proj_deps">Project dependencies</span>
 
@@ -131,7 +131,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; setenv</b>
 Tool versions:
    clang 9.0.1, lli 9.0.1, opt 9.0.1,
-   cmake 3.16.4, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
+   cmake 3.16.4, make 4.3, gcc 9.2.0, python 3.7.4, diff 3.7
    git 2.25.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; where clang git</b>
@@ -141,7 +141,7 @@ C:\opt\Git-2.25.1\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
-> Command [**`setenv`**](setenv.bat) does not add [MSVC CMake][windows_cmake] and [GNU Cmake][gnu_cmake] to the **`PATH`** environment variable because of name conflict. We use either **`%MSVS_CMAKE_CMD%`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
+> Command [**`setenv`**](setenv.bat) does not add [MSVS CMake][windows_cmake] and [GNU Cmake][gnu_cmake] to the **`PATH`** environment variable because of name conflict. We write either **`%MSVS_CMAKE_HOME%\bin\cmake.exe`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
 
 Command **`setenv -verbose`** also displays the tool paths:
 
@@ -169,6 +169,7 @@ Tool paths:
 Environment variables:
    MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
+   MSVS_CMAKE_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
 </pre>
 
 #### `llvm-9.0.1.src\build.bat`
@@ -264,7 +265,7 @@ C:\opt\msys64\usr\bin\pacman.exe
 gcc (Rev2, Built by MSYS2 project) 9.2.0
 &nbsp;
 <b>&gt; make --version | findstr Make</b>
-GNU Make 4.2.1
+GNU Make 4.3
 </pre>
 <p style="margin:0 0 1em 20px;">
 MinGW-w64 tools:
@@ -316,11 +317,12 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.25.1.txt
 [graalsqueak_examples]: https://github.com/michelou/graalsqueak-examples
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
+[haskell_examples]: https://github.com/michelou/haskell-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples
 [linux_opt]: https://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
-[llvm_clang]: https://releases.llvm.org/8.0.0/tools/clang/docs/ClangCommandLineReference.html
+[llvm_clang]: https://releases.llvm.org/8.0.1/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
 [llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
@@ -331,6 +333,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [llvm_relnotes]: https://releases.llvm.org/9.0.1/docs/ReleaseNotes.html
 [llvm_tools]: https://llvm.org/docs/CommandGuide/
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
+[nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
 [vs2019_downloads]: https://visualstudio.microsoft.com/en/downloads/
 [vs2019_relnotes]: https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes
