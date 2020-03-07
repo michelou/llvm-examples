@@ -3,7 +3,7 @@
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;">
-    <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM"/></a>
+    <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM Logo"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
     Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM</a> project and tested on a Windows machine.
@@ -636,7 +636,7 @@ rem ## Cleanups</i>
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/February 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/March 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

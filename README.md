@@ -9,7 +9,7 @@
   </tr>
 </table>
 
-[Dotty][dotty_examples], [GraalSqueak][graalsqueak_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples] and [Node.js][nodejs_examples] are other topics we are currently investigating.
+[Dotty][dotty_examples], [GraalSqueak][graalsqueak_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples] and [Node.js][nodejs_examples] are other trending topics we are currently monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
@@ -28,10 +28,10 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*February 2020*) <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>:
+For instance our development environment looks as follows (*March 2020*) <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>:
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.16.4\                                            <i>(  77 MB)</i>
+C:\opt\cmake-3.16.5\                                            <i>(  77 MB)</i>
 C:\opt\Git-2.25.1\                                              <i>( 268 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3 resp. 21.2 GB)</i>
@@ -131,7 +131,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; setenv</b>
 Tool versions:
    clang 9.0.1, lli 9.0.1, opt 9.0.1,
-   cmake 3.16.4, make 4.3, gcc 9.2.0, python 3.7.4, diff 3.7
+   cmake 3.16.5, make 4.3, gcc 9.2.0, python 3.7.4, diff 3.7
    git 2.25.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; where clang git</b>
@@ -149,13 +149,13 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; setenv -verbose</b>
 Tool versions:
    clang 9.0.1, lli 9.0.1, opt 9.0.1,
-   cmake 3.16.4, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
+   cmake 3.16.5, make 4.2.1, gcc 9.2.0, python 3.7.4, diff 3.7
    git 2.25.1.windows.1, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-9.0.1\bin\clang.exe
    C:\opt\LLVM-9.0.1\bin\lli.exe
    C:\opt\LLVM-9.0.1\bin\opt.exe
-   C:\opt\cmake-3.16.4\bin\cmake.exe
+   C:\opt\cmake-3.16.5\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.7.4\python.exe
@@ -288,7 +288,7 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.16.4-win64-x64.zip</a>  <i>( 31 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.16.5-win64-x64.zip</a>  <i>( 31 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>        <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">LLVM-9.0.1-win64.exe</a>        <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>       <i>( 29 MB)</i>
@@ -302,7 +302,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/February 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/March 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
