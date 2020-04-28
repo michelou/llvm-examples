@@ -83,6 +83,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
     ) else if /i "%__ARG%"=="-llvm:8" ( set _LLVM_PREFIX=LLVM-8
     ) else if /i "%__ARG%"=="-llvm:9" ( set _LLVM_PREFIX=LLVM-9
+    ) else if /i "%__ARG%"=="-llvm:10" ( set _LLVM_PREFIX=LLVM-10
     ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -109,13 +110,13 @@ goto :eof
 echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
 echo.
 echo   Options:
-echo     -bash        start Git bash shell instead of Windows command prompt
-echo     -debug       show commands executed by this script
-echo     -llvm:^<8^|9^>  select version of LLVM installation 
-echo     -verbose     display progress messages
+echo     -bash           start Git bash shell instead of Windows command prompt
+echo     -debug          show commands executed by this script
+echo     -llvm:^<8^|9^|10^>  select version of LLVM installation ^(default: newer version^)
+echo     -verbose        display progress messages
 echo.
 echo   Subcommands:
-echo     help         display this help message
+echo     help            display this help message
 goto :eof
 
 rem output parameter(s): _CMAKE_HOME
@@ -478,8 +479,9 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
     echo Tool paths: 1>&2
     for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p 1>&2
 )
-if %__VERBOSE%==1 if defined MSVS_HOME (
+if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo Environment variables: 1>&2
+    echo    CMAKE_HOME="%CMAKE_HOME%" 1>&2
     echo    MSVC_HOME="%MSVC_HOME%" 1>&2
     echo    MSVS_HOME="%MSVS_HOME%" 1>&2
     echo    MSVS_CMAKE_HOME="%MSVS_CMAKE_HOME%" 1>&2

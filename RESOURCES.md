@@ -2,7 +2,7 @@
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
-  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM"/></a></td>
+  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM Logo"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This document gathers <a href="https://llvm.org/">LLVM</a> related resources.
   </td>
   </tr>
@@ -91,7 +91,7 @@ We mention here only the publications from <a href="http://nondot.org/~sabre/">C
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/March 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/May 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
