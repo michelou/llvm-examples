@@ -3,7 +3,7 @@
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;">
-    <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM Logo"/></a>
+    <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM logo"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
     Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM</a> project and tested on a Windows machine.
@@ -72,7 +72,7 @@ Execute build\Release\hello.exe
 Hello world !
 </pre>
 
-Command [**`build -debug run`**](hello/build.bat) displays the build settings and the commands executed during the build process (generate of executable **`hello.exe`**):
+Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_msvc]/[**`MSBuild`**][windows_msbuild] toolset to generate executable **`hello.exe`**
 
 <pre style="font-size:80%;">
 <b>&gt; build -debug run</b>
@@ -333,7 +333,7 @@ The [LLVM linker][llvm_lld] requires an entry point to successfully generate an 
 - it defines a **`main`** function (with [no parameter][cpp_main] as program entry point and
 - it defines a **`printf`** function to print out the result.
 
-> **:mag_right:** The source code ([**`main.cpp`**](JITTutorial1_main/src/main.cpp), [**`tut1.cpp`**](JITTutorial1_main/src/tut1.cpp)) has been reorganized in order to better distinguish between prototype definition and code generation.
+> **:mag_right:** The source code has been reorganized in order to better distinguish between prototype definition and code generation ([**`main.cpp`**](JITTutorial1_main/src/main.cpp), [**`tut1.h`**](JITTutorial1_main/src/tut1.h) and [**`tut1.cpp`**](JITTutorial1_main/src/tut1.cpp)).
 
 Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
 

@@ -1,17 +1,14 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem only for interactive debugging !
+@rem only for interactive debugging !
 set _DEBUG=0
 
-rem ##########################################################################
-rem ## Environment setup
-
-set _BASENAME=%~n0
+@rem #########################################################################
+@rem ## Environment setup
 
 set _EXITCODE=0
-
-for %%f in ("%~dp0") do set _ROOT_DIR=%%~sf
+set "_ROOT_DIR=%~dp0"
 
 call :env
 if not %_EXITCODE%==0 goto end
@@ -19,8 +16,8 @@ if not %_EXITCODE%==0 goto end
 call :args %*
 if not %_EXITCODE%==0 goto end
 
-rem ##########################################################################
-rem ## Main
+@rem #########################################################################
+@rem ## Main
 
 if %_HELP%==1 (
     call :help
@@ -44,19 +41,21 @@ if %_RUN%==1 (
 )
 goto end
 
-rem ##########################################################################
-rem ## Subroutines
+@rem #########################################################################
+@rem ## Subroutines
 
-rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
-rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
+@rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
+@rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
 :env
-rem ANSI colors in standard Windows 10 shell
-rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _BASENAME=%~n0
+
+@rem ANSI colors in standard Windows 10 shell
+@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
 set _DEBUG_LABEL=[46m[%_BASENAME%][0m
 set _ERROR_LABEL=[91mError[0m:
 set _WARNING_LABEL=[93mWarning[0m:
 
-set __CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt
+set "__CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt"
 if not exist "%__CMAKE_LIST_FILE%" (
     echo %_ERROR_LABEL% File CMakeLists.txt not found 1>&2
     set _EXITCODE=1
@@ -65,11 +64,11 @@ if not exist "%__CMAKE_LIST_FILE%" (
 set _PROJ_NAME=tut2
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%__CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
 set _PROJ_CONFIG=Debug
-rem set _PROJ_CONFIG=Release
+@rem set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
-set _TARGET_DIR=%_ROOT_DIR%build
-set _TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
+set "_TARGET_DIR=%_ROOT_DIR%build"
+set "_TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 
 set _MAKE_CMD=make.exe
 set _MAKE_OPTS=
@@ -80,12 +79,12 @@ set _PELOOK_OPTS=
 set _LLVM_OBJDUMP_CMD=llvm-objdump.exe
 set _LLVM_OBJDUMP_OPTS=-f -h
 
-set _CLANG_CMD=%LLVM_HOME%\bin\clang.exe
+set "_CLANG_CMD=%LLVM_HOME%\bin\clang.exe"
 set _CLANG_OPTS=
 goto :eof
 
-rem input parameter: %*
-rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
+@rem input parameter: %*
+@rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
@@ -104,7 +103,7 @@ if not defined __ARG (
     goto args_done
 )
 if "%__ARG:~0,1%"=="-" (
-    rem option
+    @rem option
     if /i "%__ARG%"=="-cl" ( set _TOOLSET=msvc
     ) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=clang
     ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
@@ -119,8 +118,7 @@ if "%__ARG:~0,1%"=="-" (
         goto args_done
     )
 ) else (
-    rem subcommand
-    set /a __N+=1
+    @rem subcommand
     if /i "%__ARG%"=="clean" ( set _CLEAN=1
     ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
     ) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
@@ -131,6 +129,7 @@ if "%__ARG:~0,1%"=="-" (
         set _EXITCODE=1
         goto args_done
     )
+    set /a __N+=1
 )
 shift
 goto :args_loop
@@ -166,9 +165,9 @@ goto :eof
 call :rmdir "%_TARGET_DIR%"
 goto :eof
 
-rem input parameter: %1=directory path
+@rem input parameter: %1=directory path
 :rmdir
-set __DIR=%~1
+set "__DIR=%~1"
 if not exist "!__DIR!\" goto :eof
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "!__DIR!" 1>&2
 ) else if %_VERBOSE%==1 ( echo Delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
@@ -193,7 +192,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Toolset: %_TOOLSET_NAME%, Project: %_PROJ_N
 )
 call :compile_%_TOOLSET%
 
-rem save _EXITCODE value into parent environment
+@rem save _EXITCODE value into parent environment
 endlocal & set _EXITCODE=%_EXITCODE%
 goto :eof
 
@@ -296,7 +295,7 @@ popd
 goto :eof
 
 :dump
-if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
+if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
@@ -351,7 +350,7 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
-rem output parameter: _DURATION
+@rem output parameter: _DURATION
 :duration
 set __START=%~1
 set __END=%~2
@@ -359,14 +358,14 @@ set __END=%~2
 for /f "delims=" %%i in ('powershell -c "$interval = New-TimeSpan -Start '%__START%' -End '%__END%'; Write-Host $interval"') do set _DURATION=%%i
 goto :eof
 
-rem ##########################################################################
-rem ## Cleanups
+@rem #########################################################################
+@rem ## Cleanups
 
 :end
 if %_TIMER%==1 (
     for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
     call :duration "%_TIMER_START%" "!__TIMER_END!"
-    echo Elapsed time: !_DURATION! 1>&2
+    echo Total elapsed time: !_DURATION! 1>&2
 )
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%

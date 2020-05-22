@@ -2,14 +2,14 @@
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
-  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM Logo"/></a></td>
+  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM logo"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/">LLVM</a> code examples coming from various websites and books.<br/>
   It also includes several <a href="https://en.wikibooks.org/wiki/Windows_Batch_Scripting">batch files</a> for experimenting with the <a href="https://llvm.org/">LLVM</a> infrastructure on a Windows machine.
   </td>
   </tr>
 </table>
 
-[Dotty][dotty_examples], [GraalSqueak][graalsqueak_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples] and [Node.js][nodejs_examples] are other trending topics we are currently monitoring.
+[Dotty][dotty_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples] and [TruffleSqueak][trufflesqueak_examples] are other trending topics we are currently monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
@@ -31,7 +31,7 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*May 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.17.1\                                            <i>(  79 MB)</i>
+C:\opt\cmake-3.17.2\                                            <i>(  79 MB)</i>
 C:\opt\Git-2.26.2\                                              <i>( 271 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1 resp. 14.2 GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3 resp. 21.2 GB)</i>
@@ -134,7 +134,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; setenv</b>
 Tool versions:
    clang 9.0.1, lli 9.0.1, opt 9.0.1,
-   cmake 3.17.1, make 4.3, gcc 9.3.0, python 3.7.4, diff 3.7
+   cmake 3.17.2, make 4.3, gcc 9.3.0, python 3.7.4, diff 3.7
    git 2.26.2.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; where clang git</b>
@@ -152,13 +152,13 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; setenv -verbose</b>
 Tool versions:
    clang 9.0.1, lli 9.0.1, opt 9.0.1,
-   cmake 3.17.1, make 4.2.1, gcc 9.3.0, python 3.7.4, diff 3.7
+   cmake 3.17.2, make 4.2.1, gcc 9.3.0, python 3.7.4, diff 3.7
    git 2.26.2.windows.1, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-10.0.0\bin\clang.exe
    C:\opt\LLVM-10.0.0\bin\lli.exe
    C:\opt\LLVM-10.0.0\bin\opt.exe
-   C:\opt\cmake-3.17.1\bin\cmake.exe
+   C:\opt\cmake-3.17.2\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.7.4\python.exe
@@ -320,7 +320,7 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.17.1-win64-x64.zip</a>       <i>( 32 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.17.2-win64-x64.zip</a>       <i>( 32 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.26.2-64-bit.7z.exe</a> <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>             <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>            <i>(150 MB)</i>
@@ -348,7 +348,6 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
 [git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.26.2.txt
-[graalsqueak_examples]: https://github.com/michelou/graalsqueak-examples
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples
@@ -371,6 +370,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
+[trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples
 [vs2019_downloads]: https://visualstudio.microsoft.com/en/downloads/
 [vs2019_relnotes]: https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes
 [vswhere_exe]: https://github.com/microsoft/vswhere
