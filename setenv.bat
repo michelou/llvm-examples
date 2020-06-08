@@ -491,9 +491,7 @@ if %ERRORLEVEL%==0 (
 )
 where /q "%__GIT_HOME%\bin":bash.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-3,4,*" %%i in ('"%__GIT_HOME%\bin\bash.exe" --version ^| findstr bash') do (
-        set __BASH_VERSION=%%l
-        set "__VERSIONS_LINE3=%__VERSIONS_LINE3% bash !__BASH_VERSION:-release=!,"
+    for /f "tokens=1-3,4,*" %%i in ('"%__GIT_HOME%\bin\bash.exe" --version ^| findstr bash') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% bash %%l,"
     )
     set __WHERE_ARGS=%__WHERE_ARGS% "%__GIT_HOME%\bin:bash.exe"
 )

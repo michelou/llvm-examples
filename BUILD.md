@@ -19,7 +19,7 @@
 
 Directory **`llvm-10.0.0.src\`** is setup as follows:
 <pre style="font-size:80%;">
-<b>&gt; curl -sL -o llvm-10.0.0.src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.0/llvm-10.0.0.src.tar.xz</b>
+<b>&gt; curl -sL -o llvm-10.0.0.src.tar.xz <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">llvm-10.0.0.src.tar.xz</a></b>
 <b>&gt; tar xzvf llvm-10.0.0.src.tar.xz</b>
 <b>&gt; cp <a href="bin/llvm/build.bat">bin\llvm\build.bat</a> llvm-10.0.0.src</b>
 <b>&gt; cd llvm-10.0.0.src</b>
@@ -35,8 +35,15 @@ L:\llvm-10.0.0.src
 &nbsp;
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose compile</b>
 Toolset: MSVC/MSBuild, Project: LLVM
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.5.1
+** Copyright (c) 2019 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+INCLUDE="..."
+LIB="..."
 Configuration: Debug, Platform: x64
-Generate configuration files into directory "build"
+[build] Current directory is: L:\llvm-10.0.0.src\build
 [...]
 </pre>
 
@@ -66,12 +73,12 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 
 <pre style="font-size:80%;">
 <b>&gt; where /t clang llc lld lldb lli opt</b>
-  76270080   20.12.2019      19:12:16  C:\opt\LLVM-10.0.0\bin\clang.exe
- 140577792   22.01.2020      18:17:09  C:\opt\LLVM-10.0.0\bin\llc.exe
-  53390848   20.12.2019      19:14:38  C:\opt\LLVM-10.0.0\bin\lld.exe
-    237056   20.12.2019      19:15:54  C:\opt\LLVM-10.0.0\bin\lldb.exe
-  71633920   22.01.2020      18:17:37  C:\opt\LLVM-10.0.0\bin\lli.exe
- 146696192   22.01.2020      18:22:53  C:\opt\LLVM-10.0.0\bin\opt.exe
+  83258880   25.03.2020      12:03:38  C:\opt\LLVM-10.0.0\bin\clang.exe
+  48483840   08.06.2020      17:04:03  C:\opt\LLVM-10.0.0\bin\llc.exe
+  57812480   25.03.2020      12:05:38  C:\opt\LLVM-10.0.0\bin\lld.exe
+    226304   25.03.2020      12:07:10  C:\opt\LLVM-10.0.0\bin\lldb.exe
+  18840064   08.06.2020      17:04:18  C:\opt\LLVM-10.0.0\bin\lli.exe
+  52616192   08.06.2020      17:11:08  C:\opt\LLVM-10.0.0\bin\opt.exe
 </pre>
 
 <!--

@@ -55,14 +55,14 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 Command [**`build clean run`**](hello/build.bat) produces the following output (default toolset: MSVC/MSBuild):
 
 <pre style="font-size:80%;">
-<b>&gt; build clean run</b>
+<b>&gt; <a href="hello/build.bat">build</a> clean run</b>
 Hello world !
 </pre>
 
 Command [**`build -verbose clean run`**](hello/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
-<b>&gt; build -verbose clean run</b>
+<b>&gt; <a href="hello/build.bat">build</a> -verbose clean run</b>
 Delete directory "build"
 Toolset: MSVC/MSBuild, Project: hello
 Configuration: Release, Platform: x64
@@ -75,7 +75,7 @@ Hello world !
 Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_msvc]/[**`MSBuild`**][windows_msbuild] toolset to generate executable **`hello.exe`**
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug run</b>
+<b>&gt; <a href="hello/build.bat">build</a> -debug run</b>
 [build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=msvc _VERBOSE=0
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -109,7 +109,7 @@ Hello world !
 Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clang`**][llvm_clang]/[**`GNU Make`**][gnu_make] toolset instead of [**`MSVC`**][windows_msvc]/[**`MSBuild`**][windows_msbuild] to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug -clang clean run</b>
+<b>&gt; <a href="hello/build.bat">build</a> -debug -clang clean run</b>
 [build] _CLEAN=1 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=clang _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello

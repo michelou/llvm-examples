@@ -34,7 +34,7 @@
 
 ## <span id="books">Books</span>
 
-- [Tutorial: Creating an LLVM Backend for the Cpu0 Architecture][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
+- [*Tutorial: Creating an LLVM Backend for the Cpu0 Architecture*][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
 - [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
 - [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
 - [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (296 p., ISBN 978-1-78528-598-1).

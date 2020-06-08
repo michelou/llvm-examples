@@ -35,7 +35,7 @@ For instance our development environment looks as follows (*June 2020*) <sup id=
 C:\opt\cmake-3.17.3\                                            <i>(  79 MB)</i>
 C:\opt\Git-2.27.0\                                              <i>( 278 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
-C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
+C:\opt\LLVM-19.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.0\                                             <i>(1.5 resp 2.6 GB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
@@ -58,8 +58,8 @@ bin\vswhere.exe
 <a href="bin/llvm/build.bat">bin\llvm\build.bat</a>
 docs\
 examples\{hello, JITTutorial1, ..}
-llvm-8.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i>
-llvm-9.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>)</i>
+llvm-8.0.1.src\   <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i>
+llvm-9.0.1.src\   <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>)</i>
 llvm-10.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">llvm-10.0.0.src.tar.xz</a>)</i>
 <a href="BUILD.md">BUILD.md</a>
 README.md
@@ -74,6 +74,7 @@ where
 - directory **`llvm-8.0.1.src\`** contains the [LLVM] 8 source code distribution.
 - directory **`llvm-9.0.1.src\`** contains the [LLVM] 9 source code distribution.
 - directory **`llvm-10.0.0.src\`** contains the [LLVM] 10 source code distribution.
+- file [**`BUILD.md`**](BUILD.md) describes the build from the source distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`setenv.bat`**](setenv.bat) is the batch script for setting up our environment.
 
@@ -106,7 +107,7 @@ We distinguish different sets of batch commands:
      Subcommands:
        help         display this help message</pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files (executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-10.0.0\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-10.0.0\`**).
 
    <pre style="font-size:80%;">
    <b>&gt; <a href="bin/llvm/build.bat">build</a> help</b>
@@ -134,7 +135,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 9.0.1, lli 9.0.1, opt 9.0.1, doxygen 1.8.18, pelook v1.70,
+   clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
    cmake 3.17.3, make 4.3, gcc 9.3.0, python 3.8.3, diff 3.7
    git 2.27.0.windows.1, bash 4.4.23(1)-release
 
@@ -145,14 +146,14 @@ C:\opt\Git-2.27.0\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
-> Command [**`setenv`**](setenv.bat) does not add [MSVS CMake][windows_cmake] and [GNU Cmake][gnu_cmake] to the **`PATH`** environment variable because of name conflict. We write either **`%MSVS_CMAKE_HOME%\bin\cmake.exe`** or **`%CMAKE_HOME%\bin\cmake.exe`**.
+> Command [**`setenv`**](setenv.bat) does not add [MSVS CMake][windows_cmake] and [GNU Cmake][gnu_cmake] to the **`PATH`** environment variable because of name conflict. We write either **`%MSVS_CMAKE_HOME%\bin\cmake.exe`** or **`%CMAKE_HOME%\bin\cmake.exe`**. 
 
 Command **`setenv -verbose`** also displays the tool paths:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 9.0.1, lli 9.0.1, opt 9.0.1, doxygen 1.8.18, pelook v1.70,
+   clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
    cmake 3.17.3, make 4.2.1, gcc 9.3.0, python 3.8.3, diff 3.7
    git 2.27.0.windows.1, bash 4.4.23(1)-release
 Tool paths:
@@ -171,6 +172,7 @@ Tool paths:
    C:\opt\Git-2.27.0\mingw64\bin\git.exe
    C:\opt\Git-2.27.0\bin\bash.exe
 Environment variables:
+   CMAKE_HOME="C:\opt\cmake-3.17.3-win64-x64"
    MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
    MSVS_CMAKE_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
@@ -185,7 +187,7 @@ We wrote the [batch file][batch_file] [`build.bat`](bin/llvm/build.bat) to gener
 It provides the following options and subcommands:
 
 <pre style="font-size:80%;">
-<b>&gt; build</b>
+<b>&gt; <a href="bin/llvm/build.bat">build</a></b>
 Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
   Options:
@@ -217,7 +219,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 <a name="footnote_01">[1]</a> ***LLVM version*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-LLVM versions 8, 9 and 10 are supported. Command <b><code>setenv</code></b> selects the newer available version per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 if a LLVM 9 (or 10) installation is also present.
+LLVM versions 8, 9 and 10 are supported. Command <b><code>setenv</code></b> searches for version 10 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (idem for LLVM 9).
 </p>
 
 <a name="footnote_02">[2]</a> ***Visual Studio version*** [↩](#anchor_02)
@@ -345,7 +347,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [llvm_lli]: https://llvm.org/docs/CommandGuide/lli.html
 [llvm_opt]: https://llvm.org/docs/CommandGuide/opt.html
 <!--
-[llvm_relnotes]: https://releases.llvm.org/9.0.1/docs/ReleaseNotes.html
+[llvm_relnotes]: https://releases.llvm.org/10.0.0/docs/ReleaseNotes.html
 -->
 [llvm_relnotes]: https://releases.llvm.org/10.0.0/docs/ReleaseNotes.html
 [llvm_tools]: https://llvm.org/docs/CommandGuide/
