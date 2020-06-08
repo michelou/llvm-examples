@@ -32,7 +32,7 @@ Command [**`build`**](hello/build.bat) with no argument displays the available o
 > **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~370 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets MSVC/MSBuild, Clang/GNU Make and GCC/GNU Make.
 
 <pre style="font-size:80%;">
-<b>&gt; build</b>
+<b>&gt; <a href="hello/build.bat">build</a></b>
 Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
   Options:
@@ -202,7 +202,7 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 Command [**`build clean run`**](JITTutorial1/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
-<b>&gt; build clean run</b>
+<b>&gt; <a href="JITTutorial1/build.bat">build</a> clean run</b>
 ; ModuleID = 'tut1'
 source_filename = "tut1"
 &nbsp;
@@ -338,7 +338,7 @@ The [LLVM linker][llvm_lld] requires an entry point to successfully generate an 
 Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
-<b>&gt; build clean run</b>
+<b>&gt; <a href="JITTutorial1_main/build.bat">build</a> clean run</b>
 ; ModuleID = 'tut1_main'
 source_filename = "tut1_main"
 
@@ -393,7 +393,7 @@ It defines a function **`gcd`** (*greatest common denominator*) and generates it
 Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
-<b>&gt; build clean run</b>
+<b>&gt; <a href="JITTutorial2/build.bat">build</a> clean run</b>
 ; ModuleID = 'tut2'
 source_filename = "tut2"
 
@@ -636,7 +636,7 @@ rem ## Cleanups</i>
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/May 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

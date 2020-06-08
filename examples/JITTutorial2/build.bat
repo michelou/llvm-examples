@@ -8,7 +8,6 @@ set _DEBUG=0
 @rem ## Environment setup
 
 set _EXITCODE=0
-set "_ROOT_DIR=%~dp0"
 
 call :env
 if not %_EXITCODE%==0 goto end
@@ -48,6 +47,7 @@ goto end
 @rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
 :env
 set _BASENAME=%~n0
+set "_ROOT_DIR=%~dp0"
 
 @rem ANSI colors in standard Windows 10 shell
 @rem see https://gist.github.com/mlocati/#file-win10colors-cmd
@@ -222,10 +222,10 @@ if not %ERRORLEVEL%==0 (
 if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 ) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -305,12 +305,12 @@ if not exist "%__EXE_FILE%" (
     goto :eof
 )
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%"
+    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" 1>&2
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%"
 ) else (
     if %_VERBOSE%==1 echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
     echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2
@@ -318,10 +318,10 @@ if not %ERRORLEVEL%==0 (
     goto :eof
 )
 goto :eof
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_LLVM_OBJDUMP_CMD% %_LLVM_OBJDUMP_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_LLVM_OBJDUMP_CMD%" %_LLVM_OBJDUMP_OPTS% "%__EXE_FILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
 )
-call %_LLVM_OBJDUMP_CMD% %_LLVM_OBJDUMP_OPTS% "%__EXE_FILE%"
+call "%_LLVM_OBJDUMP_CMD%" %_LLVM_OBJDUMP_OPTS% "%__EXE_FILE%"
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% ObjDump dump of executable %_PROJ_NAME%.exe failed ^(ObjDump^) 1>&2
     set _EXITCODE=1
@@ -339,8 +339,8 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Execute "!__EXE_FILE:%_ROOT_DIR%=!" 1>&2
 )
 call "%__EXE_FILE%"
 if not %ERRORLEVEL%==0 (

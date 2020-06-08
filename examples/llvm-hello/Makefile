@@ -1,15 +1,17 @@
+SOURCE_FILES=$(wildcard src/main/cpp/*.cpp)
+
 CXX=g++
-PROGRAM_NAME = program
+PROGRAM_NAME=program
 
 all: build
 
-build:
-	$(CXX) -g -O3 main.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o main
+build: $(SOURCE_FILES)
+	$(CXX) -g -O3 `llvm-config --cxxflags --ldflags --system-libs --libs core` -o main $<
 
 executable: build
 	./main
 	llc -filetype=obj $(PROGRAM_NAME).ll -o $(PROGRAM_NAME).o
-	gcc $(PROGRAM_NAME).o -o $(PROGRAM_NAME)
+	$(CXX) $(PROGRAM_NAME).o -o $(PROGRAM_NAME)
 	echo "'$(PROGRAM_NAME)' created!"
 
 run: executable
@@ -21,3 +23,5 @@ clean:
 	rm -f $(PROGRAM_NAME).ll
 	rm -f $(PROGRAM_NAME).o
 	rm -f $(PROGRAM_NAME) 
+
+.PHONY: all build clean executable run

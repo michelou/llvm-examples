@@ -8,7 +8,6 @@ set _DEBUG=0
 @rem ## Environment setup
 
 set _EXITCODE=0
-set "_ROOT_DIR=%~dp0"
 
 call :env
 if not %_EXITCODE%==0 goto end
@@ -52,6 +51,7 @@ goto end
 @rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
 :env
 set _BASENAME=%~n0
+set "_ROOT_DIR=%~dp0"
 
 @rem ANSI colors in standard Windows 10 shell
 @rem see https://gist.github.com/mlocati/#file-win10colors-cmd
@@ -68,7 +68,7 @@ if not exist "%__CMAKE_LIST_FILE%" (
 set _PROJ_NAME=tut2_main
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%__CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
 set _PROJ_CONFIG=Debug
-rem set _PROJ_CONFIG=Release
+@rem set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
 set "_TARGET_DIR=%_ROOT_DIR%build"
@@ -215,7 +215,7 @@ pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
 ) else if %_VERBOSE%==1 ( echo Current directory is: %CD% 1>&2
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
@@ -228,10 +228,10 @@ if not %ERRORLEVEL%==0 (
 if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 ) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -311,12 +311,12 @@ if not exist "%__EXE_FILE%" (
     goto :eof
 )
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%"
+    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" 1>&2
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%"
 ) else (
     if %_VERBOSE%==1 echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
     echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2
@@ -336,7 +336,7 @@ if not %ERRORLEVEL%==0 (
 goto :eof
 
 :run
-if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
+if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
@@ -357,7 +357,7 @@ if not %ERRORLEVEL%==0 (
 goto :eof
 
 :test
-if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
+if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
@@ -367,8 +367,8 @@ if not exist "%__EXE_FILE%" (
     goto :eof
 )
 set "__IR_OUTFILE=%_TARGET_DIR%\tut2.ll"
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% !__EXE_FILE:%_ROOT_DIR%=! 1^> %__IR_OUTFILE% 1>&2
-) else if %_VERBOSE%==1 ( echo Generate IR code to file !__IR_OUTFILE:%_ROOT_DIR%=! 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" 1^> "%__IR_OUTFILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Generate IR code to file "!__IR_OUTFILE:%_ROOT_DIR%=!" 1>&2
 )
 call "%__EXE_FILE%" 1> %__IR_OUTFILE%
 if not %ERRORLEVEL%==0 (
@@ -377,10 +377,10 @@ if not %ERRORLEVEL%==0 (
     goto :eof
 )
 set "__EXE_OUTFILE=%_TARGET_DIR%\tut2.exe"
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_CLANG_CMD% %_CLANG_OPTS% -o %__EXE_OUTFILE% %__IR_OUTFILE% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CLANG_CMD%" %_CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable from file !__IR_OUTFILE:%_ROOT_DIR%=! 1>&2
 )
-call %_CLANG_CMD% %_CLANG_OPTS% -o %__EXE_OUTFILE% %__IR_OUTFILE%
+call "%_CLANG_CMD%" %_CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%"
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof

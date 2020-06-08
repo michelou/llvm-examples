@@ -8,7 +8,6 @@ set _DEBUG=0
 @rem ## Environment setup
 
 set _EXITCODE=0
-set "_ROOT_DIR=%~dp0"
 
 call :env
 if not %_EXITCODE%==0 goto end
@@ -19,15 +18,20 @@ if not %_EXITCODE%==0 goto end
 @rem #########################################################################
 @rem ## Main
 
+if %_HELP%==1 (
+    call :help
+    exit /b !_EXITCODE!
+)
+
+set _DOXY_PATH=
 set _MSYS_PATH=
 set _LLVM_PATH=
 set _PYTHON_PATH=
 set _GIT_PATH=
 
-if %_HELP%==1 (
-    call :help
-    exit /b !_EXITCODE!
-)
+call :doxy
+if not %_EXITCODE%==0 goto end
+
 call :cmake
 if not %_EXITCODE%==0 goto end
 
@@ -55,6 +59,7 @@ goto end
 @rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
 :env
 set _BASENAME=%~n0
+set "_ROOT_DIR=%~dp0"
 
 @rem ANSI colors in standard Windows 10 shell
 @rem see https://gist.github.com/mlocati/#file-win10colors-cmd
@@ -62,14 +67,14 @@ set _DEBUG_LABEL=[46m[%_BASENAME%][0m
 set _ERROR_LABEL=[91mError[0m:
 set _WARNING_LABEL=[93mWarning[0m:
 
-set _WSWHERE_CMD=%_ROOT_DIR%bin\vswhere.exe
+set "_WSWHERE_CMD=%_ROOT_DIR%bin\vswhere.exe"
 goto :eof
 
 @rem input parameter: %*
 :args
 set _BASH=0
 set _HELP=0
-set _LLVM_PREFIX=LLVM
+set _LLVM_PREFIX=LLVM-10
 set _VERBOSE=0
 set __N=0
 :args_loop
@@ -111,11 +116,43 @@ echo.
 echo   Options:
 echo     -bash           start Git bash shell instead of Windows command prompt
 echo     -debug          show commands executed by this script
-echo     -llvm:^<8^|9^|10^>  select version of LLVM installation ^(default: newer version^)
+echo     -llvm:^<8^|9^|10^>  select version of LLVM installation ^(default: 10^)
 echo     -verbose        display progress messages
 echo.
 echo   Subcommands:
 echo     help            display this help message
+goto :eof
+
+rem output parameter(s): _DOXY_PATH
+:doxy
+set _DOXY_PATH=
+
+set __DOXY_HOME=
+set __DOXYGEN_CMD=
+for /f %%f in ('where doxygen.exe 2^>NUL') do set __DOXYGEN_CMD=%%f
+if defined __DOXYGEN_CMD (
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Doxygen executable found in PATH 1>&2
+    for /f "delims=" %%i in ("%__DOXYGEN_CMD%") do set "__DOXY_BIN_DIR=%%~dpi"
+    for %%f in ("!__DOXY_BIN_DIR!..\..") do set "__DOXY_HOME=%%~sf"
+    @rem keep _DOXY_PATH undefined since executable already in path
+    goto :eof
+) else if defined DOXY_HOME (
+    set "__DOXY_HOME=%DOXY_HOME%"
+    if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable DOXY_HOME 1>&2
+) else (
+    set "__PATH=%ProgramFiles%"
+    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "__DOXY_HOME=!__PATH!\%%f"
+    if not defined __DOXY_HOME (
+        set __PATH=C:\opt
+        for /f %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "__DOXY_HOME=!__PATH!\%%f"
+    )
+)
+if not exist "%__DOXY_HOME%\bin\doxygen.exe" (
+    echo %_ERROR_LABEL% Doxygen executable not found ^(%__DOXY_HOME%^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_DOXY_PATH=;%__DOXY_HOME%\bin"
 goto :eof
 
 @rem output parameter(s): _CMAKE_HOME
@@ -412,11 +449,21 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('opt.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% opt %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% opt.exe
 )
+where /q doxygen.exe
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1,*" %%i in ('doxygen.exe -v 2^>^&1') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% doxygen %%i,"
+    set __WHERE_ARGS=%__WHERE_ARGS% doxygen.exe
+)
+set "__PELOOK_CMD=%ROOT_DIR%bin\pelook.exe"
+@rem if %ERRORLEVEL%==0 (
+    for /f "tokens=1,2,3,4,*" %%i in ('%__PELOOK_CMD% /? 2^>^&1 ^| findstr /b PE') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% pelook %%l,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%_ROOT_DIR%bin:pelook.exe"
+@rem )
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
-rem if %ERRORLEVEL%==0 (
+@rem if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('%__CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cmake %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%CMAKE_HOME%\bin:cmake.exe"
-rem )
+@rem )
 where /q make.exe
 if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% make %%k,"
@@ -444,7 +491,10 @@ if %ERRORLEVEL%==0 (
 )
 where /q "%__GIT_HOME%\bin":bash.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-3,4,*" %%i in ('"%__GIT_HOME%\bin\bash.exe" --version ^| findstr bash') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% bash %%l"
+    for /f "tokens=1-3,4,*" %%i in ('"%__GIT_HOME%\bin\bash.exe" --version ^| findstr bash') do (
+        set __BASH_VERSION=%%l
+        set "__VERSIONS_LINE3=%__VERSIONS_LINE3% bash !__BASH_VERSION:-release=!,"
+    )
     set __WHERE_ARGS=%__WHERE_ARGS% "%__GIT_HOME%\bin:bash.exe"
 )
 @rem see https://github.com/Microsoft/vswhere/releases
@@ -483,7 +533,7 @@ endlocal & (
         if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
         if not defined MSVS_CMAKE_HOME set "MSVS_CMAKE_HOME=%_MSVS_CMAKE_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
-        set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%;%~dp0bin"
+        set "PATH=%PATH%%_DOXY_PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
         call :print_env %_VERBOSE% "%_GIT_HOME%"
         if %_BASH%==1 (
             if %_DEBUG%==1 echo %_DEBUG_LABEL% %_GIT_HOME%\usr\bin\bash.exe --login 1>&2

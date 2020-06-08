@@ -91,7 +91,6 @@ set _CLEAN=0
 set _COMPILE=0
 set _DUMP=0
 set _RUN=0
-set _DEBUG=0
 set _HELP=0
 set _TEST=0
 set _TIMER=0
@@ -242,6 +241,43 @@ goto :eof
 :compile_gcc
 echo %_ERROR_LABEL% GCC/GNU Make toolset not supported 1>&2
 set _EXITCODE=1
+goto :eof
+
+set CC=gcc.exe
+set CXX=g++.exe
+set MAKE=make.exe
+set RC=windres.exe
+set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
+set __CMAKE_OPTS=-G "Unix Makefiles"
+
+pushd "%_TARGET_DIR%"
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
+) else if %_VERBOSE%==1 ( echo Current directory is: %CD% 1>&2
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
+)
+call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo %_ERROR_LABEL% Generation of build configuration failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
+) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
+)
+call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+if not %ERRORLEVEL%==0 (
+    popd
+    echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+popd
 goto :eof
 
 :init_msvc

@@ -1,17 +1,13 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem only for interactive debugging !
+@rem only for interactive debugging !
 set _DEBUG=0
 
-rem ##########################################################################
-rem ## Environment setup
-
-set _BASENAME=%~n0
+@rem #########################################################################
+@rem ## Environment setup
 
 set _EXITCODE=0
-
-for %%f in ("%~dp0") do set _ROOT_DIR=%%~sf
 
 call :env
 if not %_EXITCODE%==0 goto end
@@ -19,8 +15,8 @@ if not %_EXITCODE%==0 goto end
 call :args %*
 if not %_EXITCODE%==0 goto end
 
-rem ##########################################################################
-rem ## Main
+@rem #########################################################################
+@rem ## Main
 
 if %_HELP%==1 (
     call :help
@@ -44,14 +40,17 @@ if %_INSTALL%==1 (
 )
 goto end
 
-rem ##########################################################################
-rem ## Subroutines
+@rem #########################################################################
+@rem ## Subroutines
 
-rem output parameter(s): _PROJ_NAME, _PROJ_CONFIG, _TARGET_DIR, _TARGET_OUTPUT_DIR
-rem                      _MSBUILD_CMD, _MSBUILD_OPTS, _DEBUG_LABEL, _ERROR_LABEL
+@rem output parameters: _PROJ_NAME, _PROJ_CONFIG, _TARGET_DIR, _TARGET_OUTPUT_DIR
+@rem                    _MSBUILD_CMD, _MSBUILD_OPTS, _DEBUG_LABEL, _ERROR_LABEL
 :env
-rem ANSI colors in standard Windows 10 shell
-rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _BASENAME=%~n0
+set "_ROOT_DIR=%~dp0"
+
+@rem ANSI colors in standard Windows 10 shell
+@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
 set _DEBUG_LABEL=[46m[%_BASENAME%][0m
 set _ERROR_LABEL=[91mError[0m:
 set _WARNING_LABEL=[93mWarning[0m:
@@ -62,7 +61,7 @@ if not exist "%_VCVARSALL_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
-set __CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt
+set "__CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt"
 if not exist "%__CMAKE_LIST_FILE%" (
     echo %_ERROR_LABEL% File CMakeLists.txt not found 1>&2
     set _EXITCODE=1
@@ -70,20 +69,20 @@ if not exist "%__CMAKE_LIST_FILE%" (
 )
 set _PROJ_NAME=LLVM
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%__CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
-set _PROJ_CONFIG=Debug
-rem set _PROJ_CONFIG=Release
+@rem set _PROJ_CONFIG=Debug
+set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
-set _TARGET_DIR=%_ROOT_DIR%build
-set _TARGET_OUTPUT_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%
+set "_TARGET_DIR=%_ROOT_DIR%build"
+set "_TARGET_OUTPUT_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
 goto :eof
 
-rem input parameter: %*
-rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
+@rem input parameter: %*
+@rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
@@ -102,7 +101,7 @@ if not defined __ARG (
     goto args_done
 )
 if "%__ARG:~0,1%"=="-" (
-    rem option
+    @rem option
     if /i "%__ARG%"=="-debug" ( set _DEBUG=1
     ) else if /i "%__ARG%"=="-help" ( set _HELP=1
     ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
@@ -113,8 +112,7 @@ if "%__ARG:~0,1%"=="-" (
         goto args_done
     )
 ) else (
-    rem subcommand
-    set /a __N+=1
+    @rem subcommand
     if /i "%__ARG%"=="clean" ( set _CLEAN=1
     ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
     ) else if /i "%__ARG%"=="help" ( set _HELP=1
@@ -125,6 +123,7 @@ if "%__ARG:~0,1%"=="-" (
         set _EXITCODE=1
         goto args_done
     )
+    set /a __N+=1
 )
 shift
 goto :args_loop
@@ -156,9 +155,9 @@ goto :eof
 call :rmdir "%_TARGET_DIR%"
 goto :eof
 
-rem input parameter: %1=directory path
+@rem input parameter: %1=directory path
 :rmdir
-set __DIR=%~1
+set "__DIR=%~1"
 if not exist "!__DIR!\" goto :eof
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "!__DIR!" 1>&2
 ) else if %_VERBOSE%==1 ( echo Delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
@@ -222,10 +221,10 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MSBUILD_CMD%" %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate LLVM executables ^(%_PROJ_NAME%.sln^) 1>&2
 )
-call %_MSBUILD_CMD% %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
+call "%_MSBUILD_CMD%" %_MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of LLVM executables failed 1>&2
@@ -290,13 +289,20 @@ if not exist "%LLVM_HOME%" (
     set _EXITCODE=1
     goto :eof
 )
-rem .ilk files ==> https://docs.microsoft.com/en-us/cpp/build/reference/dot-ilk-files-as-linker-input?view=vs-2019
+set /p __INSTALL_ANSWER="Do really want to copy files from '%_ROOT_DIR%' to '%LLVM_HOME%\' (Y/N)? "
+if not "%__INSTALL_ANSWER%"=="y" (
+    echo Copy operation aborted
+    goto :eof
+)
+@rem .ilk files ==> https://docs.microsoft.com/en-us/cpp/build/reference/dot-ilk-files-as-linker-input?view=vs-2019
 set "__EXCLUDE_BIN=%_TARGET_DIR%\exclude_bin.txt"
-echo BrainF> %__EXCLUDE_BIN%
-echo BuildingAJIT-Ch>> %__EXCLUDE_BIN%
-echo Fibonacci>> %__EXCLUDE_BIN%
-echo Kaleidoscope-Ch>> %__EXCLUDE_BIN%
-echo .ilk\>> %__EXCLUDE_BIN%
+(
+    echo BrainF
+    echo BuildingAJIT-Ch
+    echo Fibonacci
+    echo Kaleidoscope-Ch
+    echo .ilk\
+) > "%__EXCLUDE_BIN%"
 set "__EXCLUDE_NONE=%_TARGET_DIR%\exclude_none.txt"
 
 call :xcopy "%_TARGET_OUTPUT_DIR%\bin" "%LLVM_HOME%\bin" "%__EXCLUDE_BIN%"
@@ -313,8 +319,8 @@ if not %_EXITCODE%==0 goto :eof
 
 goto :eof
 
-rem input parameter(s): %1=start time, %2=end time
-rem output parameter: _DURATION
+@rem input parameter(s): %1=start time, %2=end time
+@rem output parameter: _DURATION
 :duration
 set __START=%~1
 set __END=%~2
@@ -322,8 +328,8 @@ set __END=%~2
 for /f "delims=" %%i in ('powershell -c "$interval = New-TimeSpan -Start '%__START%' -End '%__END%'; Write-Host $interval"') do set _DURATION=%%i
 goto :eof
 
-rem ##########################################################################
-rem ## Cleanups
+@rem #########################################################################
+@rem ## Cleanups
 
 :end
 if %_TIMER%==1 (

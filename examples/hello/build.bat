@@ -8,7 +8,6 @@ set _DEBUG=0
 @rem ## Environment setup
 
 set _EXITCODE=0
-set "_ROOT_DIR=%~dp0"
 
 call :env
 if not %_EXITCODE%==0 goto end
@@ -31,6 +30,10 @@ if %_COMPILE%==1 (
     call :compile
     if not !_EXITCODE!==0 goto end
 )
+if %_DOC%==1 (
+    call :doc
+    if not !_EXITCODE!==0 goto end
+)
 if %_DUMP%==1 (
     call :dump
     if not !_EXITCODE!==0 goto end
@@ -48,6 +51,7 @@ goto end
 @rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
 :env
 set _BASENAME=%~n0
+set "_ROOT_DIR=%~dp0"
 
 @rem ANSI colors in standard Windows 10 shell
 @rem see https://gist.github.com/mlocati/#file-win10colors-cmd
@@ -72,6 +76,9 @@ set "_TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 set _MAKE_CMD=make.exe
 set _MAKE_OPTS=
 
+set _DOXYGEN_CMD=doxygen.exe
+set _DOXYGEN_OPTS=-s
+
 set _PELOOK_CMD=pelook.exe
 set _PELOOK_OPTS=
 goto :eof
@@ -81,6 +88,7 @@ rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TOOLSET, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
+set _DOC=0
 set _DUMP=0
 set _RUN=0
 set _DEBUG=0
@@ -114,6 +122,7 @@ if "%__ARG:~0,1%"=="-" (
     @rem subcommand
     if /i "%__ARG%"=="clean" ( set _CLEAN=1
     ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
+    ) else if /i "%__ARG%"=="doc" ( set _DOC=1
     ) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
     ) else if /i "%__ARG%"=="help" ( set _HELP=1
     ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
@@ -130,7 +139,7 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
@@ -149,6 +158,7 @@ echo.
 echo   Subcommands:
 echo     clean       delete generated files
 echo     compile     generate executable
+echo     doc         generate HTML documentation ^(Doxygen^)
 echo     dump        dump PE/COFF infos for generated executable
 echo     help        display this help message
 echo     run         run the generated executable
@@ -218,7 +228,7 @@ if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -256,7 +266,7 @@ if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -320,8 +330,26 @@ if not %ERRORLEVEL%==0 (
 popd
 goto :eof
 
+:doc
+set "__DOXYFILE=%_ROOT_DIR%Doxyfile"
+if not exist "%__DOXYFILE%" (
+    echo %_ERROR_LABEL% Configuration file for Doxygen not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Generate HTML documentation 1>&2
+)
+call "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%"
+if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Generation of HTML documentation failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
 :dump
-if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
+if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
@@ -331,12 +359,12 @@ if not exist "%__EXE_FILE%" (
     goto :eof
 )
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%"
+    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" 1>&2
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%"
 ) else (
     if %_VERBOSE%==1 echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
     echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed 1>&2
@@ -355,7 +383,7 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=! 1>&2
 )
 call "%__EXE_FILE%"
