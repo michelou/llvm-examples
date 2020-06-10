@@ -41,13 +41,15 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
     -debug      show commands executed by this script
     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
     -msvc       use MSVC/MSBuild toolset (alias for option -cl)
+    -open       display generated HTML documentation ^(subcommand 'doc'^)
     -timer      display total elapsed time
     -verbose    display progress messages
 &nbsp;
   Subcommands:
     clean       delete generated files
-    dump        dump PE/COFF infos for generated executable
     compile     generate executable
+    doc         generate HTML documentation with Doxygen
+    dump        dump PE/COFF infos for generated executable
     help        display this help message
     run         run the generated executable
 </pre>
@@ -110,7 +112,7 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug -clang clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=clang _VERBOSE=0
+[build] _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _RUN=1 _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -141,8 +143,8 @@ Hello world !
 Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**][gnu_gcc]/[**`GNU Make`**][gnu_make] toolset to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug -gcc clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=gcc _VERBOSE=0
+<b>&gt; <a href="hello/build.bat">build</a> -debug -gcc clean run</b>
+[build] _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _RUN=1 _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -179,7 +181,7 @@ It defines a function **`mul_add`** and generates its [IR code](llvm_ir) (source
 Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands:
 
 <pre style="font-size:80%;">
-<b>&gt; build</b>
+<b>&gt; <a href="JITTutorial1/build.bat">build</a></b>
 Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
   Options:
@@ -188,12 +190,14 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
     -debug      show commands executed by this script
     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
     -msvc       use MSVC/MSBuild toolset (alias for option -cl)
+    -open       display generated HTML documentation ^(subcommand 'doc'^)
     -timer      display total elapsed time
     -verbose    display progress messages
 &nbsp;
   Subcommands:
     clean       delete generated files
     compile     generate executable
+    doc         generate HTML documentation with Doxygen
     dump        dump PE/COFF infos for generated executable
     help        display this help message
     run         run executable
@@ -217,7 +221,7 @@ entry:
 Command [**`build -verbose clean run`**](JITTutorial1/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
-<b>&gt; build -verbose clean run</b>
+<b>&gt; <a href="JITTutorial1/build.bat">build</a> -verbose clean run</b>
 Delete directory "build"      
 Toolset: MSVC/MSBuild, Project: JITTutorial1
 Configuration: Release, Platform: x64
@@ -239,8 +243,8 @@ entry:
 Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays the commands executed during the build process:
 
 <pre style="font-size:80%;">
-<b>&gt; build -debug clean run</b> 
-[build] _CLEAN=1 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=msvc _VERBOSE=0
+<b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
+[build] _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _RUN=1 _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
 [build] Configuration: Debug, Platform: x64
@@ -452,7 +456,7 @@ cond_false1:                                      ; preds = %cond_false
 Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
-<b>&gt; build clean run</b>
+<b>&gt; <a href="JITTutorial2_main/build.bat">build</a> clean run</b>
 ; ModuleID = 'tut2_main'
 source_filename = "tut2_main"
 target datalayout = "e-m:w-i64:64-f80:128-n8:16:32:64-S128"
@@ -506,7 +510,7 @@ declare dso_local i32 @strtol(i8*, i8**, i32, ...)
 Command [**`build clean test`**](JITTutorial2_main/build.bat) produces the following output (arguments **`12`** and **`4`** are hard-coded in subcommand **`test`**):
 
 <pre style="font-size:80%;">
-<b>&gt; build clean test</b>
+<b>&gt; <a href="JITTutorial2_main/build.bat">build</a> clean test</b>
 argc=3
 argv1=12
 argv2=4
@@ -531,7 +535,7 @@ Example [**`llvm-hello\`**](llvm-hello/) is based on the simple [C++ example][ll
 It generates a file **`program.ll`** which simply prints message **`"hello world!"`** to the console (source: [**`main.cpp`**](llvm-hello/src/main/cpp/main.cpp)).
 
 <pre style="font-size:80%;">
-<b>&gt; build clean run</b>
+<b>&gt; <a href="llvm-hello/build.bat">build</a> clean run</b>
 Generate file program.ll
 
 <b>&gt; cat program.ll</b>
@@ -577,12 +581,13 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <b>@echo off</b>
 <b>setlocal enabledelayedexpansion</b>
 &nbsp;
-<i style="color:#66aa66;">rem ##########################################################################
-rem ## Environment setup</i>
+<i style="color:#66aa66;">@rem #########################################################################
+@rem ## Environment setup</i>
 &nbsp;
 <b>set</b> _EXITCODE=0
 &nbsp;
-<b>for</b> %%f <b>in</b> ("%~dp0") <b>do set</b> _ROOT_DIR=%%~sf
+<b>call <span style="color:#9966ff;">:env</span></b>
+<b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
 <b>call <span style="color:#9966ff;">:props</span></b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
@@ -590,8 +595,8 @@ rem ## Environment setup</i>
 <b>call <span style="color:#9966ff;">:args</span> %*</b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
-<i style="color:#66aa66;">rem ##########################################################################
-rem ## Main</i>
+<i style="color:#66aa66;">@rem #########################################################################
+@rem ## Main</i>
 &nbsp;
 <b>if</b> %_CLEAN%==1 (
 &nbsp;&nbsp;&nbsp;&nbsp;<b>call :clean</b>
@@ -607,9 +612,12 @@ rem ## Main</i>
 )
 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
-<i style="color:#66aa66;">rem ##########################################################################
-rem ## Subroutines</i>
+<i style="color:#66aa66;">@rem #########################################################################
+@rem ## Subroutines</i>
 &nbsp;
+<span style="color:#9966ff;">:env</span>
+... <i>(project property)</i> ...
+<b>goto :eof</b>
 <span style="color:#9966ff;">:props</span>
 ... <i>(read property file)</i> ...
 <b>goto :eof</b>
@@ -626,8 +634,8 @@ rem ## Subroutines</i>
 ...
 <b>goto :eof</b>
 &nbsp;
-<i style="color:#66aa66;">rem ##########################################################################
-rem ## Cleanups</i>
+<i style="color:#66aa66;">@rem #########################################################################
+@rem ## Cleanups</i>
 &nbsp;
 <span style="color:#9966ff;">:end</span>
 ...

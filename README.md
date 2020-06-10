@@ -2,9 +2,9 @@
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
-  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM logo"/></a></td>
-  <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/">LLVM</a> code examples coming from various websites and books.<br/>
-  It also includes several <a href="https://en.wikibooks.org/wiki/Windows_Batch_Scripting">batch files</a> for experimenting with the <a href="https://llvm.org/">LLVM</a> infrastructure on a Windows machine.
+  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM logo"/></a></td>
+  <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/" rel="external">LLVM</a> code examples coming from various websites and books.<br/>
+  It also includes several <a href="https://en.wikibooks.org/wiki/Windows_Batch_Scripting" rel="external">batch files</a> for experimenting with the <a href="https://llvm.org/" rel="external">LLVM</a> infrastructure on a Windows machine.
   </td>
   </tr>
 </table>
@@ -35,7 +35,7 @@ For instance our development environment looks as follows (*June 2020*) <sup id=
 C:\opt\cmake-3.17.3\                                            <i>(  79 MB)</i>
 C:\opt\Git-2.27.0\                                              <i>( 278 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
-C:\opt\LLVM-19.0.1\                                              <i>(1.3  GB)</i>
+C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.0\                                             <i>(1.5 resp 2.6 GB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>

@@ -21,7 +21,11 @@ static IRBuilder<> Builder(TheContext);
 
 std::unique_ptr<Module> buildModule()
 {
+#if (LLVM_VERSION_MAJOR > 9) // https://reviews.llvm.org/D66259
+	std::unique_ptr<Module> module = std::make_unique<Module>("top", TheContext);
+#else
 	std::unique_ptr<Module> module = llvm::make_unique<Module>("top", TheContext);
+#endif
 
 	/* Create main function */
 	FunctionType *funcType = FunctionType::get(Builder.getInt32Ty(), false);	

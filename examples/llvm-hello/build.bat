@@ -8,7 +8,6 @@ set _DEBUG=0
 @rem ## Environment setup
 
 set _EXITCODE=0
-set "_ROOT_DIR=%~dp0"
 
 call :env
 if not %_EXITCODE%==0 goto end
@@ -29,6 +28,10 @@ if %_CLEAN%==1 (
 )
 if %_COMPILE%==1 (
     call :compile
+    if not !_EXITCODE!==0 goto end
+)
+if %_DOC%==1 (
+    call :doc
     if not !_EXITCODE!==0 goto end
 )
 if %_DUMP%==1 (
@@ -52,6 +55,7 @@ goto end
 @rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
 :env
 set _BASENAME=%~n0
+set "_ROOT_DIR=%~dp0"
 
 @rem ANSI colors in standard Windows 10 shell
 @rem see https://gist.github.com/mlocati/#file-win10colors-cmd
@@ -67,11 +71,12 @@ if not exist "%__CMAKE_LIST_FILE%" (
 )
 set _PROJ_NAME=llvm-hello
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%__CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
-set _PROJ_CONFIG=Debug
-@rem set _PROJ_CONFIG=Release
+@rem set _PROJ_CONFIG=Debug
+set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
 set "_TARGET_DIR=%_ROOT_DIR%build"
+set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
 set "_TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 
 set _MAKE_CMD=make.exe
@@ -89,9 +94,11 @@ goto :eof
 :args
 set _CLEAN=0
 set _COMPILE=0
+set _DOC=0
+set _DOC_OPEN=0
 set _DUMP=0
-set _RUN=0
 set _HELP=0
+set _RUN=0
 set _TEST=0
 set _TIMER=0
 set _TOOLSET=msvc
@@ -111,6 +118,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=gcc
     ) else if /i "%__ARG%"=="-help" ( set _HELP=1
     ) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
+    ) else if /i "%__ARG%"=="-open" ( set _DOC_OPEN=1
     ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
     ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
@@ -122,10 +130,11 @@ if "%__ARG:~0,1%"=="-" (
     @rem subcommand
     if /i "%__ARG%"=="clean" ( set _CLEAN=1
     ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
+    ) else if /i "%__ARG%"=="doc" ( set _DOC=1
     ) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
     ) else if /i "%__ARG%"=="help" ( set _HELP=1
     ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
-    ) else if /i "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=1& set _TEST=1
+    ) else if /i "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=0& set _TEST=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -139,7 +148,11 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% _TEST=%_TEST% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_DOC_OPEN%==1 if %_DOC%==0 (
+    echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
+    set _DOC_OPEN=0
+)
+if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _RUN=%_RUN% _TEST=%_TEST% _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
@@ -152,17 +165,18 @@ echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     -debug      show commands executed by this script
 echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
+echo     -open       display generated HTML documentation ^(subcommand 'doc'^)
 echo     -timer      display total elapsed time
 echo     -verbose    display progress messages
 echo.
 echo   Subcommands:
 echo     clean       delete generated files
 echo     compile     generate executable
+echo     doc         generate HTML documentation with Doxygen
 echo     dump        dump PE/COFF infos for generated executable
 echo     help        display this help message
 echo     run         run generated executable
-echo     test        test generated executable
-goto :eof
+echo     test        test generated IR code
 
 :clean
 call :rmdir "%_TARGET_DIR%"
@@ -212,7 +226,7 @@ pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
 ) else if %_VERBOSE%==1 ( echo Current directory is: %CD% 1>&2
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
@@ -225,10 +239,10 @@ if not %ERRORLEVEL%==0 (
 if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 ) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD% "%__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -338,8 +352,38 @@ if not %ERRORLEVEL%==0 (
 popd
 goto :eof
 
+:doc
+@rem must be the same as property OUTPUT_DIRECTORY in file Doxyfile
+if not exist "%_TARGET_DOCS_DIR%" (
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% mkdir "%_TARGET_DOCS_DIR%" 1>&2
+    mkdir "%_TARGET_DOCS_DIR%"
+)
+set "__DOXYFILE=%_ROOT_DIR%Doxyfile"
+if not exist "%__DOXYFILE%" (
+    echo %_ERROR_LABEL% Configuration file for Doxygen not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Generate HTML documentation 1>&2
+)
+call "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%"
+if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Generation of HTML documentation failed 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "__INDEX_FILE=%_TARGET_DOCS_DIR%\html\index.html"
+if %_DOC_OPEN%==1 (
+    if %_DEBUG%==1 ( echo %_DEBUG_LABEL% start "%_BASENAME%" "%__INDEX_FILE%" 1>&2
+    ) else if %_VERBOSE%==1 ( echo Open HTML documentation in default browser 1>&2
+    )
+    start "%_BASENAME%" "%_TARGET_DOCS_DIR%\html\index.html"
+)
+goto :eof
+
 :dump
-if not %_TOOLSET%==msvc ( set __TARGET_DIR=%_TARGET_DIR%
+if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
 ) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
@@ -349,15 +393,15 @@ if not exist "%__EXE_FILE%" (
     goto :eof
 )
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% %_PELOOK_CMD% %_PELOOK_OPTS% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%"
+    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" 1>&2
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%"
 ) else (
     if %_VERBOSE%==1 echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
     echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-    call %_PELOOK_CMD% %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed 1>&2
+    echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -376,8 +420,8 @@ if not exist "%__EXE_FILE%" (
 set "__LL_FILE=%_TARGET_DIR%\program.ll"
 pushd "%_TARGET_DIR%"
 
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% !__EXE_FILE:%_ROOT_DIR%=! 1>&2
-) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Execute "!__EXE_FILE:%_ROOT_DIR%=!" 1>&2
 ) else ( echo Generate file !__LL_FILE:%_ROOT_DIR%=!
 )
 call "%__EXE_FILE%"
@@ -407,7 +451,7 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
-rem output parameter: _DURATION
+@rem output parameter: _DURATION
 :duration
 set __START=%~1
 set __END=%~2
@@ -415,8 +459,8 @@ set __END=%~2
 for /f "delims=" %%i in ('powershell -c "$interval = New-TimeSpan -Start '%__START%' -End '%__END%'; Write-Host $interval"') do set _DURATION=%%i
 goto :eof
 
-rem ##########################################################################
-rem ## Cleanups
+@rem #########################################################################
+@rem ## Cleanups
 
 :end
 if %_TIMER%==1 (

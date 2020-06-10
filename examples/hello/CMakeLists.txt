@@ -8,6 +8,7 @@ if(MSVC)
 else()
     set(CMAKE_CXX_STANDARD 14)
     set(CMAKE_CXX_FLAGS "-O2 -Wall")
+    set_property(GLOBAL PROPERTY C_STANDARD 11)
 endif()
 
 file(GLOB C_SOURCES src/main/c/*.c src/main/c/*.h)

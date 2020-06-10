@@ -71,6 +71,7 @@ set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
 set "_TARGET_DIR=%_ROOT_DIR%build"
+set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
 set "_TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 
 set _MAKE_CMD=make.exe
@@ -89,6 +90,7 @@ rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TOOLSET, _VERBOSE
 set _CLEAN=0
 set _COMPILE=0
 set _DOC=0
+set _DOC_OPEN=0
 set _DUMP=0
 set _RUN=0
 set _DEBUG=0
@@ -111,6 +113,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=gcc
     ) else if /i "%__ARG%"=="-help" ( set _HELP=1
     ) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
+    ) else if /i "%__ARG%"=="-open" ( set _DOC_OPEN=1
     ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
     ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
@@ -152,13 +155,14 @@ echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     -debug      show commands executed by this script
 echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
+echo     -open       display generated HTML documentation ^(subcommand 'doc'^)
 echo     -timer      display total elapsed time
 echo     -verbose    display progress messages
 echo.
 echo   Subcommands:
 echo     clean       delete generated files
 echo     compile     generate executable
-echo     doc         generate HTML documentation ^(Doxygen^)
+echo     doc         generate HTML documentation with Doxygen
 echo     dump        dump PE/COFF infos for generated executable
 echo     help        display this help message
 echo     run         run the generated executable
@@ -212,7 +216,7 @@ pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
 ) else if %_VERBOSE%==1 ( echo Current directory is: %CD% 1>&2
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
@@ -225,7 +229,7 @@ if not %ERRORLEVEL%==0 (
 if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 ) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
 call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
@@ -250,7 +254,7 @@ set __CMAKE_OPTS=-G "Unix Makefiles"
 pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
 
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
@@ -263,7 +267,7 @@ if not %ERRORLEVEL%==0 (
 if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
 ) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
 call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
@@ -331,6 +335,11 @@ popd
 goto :eof
 
 :doc
+@rem must be the same as property OUTPUT_DIRECTORY in file Doxyfile
+if not exist "%_TARGET_DOCS_DIR%" (
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% mkdir "%_TARGET_DOCS_DIR%" 1>&2
+    mkdir "%_TARGET_DOCS_DIR%"
+)
 set "__DOXYFILE=%_ROOT_DIR%Doxyfile"
 if not exist "%__DOXYFILE%" (
     echo %_ERROR_LABEL% Configuration file for Doxygen not found 1>&2
@@ -345,6 +354,13 @@ if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Generation of HTML documentation failed 1>&2
     set _EXITCODE=1
     goto :eof
+)
+set "__INDEX_FILE=%_TARGET_DOCS_DIR%\html\index.html"
+if %_DOC_OPEN%==1 (
+    if %_DEBUG%==1 ( echo %_DEBUG_LABEL% start "%_BASENAME%" "%__INDEX_FILE%" 1>&2
+    ) else if %_VERBOSE%==1 ( echo Open HTML documentation in default browser 1>&2
+    )
+    start "%_BASENAME%" "%_TARGET_DOCS_DIR%\html\index.html"
 )
 goto :eof
 
