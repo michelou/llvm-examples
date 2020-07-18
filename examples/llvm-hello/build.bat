@@ -52,16 +52,15 @@ goto end
 @rem ## Subroutines
 
 @rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
-@rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
+@rem                    _PROJ_NAME, _PROJ_PLATFORM
 :env
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
 
-@rem ANSI colors in standard Windows 10 shell
-@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
-set _DEBUG_LABEL=[46m[%_BASENAME%][0m
-set _ERROR_LABEL=[91mError[0m:
-set _WARNING_LABEL=[93mWarning[0m:
+call :env_colors
+set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
+set _ERROR_LABEL=%_STRONG_FG_RED%Error%_RESET%:
+set _WARNING_LABEL=%_STRONG_FG_YELLOW%Warning%_RESET%:
 
 set "__CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt"
 if not exist "%__CMAKE_LIST_FILE%" (
@@ -71,13 +70,10 @@ if not exist "%__CMAKE_LIST_FILE%" (
 )
 set _PROJ_NAME=llvm-hello
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%__CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
-@rem set _PROJ_CONFIG=Debug
-set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
-set "_TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 
 set _MAKE_CMD=make.exe
 set _MAKE_OPTS=--quiet
@@ -89,6 +85,52 @@ set _LLI_CMD=lli.exe
 set _LLI_OPTS=
 goto :eof
 
+:env_colors
+@rem ANSI colors in standard Windows 10 shell
+@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _RESET=[0m
+set _BOLD=[1m
+set _UNDERSCORE=[4m
+set _INVERSE=[7m
+
+@rem normal foreground colors
+set _NORMAL_FG_BLACK=[30m
+set _NORMAL_FG_RED=[31m
+set _NORMAL_FG_GREEN=[32m
+set _NORMAL_FG_YELLOW=[33m
+set _NORMAL_FG_BLUE=[34m
+set _NORMAL_FG_MAGENTA=[35m
+set _NORMAL_FG_CYAN=[36m
+set _NORMAL_FG_WHITE=[37m
+
+@rem normal background colors
+set _NORMAL_BG_BLACK=[40m
+set _NORMAL_BG_RED=[41m
+set _NORMAL_BG_GREEN=[42m
+set _NORMAL_BG_YELLOW=[43m
+set _NORMAL_BG_BLUE=[44m
+set _NORMAL_BG_MAGENTA=[45m
+set _NORMAL_BG_CYAN=[46m
+set _NORMAL_BG_WHITE=[47m
+
+@rem strong foreground colors
+set _STRONG_FG_BLACK=[90m
+set _STRONG_FG_RED=[91m
+set _STRONG_FG_GREEN=[92m
+set _STRONG_FG_YELLOW=[93m
+set _STRONG_FG_BLUE=[94m
+set _STRONG_FG_MAGENTA=[95m
+set _STRONG_FG_CYAN=[96m
+set _STRONG_FG_WHITE=[97m
+
+@rem strong background colors
+set _STRONG_BG_BLACK=[100m
+set _STRONG_BG_RED=[101m
+set _STRONG_BG_GREEN=[102m
+set _STRONG_BG_YELLOW=[103m
+set _STRONG_BG_BLUE=[104m
+goto :eof
+
 @rem input parameter: %*
 @rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TEST, _TOOLSET, _VERBOSE
 :args
@@ -98,6 +140,7 @@ set _DOC=0
 set _DOC_OPEN=0
 set _DUMP=0
 set _HELP=0
+set _PROJ_CONFIG=Release
 set _RUN=0
 set _TEST=0
 set _TIMER=0
@@ -112,15 +155,17 @@ if not defined __ARG (
 )
 if "%__ARG:~0,1%"=="-" (
     @rem option
-    if /i "%__ARG%"=="-cl" ( set _TOOLSET=msvc
-    ) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=clang
-    ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
-    ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=gcc
-    ) else if /i "%__ARG%"=="-help" ( set _HELP=1
-    ) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
-    ) else if /i "%__ARG%"=="-open" ( set _DOC_OPEN=1
-    ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
-    ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+    if "%__ARG%"=="-cl" ( set _TOOLSET=msvc
+    ) else if "%__ARG%"=="-clang" ( set _TOOLSET=clang
+    ) else if "%__ARG%"=="-config:D" ( set _PROJ_CONFIG=Debug
+    ) else if "%__ARG%"=="-config:R" ( set _PROJ_CONFIG=Release
+    ) else if "%__ARG%"=="-debug" ( set _DEBUG=1
+    ) else if "%__ARG%"=="-gcc" ( set _TOOLSET=gcc
+    ) else if "%__ARG%"=="-help" ( set _HELP=1
+    ) else if "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
+    ) else if "%__ARG%"=="-open" ( set _DOC_OPEN=1
+    ) else if "%__ARG%"=="-timer" ( set _TIMER=1
+    ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
         set _EXITCODE=1
@@ -128,13 +173,13 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     @rem subcommand
-    if /i "%__ARG%"=="clean" ( set _CLEAN=1
-    ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
-    ) else if /i "%__ARG%"=="doc" ( set _DOC=1
-    ) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
-    ) else if /i "%__ARG%"=="help" ( set _HELP=1
-    ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
-    ) else if /i "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=0& set _TEST=1
+    if "%__ARG%"=="clean" ( set _CLEAN=1
+    ) else if "%__ARG%"=="compile" ( set _COMPILE=1
+    ) else if "%__ARG%"=="doc" ( set _DOC=1
+    ) else if "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
+    ) else if "%__ARG%"=="help" ( set _HELP=1
+    ) else if "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
+    ) else if "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=1& set _TEST=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -157,26 +202,38 @@ if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TI
 goto :eof
 
 :help
-echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
+if %_VERBOSE%==1 (
+    set __BEG_P=%_STRONG_FG_CYAN%%_UNDERSCORE%
+    set __BEG_O=%_STRONG_FG_GREEN%
+    set __BEG_N=%_NORMAL_FG_YELLOW%
+    set __END=%_RESET%
+) else (
+    set __BEG_P=
+    set __BEG_O=
+    set __BEG_N=
+    set __END=
+)
+echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
-echo   Options:
-echo     -cl         use MSVC/MSBuild toolset ^(default^)
-echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
-echo     -debug      show commands executed by this script
-echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
-echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
-echo     -open       display generated HTML documentation ^(subcommand 'doc'^)
-echo     -timer      display total elapsed time
-echo     -verbose    display progress messages
+echo   %__BEG_P%Options:%__END%
+echo     %__BEG_O%-cl%__END%            use MSVC/MSBuild toolset ^(default^)
+echo     %__BEG_O%-clang%__END%         use Clang/GNU Make toolset instead of MSVC/MSBuild
+echo     %__BEG_O%-config:^(D^|R^)%__END%  use %__BEG_O%D%__END%^)ebug or %__BEG_O%R%__END%^)elease ^(default^) configuration
+echo     %__BEG_O%-debug%__END%         show commands executed by this script
+echo     %__BEG_O%-gcc%__END%           use GCC/GNU Make toolset instead of MSVC/MSBuild
+echo     %__BEG_O%-msvc%__END%          use MSVC/MSBuild toolset ^(alias for option %__BEG_O%-cl%__END%^)
+echo     %__BEG_O%-open%__END%          display generated HTML documentation ^(subcommand %__BEG_O%doc%__END%^)
+echo     %__BEG_O%-timer%__END%         display total elapsed time
+echo     %__BEG_O%-verbose%__END%       display progress messages
 echo.
-echo   Subcommands:
-echo     clean       delete generated files
-echo     compile     generate executable
-echo     doc         generate HTML documentation with Doxygen
-echo     dump        dump PE/COFF infos for generated executable
-echo     help        display this help message
-echo     run         run generated executable
-echo     test        test generated IR code
+echo   %__BEG_P%Subcommands:%__END%
+echo     %__BEG_O%clean%__END%          delete generated files
+echo     %__BEG_O%compile%__END%        generate executable ^(default config: %__BEG_O%Release%__END%^)
+echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
+echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
+echo     %__BEG_O%help%__END%           display this help message
+echo     %__BEG_O%run%__END%            run generated executable
+echo     %__BEG_O%test%__END%           test generated IR code
 
 :clean
 call :rmdir "%_TARGET_DIR%"
@@ -185,11 +242,11 @@ goto :eof
 @rem input parameter: %1=directory path
 :rmdir
 set "__DIR=%~1"
-if not exist "!__DIR!\" goto :eof
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "!__DIR!" 1>&2
+if not exist "%__DIR%\" goto :eof
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "%__DIR%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
 )
-rmdir /s /q "!__DIR!"
+rmdir /s /q "%__DIR%"
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
@@ -268,7 +325,7 @@ pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
 ) else if %_VERBOSE%==1 ( echo Current directory is: %CD% 1>&2
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
@@ -294,6 +351,7 @@ if not %ERRORLEVEL%==0 (
 popd
 goto :eof
 
+@rem output parameters: _CMAKE_CMD, _MSBUILD_CMD
 :init_msvc
 set _CMAKE_CMD=
 for /f "delims=" %%f in ('where /r "%MSVS_HOME%" cmake.exe') do set "_CMAKE_CMD=%%f"
@@ -441,10 +499,10 @@ if not exist "%__LL_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_LLI_CMD% %_LLI_OPTS% %__LL_FILE%! 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_LLI_CMD%" %_LLI_OPTS% "%__LL_FILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Execute !__LL_FILE:%_ROOT_DIR%=! with LLVM interpreter 1>&2
 )
-call %_LLI_CMD% %_LLI_OPTS% %__LL_FILE%
+call "%_LLI_CMD%" %_LLI_OPTS% "%__LL_FILE%"
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof

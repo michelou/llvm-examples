@@ -15,7 +15,7 @@
 
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
-- [CMake 3.17][cmake_downloads] ([*release notes*][cmake_relnotes])
+- [CMake 3.18][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [LLVM 10 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
 - [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>  ([*release notes*][vs2019_relnotes])
 - [Python 3.8][python_downloads] ([*changelog*][python_changelog])
@@ -29,10 +29,10 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*June 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
+For instance our development environment looks as follows (*July 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.17.3\                                            <i>(  79 MB)</i>
+C:\opt\cmake-3.18.0\                                            <i>(  81 MB)</i>
 C:\opt\Git-2.27.0\                                              <i>( 278 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
@@ -136,7 +136,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.17.3, make 4.3, gcc 9.3.0, python 3.8.3, diff 3.7
+   cmake 3.18.0, make 4.3, gcc 9.3.0, python 3.8.3, diff 3.7
    git 2.27.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; where clang git</b>
@@ -154,13 +154,13 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.17.3, make 4.2.1, gcc 9.3.0, python 3.8.3, diff 3.7
+   cmake 3.18.0, make 4.2.1, gcc 9.3.0, python 3.8.3, diff 3.7
    git 2.27.0.windows.1, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-10.0.0\bin\clang.exe
    C:\opt\LLVM-10.0.0\bin\lli.exe
    C:\opt\LLVM-10.0.0\bin\opt.exe
-   C:\opt\cmake-3.17.3\bin\cmake.exe
+   C:\opt\cmake-3.18.0\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.8.3\python.exe
@@ -172,7 +172,7 @@ Tool paths:
    C:\opt\Git-2.27.0\mingw64\bin\git.exe
    C:\opt\Git-2.27.0\bin\bash.exe
 Environment variables:
-   CMAKE_HOME="C:\opt\cmake-3.17.3-win64-x64"
+   CMAKE_HOME="C:\opt\cmake-3.18.0-win64-x64"
    MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
    MSVS_CMAKE_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
@@ -254,30 +254,32 @@ Error: Generation of build configuration failed
 <a name="footnote_03">[3]</a> ***MSYS2 versus MinGW*** [↩](#anchor_03)
 
 <p style="margin:0 0 1em 20px;">
-We give here three criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/">MingGW-w64</a>:
+We give here three criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/" rel="external">MingGW-w64</a>:
 </p>
 <table style="margin:0 0 1em 20px;">
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
-<tr><td>Installation size</td><td>2.85 GB</td><td>438 MB</td></tr>
-<tr><td>Version/architecture</td><td><code>gcc 9.3</code></td><td><code>gcc 8.1</code></td></tr>
-<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get update</code></a> <sup>(2)</sup></td></tr>
+<tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
+<tr><td>Version/architecture</td><td><code>gcc 10.1</code></td><td><code>gcc 8.1</code></td></tr>
+<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get upgrade</code></a> <sup>(2)</sup></td></tr>
 </table>
 <p style="margin:-16px 0 1em 30px; font-size:80%;">
 <sup>(1)</sup> <a href="https://github.com/msys2/MSYS2-packages/issues/1298">pacman -Syu does nothing</a><br/>
-<sup>(2)</sup> <a href="https://www.sqlpac.com/referentiel/docs/mingw-minimalist-gnu-pour-windows.html">Minimalist GNU for Windows</a>
+<sup>(2)</sup> <a href="https://www.sqlpac.com/referentiel/docs/mingw-minimalist-gnu-pour-windows.html" rel="external">Minimalist GNU for Windows</a>
 </p>
 
 <p style="margin:0 0 1em 20px;">
 MSYS64 tools:
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<b>&gt; where gcc make pacman</b>
-C:\opt\msys64\mingw64\bin\gcc.exe
-C:\opt\msys64\usr\bin\make.exe
-C:\opt\msys64\usr\bin\pacman.exe
+<b>&gt; cd c:\opt\msys64</b>
+&nbsp;
+<b>&gt; where /r . gcc.exe make.exe pacman.exe</b>
+c:\opt\msys64\mingw64\bin\gcc.exe
+c:\opt\msys64\usr\bin\make.exe
+c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; gcc --version | findstr gcc</b>
-gcc (Rev2, Built by MSYS2 project) 9.3.0
+gcc (Rev3, Built by MSYS2 project) 10.1.0
 &nbsp;
 <b>&gt; make --version | findstr Make</b>
 GNU Make 4.3
@@ -286,9 +288,10 @@ GNU Make 4.3
 MinGW-w64 tools:
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<b>&gt; where gcc mingw32-make</b>
+<b>&gt; where /r . gcc mingw-get mingw32-make</b>
 c:\opt\mingw-w64\mingw64\bin\gcc.exe
-c:\opt\mingw-w64\mingw64\bin\make
+c:\opt\mingw-w64\mingw64\bin\mingw-get.exe
+c:\opt\mingw-w64\mingw64\bin\mingw32-make.exe
 &nbsp;
 <b>&gt; gcc --version | findstr gcc</b>
 gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
@@ -303,7 +306,7 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.17.3-win64-x64.zip</a>       <i>( 32 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.18.0-win64-x64.zip</a>       <i>( 33 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.27.0-64-bit.7z.exe</a> <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>             <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>            <i>(150 MB)</i>
@@ -318,7 +321,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/June 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/July 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -326,8 +329,8 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [gnu_cmake]: https://cmake.org/
 [cmake_downloads]: https://cmake.org/download/
-[cmake_modules]: https://cmake.org/cmake/help/v3.17/manual/cmake-modules.7.html
-[cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.17.html
+[cmake_modules]: https://cmake.org/cmake/help/v3.18/manual/cmake-modules.7.html
+[cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.18.html
 [dotty_examples]: https://github.com/michelou/dotty-examples
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git

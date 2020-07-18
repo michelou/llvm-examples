@@ -57,11 +57,10 @@ goto end
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
 
-@rem ANSI colors in standard Windows 10 shell
-@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
-set _DEBUG_LABEL=[46m[%_BASENAME%][0m
-set _ERROR_LABEL=[91mError[0m:
-set _WARNING_LABEL=[93mWarning[0m:
+call :env_ansi
+set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
+set _ERROR_LABEL=%_STRONG_FG_RED%Error%_RESET%
+set _WARNING_LABEL=%_STRONG_FG_YELLOW%Warning%_RESET%
 
 set "__CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt"
 if not exist "%__CMAKE_LIST_FILE%" (
@@ -90,6 +89,52 @@ set _LLVM_OBJDUMP_OPTS=-f -h
 
 set "_CLANG_CMD=%LLVM_HOME%\bin\clang.exe"
 set _CLANG_OPTS=
+goto :eof
+
+:env_ansi
+@rem ANSI colors in standard Windows 10 shell
+@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _RESET=[0m
+set _BOLD=[1m
+set _UNDERSCORE=[4m
+set _INVERSE=[7m
+
+@rem normal foreground colors
+set _NORMAL_FG_BLACK=[30m
+set _NORMAL_FG_RED=[31m
+set _NORMAL_FG_GREEN=[32m
+set _NORMAL_FG_YELLOW=[33m
+set _NORMAL_FG_BLUE=[34m
+set _NORMAL_FG_MAGENTA=[35m
+set _NORMAL_FG_CYAN=[36m
+set _NORMAL_FG_WHITE=[37m
+
+@rem normal background colors
+set _NORMAL_BG_BLACK=[40m
+set _NORMAL_BG_RED=[41m
+set _NORMAL_BG_GREEN=[42m
+set _NORMAL_BG_YELLOW=[43m
+set _NORMAL_BG_BLUE=[44m
+set _NORMAL_BG_MAGENTA=[45m
+set _NORMAL_BG_CYAN=[46m
+set _NORMAL_BG_WHITE=[47m
+
+@rem strong foreground colors
+set _STRONG_FG_BLACK=[90m
+set _STRONG_FG_RED=[91m
+set _STRONG_FG_GREEN=[92m
+set _STRONG_FG_YELLOW=[93m
+set _STRONG_FG_BLUE=[94m
+set _STRONG_FG_MAGENTA=[95m
+set _STRONG_FG_CYAN=[96m
+set _STRONG_FG_WHITE=[97m
+
+@rem strong background colors
+set _STRONG_BG_BLACK=[100m
+set _STRONG_BG_RED=[101m
+set _STRONG_BG_GREEN=[102m
+set _STRONG_BG_YELLOW=[103m
+set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
@@ -161,26 +206,37 @@ if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TI
 goto :eof
 
 :help
+if %_VERBOSE%==1 (
+    set __P_BEG=%_STRONG_FG_CYAN%%_UNDERSCORE%
+    set __P_END=%_RESET%
+    set __O_BEG=%_STRONG_FG_GREEN%
+    set __O_END=%_RESET%
+) else (
+    set __P_BEG=
+    set __P_END=
+    set __O_BEG=
+    set __O_END=
+)
 echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
 echo.
-echo   Options:
-echo     -cl         use MSVC/MSBuild toolset ^(default^)
-echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
-echo     -debug      show commands executed by this script
-echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
-echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
-echo     -open       display generated HTML documentation ^(subcommand 'doc'^)
-echo     -timer      display total elapsed time
-echo     -verbose    display progress messages
+echo   %__P_BEG%Options:%__P_END%
+echo     %__O_BEG%-cl%__O_END%         use MSVC/MSBuild toolset ^(default^)
+echo     %__O_BEG%-clang%__O_END%      use Clang/GNU Make toolset instead of MSVC/MSBuild
+echo     %__O_BEG%-debug%__O_END%      show commands executed by this script
+echo     %__O_BEG%-gcc%__O_END%        use GCC/GNU Make toolset instead of MSVC/MSBuild
+echo     %__O_BEG%-msvc%__O_END%       use MSVC/MSBuild toolset ^(alias for option -cl^)
+echo     %__O_BEG%-open%__O_END%       display generated HTML documentation ^(subcommand 'doc'^)
+echo     %__O_BEG%-timer%__O_END%      display total elapsed time
+echo     %__O_BEG%-verbose%__O_END%    display progress messages
 echo.
-echo   Subcommands:
-echo     clean       delete generated files
-echo     compile     generate executable
-echo     doc         generate HTML documentation with Doxygen
-echo     dump        dump PE/COFF infos for generated executable
-echo     help        display this help message
-echo     run         run generated executable
-echo     test        test generated IR code
+echo   %__P_BEG%Subcommands:%__P_END%
+echo     %__O_BEG%clean%__O_END%       delete generated files
+echo     %__O_BEG%compile%__O_END%     generate executable
+echo     %__O_BEG%doc%__O_END%         generate HTML documentation with Doxygen
+echo     %__O_BEG%dump%__O_END%        dump PE/COFF infos for generated executable
+echo     %__O_BEG%help%__O_END%        display this help message
+echo     %__O_BEG%run%__O_END%         run generated executable
+echo     %__O_BEG%test%__O_END%        test generated IR code
 goto :eof
 
 :clean

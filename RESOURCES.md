@@ -2,8 +2,8 @@
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
-  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM logo"/></a></td>
-  <td style="border:0;padding:0;vertical-align:text-top;">This document gathers a few <a href="https://llvm.org/">LLVM</a> related resources.
+  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM logo"/></a></td>
+  <td style="border:0;padding:0;vertical-align:text-top;">This document gathers a few <a href="https://llvm.org/" rel="external">LLVM</a> related resources.
   </td>
   </tr>
 </table>
@@ -49,8 +49,8 @@
 
 ## News
 
-- [*LLVM Weekly*](http://llvmweekly.org/) - A weekly newsletter covering developments in LLVM, Clang, and related projects.
-- [*Planet Clang*](http://planet.clang.org/) - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
+- [*LLVM Weekly*][news_llvmweekly] - A weekly newsletter covering developments in LLVM, Clang, and related projects.
+- [*Planet Clang*][news_planet_clang] - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
 
 <!--
 - [LLVM Archive](https://www.linux-magazin.de/tag/llvm/) - Linux-Magazin.
@@ -59,7 +59,7 @@
 
 ## <span id="tools">Online Tools</span>
 
-- [Compiler Explorer](https://www.godbolt.org/) (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
+- [Compiler Explorer][tools_godbolt]) (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
 
 
 ## <span id="papers">Papers</span>
@@ -91,7 +91,7 @@ We mention here only the publications from <a href="http://nondot.org/~sabre/">C
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/June 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/July 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -103,3 +103,6 @@ We mention here only the publications from <a href="http://nondot.org/~sabre/">C
 [article_power_sums]: https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html
 [article_toy_compiler]: https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
 [book_cpu0]: https://jonathan2251.github.io/lbd/llvmstructure.html
+[news_llvmweekly]: http://llvmweekly.org/ "LLVM Weekly"
+[news_planet_clang]: http://planet.clang.org/ "Planet Clang"
+[tools_godbolt]: https://www.godbolt.org/

@@ -61,13 +61,58 @@ goto end
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
 
-@rem ANSI colors in standard Windows 10 shell
-@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
-set _DEBUG_LABEL=[46m[%_BASENAME%][0m
-set _ERROR_LABEL=[91mError[0m:
-set _WARNING_LABEL=[93mWarning[0m:
+call :env_colors
+set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
+set _ERROR_LABEL=%_STRONG_FG_RED%Error%_RESET%:
+set _WARNING_LABEL=%_STRONG_FG_YELLOW%Warning%_RESET%:
 
 set "_WSWHERE_CMD=%_ROOT_DIR%bin\vswhere.exe"
+goto :eof
+
+:env_colors
+@rem ANSI colors in standard Windows 10 shell
+@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _RESET=[0m
+set _BOLD=[1m
+set _UNDERSCORE=[4m
+set _INVERSE=[7m
+
+@rem normal foreground colors
+set _NORMAL_FG_BLACK=[30m
+set _NORMAL_FG_RED=[31m
+set _NORMAL_FG_GREEN=[32m
+set _NORMAL_FG_YELLOW=[33m
+set _NORMAL_FG_BLUE=[34m
+set _NORMAL_FG_MAGENTA=[35m
+set _NORMAL_FG_CYAN=[36m
+set _NORMAL_FG_WHITE=[37m
+
+@rem normal background colors
+set _NORMAL_BG_BLACK=[40m
+set _NORMAL_BG_RED=[41m
+set _NORMAL_BG_GREEN=[42m
+set _NORMAL_BG_YELLOW=[43m
+set _NORMAL_BG_BLUE=[44m
+set _NORMAL_BG_MAGENTA=[45m
+set _NORMAL_BG_CYAN=[46m
+set _NORMAL_BG_WHITE=[47m
+
+@rem strong foreground colors
+set _STRONG_FG_BLACK=[90m
+set _STRONG_FG_RED=[91m
+set _STRONG_FG_GREEN=[92m
+set _STRONG_FG_YELLOW=[93m
+set _STRONG_FG_BLUE=[94m
+set _STRONG_FG_MAGENTA=[95m
+set _STRONG_FG_CYAN=[96m
+set _STRONG_FG_WHITE=[97m
+
+@rem strong background colors
+set _STRONG_BG_BLACK=[100m
+set _STRONG_BG_RED=[101m
+set _STRONG_BG_GREEN=[102m
+set _STRONG_BG_YELLOW=[103m
+set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
@@ -111,16 +156,27 @@ if %_DEBUG%==1 echo %_DEBUG_LABEL% _BASH=%_BASH% _HELP=%_HELP% _LLVM_PREFIX=%_LL
 goto :eof
 
 :help
-echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
+if %_VERBOSE%==1 (
+    set __BEG_P=%_STRONG_FG_CYAN%%_UNDERSCORE%
+    set __BEG_O=%_STRONG_FG_GREEN%
+    set __BEG_N=%_NORMAL_FG_YELLOW%
+    set __END=%_RESET%
+) else (
+    set __BEG_P=
+    set __BEG_O=
+    set __BEG_N=
+    set __END=
+)
+echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
-echo   Options:
-echo     -bash           start Git bash shell instead of Windows command prompt
-echo     -debug          show commands executed by this script
-echo     -llvm:^<8^|9^|10^>  select version of LLVM installation ^(default: 10^)
-echo     -verbose        display progress messages
+echo   %__BEG_P%Options:%__END%
+echo     %__BEG_O%-bash%__END%           start Git bash shell instead of Windows command prompt
+echo     %__BEG_O%-debug%__END%          show commands executed by this script
+echo     %__BEG_O%-llvm:^<8^|9^|10^>%__END%  select version of LLVM installation ^(default: %__BEG_N%10%__END%^)
+echo     %__BEG_O%-verbose%__END%        display progress messages
 echo.
-echo   Subcommands:
-echo     help            display this help message
+echo   %__BEG_P%Subcommands:%__END%
+echo     %__BEG_O%help%__END%            display this help message
 goto :eof
 
 rem output parameter(s): _DOXY_PATH
@@ -129,16 +185,16 @@ set _DOXY_PATH=
 
 set __DOXY_HOME=
 set __DOXYGEN_CMD=
-for /f %%f in ('where doxygen.exe 2^>NUL') do set __DOXYGEN_CMD=%%f
+for /f %%f in ('where doxygen.exe 2^>NUL') do set "__DOXYGEN_CMD=%%f"
 if defined __DOXYGEN_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Doxygen executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__DOXYGEN_CMD%") do set "__DOXY_BIN_DIR=%%~dpi"
-    for %%f in ("!__DOXY_BIN_DIR!..\..") do set "__DOXY_HOME=%%~sf"
+    for %%f in ("!__DOXY_BIN_DIR!") do set "__DOXY_HOME=%%~dpf"
     @rem keep _DOXY_PATH undefined since executable already in path
     goto :eof
 ) else if defined DOXY_HOME (
     set "__DOXY_HOME=%DOXY_HOME%"
-    if %_DEBUG%==1 echo [%_BASENAME%] Using environment variable DOXY_HOME 1>&2
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable DOXY_HOME 1>&2
 ) else (
     set "__PATH=%ProgramFiles%"
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "__DOXY_HOME=!__PATH!\%%f"
@@ -158,14 +214,14 @@ goto :eof
 @rem output parameter(s): _CMAKE_HOME
 :cmake
 set _CMAKE_HOME=
-rem set _CMAKE_PATH=
+@rem set _CMAKE_PATH=
 
 set __CMAKE_CMD=
 for /f %%f in ('where cmake.exe 2^>NUL') do set "__CMAKE_CMD=%%f"
 if defined __CMAKE_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CMake executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__CMAKE_CMD%") do set "__CMAKE_BIN_DIR=%%~dpi"
-    for %%f in ("!__CMAKE_BIN_DIR!..") do set "_CMAKE_HOME=%%~dpf"
+    for %%f in ("!__CMAKE_BIN_DIR!") do set "_CMAKE_HOME=%%~dpf"
     @rem keep _CMAKE_PATH undefined since executable already in path
     goto :eof
 ) else if defined CMAKE_HOME (
@@ -204,7 +260,7 @@ if defined __PYTHON_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable PYTHON_HOME 1>&2
 ) else (
     set __PATH=C:\opt
-    if exist "!__PATH!\Python\" ( set _PYTHON_HOME=!__PATH!\Python
+    if exist "!__PATH!\Python\" ( set "_PYTHON_HOME=!__PATH!\Python"
     ) else (
         for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
         if not defined _PYTHON_HOME (
@@ -219,7 +275,7 @@ if not exist "%_PYTHON_HOME%\python.exe" (
     goto :eof
 )
 if not exist "%_PYTHON_HOME%\Scripts\pylint.exe" (
-    echo %_ERROR_LABEL% Pylint executable not found ^(%_PYTHON_HOME^) 1>&2
+    echo %_ERROR_LABEL% Pylint executable not found ^(%_PYTHON_HOME%^) 1>&2
     echo ^(execute command: python -m pip install pylint^) 1>&2
     set _EXITCODE=1
     goto :eof
@@ -232,12 +288,12 @@ goto :eof
 set _MSYS_HOME=
 set _MSYS_PATH=
 
-set __MAKE_EXE=
-for /f %%f in ('where make.exe 2^>NUL') do set "__MAKE_EXE=%%f"
-if defined __MAKE_EXE (
+set __MAKE_CMD=
+for /f %%f in ('where make.exe 2^>NUL') do set "__MAKE_CMD=%%f"
+if defined __MAKE_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of GNU Make executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__MAKE_EXE%") do set "__MAKE_BIN_DIR=%%~dpi"
-    for %%f in ("!__MAKE_BIN_DIR!..\..") do set "_MSYS_HOME=%%~sf"
+    for /f "delims=" %%i in ("%__MAKE_CMD%") do set "__MAKE_BIN_DIR=%%~dpi"
+    for %%f in ("!__MAKE_BIN_DIR!\.") do set "_MSYS_HOME=%%~dpf"
     @rem keep _MSYS_PATH undefined since executable already in path
     goto :eof
 ) else if defined MSYS_HOME (
@@ -271,8 +327,8 @@ for /f %%f in ('where clang.exe 2^>NUL') do set "__CLANG_CMD=%%f"
 if defined __CLANG_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Clang executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__CLANG_CMD%") do set "__LLVM_BIN_DIR=%%~dpi"
-    for %%f in ("!__LLVM_BIN_DIR!..") do set "_LLVM_HOME=%%~dpf"
-    rem keep _LLVM_PATH undefined since executable already in path
+    for /f "delims=" %%f in ("!__LLVM_BIN_DIR!\.") do set "_LLVM_HOME=%%~dpf"
+    @rem keep _LLVM_PATH undefined since executable already in path
     goto :eof
 ) else if defined LLVM_HOME (
     set "_LLVM_HOME=%LLVM_HOME%"
@@ -317,13 +373,13 @@ if not exist "%__VC_BATCH_FILE%" (
     goto :eof
 )
 set _MSVC_HOME=%_MSVS_HOME%\VC
-rem set __MSBUILD_HOME=
-rem set "__FRAMEWORK_DIR=%SystemRoot%\Microsoft.NET\Framework"
-rem for /f %%f in ('dir /ad /b "%__FRAMEWORK_DIR%\*" 2^>NUL') do set "__MSBUILD_HOME=%__FRAMEWORK_DIR%\%%f"
+@rem set __MSBUILD_HOME=
+@rem set "__FRAMEWORK_DIR=%SystemRoot%\Microsoft.NET\Framework"
+@rem for /f %%f in ('dir /ad /b "%__FRAMEWORK_DIR%\*" 2^>NUL') do set "__MSBUILD_HOME=%__FRAMEWORK_DIR%\%%f"
 goto :eof
 
-rem output parameters: _MSVC_HOME, _MSVS_HOME, _MSVS_CMAKE_HOME
-rem Visual Studio 2017/2019
+@rem output parameters: _MSVC_HOME, _MSVS_HOME, _MSVS_CMAKE_HOME
+@rem Visual Studio 2017/2019
 :msvs
 set _MSVC_HOME=
 set _MSVS_HOME=
@@ -354,7 +410,7 @@ if not exist "%__VS_CMAKE_CMD%" (
     goto :eof
 )
 for /f "delims=" %%i in ("%__VS_CMAKE_CMD%") do set "__VS_CMAKE_BIN_DIR=%%~dpi"
-for %%f in ("!__VS_CMAKE_BIN_DIR!..") do set "_MSVS_CMAKE_HOME=%%~sf"
+for %%f in ("!__VS_CMAKE_BIN_DIR!\.") do set "_MSVS_CMAKE_HOME=%%~dpf"
 @rem call :subst_path "%_MSVS_HOME%"
 @rem if not %_EXITCODE%==0 goto :eof
 @rem set "_MSVS_HOME=%_SUBST_PATH%"
@@ -394,11 +450,11 @@ set __GIT_CMD=
 for /f %%f in ('where git.exe 2^>NUL') do set "__GIT_CMD=%%f"
 if defined __GIT_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Git executable found in PATH 1>&2
-    for %%i in ("%__GIT_CMD%") do set "__GIT_BIN_DIR=%%~dpi"
-    for %%f in ("!__GIT_BIN_DIR!..") do set "_GIT_HOME=%%~sf"
+    for /f "delims=" %%i in ("%__GIT_CMD%") do set "__GIT_BIN_DIR=%%~dpi"
+    for %%f in ("!__GIT_BIN_DIR!\.") do set "_GIT_HOME=%%~dpf"
     @rem Executable git.exe is present both in bin\ and \mingw64\bin\
     if not "!_GIT_HOME:mingw=!"=="!_GIT_HOME!" (
-        for %%f in ("!_GIT_HOME!\..") do set _GIT_HOME=%%~sf
+        for %%f in ("!_GIT_HOME!\.") do set "_GIT_HOME=%%~dpf"
     )
     @rem keep _GIT_PATH undefined since executable already in path
     goto :eof

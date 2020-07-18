@@ -2,8 +2,8 @@
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
-  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM logo"/></a></td>
-  <td style="border:0;padding:0;vertical-align:text-top;">This document presents our build from the <a href="https://llvm.org/">LLVM</a> source distribution on a Windows machine.
+  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" width="120" alt="LLVM logo"/></a></td>
+  <td style="border:0;padding:0;vertical-align:text-top;">This document presents our build from the <a href="https://llvm.org/" rel="external">LLVM</a> source distribution on a Windows machine.
   </td>
   </tr>
 </table>
@@ -25,7 +25,7 @@ Directory **`llvm-10.0.0.src\`** is setup as follows:
 <b>&gt; cd llvm-10.0.0.src</b>
 </pre>
 
-> **:mag_right:** In our case we have the choice between the 3 source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\` and `llvm-10.0.0.src\`).
+> **:mag_right:** In our case we have the choice between the 3 source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\` and `llvm-10.0.0.src\`.
 
 Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
@@ -97,7 +97,7 @@ No issue so far.
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/June 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/July 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

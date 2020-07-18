@@ -49,11 +49,10 @@ goto end
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
 
-@rem ANSI colors in standard Windows 10 shell
-@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
-set _DEBUG_LABEL=[46m[%_BASENAME%][0m
-set _ERROR_LABEL=[91mError[0m:
-set _WARNING_LABEL=[93mWarning[0m:
+call :env_colors
+set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
+set _ERROR_LABEL=%_STRONG_FG_RED%Error%_RESET%:
+set _WARNING_LABEL=%_STRONG_FG_YELLOW%Warning%_RESET%:
 
 for /f "delims=" %%f in ('where /r "%MSVS_HOME%" vcvarsall.bat') do set "_VCVARSALL_FILE=%%f"
 if not exist "%_VCVARSALL_FILE%" (
@@ -79,6 +78,52 @@ set "_TARGET_OUTPUT_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
+goto :eof
+
+:env_colors
+@rem ANSI colors in standard Windows 10 shell
+@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _RESET=[0m
+set _BOLD=[1m
+set _UNDERSCORE=[4m
+set _INVERSE=[7m
+
+@rem normal foreground colors
+set _NORMAL_FG_BLACK=[30m
+set _NORMAL_FG_RED=[31m
+set _NORMAL_FG_GREEN=[32m
+set _NORMAL_FG_YELLOW=[33m
+set _NORMAL_FG_BLUE=[34m
+set _NORMAL_FG_MAGENTA=[35m
+set _NORMAL_FG_CYAN=[36m
+set _NORMAL_FG_WHITE=[37m
+
+@rem normal background colors
+set _NORMAL_BG_BLACK=[40m
+set _NORMAL_BG_RED=[41m
+set _NORMAL_BG_GREEN=[42m
+set _NORMAL_BG_YELLOW=[43m
+set _NORMAL_BG_BLUE=[44m
+set _NORMAL_BG_MAGENTA=[45m
+set _NORMAL_BG_CYAN=[46m
+set _NORMAL_BG_WHITE=[47m
+
+@rem strong foreground colors
+set _STRONG_FG_BLACK=[90m
+set _STRONG_FG_RED=[91m
+set _STRONG_FG_GREEN=[92m
+set _STRONG_FG_YELLOW=[93m
+set _STRONG_FG_BLUE=[94m
+set _STRONG_FG_MAGENTA=[95m
+set _STRONG_FG_CYAN=[96m
+set _STRONG_FG_WHITE=[97m
+
+@rem strong background colors
+set _STRONG_BG_BLACK=[100m
+set _STRONG_BG_RED=[101m
+set _STRONG_BG_GREEN=[102m
+set _STRONG_BG_YELLOW=[103m
+set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
@@ -131,24 +176,35 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
 
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _INSTALL=%_INSTALL% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _INSTALL=%_INSTALL% _RUN=%_RUN% _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
 :help
-echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
+if %_VERBOSE%==1 (
+    set __BEG_P=%_STRONG_FG_CYAN%%_UNDERSCORE%
+    set __BEG_O=%_STRONG_FG_GREEN%
+    set __BEG_N=%_NORMAL_FG_YELLOW%
+    set __END=%_RESET%
+) else (
+    set __BEG_P=
+    set __BEG_O=
+    set __BEG_N=
+    set __END=
+)
+echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
-echo   Options:
-echo     -debug      show commands executed by this script
-echo     -timer      print total elapsed time
-echo     -verbose    display progress messages
+echo   %__BEG_P%Options:%__END%
+echo     %__BEG_O%-debug%__END%      show commands executed by this script
+echo     %__BEG_O%-timer%__END%      print total elapsed time
+echo     %__BEG_O%-verbose%__END%    display progress messages
 echo.
-echo   Subcommands:
-echo     clean       delete generated files
-echo     compile     generate executable
-echo     help        display this help message
-echo     install     install files generated in directory !_TARGET_DIR:%_ROOT_DIR%=!
-echo     run         run the generated executable
+echo   %__BEG_P%Subcommands:%__END%
+echo     %__BEG_O%clean%__END%       delete generated files
+echo     %__BEG_O%compile%__END%     generate executable
+echo     %__BEG_O%help%__END%        display this help message
+echo     %__BEG_O%install%__END%     install files generated in directory %__BEG_O%!_TARGET_DIR:%_ROOT_DIR%=!%__END%
+echo     %__BEG_O%run%__END%         run the generated executable
 goto :eof
 
 :clean
@@ -235,14 +291,14 @@ popd
 goto :eof
 
 :run
-set __EXE_FILE=%_TARGET_OUTPUT_DIR%\bin\lli.exe
+set "__EXE_FILE=%_TARGET_OUTPUT_DIR%\bin\lli.exe"
 set __EXE_ARGS=--version
 if not exist "%__EXE_FILE%" (
     echo %_ERROR_LABEL% Executable not found ^(!__EXE_FILE:%_ROOT_DIR%=!^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% !__EXE_FILE:%_ROOT_DIR%=! %__EXE_ARGS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" %__EXE_ARGS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Execute !__EXE_FILE:%_ROOT_DIR%=! %__EXE_ARGS% 1>&2
 )
 call "%__EXE_FILE%" %__EXE_ARGS%
@@ -253,16 +309,16 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
-rem input parameter(s): %1=source directory, %2=target directory, %3=exclude file, %4=recursive
+@rem input parameter(s): %1=source directory, %2=target directory, %3=exclude file, %4=recursive
 :xcopy
 set __SOURCE_DIR=%~1
 set __TARGET_DIR=%~2
 set __EXCLUDE_FILE=%~3
 set __RECURSIVE=%~4
 
-rem see https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/xcopy
-rem option '/e' copies all subdirectories, even if they are empty.
-rem option '/d' allows you to update files that have changed
+@rem see https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/xcopy
+@rem option '/e' copies all subdirectories, even if they are empty.
+@rem option '/d' allows you to update files that have changed
 if defined __RECURSIVE ( set __XCOPY_OPTS=/d /e /y
 ) else ( set __XCOPY_OPTS=/d /y
 )

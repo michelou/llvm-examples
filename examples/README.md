@@ -1,4 +1,4 @@
-# <span id="top">LLVM examples</span> <span style="size:30%;"><a href="../README.md">⬆</a></span>
+# <span id="top">LLVM examples on Microsoft Windows</span> <span style="size:30%;"><a href="../README.md">⬆</a></span>
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
@@ -334,7 +334,7 @@ The [LLVM linker][llvm_lld] requires an entry point to successfully generate an 
 [**`JITTutorial1_main\`**](JITTutorial1_main/) is our extended version of previous example [**`JITTutorial1`**](#tut1):
 
 - it defines the same function **`mul_add`** as in example [**`JITTutorial1`**](#tut1),
-- it defines a **`main`** function (with [no parameter][cpp_main] as program entry point and
+- it defines a **`main`** function (with [no parameter][cpp_main] as program entry point) and
 - it defines a **`printf`** function to print out the result.
 
 > **:mag_right:** The source code has been reorganized in order to better distinguish between prototype definition and code generation ([**`main.cpp`**](JITTutorial1_main/src/main.cpp), [**`tut1.h`**](JITTutorial1_main/src/tut1.h) and [**`tut1.cpp`**](JITTutorial1_main/src/tut1.cpp)).
@@ -370,7 +370,7 @@ declare i32 @printf(i8*, ...)
 Now, let's transform the above [IR code][llvm_ir] into an executable:
 
 <pre style="font-size:80%;">
-<b>&gt; build run &gt; build\tut1.ll</b>
+<b>&gt; <a href="JITTutorial1_main/build.bat">build</a> run &gt; build\tut1.ll</b>
 &nbsp;
 <b>&gt; clang -Wno-override-module -o build\tut1.exe build\tut1.ll</b>
 &nbsp;
@@ -606,6 +606,10 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 &nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:compile</span></b>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
+<b>if</b> %_DOC%==1 (
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:doc</span></b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
+)
 <b>if</b> %_RUN%==1 (
 &nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:run</span></b>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
@@ -628,6 +632,9 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 ...
 <b>goto :eof</b>
 <span style="color:#9966ff;">:compile</span>
+...
+<b>goto :eof</b>
+<span style="color:#9966ff;">:doc</span>
 ...
 <b>goto :eof</b>
 <span style="color:#9966ff;">:run</span>
