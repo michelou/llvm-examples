@@ -77,7 +77,6 @@ set "_TARGET_OUTPUT_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 
 set _MSBUILD_CMD=msbuild.exe
 set _MSBUILD_OPTS=/nologo /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
-
 goto :eof
 
 :env_colors
@@ -147,10 +146,10 @@ if not defined __ARG (
 )
 if "%__ARG:~0,1%"=="-" (
     @rem option
-    if /i "%__ARG%"=="-debug" ( set _DEBUG=1
-    ) else if /i "%__ARG%"=="-help" ( set _HELP=1
-    ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
-    ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+    if "%__ARG%"=="-debug" ( set _DEBUG=1
+    ) else if "%__ARG%"=="-help" ( set _HELP=1
+    ) else if "%__ARG%"=="-timer" ( set _TIMER=1
+    ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
         set _EXITCODE=1
@@ -158,11 +157,11 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     @rem subcommand
-    if /i "%__ARG%"=="clean" ( set _CLEAN=1
-    ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
-    ) else if /i "%__ARG%"=="help" ( set _HELP=1
-    ) else if /i "%__ARG%"=="run" ( set _COMPILE=1 & set _RUN=1
-    ) else if /i "%__ARG%"=="install" ( set _INSTALL=1
+    if "%__ARG%"=="clean" ( set _CLEAN=1
+    ) else if "%__ARG%"=="compile" ( set _COMPILE=1
+    ) else if "%__ARG%"=="help" ( set _HELP=1
+    ) else if "%__ARG%"=="run" ( set _COMPILE=1 & set _RUN=1
+    ) else if "%__ARG%"=="install" ( set _INSTALL=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -176,7 +175,11 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
 
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _INSTALL=%_INSTALL% _RUN=%_RUN% _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 (
+    echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _INSTALL=%_INSTALL% 1>&2
+    echo %_DEBUG_LABEL% Variables  : LLVM_HOME="%LLVM_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
+)
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
@@ -203,7 +206,7 @@ echo   %__BEG_P%Subcommands:%__END%
 echo     %__BEG_O%clean%__END%       delete generated files
 echo     %__BEG_O%compile%__END%     generate executable
 echo     %__BEG_O%help%__END%        display this help message
-echo     %__BEG_O%install%__END%     install files generated in directory %__BEG_O%!_TARGET_DIR:%_ROOT_DIR%=!%__END%
+echo     %__BEG_O%install%__END%     install files generated in directory "%__BEG_O%!_TARGET_DIR:%_ROOT_DIR%=!%__END%"
 echo     %__BEG_O%run%__END%         run the generated executable
 goto :eof
 
@@ -261,13 +264,15 @@ if not %_EXITCODE%==0 goto :eof
 set __PYTHON_CMD=%PYTHON_HOME%\python.exe
 set __CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe
 set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated -DPYTHON_EXECUTABLE=%__PYTHON_CMD%
+@rem see http://lists.llvm.org/pipermail/llvm-dev/2017-February/110590.html
+set __CMAKE_OPTS=%__CMAKE_OPTS% -G "Visual Studio 16 2019"
 
 if %_VERBOSE%==1 echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
 
 pushd "%_TARGET_DIR%"
 if %_DEBUG%==1 echo %_DEBUG_LABEL% Current directory is: %CD%
 
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %__CMAKE_CMD% %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%

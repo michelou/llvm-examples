@@ -1,6 +1,8 @@
 SOURCE_FILES=$(wildcard src/main/cpp/*.cpp)
 
 CXX=g++
+RM=/usr/bin/rm
+
 PROGRAM_NAME=program
 
 all: build
@@ -18,10 +20,10 @@ run: executable
 	./$(PROGRAM_NAME)
 
 clean:
-	rm -f main
-	rm -rf main.dSYM
-	rm -f $(PROGRAM_NAME).ll
-	rm -f $(PROGRAM_NAME).o
-	rm -f $(PROGRAM_NAME) 
+	$(RM) -f main
+	$(RM) -rf main.dSYM
+	$(RM) -f $(PROGRAM_NAME).ll
+	$(RM) -f $(PROGRAM_NAME).o
+	$(RM) -f $(PROGRAM_NAME) 
 
 .PHONY: all build clean executable run

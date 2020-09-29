@@ -51,6 +51,9 @@ if not %_EXITCODE%==0 goto end
 call :git
 if not %_EXITCODE%==0 goto end
 
+call :sdk
+if not %_EXITCODE%==0 goto end
+
 goto end
 
 @rem #########################################################################
@@ -480,6 +483,19 @@ if not exist "%_GIT_HOME%\bin\git.exe" (
 set "_GIT_PATH=;%_GIT_HOME%\bin;%_GIT_HOME%\mingw64\bin;%_GIT_HOME%\usr\bin"
 goto :eof
 
+@rem output parameter(s): _SDK_HOME
+:sdk
+set _SDK_HOME=
+
+for /f "delims=" %%f in ("%ProgramFiles%\Microsoft SDKs\Windows\v7.1") do set "_SDK_HOME=%%~f"
+if not exist "%_SDK_HOME%" (
+    echo %_ERROR_LABEL% Could not find installation directory for Microsoft Windows SDK 7.1 1>&2
+    echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
 :print_env
 set __VERBOSE=%1
 set __GIT_HOME=%~2
@@ -569,9 +585,11 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
 if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo Environment variables: 1>&2
     echo    CMAKE_HOME="%CMAKE_HOME%" 1>&2
+    echo    LLVM_HOME="%LLVM_HOME%" 1>&2
     echo    MSVC_HOME="%MSVC_HOME%" 1>&2
     echo    MSVS_HOME="%MSVS_HOME%" 1>&2
     echo    MSVS_CMAKE_HOME="%MSVS_CMAKE_HOME%" 1>&2
+    echo    MSYS_HOME="%MSYS_HOME%" 1>&2
 )
 goto :eof
 
@@ -586,7 +604,9 @@ endlocal & (
         if not defined MSVC_HOME set "MSVC_HOME=%_MSVC_HOME%"
         if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
         if not defined MSVS_CMAKE_HOME set "MSVS_CMAKE_HOME=%_MSVS_CMAKE_HOME%"
+        if not defined MSYS_HOME set "MSYS_HOME=%_MSYS_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
+        if not defined SDK_HOME set "SDK_HOME=%_SDK_HOME%"
         set "PATH=%PATH%%_DOXY_PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
         call :print_env %_VERBOSE% "%_GIT_HOME%"
         if %_BASH%==1 (

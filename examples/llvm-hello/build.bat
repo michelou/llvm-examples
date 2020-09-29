@@ -75,14 +75,22 @@ set _PROJ_PLATFORM=x64
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
 
-set _MAKE_CMD=make.exe
-set _MAKE_OPTS=--quiet
+if not exist "%MSYS_HOME%\usr\bin\make.exe" (
+    echo %_ERROR_LABEL% MSYS installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
+
+if not exist "%LLVM_HOME%\bin\lli.exe" (
+    echo %_ERROR_LABEL% lli command not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_LLI_CMD=%LLVM_HOME%\bin\lli.exe"
 
 set _PELOOK_CMD=pelook.exe
 set _PELOOK_OPTS=
-
-set _LLI_CMD=lli.exe
-set _LLI_OPTS=
 goto :eof
 
 :env_colors
@@ -197,7 +205,11 @@ if %_DOC_OPEN%==1 if %_DOC%==0 (
     echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
     set _DOC_OPEN=0
 )
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _RUN=%_RUN% _TEST=%_TEST% _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 (
+    echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _RUN=%_RUN% _TEST=%_TEST% 1>&2
+    echo %_DEBUG_LABEL% Variables  : LLVM_HOME="%LLVM_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
+)
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
@@ -273,7 +285,7 @@ goto :eof
 :compile_clang
 set CC=clang.exe
 set CXX=clang++.exe
-set MAKE=make.exe
+set "MAKE=%_MAKE_CMD%"
 set RC=windres.exe
 
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
@@ -293,8 +305,8 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
-) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
+) else ( set __MAKE_OPTS=--debug=n
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD% "%__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
@@ -316,7 +328,7 @@ goto :eof
 
 set CC=gcc.exe
 set CXX=g++.exe
-set MAKE=make.exe
+set "MAKE=%_MAKE_CMD%"
 set RC=windres.exe
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"
@@ -335,13 +347,13 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
-) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
+) else ( set __MAKE_OPTS=--debug=n
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% %_MAKE_CMD% %__MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
-call %_MAKE_CMD% %__MAKE_OPTS% %_STDOUT_REDIRECT%
+call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
     echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
@@ -499,10 +511,12 @@ if not exist "%__LL_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_LLI_CMD%" %_LLI_OPTS% "%__LL_FILE%" 1>&2
+set __LLI_OPTS=
+
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_LLI_CMD%" %__LLI_OPTS% "%__LL_FILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Execute !__LL_FILE:%_ROOT_DIR%=! with LLVM interpreter 1>&2
 )
-call "%_LLI_CMD%" %_LLI_OPTS% "%__LL_FILE%"
+call "%_LLI_CMD%" %__LLI_OPTS% "%__LL_FILE%"
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof

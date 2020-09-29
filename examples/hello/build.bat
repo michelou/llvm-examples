@@ -71,8 +71,12 @@ set _PROJ_PLATFORM=x64
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
 
-set _MAKE_CMD=make.exe
-set _MAKE_OPTS=
+if not exist "%MSYS_HOME%\usr\bin\make.exe" (
+    echo %_ERROR_LABEL% MSYS installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
 
 set _DOXYGEN_CMD=doxygen.exe
 set _DOXYGEN_OPTS=-s
@@ -191,7 +195,10 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 (
+    echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% 1>&2
+)
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
@@ -287,8 +294,8 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
-) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
+) else ( set __MAKE_OPTS=--debug=n
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
@@ -325,8 +332,8 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
-) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
+) else ( set __MAKE_OPTS=--debug=n
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2

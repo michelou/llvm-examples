@@ -65,14 +65,14 @@
 ## <span id="papers">Papers</span>
 
 <p style="margin:0 0 1em 20px;">
-See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/">LLVM</a> website.
+See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/" rel="external">LLVM</a> website.
 </p>
 <p style="margin:0 0 1em 20px;">
-We mention here only the publications from <a href="http://nondot.org/~sabre/">Chris Lattner</a>'s and [Vikram Adve](https://vikram.cs.illinois.edu/):
+We mention here only the publications from <a href="http://nondot.org/~sabre/" rel="external">Chris Lattner</a>'s and <a href="https://vikram.cs.illinois.edu/">Vikram Adve</a>:
 </p>
 <ul style="margin:0 0 1em 20px;">
 <li><a href="https://llvm.org/pubs/2002-08-09-LLVMCompilationStrategy.pdf"><i>The LLVM Instruction Set and Compilation Strategy</i></a> by Chris Lattner and Vikram Adve (August 2002).</li>
-<li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
+<li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html" rel="external"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
 </ul>
 
 ## TableGen
@@ -91,7 +91,7 @@ We mention here only the publications from <a href="http://nondot.org/~sabre/">C
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/September 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
