@@ -29,7 +29,7 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*September 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
+For instance our development environment looks as follows (*October 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
 
 <pre style="font-size:80%;">
 C:\opt\cmake-3.18.3\                                            <i>(  81 MB)</i>
@@ -39,7 +39,7 @@ C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
-C:\opt\Python-3.8.5\                                            <i>( 201 MB)</i>
+C:\opt\Python-3.8\                                              <i>( 201 MB)</i>
 </pre>
 
 <!--
@@ -136,7 +136,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.18.3, make 4.3, gcc 9.3.0, python 3.8.5, diff 3.7
+   cmake 3.18.3, make 4.3, gcc 9.3.0, python 3.8.6, diff 3.7
    git 2.28.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -154,7 +154,7 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.18.3, make 4.2.1, gcc 9.3.0, python 3.8.5, diff 3.7
+   cmake 3.18.3, make 4.3, gcc 9.3.0, python 3.8.6, diff 3.7
    git 2.28.0.windows.1, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-10.0.0\bin\clang.exe
@@ -163,7 +163,7 @@ Tool paths:
    C:\opt\cmake-3.18.3\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
-   C:\opt\Python-3.8.5\python.exe
+   C:\opt\Python-3.8\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
@@ -313,7 +313,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>            <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>           <i>( 31 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>        <i>( 86 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.8.5-amd64.exe</a>           <i>( 26 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.8.6-amd64.exe</a>           <i>( 26 MB)</i>
 vs_2019_community.exe            <i>(1.7 GB)</i>
 </pre>
 <p style="margin:0 0 1em 20px;">
@@ -322,7 +322,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/September 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/October 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -358,7 +358,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
-[python_changelog]: https://docs.python.org/release/3.8.5/whatsnew/changelog.html
+[python_changelog]: https://docs.python.org/release/3.8.6/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
 [trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples
 [vs2019_downloads]: https://visualstudio.microsoft.com/en/downloads/

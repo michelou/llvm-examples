@@ -26,6 +26,10 @@ if %_CLEAN%==1 (
     call :clean
     if not !_EXITCODE!==0 goto end
 )
+if %_LINT%==1 (
+    call :cppcheck
+    if not !_EXITCODE!==0 goto end
+)
 if %_COMPILE%==1 (
     call :compile
     if not !_EXITCODE!==0 goto end
@@ -48,10 +52,11 @@ goto end
 @rem ## Subroutines
 
 @rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
-@rem                    _PROJ_NAME, _PROJ_PLATFORM
+@rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
 :env
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
+set _TIMER=0
 
 call :env_colors
 set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
@@ -66,10 +71,34 @@ if not exist "%__CMAKE_LIST_FILE%" (
 )
 set _PROJ_NAME=main
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%__CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
+set _PROJ_CONFIG=Debug
+@rem set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
+set "_SOURCE_DIR=%_ROOT_DIR%src"
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
+
+if not exist "%CPPCHECK_HOME%\cppcheck.exe" (
+    echo %_ERROR_LABEL% CppCheck installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
+
+if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
+    echo %_ERROR_LABEL% Doxygen installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_DOXYGEN_CMD=%DOXYGEN_HOME%\bin\doxygen.exe"
+
+if not exist "%MSVS_HOME%\Community\MSBuild\Current\Bin\amd64\MSBuild.exe" (
+    echo %_ERROR_LABEL% MSBuild installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_MSBUILD_CMD=%MSVS_HOME%\Community\MSBuild\Current\Bin\amd64\MSBuild.exe"
 
 if not exist "%MSYS_HOME%\usr\bin\make.exe" (
     echo %_ERROR_LABEL% MSYS installation not found 1>&2
@@ -78,14 +107,7 @@ if not exist "%MSYS_HOME%\usr\bin\make.exe" (
 )
 set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
 
-set _DOXYGEN_CMD=doxygen.exe
-set _DOXYGEN_OPTS=-s
-
-set _MSBUILD_CMD=msbuild.exe
-set _MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
-
 set _PELOOK_CMD=pelook.exe
-set _PELOOK_OPTS=
 goto :eof
 
 :env_colors
@@ -142,10 +164,10 @@ set _COMPILE=0
 set _DOC=0
 set _DOC_OPEN=0
 set _DUMP=0
+set _HELP=0
+set _LINT=0
 set _PROJ_CONFIG=Release
 set _RUN=0
-set _DEBUG=0
-set _HELP=0
 set _TIMER=0
 set _TOOLSET=msvc
 set _VERBOSE=0
@@ -181,6 +203,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="doc" ( set _DOC=1
     ) else if "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
     ) else if "%__ARG%"=="help" ( set _HELP=1
+    ) else if "%__ARG%"=="lint" ( set _LINT=1
     ) else if "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
@@ -195,9 +218,14 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
+if %_DOC_OPEN%==1 if %_DOC%==0 (
+    echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
+    set _DOC_OPEN=0
+)
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
-    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DUMP=%_DUMP% _RUN=%_RUN% 1>&2
+    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _LINT=%_LINT% _RUN=%_RUN% 1>&2
+    echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
 )
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
@@ -218,7 +246,7 @@ echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
 echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-cl%__END%            use MSVC/MSBuild toolset ^(default^)
-echo     %__BEG_O%-clang%__END%         use Clang/GNU Make toolset instead of MSVC/MSBuildMSBuild
+echo     %__BEG_O%-clang%__END%         use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-config:^(D^|R^)%__END%  use %__BEG_O%D%__END%^)ebug or %__BEG_O%R%__END%^)elease ^(default^) configuration
 echo     %__BEG_O%-debug%__END%         show commands executed by this script
 echo     %__BEG_O%-gcc%__END%           use GCC/GNU Make toolset instead of MSVC/MSBuild
@@ -233,6 +261,7 @@ echo     %__BEG_O%compile%__END%        generate executable
 echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
 echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
 echo     %__BEG_O%help%__END%           display this help message
+echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%CppCheck%__END%
 echo     %__BEG_O%run%__END%            run the generated executable
 goto :eof
 
@@ -248,6 +277,21 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "%__DIR%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
 )
 rmdir /s /q "%__DIR%"
+if not %ERRORLEVEL%==0 (
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
+:cppcheck
+if %_TOOLSET%==gcc ( set __CPPCHECK_OPTS=--template=gcc --std=c++14
+) else if %_TOOLSET%==msvc ( set __CPPCHECK_OPTS=--template=vs --std=c++17
+) else ( set __CPPCHECK_OPTS=--std=c++14
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%" 1>&2
+) else if %_VERBOSE%==1 ( echo Analyze C++ source files in directory "!_SOURCE_DIR=%_ROOT_DIR%=!" 1>&2
+)
+call "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%"
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
@@ -414,10 +458,12 @@ if not exist "%__DOXYFILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
+set __DOXYGEN_OPTS=-s
+
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate HTML documentation 1>&2
 )
-call "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%"
+call "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYFILE%"
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Generation of HTML documentation failed 1>&2
     set _EXITCODE=1
@@ -442,16 +488,18 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
+set __PELOOK_OPTS=
+
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" 1>&2
-    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%"
+    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" 1>&2
+    call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%"
 ) else (
     if %_VERBOSE%==1 echo Dump PE/COFF infos for executable "!__EXE_FILE:%_ROOT_DIR%=!" 1>&2
     echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+    call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed 1>&2
+    echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
