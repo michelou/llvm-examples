@@ -16,13 +16,13 @@
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
 - [CMake 3.18][cmake_downloads] ([*release notes*][cmake_relnotes])
-- [LLVM 10 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
+- [LLVM 11 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
 - [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>  ([*release notes*][vs2019_relnotes])
-- [Python 3.8][python_downloads] ([*changelog*][python_changelog])
+- [Python 3.9][python_downloads] ([*changelog*][python_changelog])
 
 Optionally one may also install the following software:
 
-- [Git 2.28][git_downloads] ([*release notes*][git_relnotes])
+- [Git 2.29][git_downloads] ([*release notes*][git_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
 
 <!--
@@ -32,14 +32,15 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*October 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.18.3\                                            <i>(  81 MB)</i>
-C:\opt\Git-2.28.0\                                              <i>( 290 MB)</i>
+C:\opt\cmake-3.18.4\                                            <i>(  81 MB)</i>
+C:\opt\Git-2.29.0\                                              <i>( 290 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
+C:\opt\LLVM-11.0.0\                                             <i>(1.5 resp 3.0 GB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
-C:\opt\Python-3.8\                                              <i>( 201 MB)</i>
+C:\opt\Python-3.9\                                              <i>( 201 MB)</i>
 </pre>
 
 <!--
@@ -61,6 +62,7 @@ examples\{hello, JITTutorial1, ..}
 llvm-8.0.1.src\   <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i>
 llvm-9.0.1.src\   <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>)</i>
 llvm-10.0.1.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>)</i>
+llvm-11.0.0.src\  <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.0.0">llvm-11.0.0.src.tar.xz</a>)</i>
 <a href="BUILD.md">BUILD.md</a>
 README.md
 <a href="setenv.bat">setenv.bat</a>
@@ -74,6 +76,7 @@ where
 - directory **`llvm-8.0.1.src\`** contains the [LLVM] 8 source code distribution.
 - directory **`llvm-9.0.1.src\`** contains the [LLVM] 9 source code distribution.
 - directory **`llvm-10.0.1.src\`** contains the [LLVM] 10 source code distribution.
+- directory **`llvm-11.0.0.src\`** contains the [LLVM] 11 source code distribution.
 - file [**`BUILD.md`**](BUILD.md) describes the build from the source distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`setenv.bat`**](setenv.bat) is the batch script for setting up our environment.
@@ -135,14 +138,14 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.18.3, make 4.3, gcc 9.3.0, python 3.8.6, diff 3.7
-   git 2.28.0.windows.1, bash 4.4.23(1)-release
+   clang 11.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
+   cmake 3.18.4, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   git 2.29.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
-C:\opt\LLVM-10.0.0\bin\clang.exe
-C:\opt\Git-2.28.0\bin\git.exe
-C:\opt\Git-2.28.0\mingw64\bin\git.exe
+C:\opt\LLVM-11.0.0\bin\clang.exe
+C:\opt\Git-2.29.0\bin\git.exe
+C:\opt\Git-2.29.0\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -153,32 +156,32 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 10.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.18.3, make 4.3, gcc 9.3.0, python 3.8.6, diff 3.7
-   git 2.28.0.windows.1, bash 4.4.23(1)-release
+   clang 11.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
+   cmake 3.18.4, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   git 2.29.0.windows.1, bash 4.4.23(1)-release
 Tool paths:
-   C:\opt\LLVM-10.0.0\bin\clang.exe
-   C:\opt\LLVM-10.0.0\bin\lli.exe
-   C:\opt\LLVM-10.0.0\bin\opt.exe
-   C:\opt\cmake-3.18.3\bin\cmake.exe
+   C:\opt\LLVM-11.0.0\bin\clang.exe
+   C:\opt\LLVM-11.0.0\bin\lli.exe
+   C:\opt\LLVM-11.0.0\bin\opt.exe
+   C:\opt\cmake-3.18.4\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
-   C:\opt\Python-3.8\python.exe
+   C:\opt\Python-3.9\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.28.0\usr\bin\diff.exe
-   C:\opt\Git-2.28.0\bin\git.exe
-   C:\opt\Git-2.28.0\mingw64\bin\git.exe
-   C:\opt\Git-2.28.0\bin\bash.exe
+   C:\opt\Git-2.29.0\usr\bin\diff.exe
+   C:\opt\Git-2.29.0\bin\git.exe
+   C:\opt\Git-2.29.0\mingw64\bin\git.exe
+   C:\opt\Git-2.29.0\bin\bash.exe
 Environment variables:
-   CMAKE_HOME="C:\opt\cmake-3.18.3-win64-x64"
+   CMAKE_HOME="C:\opt\cmake-3.18.4-win64-x64"
    MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
    MSVS_CMAKE_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
 </pre>
 
-### **`llvm-10.0.0.src\build.bat`**
+### **`llvm-10.0.1.src\build.bat`**
 
 We wrote the [batch file][batch_file] [`build.bat`](bin/llvm/build.bat) to generate additional Windows binaries not available in the <a href="https://llvm.org/">LLVM</a> binary distribution. 
 
@@ -219,7 +222,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 <b name="footnote_01">[1]</b> ***LLVM version*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-LLVM versions 8, 9 and 10 are supported. Command <b><code>setenv</code></b> searches for version 10 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (idem for LLVM 9).
+LLVM versions 8, 9, 10 and 11 are supported. Command <b><code>setenv</code></b> searches for version 11 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (idem for LLVM 9).
 </p>
 
 <b name="footnote_02">[2]</b> ***Visual Studio version*** [↩](#anchor_02)
@@ -259,7 +262,7 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 <table style="margin:0 0 1em 20px;">
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
 <tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
-<tr><td>Version/architecture</td><td><code>gcc 10.1</code></td><td><code>gcc 8.1</code></td></tr>
+<tr><td>Version/architecture</td><td><code>gcc 10.2</code></td><td><code>gcc 8.1</code></td></tr>
 <tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get upgrade</code></a> <sup>(2)</sup></td></tr>
 </table>
 <p style="margin:-16px 0 1em 30px; font-size:80%;">
@@ -268,26 +271,52 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 </p>
 
 <p style="margin:0 0 1em 20px;">
-MSYS64 tools:
+1. MSYS64 tools:
 </p>
-<pre style="margin:0 0 1em 20px; font-size:80%;">
-<b>&gt; cd c:\opt\msys64</b>
+<pre style="margin:0 0 1em 35px; font-size:80%;">
+<b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.archlinux.org/pacman/pacman.8.html">pacman.exe</a> -Syu</b>
+:: Synchronizing package databases...
+[...]
+:: Running post-transaction hooks...
+(1/3) Compiling GSettings XML schema files...
+(2/3) Updating icon theme caches...
+(3/3) Updating the info directory file...
 &nbsp;
-<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r . gcc.exe make.exe pacman.exe</b>
+<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\msys64 gcc.exe make.exe pacman.exe</b>
 c:\opt\msys64\mingw64\bin\gcc.exe
 c:\opt\msys64\usr\bin\make.exe
 c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
-<b>&gt; gcc --version | findstr gcc</b>
-gcc (Rev3, Built by MSYS2 project) 10.1.0
+<b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | findstr gcc</b>
+gcc (Rev3, Built by MSYS2 project) 10.2.0
 &nbsp;
-<b>&gt; make --version | findstr Make</b>
+<b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | findstr Make</b>
 GNU Make 4.3
 </pre>
+
+> **&#9755;** ***Key "XXX" is unknown***<br/>
+> One may encounter the MSYS error '<code>key "XXX" is unkown</code>' when running **`pacman -Syu`** from the Windows prompt. Simply run the command once from the MingW64 shell (command **`%MSYS_HOME%\mingw64.exe`**) to solve the issue.
+
+<pre style="margin:0 0 1em 35px; font-size:80%;" >
+<b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.archlinux.org/pacman/pacman.8.html">pacman.exe</a> -Syu</b>
+error: msys: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" is unknown
+:: Import PGP key 4A6129F4E4B84AE46ED7F635628F528CF3053E04? [Y/n] y
+    error: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" could not be looked up remotely
+:: Synchronizing package databases...
+ mingw32                                                607.7 KiB  39.0 KiB/s 00:16
+ [###############################################] 100%
+ mingw32.sig                                            438.0   B  0.00   B/s 00:00
+ [###############################################] 100%
+ error: mingw32: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" is unknown
+:: Import PGP key 4A6129F4E4B84AE46ED7F635628F528CF3053E04? [Y/n] y
+    error: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" could not be looked up remotely
+[..]
+</pre>
+
 <p style="margin:0 0 1em 20px;">
-MinGW-w64 tools:
+2. MinGW-w64 tools:
 </p>
-<pre style="margin:0 0 1em 20px; font-size:80%;">
+<pre style="margin:0 0 1em 35px; font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r . gcc mingw-get mingw32-make</b>
 c:\opt\mingw-w64\mingw64\bin\gcc.exe
 c:\opt\mingw-w64\mingw64\bin\mingw-get.exe
@@ -306,14 +335,15 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.18.3-win64-x64.zip</a>       <i>( 33 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.28.0-64-bit.7z.exe</a> <i>( 41 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.18.4-win64-x64.zip</a>       <i>( 33 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.29.0-64-bit.7z.exe</a> <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>             <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">LLVM-10.0.0-win64.exe</a>            <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>            <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>           <i>( 31 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.0.0">llvm-11.0.0.src.tar.xz</a>           <i>( 31 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>        <i>( 86 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.8.6-amd64.exe</a>           <i>( 26 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.9.0-amd64.exe</a>           <i>( 26 MB)</i>
 vs_2019_community.exe            <i>(1.7 GB)</i>
 </pre>
 <p style="margin:0 0 1em 20px;">
@@ -335,7 +365,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [dotty_examples]: https://github.com/michelou/dotty-examples
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.28.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.29.0.txt
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples
@@ -344,21 +374,18 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
 [llvm_clang]: https://releases.llvm.org/10.0.0/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.0.0
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
 [llvm_lli]: https://llvm.org/docs/CommandGuide/lli.html
 [llvm_opt]: https://llvm.org/docs/CommandGuide/opt.html
-<!--
-[llvm_relnotes]: https://releases.llvm.org/10.0.0/docs/ReleaseNotes.html
--->
-[llvm_relnotes]: https://releases.llvm.org/10.0.0/docs/ReleaseNotes.html
+[llvm_relnotes]: https://releases.llvm.org/11.0.0/docs/ReleaseNotes.html
 [llvm_tools]: https://llvm.org/docs/CommandGuide/
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
-[python_changelog]: https://docs.python.org/release/3.8.6/whatsnew/changelog.html
+[python_changelog]: https://docs.python.org/release/3.9.0/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
 [trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples
 [vs2019_downloads]: https://visualstudio.microsoft.com/en/downloads/

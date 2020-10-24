@@ -25,7 +25,6 @@ if %_HELP%==1 (
 
 set _MSYS_PATH=
 set _LLVM_PATH=
-set _PYTHON_PATH=
 set _GIT_PATH=
 
 call :cppcheck
@@ -124,7 +123,7 @@ goto :eof
 :args
 set _BASH=0
 set _HELP=0
-set _LLVM_PREFIX=LLVM-10
+set _LLVM_PREFIX=LLVM-11
 set _VERBOSE=0
 set __N=0
 :args_loop
@@ -138,6 +137,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if /i "%__ARG%"=="-llvm:8" ( set _LLVM_PREFIX=LLVM-8
     ) else if /i "%__ARG%"=="-llvm:9" ( set _LLVM_PREFIX=LLVM-9
     ) else if /i "%__ARG%"=="-llvm:10" ( set _LLVM_PREFIX=LLVM-10
+    ) else if /i "%__ARG%"=="-llvm:11" ( set _LLVM_PREFIX=LLVM-11
     ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -175,13 +175,13 @@ if %_VERBOSE%==1 (
 echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
 echo   %__BEG_P%Options:%__END%
-echo     %__BEG_O%-bash%__END%           start Git bash shell instead of Windows command prompt
-echo     %__BEG_O%-debug%__END%          show commands executed by this script
-echo     %__BEG_O%-llvm:^<8^|9^|10^>%__END%  select version of LLVM installation ^(default: %__BEG_N%10%__END%^)
-echo     %__BEG_O%-verbose%__END%        display progress messages
+echo     %__BEG_O%-bash%__END%              start Git bash shell instead of Windows command prompt
+echo     %__BEG_O%-debug%__END%             show commands executed by this script
+echo     %__BEG_O%-llvm:^<8^|9^|10^|11^>%__END%  select version of LLVM installation ^(default: %__BEG_N%11%__END%^)
+echo     %__BEG_O%-verbose%__END%           display progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
-echo     %__BEG_O%help%__END%            display this help message
+echo     %__BEG_O%help%__END%               display this help message
 goto :eof
 
 @rem output parameter(s): _CPPCHECK_HOME
@@ -274,16 +274,15 @@ if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
 @rem set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
 goto :eof
 
-@rem output parameter(s): _PYTHON_HOME, _PYTHON_PATH
+@rem output parameter: _PYTHON_HOME
 :python
 set _PYTHON_HOME=
-set _PYTHON_PATH=
 
 set __PYTHON_CMD=
 for /f %%f in ('where python.exe 2^>NUL') do set "__PYTHON_CMD=%%f"
 if defined __PYTHON_CMD (
+    for /f "delims=" %%i in ("%__PYTHON_CMD%") do set "_PYTHON_HOME=%%~dpi"
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Python executable found in PATH 1>&2
-    @rem keep _PYTHON_PATH undefined since executable already in path
     goto :eof
 ) else if defined PYTHON_HOME (
     set "_PYTHON_HOME=%PYTHON_HOME%"
@@ -310,7 +309,6 @@ if not exist "%_PYTHON_HOME%\Scripts\pylint.exe" (
     set _EXITCODE=1
     goto :eof
 )
-set "_PYTHON_PATH=;%_PYTHON_HOME%;%_PYTHON_HOME%\Scripts"
 goto :eof
 
 @rem output parameter(s): _MSYS_HOME, _MSYS_PATH
@@ -535,18 +533,18 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('clang.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% clang %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% clang.exe
 )
-where /q lli.exe
+where /q "%LLVM_HOME%\bin:lli.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('lli.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% lli %%k,"
-    set __WHERE_ARGS=%__WHERE_ARGS% lli.exe
+    for /f "tokens=1,2,3,*" %%i in ('"%LLVM_HOME%\bin\lli.exe" --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% lli %%k,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%LLVM_HOME%\bin:lli.exe"
 ) else (
-    echo Warning: lli executable not found in directory %_LLVM_HOME% 1>&2
+    echo Warning: lli executable not found in directory "%LLVM_HOME%" 1>&2
     echo ^(LLVM installation directory needs additional binaries^) 1>&2
 )
-where /q opt.exe
+where /q "%LLVM_HOME%\bin:opt.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('opt.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% opt %%k,"
-    set __WHERE_ARGS=%__WHERE_ARGS% opt.exe
+    for /f "tokens=1,2,3,*" %%i in ('"%LLVM_HOME%\bin\opt.exe" --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% opt %%k,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%LLVM_HOME%\bin:opt.exe"
 )
 where /q "%DOXYGEN_HOME%\bin:doxygen.exe"
 if %ERRORLEVEL%==0 (
@@ -573,10 +571,10 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1-7,*" %%i in ('gcc.exe --version 2^>^&1 ^| findstr gcc') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% gcc %%o,"
     set __WHERE_ARGS=%__WHERE_ARGS% gcc.exe
 )
-where /q python.exe
+where /q "%PYTHON%:python.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,*" %%i in ('python.exe --version 2^>^&1') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% python %%j,"
-    set __WHERE_ARGS=%__WHERE_ARGS% python.exe
+    for /f "tokens=1,*" %%i in ('"%PYTHON%\python.exe" --version 2^>^&1') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% python %%j,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%PYTHON%:python.exe"
 )
 where /q diff.exe
 if %ERRORLEVEL%==0 (
@@ -619,6 +617,7 @@ if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo    MSVS_HOME="%MSVS_HOME%" 1>&2
     echo    MSVS_CMAKE_HOME="%MSVS_CMAKE_HOME%" 1>&2
     echo    MSYS_HOME="%MSYS_HOME%" 1>&2
+    echo    PYTHON_HOME="%PYTHON_HOME%" 1>&2
 )
 goto :eof
 
@@ -638,7 +637,7 @@ endlocal & (
         if not defined MSYS_HOME set "MSYS_HOME=%_MSYS_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
         if not defined SDK_HOME set "SDK_HOME=%_SDK_HOME%"
-        set "PATH=%PATH%%_PYTHON_PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
+        set "PATH=%PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
         call :print_env %_VERBOSE% "%_GIT_HOME%"
         if %_BASH%==1 (
             if %_DEBUG%==1 echo %_DEBUG_LABEL% %_GIT_HOME%\usr\bin\bash.exe --login 1>&2

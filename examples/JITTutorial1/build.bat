@@ -100,7 +100,7 @@ if not exist "%MSYS_HOME%\usr\bin\make.exe" (
 )
 set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
 
-set _PELOOK_CMD=pelook.exe
+set "_PELOOK_CMD=%_ROOT_DIR%bin\pelook.exe"
 goto :eof
 
 :env_colors
@@ -309,10 +309,10 @@ endlocal & set _EXITCODE=%_EXITCODE%
 goto :eof
 
 :compile_clang
-set CC=clang.exe
-set CXX=clang++.exe
-set MAKE=make.exe
-set RC=windres.exe
+set "CC=%LLVM_HOME%\bin\clang.exe"
+set "CXX=%LLVM_HOME%\bin\cclang++.exe"
+set "MAKE=%MSYS_HOME%\usr\bin\make.exe"
+set "RC=%MSYS_HOME%\mingw64\bin\windres.exe"
 
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"

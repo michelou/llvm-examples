@@ -68,9 +68,10 @@
 See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/" rel="external">LLVM</a> website.
 </p>
 <p style="margin:0 0 1em 20px;">
-We mention here only the publications from <a href="http://nondot.org/~sabre/" rel="external">Chris Lattner</a>'s and <a href="https://vikram.cs.illinois.edu/">Vikram Adve</a>:
+We mention here only publications from <a href="http://nondot.org/~sabre/" rel="external">Chris Lattner</a>'s and <a href="https://vikram.cs.illinois.edu/">Vikram Adve</a>:
 </p>
 <ul style="margin:0 0 1em 20px;">
+<li><a href="http://aosabook.org/en/llvm.html"><i>Design decisions that shapped LLVM</i></a> by Chris Lattner (March 2012).</li>
 <li><a href="https://llvm.org/pubs/2002-08-09-LLVMCompilationStrategy.pdf"><i>The LLVM Instruction Set and Compilation Strategy</i></a> by Chris Lattner and Vikram Adve (August 2002).</li>
 <li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html" rel="external"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
 </ul>
@@ -91,7 +92,7 @@ We mention here only the publications from <a href="http://nondot.org/~sabre/" r
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/September 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/October 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
