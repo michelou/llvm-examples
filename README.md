@@ -15,7 +15,7 @@
 
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
-- [CMake 3.18][cmake_downloads] ([*release notes*][cmake_relnotes])
+- [CMake 3.19][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [LLVM 11 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
 - [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>  ([*release notes*][vs2019_relnotes])
 - [Python 3.9][python_downloads] ([*changelog*][python_changelog])
@@ -29,11 +29,11 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*October 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
+For instance our development environment looks as follows (*November 2020*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
 
 <pre style="font-size:80%;">
-C:\opt\cmake-3.18.4\                                            <i>(  81 MB)</i>
-C:\opt\Git-2.29.0\                                              <i>( 290 MB)</i>
+C:\opt\cmake-3.19.0\                                            <i>(  84 MB)</i>
+C:\opt\Git-2.29.2\                                              <i>( 290 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
@@ -138,14 +138,14 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 11.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.18.4, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
-   git 2.29.0.windows.1, bash 4.4.23(1)-release
+   clang 11.0.0, lli 11.0.0, opt 11.0.0, doxygen 1.8.18, pelook v1.70,
+   cmake 3.19.0, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   git 2.29.2.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-11.0.0\bin\clang.exe
-C:\opt\Git-2.29.0\bin\git.exe
-C:\opt\Git-2.29.0\mingw64\bin\git.exe
+C:\opt\Git-2.29.2\bin\git.exe
+C:\opt\Git-2.29.2\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -156,26 +156,26 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 11.0.0, lli 10.0.0, opt 10.0.0, doxygen 1.8.18, pelook v1.70,
-   cmake 3.18.4, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
-   git 2.29.0.windows.1, bash 4.4.23(1)-release
+   clang 11.0.0, lli 11.0.0, opt 11.0.0, doxygen 1.8.18, pelook v1.70,
+   cmake 3.19.0, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   git 2.29.2.windows.1, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-11.0.0\bin\clang.exe
    C:\opt\LLVM-11.0.0\bin\lli.exe
    C:\opt\LLVM-11.0.0\bin\opt.exe
-   C:\opt\cmake-3.18.4\bin\cmake.exe
+   C:\opt\cmake-3.19.0\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.9\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.29.0\usr\bin\diff.exe
-   C:\opt\Git-2.29.0\bin\git.exe
-   C:\opt\Git-2.29.0\mingw64\bin\git.exe
-   C:\opt\Git-2.29.0\bin\bash.exe
+   C:\opt\Git-2.29.2\usr\bin\diff.exe
+   C:\opt\Git-2.29.2\bin\git.exe
+   C:\opt\Git-2.29.2\mingw64\bin\git.exe
+   C:\opt\Git-2.29.2\bin\bash.exe
 Environment variables:
-   CMAKE_HOME="C:\opt\cmake-3.18.4-win64-x64"
+   CMAKE_HOME="C:\opt\cmake-3.19.0-win64-x64"
    MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
    MSVS_CMAKE_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
@@ -335,8 +335,8 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.18.4-win64-x64.zip</a>       <i>( 33 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.29.0-64-bit.7z.exe</a> <i>( 41 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.19.0-win64-x64.zip</a>       <i>( 33 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.29.2-64-bit.7z.exe</a> <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>             <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">LLVM-10.0.0-win64.exe</a>            <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>            <i>( 29 MB)</i>
@@ -352,7 +352,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/October 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/November 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -365,7 +365,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [dotty_examples]: https://github.com/michelou/dotty-examples
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.29.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.29.2.txt
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples
