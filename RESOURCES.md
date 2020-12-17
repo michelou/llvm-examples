@@ -92,7 +92,7 @@ We mention here only publications from <a href="http://nondot.org/~sabre/" rel="
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/November 2020* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/December 2020* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
