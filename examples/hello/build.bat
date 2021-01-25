@@ -79,13 +79,10 @@ set "_SOURCE_DIR=%_ROOT_DIR%src"
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
 
-if not exist "%CPPCHECK_HOME%\cppcheck.exe" (
-    echo %_ERROR_LABEL% CppCheck installation not found 1>&2
-    set _EXITCODE=1
-    goto :eof
+set _CPPCHECK_CMD=
+if exist "%CPPCHECK_HOME%\cppcheck.exe" (
+    set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
 )
-set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
-
 if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
     echo %_ERROR_LABEL% Doxygen installation not found 1>&2
     set _EXITCODE=1
@@ -107,7 +104,7 @@ if not exist "%MSYS_HOME%\usr\bin\make.exe" (
 )
 set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
 
-set _PELOOK_CMD=pelook.exe
+set "_PELOOK_CMD=%_ROOT_DIR%bin\pelook.exe"
 goto :eof
 
 :env_colors
@@ -218,6 +215,10 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
+if %_LINT%==1 if not defined _CPPCHECK_CMD (
+    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
+    set _LINT=0
+)
 if %_DOC_OPEN%==1 if %_DOC%==0 (
     echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
     set _DOC_OPEN=0
@@ -225,6 +226,7 @@ if %_DOC_OPEN%==1 if %_DOC%==0 (
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
     echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _LINT=%_LINT% _RUN=%_RUN% 1>&2
+    echo %_DEBUG_LABEL% Variables  : CPPCHECK_HOME="%CPPCHECK_HOME%" 1>&2
     echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
 )
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
@@ -261,7 +263,7 @@ echo     %__BEG_O%compile%__END%        generate executable
 echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
 echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
 echo     %__BEG_O%help%__END%           display this help message
-echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%CppCheck%__END%
+echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%Cppcheck%__END%
 echo     %__BEG_O%run%__END%            run the generated executable
 goto :eof
 

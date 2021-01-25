@@ -28,8 +28,11 @@ set _LLVM_PATH=
 set _GIT_PATH=
 
 call :cppcheck
-if not %_EXITCODE%==0 goto end
-
+if not %_EXITCODE%==0 (
+    @rem optional
+    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
+    set _EXITCODE=0
+)
 call :doxygen
 if not %_EXITCODE%==0 goto end
 
@@ -243,7 +246,7 @@ if defined __CPPCHECK_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CPPCHECK_HOME 1>&2
 ) else (
     set "__PATH=%ProgramFiles%"
-    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\CppCheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
+    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Cppcheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
     if not defined _CPPCHECK_HOME (
         set __PATH=C:\opt
         for /f %%f in ('dir /ad /b "!__PATH!\CppCheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
@@ -605,6 +608,11 @@ set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
     for /f "tokens=1,2,3,*" %%i in ('%__CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cmake %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%CMAKE_HOME%\bin:cmake.exe"
 @rem )
+where  /q "%CPPCHECK_HOME%:cppcheck.exe"
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1,*" %%i in ('"%CPPCHECK_HOME%\cppcheck.exe" --version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cppcheck %%j,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%CPPCHECK_HOME%:cppcheck.exe"
+)
 where /q make.exe
 if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% make %%k,"

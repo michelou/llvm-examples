@@ -29,29 +29,31 @@ Our main goal here is to refresh our knowledge of the build tools [**`Clang`**][
 
 Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
 
-> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~370 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets MSVC/MSBuild, Clang/GNU Make and GCC/GNU Make.
+> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~500 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets MSVC/MSBuild, Clang/GNU Make and GCC/GNU Make.
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a></b>
 Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
   Options:
-    -cl         use MSVC/MSBuild toolset (default)
-    -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
-    -debug      show commands executed by this script
-    -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
-    -msvc       use MSVC/MSBuild toolset (alias for option -cl)
-    -open       display generated HTML documentation ^(subcommand 'doc'^)
-    -timer      display total elapsed time
-    -verbose    display progress messages
+    -cl            use MSVC/MSBuild toolset (default)
+    -clang         use Clang/GNU Make toolset instead of MSVC/MSBuild
+    -config:(D|R)  use D)ebug or R)elease (default) configuration
+    -debug         show commands executed by this script
+    -gcc           use GCC/GNU Make toolset instead of MSVC/MSBuild
+    -msvc          use MSVC/MSBuild toolset (alias for option -cl)
+    -open          display generated HTML documentation ^(subcommand 'doc'^)
+    -timer         display total elapsed time
+    -verbose       display progress messages
 &nbsp;
   Subcommands:
-    clean       delete generated files
-    compile     generate executable
-    doc         generate HTML documentation with Doxygen
-    dump        dump PE/COFF infos for generated executable
-    help        display this help message
-    run         run the generated executable
+    clean          delete generated files
+    compile        generate executable
+    doc            generate HTML documentation with <a href="https://www.doxygen.nl/">Doxygen</a>
+    dump           dump PE/COFF infos for generated executable
+    help           display this help message
+    lint           analyze C++ source files with <a href="http://cppcheck.sourceforge.net/">Cppcheck</a>
+    run            run the generated executable
 </pre>
 
 Command [**`build clean run`**](hello/build.bat) produces the following output (default toolset: MSVC/MSBuild):
@@ -140,7 +142,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**][gnu_gcc]/[**`GNU Make`**][gnu_make] toolset to generate executable **`hello.exe`**:
+Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**][gnu_gcc]/[**`GNU Make`**][gnu_make] toolset to generate executable **`hello.exe`** :
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug -gcc clean run</b>
@@ -171,6 +173,21 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
+Command [**`build -debug lint`**](hello/build.bat) preformes code analysis with the [Cppcheck](http://cppcheck.sourceforge.net/) tool :
+
+<pre style="font-size:80%;">
+<b>&gt; <a href="hello/build.bat">build</a> -debug lint</b>
+[build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
+[build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
+[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
+[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
+[build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
+Checking L:\examples\hello\src\main\c\hello.c ...
+1/2 files checked 30% done
+Checking L:\examples\hello\src\main\cpp\hello.cpp ...
+2/2 files checked 100% done
+[build] _EXITCODE=0
+</pre>
 
 ## <span id="tut1">`JITTutorial1`</span>
 
@@ -178,29 +195,31 @@ Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Func
 
 It defines a function **`mul_add`** and generates its [IR code](llvm_ir) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
 
-Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands:
+Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands :
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1/build.bat">build</a></b>
 Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
   Options:
-    -cl         use MSVC/MSBuild toolset (default)
-    -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
-    -debug      show commands executed by this script
-    -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
-    -msvc       use MSVC/MSBuild toolset (alias for option -cl)
-    -open       display generated HTML documentation ^(subcommand 'doc'^)
-    -timer      display total elapsed time
-    -verbose    display progress messages
+    -cl            use MSVC/MSBuild toolset (default)
+    -clang         use Clang/GNU Make toolset instead of MSVC/MSBuild
+    -config:(D|R)  use D)ebug or R)elease (default) configuration
+    -debug         show commands executed by this script
+    -gcc           use GCC/GNU Make toolset instead of MSVC/MSBuild
+    -msvc          use MSVC/MSBuild toolset (alias for option -cl)
+    -open          display generated HTML documentation ^(subcommand 'doc'^)
+    -timer         display total elapsed time
+    -verbose       display progress messages
 &nbsp;
   Subcommands:
-    clean       delete generated files
-    compile     generate executable
-    doc         generate HTML documentation with Doxygen
-    dump        dump PE/COFF infos for generated executable
-    help        display this help message
-    run         run executable
+    clean          delete generated files
+    compile        generate executable
+    doc            generate HTML documentation with <a href="https://www.doxygen.nl/">Doxygen</a>
+    dump           dump PE/COFF infos for generated executable
+    help           display this help message
+    lint           analyze C++ source files with <a href="http://cppcheck.sourceforge.net/">Cppcheck</a>
+    run            run executable
 </pre>
 
 Command [**`build clean run`**](JITTutorial1/build.bat) produces the following output:
@@ -599,19 +618,24 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 @rem ## Main</i>
 &nbsp;
 <b>if</b> %_CLEAN%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call :clean</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:clean</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
+)
+
+<b>if</b> %_LINT%==1 (
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:cppcheck</span>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>if</b> %_COMPILE%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:compile</span></b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:compile</span>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>if</b> %_DOC%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:doc</span></b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:doc</span>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>if</b> %_RUN%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call <span style="color:#9966ff;">:run</span></b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:run</span>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>goto <span style="color:#9966ff;">end</span></b>
@@ -629,6 +653,9 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 ... <i>(handle program arguments)</i> ...
 <b>goto :eof</b>
 <span style="color:#9966ff;">:clean</span>
+...
+<b>goto :eof</b>
+<span style="color:#9966ff;">:lint</span>
 ...
 <b>goto :eof</b>
 <span style="color:#9966ff;">:compile</span>

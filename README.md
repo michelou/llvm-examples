@@ -22,6 +22,7 @@ This project depends on the following external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
+- [CppCheck 2.3][cppcheck_downloads] ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.30][git_downloads] ([*release notes*][git_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
@@ -41,6 +42,7 @@ C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
 C:\opt\LLVM-11.0.1\                                             <i>(1.5 resp 3.0 GB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
+C:\Program Files\Cppcheck\                                      <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 C:\opt\Python-3.9.1\                                            <i>( 201 MB)</i>
 </pre>
@@ -141,7 +143,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 11.0.1, lli 11.0.1, opt 11.0.1, doxygen 1.9.1, pelook v1.70,
-   cmake 3.19.2, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   cmake 3.19.2, cppcheck 2.3, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
    git 2.30.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -159,7 +161,7 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 11.0.1, lli 11.0.1, opt 11.0.1, doxygen 1.9.1, pelook v1.70,
-   cmake 3.19.2, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   cmake 3.19.2, cppcheck 2.3, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
    git 2.30.0.windows.1, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-11.0.1\bin\clang.exe
@@ -178,9 +180,14 @@ Tool paths:
    C:\opt\Git-2.30.0\bin\bash.exe
 Environment variables:
    CMAKE_HOME="C:\opt\cmake-3.19.2-win64-x64"
+   CPPCHECK_HOME="C:\Program Files\Cppcheck"
+   DOXYGEN_HOME="C:\opt\doxygen-1.9.1"
+   LLVM_HOME="C:\opt\LLVM-11.0.1"
    MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
    MSVS_CMAKE_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
+   MSYS_HOME="C:\opt\msys64"
+   PYTHON_HOME="C:\opt\Python-3.9.1"
 </pre>
 
 ### **`llvm-X.Y.Z.src\build.bat`**
@@ -268,7 +275,7 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 <tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get upgrade</code></a> <sup>(2)</sup></td></tr>
 </table>
 <p style="margin:-16px 0 1em 30px; font-size:80%;">
-<sup>(1)</sup> <a href="https://github.com/msys2/MSYS2-packages/issues/1298">pacman -Syu does nothing</a><br/>
+<sup>(1)</sup> <a href="https://github.com/msys2/MSYS2-packages/issues/1298"><code>pacman -Syu</code> does nothing</a><br/>
 <sup>(2)</sup> <a href="https://www.sqlpac.com/referentiel/docs/mingw-minimalist-gnu-pour-windows.html" rel="external">Minimalist GNU for Windows</a>
 </p>
 
@@ -338,6 +345,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
 <a href="https://cmake.org/download/">cmake-3.19.2-win64-x64.zip</a>        <i>( 33 MB)</i>
+<a href="http://cppcheck.sourceforge.net/">cppcheck-2.3-x64-Setup.msi</a>        <i>( 20 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.1.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.30.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
@@ -363,6 +371,8 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [gnu_cmake]: https://cmake.org/
+[cppcheck_changelog]: https://sourceforge.net/p/cppcheck/news/2020/12/cppcheck-23/
+[cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
 [cmake_downloads]: https://cmake.org/download/
 [cmake_modules]: https://cmake.org/cmake/help/v3.18/manual/cmake-modules.7.html
 [cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.19.html

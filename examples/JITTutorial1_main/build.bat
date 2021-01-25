@@ -26,6 +26,10 @@ if %_CLEAN%==1 (
     call :clean
     if not !_EXITCODE!==0 goto end
 )
+if %_LINT%==1 (
+    call :cppcheck
+    if not !_EXITCODE!==0 goto end
+)
 if %_COMPILE%==1 (
     call :compile
     if not !_EXITCODE!==0 goto end
@@ -56,12 +60,12 @@ goto end
 :env
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
+set _TIMER=0
 
-@rem ANSI colors in standard Windows 10 shell
-@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
-set _DEBUG_LABEL=[46m[%_BASENAME%][0m
-set _ERROR_LABEL=[91mError[0m:
-set _WARNING_LABEL=[93mWarning[0m:
+call :env_colors
+set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
+set _ERROR_LABEL=%_STRONG_FG_RED%Error%_RESET%:
+set _WARNING_LABEL=%_STRONG_FG_YELLOW%Warning%_RESET%:
 
 set "__CMAKE_LIST_FILE=%_ROOT_DIR%CMakeLists.txt"
 if not exist "%__CMAKE_LIST_FILE%" (
@@ -75,25 +79,86 @@ set _PROJ_CONFIG=Debug
 @rem set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
+set "_SOURCE_DIR=%_ROOT_DIR%src"
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
-set "_TARGET_EXE_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
 
-set _MAKE_CMD=make.exe
-set _MAKE_OPTS=
+set _CPPCHECK_CMD=
+if exist "%CPPCHECK_HOME%\cppcheck.exe" (
+    set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
+)
+if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
+    echo %_ERROR_LABEL% Doxygen installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_DOXYGEN_CMD=%DOXYGEN_HOME%\bin\doxygen.exe"
 
-set _PELOOK_CMD=pelook.exe
-set _PELOOK_OPTS=
+if not exist "%MSYS_HOME%\usr\bin\make.exe" (
+    echo %_ERROR_LABEL% MSYS installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
 
-set _LLVM_OBJDUMP_CMD=llvm-objdump.exe
-set _LLVM_OBJDUMP_OPTS=-f -h
+set "_PELOOK_CMD=%_ROOT_DIR%bin\pelook.exe"
 
+if not exist "%LLVM_HOME%\bin\clang.exe" (
+    echo %_ERROR_LABEL% LLVM installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 set "_CLANG_CMD=%LLVM_HOME%\bin\clang.exe"
-set _CLANG_OPTS=
+goto :eof
+
+:env_colors
+@rem ANSI colors in standard Windows 10 shell
+@rem see https://gist.github.com/mlocati/#file-win10colors-cmd
+set _RESET=[0m
+set _BOLD=[1m
+set _UNDERSCORE=[4m
+set _INVERSE=[7m
+
+@rem normal foreground colors
+set _NORMAL_FG_BLACK=[30m
+set _NORMAL_FG_RED=[31m
+set _NORMAL_FG_GREEN=[32m
+set _NORMAL_FG_YELLOW=[33m
+set _NORMAL_FG_BLUE=[34m
+set _NORMAL_FG_MAGENTA=[35m
+set _NORMAL_FG_CYAN=[36m
+set _NORMAL_FG_WHITE=[37m
+
+@rem normal background colors
+set _NORMAL_BG_BLACK=[40m
+set _NORMAL_BG_RED=[41m
+set _NORMAL_BG_GREEN=[42m
+set _NORMAL_BG_YELLOW=[43m
+set _NORMAL_BG_BLUE=[44m
+set _NORMAL_BG_MAGENTA=[45m
+set _NORMAL_BG_CYAN=[46m
+set _NORMAL_BG_WHITE=[47m
+
+@rem strong foreground colors
+set _STRONG_FG_BLACK=[90m
+set _STRONG_FG_RED=[91m
+set _STRONG_FG_GREEN=[92m
+set _STRONG_FG_YELLOW=[93m
+set _STRONG_FG_BLUE=[94m
+set _STRONG_FG_MAGENTA=[95m
+set _STRONG_FG_CYAN=[96m
+set _STRONG_FG_WHITE=[97m
+
+@rem strong background colors
+set _STRONG_BG_BLACK=[100m
+set _STRONG_BG_RED=[101m
+set _STRONG_BG_GREEN=[102m
+set _STRONG_BG_YELLOW=[103m
+set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
-@rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TEST, _TOOLSET, _VERBOSE
+@rem output parameter(s): _CLEAN, _COMPILE, _RUN, _TIMER, _TEST, _TOOLSET, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
@@ -101,6 +166,8 @@ set _DOC=0
 set _DOC_OPEN=0
 set _DUMP=0
 set _HELP=0
+set _LINT=0
+set _PROJ_CONFIG=Release
 set _RUN=0
 set _TEST=0
 set _TIMER=0
@@ -115,15 +182,17 @@ if not defined __ARG (
 )
 if "%__ARG:~0,1%"=="-" (
     @rem option
-    if /i "%__ARG%"=="-cl" ( set _TOOLSET=msvc
-    ) else if /i "%__ARG%"=="-clang" ( set _TOOLSET=clang
-    ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
-    ) else if /i "%__ARG%"=="-gcc" ( set _TOOLSET=gcc
-    ) else if /i "%__ARG%"=="-help" ( set _HELP=1
-    ) else if /i "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
-    ) else if /i "%__ARG%"=="-open" ( set _DOC_OPEN=1
-    ) else if /i "%__ARG%"=="-timer" ( set _TIMER=1
-    ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+    if "%__ARG%"=="-cl" ( set _TOOLSET=msvc
+    ) else if "%__ARG%"=="-clang" ( set _TOOLSET=clang
+    ) else if "%__ARG%"=="-config:D" ( set _PROJ_CONFIG=Debug
+    ) else if "%__ARG%"=="-config:R" ( set _PROJ_CONFIG=Release
+    ) else if "%__ARG%"=="-debug" ( set _DEBUG=1
+    ) else if "%__ARG%"=="-gcc" ( set _TOOLSET=gcc
+    ) else if "%__ARG%"=="-help" ( set _HELP=1
+    ) else if "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
+    ) else if "%__ARG%"=="-open" ( set _DOC_OPEN=1
+    ) else if "%__ARG%"=="-timer" ( set _TIMER=1
+    ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
         set _EXITCODE=1
@@ -131,13 +200,14 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     @rem subcommand
-    if /i "%__ARG%"=="clean" ( set _CLEAN=1
-    ) else if /i "%__ARG%"=="compile" ( set _COMPILE=1
-    ) else if /i "%__ARG%"=="doc" ( set _DOC=1
-    ) else if /i "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
-    ) else if /i "%__ARG%"=="help" ( set _HELP=1
-    ) else if /i "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
-    ) else if /i "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=0& set _TEST=1
+    if "%__ARG%"=="clean" ( set _CLEAN=1
+    ) else if "%__ARG%"=="compile" ( set _COMPILE=1
+    ) else if "%__ARG%"=="doc" ( set _DOC=1
+    ) else if "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
+    ) else if "%__ARG%"=="help" ( set _HELP=1
+    ) else if "%__ARG%"=="lint" ( set _LINT=1
+    ) else if "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
+    ) else if "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=0& set _TEST=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -151,35 +221,56 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
+if %_LINT%==1 if not defined _CPPCHECK_CMD (
+    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
+    set _LINT=0
+)
 if %_DOC_OPEN%==1 if %_DOC%==0 (
     echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
     set _DOC_OPEN=0
 )
-if %_DEBUG%==1 echo %_DEBUG_LABEL% _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _RUN=%_RUN% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+if %_DEBUG%==1 (
+    echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _LINT=%_LINT% _RUN=%_RUN% 1>&2
+    echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
+)
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
 :help
-echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
+if %_VERBOSE%==1 (
+    set __BEG_P=%_STRONG_FG_CYAN%%_UNDERSCORE%
+    set __BEG_O=%_STRONG_FG_GREEN%
+    set __BEG_N=%_NORMAL_FG_YELLOW%
+    set __END=%_RESET%
+) else (
+    set __BEG_P=
+    set __BEG_O=
+    set __BEG_N=
+    set __END=
+)
+echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
-echo   Options:
-echo     -cl         use MSVC/MSBuild toolset ^(default^)
-echo     -clang      use Clang/GNU Make toolset instead of MSVC/MSBuild
-echo     -debug      show commands executed by this script
-echo     -gcc        use GCC/GNU Make toolset instead of MSVC/MSBuild
-echo     -msvc       use MSVC/MSBuild toolset ^(alias for option -cl^)
-echo     -open       display generated HTML documentation ^(subcommand 'doc'^)
-echo     -timer      display total elapsed time
-echo     -verbose    display progress messages
+echo   %__BEG_P%Options:%__END%
+echo     %__BEG_O%-cl%__END%            use MSVC/MSBuild toolset ^(default^)
+echo     %__BEG_O%-clang%__END%         use Clang/GNU Make toolset instead of MSVC/MSBuild
+echo     %__BEG_O%-config:^(D^|R^)%__END%  use %__BEG_O%D%__END%^)ebug or %__BEG_O%R%__END%^)elease ^(default^) configuration
+echo     %__BEG_O%-debug%__END%         show commands executed by this script
+echo     %__BEG_O%-gcc%__END%           use GCC/GNU Make toolset instead of MSVC/MSBuild
+echo     %__BEG_O%-msvc%__END%          use MSVC/MSBuild toolset ^(alias for option %__BEG_O%-cl%__END%^)
+echo     %__BEG_O%-open%__END%          display generated HTML documentation ^(subcommand %__BEG_O%doc%__END%^)
+echo     %__BEG_O%-timer%__END%         display total elapsed time
+echo     %__BEG_O%-verbose%__END%       display progress messages
 echo.
-echo   Subcommands:
-echo     clean       delete generated files
-echo     compile     generate executable
-echo     doc         generate HTML documentation with Doxygen
-echo     dump        dump PE/COFF infos for generated executable
-echo     help        display this help message
-echo     run         run generated executable
-echo     test        test generated IR code
+echo   %__BEG_P%Subcommands:%__END%
+echo     %__BEG_O%clean%__END%          delete generated files
+echo     %__BEG_O%compile%__END%        generate executable
+echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
+echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
+echo     %__BEG_O%help%__END%           display this help message
+echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%Cppcheck%__END%
+echo     %__BEG_O%run%__END%            run generated executable
+echo     %__BEG_O%test%__END%        test generated IR code
 goto :eof
 
 :clean
@@ -189,11 +280,26 @@ goto :eof
 @rem input parameter: %1=directory path
 :rmdir
 set "__DIR=%~1"
-if not exist "!__DIR!\" goto :eof
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "!__DIR!" 1>&2
+if not exist "%__DIR%\" goto :eof
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "%__DIR%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
 )
-rmdir /s /q "!__DIR!"
+rmdir /s /q "%__DIR%"
+if not %ERRORLEVEL%==0 (
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
+:cppcheck
+if %_TOOLSET%==gcc ( set __CPPCHECK_OPTS=--template=gcc --std=c++14
+) else if %_TOOLSET%==msvc ( set __CPPCHECK_OPTS=--template=vs --std=c++17
+) else ( set __CPPCHECK_OPTS=--std=c++14
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%" 1>&2
+) else if %_VERBOSE%==1 ( echo Analyze C++ source files in directory "!_SOURCE_DIR=%_ROOT_DIR%=!" 1>&2
+)
+call "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%"
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
@@ -218,10 +324,10 @@ endlocal & set _EXITCODE=%_EXITCODE%
 goto :eof
 
 :compile_clang
-set CC=clang.exe
-set CXX=clang++.exe
-set MAKE=make.exe
-set RC=windres.exe
+set "CC=%LLVM_HOME%\bin\clang.exe"
+set "CXX=%LLVM_HOME%\bin\clang++.exe"
+set "MAKE=%MSYS_HOME%\usr\bin\make.exe"
+set "RC=%MSYS_HOME%\mingw64\bin\windres.exe"
 
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"
@@ -240,8 +346,8 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=v
-) else ( set __MAKE_OPTS=%_MAKE_OPTS% --debug=n
+if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
+) else ( set __MAKE_OPTS=--debug=n
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
@@ -327,10 +433,12 @@ if not exist "%__DOXYFILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
+set __DOXYGEN_OPTS=-s
+
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate HTML documentation 1>&2
 )
-call "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%"
+call "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYFILE%"
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Generation of HTML documentation failed 1>&2
     set _EXITCODE=1
@@ -341,7 +449,7 @@ if %_DOC_OPEN%==1 (
     if %_DEBUG%==1 ( echo %_DEBUG_LABEL% start "%_BASENAME%" "%__INDEX_FILE%" 1>&2
     ) else if %_VERBOSE%==1 ( echo Open HTML documentation in default browser 1>&2
     )
-    start "%_BASENAME%" "%_TARGET_DOCS_DIR%\html\index.html"
+    start "%_BASENAME%" "%__INDEX_FILE%"
 )
 goto :eof
 
@@ -355,13 +463,15 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
+set __PELOOK_OPTS=
+
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" 1>&2
-    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%"
+    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" 1>&2
+    call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%"
 ) else (
-    if %_VERBOSE%==1 echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+    if %_VERBOSE%==1 echo Dump PE/COFF infos for executable "!__EXE_FILE:%_ROOT_DIR%=!" 1>&2
     echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+    call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2
@@ -411,11 +521,12 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
+set __CLANG_OPTS=
 set "__EXE_OUTFILE=%_TARGET_DIR%\tut1.exe"
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CLANG_CMD%" %_CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%" 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CLANG_CMD%" %__CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable from file !__IR_OUTFILE:%_ROOT_DIR%=! 1>&2
 )
-call "%_CLANG_CMD%" %_CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%"
+call "%_CLANG_CMD%" %__CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%"
 if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof

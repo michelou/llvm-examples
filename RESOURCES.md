@@ -11,6 +11,7 @@
 
 ## <span id="articles">Articles</span>
 
+- [A Brief Introduction to Clang-Tidy][article_clang_tidy], by Bartlomeij Filipek, January 2021.
 - [MIR: A lightweight JIT compiler project][article_mir], by Vladimir Makarov, January 2020.
 - [*A look at LLVM Advanced Data Types*][article_data_types] by Serge Guelton, April 2019.
 - [*Compiler Performance and LLVM*][article_compiler_perf] by Jonathan Goodwin, March 2019.
@@ -59,7 +60,7 @@
 
 ## <span id="tools">Online Tools</span>
 
-- [Compiler Explorer][tools_godbolt]) (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
+- [Compiler Explorer][tools_godbolt] (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
 
 
 ## <span id="papers">Papers</span>
@@ -97,6 +98,7 @@ We mention here only publications from <a href="http://nondot.org/~sabre/" rel="
 
 <!-- link refs -->
 
+[article_clang_tidy]: https://blog.wholetomato.com/2021/01/08/a-brief-introduction-to-clang-tidy-and-its-role-in-visual-assist/
 [article_compiler_perf]: http://pling.jondgoodwin.com/post/compiler-performance/
 [article_data_types]: https://developers.redhat.com/blog/2019/04/01/a-look-at-llvm-advanced-data-types-and-trivially-copyable-types/
 [article_ir_go]: https://blog.gopheracademy.com/advent-2018/llvm-ir-and-go/

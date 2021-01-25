@@ -46,6 +46,10 @@ if %_RUN%==1 (
     call :run
     if not !_EXITCODE!==0 goto end
 )
+if %_TEST%==1 (
+    call :test
+    if not !_EXITCODE!==0 goto end
+)
 goto end
 
 @rem #########################################################################
@@ -79,13 +83,10 @@ set "_SOURCE_DIR=%_ROOT_DIR%src"
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
 
-if not exist "%CPPCHECK_HOME%\cppcheck.exe" (
-    echo %_ERROR_LABEL% CppCheck installation not found 1>&2
-    set _EXITCODE=1
-    goto :eof
+set _CPPCHECK_CMD=
+if exist "%CPPCHECK_HOME%\cppcheck.exe" (
+    set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
 )
-set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
-
 if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
     echo %_ERROR_LABEL% Doxygen installation not found 1>&2
     set _EXITCODE=1
@@ -101,6 +102,13 @@ if not exist "%MSYS_HOME%\usr\bin\make.exe" (
 set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
 
 set "_PELOOK_CMD=%_ROOT_DIR%bin\pelook.exe"
+
+if not exist "%LLVM_HOME%\bin\clang.exe" (
+    echo %_ERROR_LABEL% LLVM installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_CLANG_CMD=%LLVM_HOME%\bin\clang.exe"
 goto :eof
 
 :env_colors
@@ -150,7 +158,7 @@ set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
-@rem output parameter(s): _CLEAN, _COMPILE, _DEBUG, _RUN, _TIMER, _TOOLSET, _VERBOSE
+@rem output parameter(s): _CLEAN, _COMPILE, _RUN, _TIMER, _TEST, _TOOLSET, _VERBOSE
 :args
 set _CLEAN=0
 set _COMPILE=0
@@ -161,6 +169,7 @@ set _HELP=0
 set _LINT=0
 set _PROJ_CONFIG=Release
 set _RUN=0
+set _TEST=0
 set _TIMER=0
 set _TOOLSET=msvc
 set _VERBOSE=0
@@ -198,6 +207,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="help" ( set _HELP=1
     ) else if "%__ARG%"=="lint" ( set _LINT=1
     ) else if "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
+    ) else if "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=0& set _TEST=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -211,6 +221,10 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
+if %_LINT%==1 if not defined _CPPCHECK_CMD (
+    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
+    set _LINT=0
+)
 if %_DOC_OPEN%==1 if %_DOC%==0 (
     echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
     set _DOC_OPEN=0
@@ -254,8 +268,9 @@ echo     %__BEG_O%compile%__END%        generate executable
 echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
 echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
 echo     %__BEG_O%help%__END%           display this help message
-echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%CppCheck%__END%
-echo     %__BEG_O%run%__END%            run the generated executable
+echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%Cppcheck%__END%
+echo     %__BEG_O%run%__END%            run generated executable
+echo     %__BEG_O%test%__END%           test generated IR code
 goto :eof
 
 :clean
@@ -310,7 +325,7 @@ goto :eof
 
 :compile_clang
 set "CC=%LLVM_HOME%\bin\clang.exe"
-set "CXX=%LLVM_HOME%\bin\cclang++.exe"
+set "CXX=%LLVM_HOME%\bin\clang++.exe"
 set "MAKE=%MSYS_HOME%\usr\bin\make.exe"
 set "RC=%MSYS_HOME%\mingw64\bin\windres.exe"
 
@@ -483,6 +498,45 @@ if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Execution status is %ERRORLEVEL% 1>&2
     set _EXITCODE=1
     goto :eof
+)
+goto :eof
+
+:test
+if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
+) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
+)
+set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
+if not exist "%__EXE_FILE%" (
+    echo %_ERROR_LABEL% Executable %_PROJ_NAME%.exe not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "__IR_OUTFILE=%_TARGET_DIR%\tut1.ll"
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" 1^> "%__IR_OUTFILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Generate IR code to file "!__IR_OUTFILE:%_ROOT_DIR%=!" 1>&2
+)
+call "%__EXE_FILE%" 1> %__IR_OUTFILE%
+if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Execution status is %ERRORLEVEL% 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set __CLANG_OPTS=
+set "__EXE_OUTFILE=%_TARGET_DIR%\tut1.exe"
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CLANG_CMD%" %__CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable from file !__IR_OUTFILE:%_ROOT_DIR%=! 1>&2
+)
+call "%_CLANG_CMD%" %__CLANG_OPTS% -o "%__EXE_OUTFILE%" "%__IR_OUTFILE%"
+if not %ERRORLEVEL%==0 (
+    set _EXITCODE=1
+    goto :eof
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_OUTFILE%" 1>&2
+) else if %_VERBOSE%==1 ( echo Execute !__EXE_OUTFILE:%_ROOT_DIR%=! 1>&2
+)
+call "%__EXE_OUTFILE%"
+if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Execution status is %ERRORLEVEL% 1>&2
 )
 goto :eof
 
