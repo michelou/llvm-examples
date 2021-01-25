@@ -77,7 +77,13 @@ We mention here only publications from <a href="http://nondot.org/~sabre/" rel="
 <li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html" rel="external"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
 </ul>
 
-## TableGen
+## <span id="tools">Tools</span>
+
+### `pacman`
+
+- [pacman/Tips and tricks](https://wiki.archlinux.org/index.php/Pacman/Tips_and_trick]) from [Arch Linux](https://archlinux.org/), January 2021.
+
+### TableGen
 
 - [Utilizing TableGen for Non-Compiling Processes](https://www.embecosm.com/2015/04/14/utilizing-tablegen-for-non-compiling-processes/) by Simon Cook, April 2015.
 - [LLVM TableGen](https://wiki.aalto.fi/display/t1065450/LLVM+TableGen) by Sami Teräväinen, February 2015.

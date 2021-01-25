@@ -22,19 +22,19 @@ This project depends on the following external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
-- [CppCheck 2.3][cppcheck_downloads] ([*changelog*][cppcheck_changelog])
+- [Cppcheck 2.3][cppcheck_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.30][git_downloads] ([*release notes*][git_relnotes])
-- [MSYS2][msys2_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup>
+- [MSYS2][msys2_downloads] <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*January 2021*) <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>:
+For instance our development environment looks as follows (*January 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
 
-<pre style="font-size:80%;">
-C:\opt\cmake-3.19.2\                                            <i>(  84 MB)</i>
+<pre style="font-size:80%;max-width:560px;">
+C:\opt\cmake-3.19.3\                                            <i>(  84 MB)</i>
 C:\opt\doxygen-1.9.1\                                           <i>(  81 MB)</i>
 C:\opt\Git-2.30.0\                                              <i>( 290 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
@@ -57,7 +57,7 @@ https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
 ## <span id="structure">Directory structure</span>
 
 This project is organized as follows:
-<pre style="font-size:80%;">
+<pre style="font-size:80%;max-width:500px;">
 bin\pelook.exe  <i>(<a href="http://bytepointer.com/tools/pelook_changelist.htm">changelist</a>)</i>
 bin\vswhere.exe
 <a href="bin/llvm/build.bat">bin\llvm\build.bat</a>
@@ -101,7 +101,7 @@ We distinguish different sets of batch commands:
 
 1. [**`setenv.bat`**](setenv.bat) - This batch command makes external tools such as [**`clang.exe`**][llvm_clang] and [**`git.exe`**][git_exe] directly available from the command prompt (see section [**Project dependencies**](#proj_deps)).
 
-   <pre style="font-size:80%;">
+   <pre style="font-size:80%;max-width:484px;">
    <b>&gt; <a href="setenv.bat">setenv</a> help</b>
    Usage: setenv { &lt;option&gt; | &lt;subcommand&gt; }
    &nbsp;
@@ -116,7 +116,7 @@ We distinguish different sets of batch commands:
 
 2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-10.0.0\`**).
 
-   <pre style="font-size:80%;">
+   <pre style="font-size:80%;max-width:484px;">
    <b>&gt; <a href="bin/llvm/build.bat">build</a> help</b>
    Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
    &nbsp;
@@ -139,11 +139,11 @@ We distinguish different sets of batch commands:
 
 Command [**`setenv`**](setenv.bat) is executed once to setup our development environment; it makes external tools such as [**`clang.exe`**][llvm_clang], [**`opt.exe`**][llvm_opt] and [**`git.exe`**][git_exe] directly available from the command prompt:
 
-<pre style="font-size:80%;">
+<pre style="font-size:80%;max-width:520px;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 11.0.1, lli 11.0.1, opt 11.0.1, doxygen 1.9.1, pelook v1.70,
-   cmake 3.19.2, cppcheck 2.3, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   cmake 3.19.3, cppcheck 2.3, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
    git 2.30.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -161,13 +161,13 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 11.0.1, lli 11.0.1, opt 11.0.1, doxygen 1.9.1, pelook v1.70,
-   cmake 3.19.2, cppcheck 2.3, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
+   cmake 3.19.3, cppcheck 2.3, make 4.3, gcc 10.2.0, python 3.9.0, diff 3.7
    git 2.30.0.windows.1, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-11.0.1\bin\clang.exe
    C:\opt\LLVM-11.0.1\bin\lli.exe
    C:\opt\LLVM-11.0.1\bin\opt.exe
-   C:\opt\cmake-3.19.2\bin\cmake.exe
+   C:\opt\cmake-3.19.3\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.9\python.exe
@@ -179,7 +179,7 @@ Tool paths:
    C:\opt\Git-2.30.0\mingw64\bin\git.exe
    C:\opt\Git-2.30.0\bin\bash.exe
 Environment variables:
-   CMAKE_HOME="C:\opt\cmake-3.19.2-win64-x64"
+   CMAKE_HOME="C:\opt\cmake-3.19.3-win64-x64"
    CPPCHECK_HOME="C:\Program Files\Cppcheck"
    DOXYGEN_HOME="C:\opt\doxygen-1.9.1"
    LLVM_HOME="C:\opt\LLVM-11.0.1"
@@ -198,7 +198,7 @@ We wrote the [batch file][batch_file] [`build.bat`](bin/llvm/build.bat) to gener
 
 It provides the following options and subcommands:
 
-<pre style="font-size:80%;">
+<pre style="font-size:80%;max-width:500px;">
 <b>&gt; <a href="bin/llvm/build.bat">build</a></b>
 Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
 &nbsp;
@@ -240,7 +240,7 @@ LLVM versions 8, 9, 10 and 11 are supported. Command <b><code>setenv</code></b> 
 Version 16.5 of Visual Studio 2019 is required to build LLVM 10 while version 16.4 is fine to build LLVM 8 and 9.
 </p>
 
-<pre style="margin:0 0 0 20px;font-size:80%;">
+<pre style="margin:0 0 0 20px;font-size:80%;max-width:520px;">
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose compile</b>
 Toolset: MSVC/MSBuild, Project: LLVM
 **********************************************************************
@@ -259,14 +259,55 @@ Call Stack (most recent call first):
   cmake/config-ix.cmake:13 (include)
   CMakeLists.txt:623 (include)
 
-
 Error: Generation of build configuration failed
 </pre>
 
-<b name="footnote_03">[3]</b> ***MSYS2 versus MinGW*** [↩](#anchor_03)
+<b name="footnote_03">[3]</b> ***Cppcheck installation*** [↩](#anchor_03)
 
 <p style="margin:0 0 1em 20px;">
-We give here three criteria for choosing between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/" rel="external">MingGW-w64</a>:
+The <a href="http://cppcheck.sourceforge.net/">Cppcheck</a> static analysis tool can be installed in two ways on MS Windows, namely:<p>
+<ul>
+<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.3-x64-Setup.msi</code></a> from the Windows desktop.
+<li>MSYS2 package <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64"><code>mingw-w64-x86_64-cppcheck</code></a>.</li>
+</ul>
+<p style="margin:0 0 1em 20px;">
+Below we execute the command <code>pacman -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></code> and then check the <code>cppcheck</code> installation :
+</p>
+<pre style="margin:0 0 1em 20px; font-size:80%;">
+<b>$ pacman -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></b>
+resolving dependencies...
+looking for conflicting packages...
+
+Packages (1) mingw-w64-x86_64-cppcheck-2.3-1
+
+Total Download Size:    3.43 MiB
+Total Installed Size:  13.39 MiB
+
+:: Proceed with installation? [Y/n] y
+:: Retrieving packages...
+ mingw-w64-x86_64-cppcheck-2.3-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
+(1/1) checking keys in keyring                                    [#############################] 100%
+(1/1) checking package integrity                                  [#############################] 100%
+(1/1) loading package files                                       [#############################] 100%
+(1/1) checking for file conflicts                                 [#############################] 100%
+(1/1) checking available disk space                               [#############################] 100%
+:: Processing package changes...
+(1/1) installing mingw-w64-x86_64-cppcheck                        [#############################] 100%
+Optional dependencies for mingw-w64-x86_64-cppcheck
+    mingw-w64-x86_64-qt5: cppcheck-gui
+    mingw-w64-x86_64-python-pygments: cppcheck-htmlreport
+&nbsp;
+<b>$ <a href="https://linux.die.net/man/1/which">which</a> cppcheck</b>
+/mingw64/bin/cppcheck
+&nbsp;
+<b>$ <a href="https://linux.die.net/man/1/cppcheck">cppcheck</a> --version</b>
+Cppcheck 2.3
+</pre>
+
+<b name="footnote_04">[4]</b> ***MSYS2 versus MinGW*** [↩](#anchor_04)
+
+<p style="margin:0 0 1em 20px;">
+We give here three differences between <a href="http://repo.msys2.org/distrib/x86_64/" alt="MSYS2">MSYS64</a> and <a href="https://sourceforge.net/projects/mingw/" rel="external">MingGW-w64</a>:
 </p>
 <table style="margin:0 0 1em 20px;">
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
@@ -282,7 +323,7 @@ We give here three criteria for choosing between <a href="http://repo.msys2.org/
 <p style="margin:0 0 1em 20px;">
 1. MSYS64 tools:
 </p>
-<pre style="margin:0 0 1em 35px; font-size:80%;">
+<pre style="margin:0 0 1em 35px; font-size:80%;max-width:484px;">
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.archlinux.org/pacman/pacman.8.html">pacman.exe</a> -Syu</b>
 :: Synchronizing package databases...
 [...]
@@ -306,16 +347,14 @@ GNU Make 4.3
 > **&#9755;** ***Key "XXX" is unknown***<br/>
 > One may encounter the MSYS error '<code>key "XXX" is unkown</code>' when running **`pacman -Syu`** from the Windows prompt. Simply run the command once from the MingW64 shell (command **`%MSYS_HOME%\mingw64.exe`**) to solve the issue.
 
-<pre style="margin:0 0 1em 35px; font-size:80%;" >
+<pre style="margin:0 0 1em 35px; font-size:80%;max-width:620px;">
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.archlinux.org/pacman/pacman.8.html">pacman.exe</a> -Syu</b>
 error: msys: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" is unknown
 :: Import PGP key 4A6129F4E4B84AE46ED7F635628F528CF3053E04? [Y/n] y
     error: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" could not be looked up remotely
 :: Synchronizing package databases...
- mingw32                                                607.7 KiB  39.0 KiB/s 00:16
- [###############################################] 100%
- mingw32.sig                                            438.0   B  0.00   B/s 00:00
- [###############################################] 100%
+ mingw32                607.7 KiB  39.0 KiB/s 00:16   [###############################] 100%
+ mingw32.sig            438.0   B  0.00   B/s 00:00   [###############################] 100%
  error: mingw32: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" is unknown
 :: Import PGP key 4A6129F4E4B84AE46ED7F635628F528CF3053E04? [Y/n] y
     error: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" could not be looked up remotely
@@ -325,7 +364,7 @@ error: msys: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" is unknown
 <p style="margin:0 0 1em 20px;">
 2. MinGW-w64 tools:
 </p>
-<pre style="margin:0 0 1em 35px; font-size:80%;">
+<pre style="margin:0 0 1em 35px; font-size:80%;max-width:484px;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r . gcc mingw-get mingw32-make</b>
 c:\opt\mingw-w64\mingw64\bin\gcc.exe
 c:\opt\mingw-w64\mingw64\bin\mingw-get.exe
@@ -338,13 +377,13 @@ gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
 GNU Make 4.2.1
 </pre>
 
-<b name="footnote_04">[4]</b> ***Downloads*** [↩](#anchor_04)
+<b name="footnote_05">[5]</b> ***Downloads*** [↩](#anchor_05)
 
 <p style="margin:0 0 1em 20px;">
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
-<pre style="margin:0 0 1em 20px; font-size:80%;">
-<a href="https://cmake.org/download/">cmake-3.19.2-win64-x64.zip</a>        <i>( 33 MB)</i>
+<pre style="margin:0 0 1em 20px; font-size:80%;max-width:500px;">
+<a href="https://cmake.org/download/">cmake-3.19.3-win64-x64.zip</a>        <i>( 33 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.3-x64-Setup.msi</a>        <i>( 20 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.1.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.30.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
@@ -374,7 +413,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [cppcheck_changelog]: https://sourceforge.net/p/cppcheck/news/2020/12/cppcheck-23/
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
 [cmake_downloads]: https://cmake.org/download/
-[cmake_modules]: https://cmake.org/cmake/help/v3.18/manual/cmake-modules.7.html
+[cmake_modules]: https://cmake.org/cmake/help/v3.19/manual/cmake-modules.7.html
 [cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.19.html
 [dotty_examples]: https://github.com/michelou/dotty-examples
 [doxygen_changelog]: https://www.doxygen.nl/manual/changelog.html
@@ -388,7 +427,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [linux_opt]: https://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
-[llvm_clang]: https://releases.llvm.org/10.0.0/tools/clang/docs/ClangCommandLineReference.html
+[llvm_clang]: https://releases.llvm.org/11.0.1/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
 [llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.0.1
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
