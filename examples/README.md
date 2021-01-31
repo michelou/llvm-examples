@@ -80,7 +80,10 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug run</b>
-[build] _CLEAN=0 _COMPILE=1 _DUMP=0 _RUN=1 _TOOLSET=msvc _VERBOSE=0
+[build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
+[build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
+[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
+[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
 [build] Current directory is: L:\examples\hello\build
@@ -114,15 +117,18 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug -clang clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _RUN=1 _TIMER=0 _TOOLSET=clang _VERBOSE=0
+[build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
+[build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
+[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
+[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is Clang 10.0.0 with GNU-like command-line
--- The CXX compiler identification is Clang 10.0.0 with GNU-like command-line
--- Check for working C compiler: C:/opt/LLVM-10.0.0/bin/clang.exe
--- Check for working C compiler: C:/opt/LLVM-10.0.0/bin/clang.exe -- works
+-- The C compiler identification is Clang 11.0.1 with GNU-like command-line
+-- The CXX compiler identification is Clang 11.0.1 with GNU-like command-line
+-- Check for working C compiler: C:/opt/LLVM-11.0.1/bin/clang.exe
+-- Check for working C compiler: C:/opt/LLVM-11.0.1/bin/clang.exe -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Detecting C compile features
@@ -146,13 +152,16 @@ Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug -gcc clean run</b>
-[build] _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _RUN=1 _TIMER=0 _TOOLSET=gcc _VERBOSE=0
+[build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
+[build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
+[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
+[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is GNU 9.3.0
--- The CXX compiler identification is GNU 9.3.0
+-- The C compiler identification is GNU 10.2.0
+-- The CXX compiler identification is GNU 10.2.0
 -- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe
 -- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe -- works
 -- Detecting C compiler ABI info
@@ -263,7 +272,9 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
-[build] _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _RUN=1 _TIMER=0 _TOOLSET=msvc _VERBOSE=0
+[build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
+[build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
+[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
 [build] Configuration: Debug, Platform: x64
@@ -321,7 +332,7 @@ entry:
 Finally, one may wonder what's happen if we transform the above [IR code][llvm_ir] into an executable:
 
 <pre style="font-size:80%;">
-<b>&gt; build run &gt; tut1.ll</b>
+<b>&gt; <a href="JITTutorial1/build.bat">build</a> run &gt; tut1.ll</b>
 &nbsp;
 <b>&gt; <a href="https://clang.llvm.org/docs/ClangCommandLineReference.html">clang</a> -Wno-override-module -o tut1.exe tut1.ll</b>
 LINK : fatal error LNK1561: entry point must be defined
@@ -678,7 +689,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/January 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/February 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -693,7 +704,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 [llvm_docs]: https://llvm.org/docs/index.html
 [llvm_hello]: https://github.com/zilder/llvm-hello-world-example
 [llvm_lld]: https://lld.llvm.org/
-[llvm_ir]: https://releases.llvm.org/10.0.0/docs/LangRef.html
+[llvm_ir]: https://releases.llvm.org/11.0.1/docs/LangRef.html
 [llvm_msvs]: https://llvm.org/docs/GettingStartedVS.html
 [llvm_tutorial1]: https://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html
 [llvm_tutorial2]: https://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html

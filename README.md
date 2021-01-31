@@ -31,10 +31,10 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*January 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
+For instance our development environment looks as follows (*February 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.19.3\                                            <i>(  84 MB)</i>
+C:\opt\cmake-3.19.4\                                            <i>(  84 MB)</i>
 C:\opt\doxygen-1.9.1\                                           <i>(  81 MB)</i>
 C:\opt\Git-2.30.0\                                              <i>( 290 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
@@ -370,10 +370,10 @@ c:\opt\mingw-w64\mingw64\bin\gcc.exe
 c:\opt\mingw-w64\mingw64\bin\mingw-get.exe
 c:\opt\mingw-w64\mingw64\bin\mingw32-make.exe
 &nbsp;
-<b>&gt; <a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc</a> --version | findstr gcc</b>
+<b>&gt; <a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> gcc</b>
 gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
 &nbsp;
-<b>&gt; mingw32-make --version | findstr Make</b>
+<b>&gt; <a href="http://www.gnu.org/software/make/manual/">mingw32-make</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> Make</b>
 GNU Make 4.2.1
 </pre>
 
@@ -388,7 +388,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.1.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.30.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.0.1">LLVM-11.0.1-win64.exe</a>             <i>(172 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>             <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>            <i>( 31 MB)</i>
@@ -403,7 +403,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/January 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/February 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
