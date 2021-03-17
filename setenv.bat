@@ -142,6 +142,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if /i "%__ARG%"=="-llvm:9" ( set _LLVM_PREFIX=LLVM-9
     ) else if /i "%__ARG%"=="-llvm:10" ( set _LLVM_PREFIX=LLVM-10
     ) else if /i "%__ARG%"=="-llvm:11" ( set _LLVM_PREFIX=LLVM-11
+    ) else if /i "%__ARG%"=="-llvm:12" ( set _LLVM_PREFIX=LLVM-12
     ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -222,13 +223,13 @@ if %_VERBOSE%==1 (
 echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
 echo   %__BEG_P%Options:%__END%
-echo     %__BEG_O%-bash%__END%              start Git bash shell instead of Windows command prompt
-echo     %__BEG_O%-debug%__END%             show commands executed by this script
-echo     %__BEG_O%-llvm:^<8^|9^|10^|11^>%__END%  select version of LLVM installation ^(default: %__BEG_N%11%__END%^)
-echo     %__BEG_O%-verbose%__END%           display progress messages
+echo     %__BEG_O%-bash%__END%          start Git bash shell instead of Windows command prompt
+echo     %__BEG_O%-debug%__END%         show commands executed by this script
+echo     %__BEG_O%-llvm:^<8..12^>%__END%  select version of LLVM installation ^(default: %__BEG_N%11%__END%^)
+echo     %__BEG_O%-verbose%__END%       display progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
-echo     %__BEG_O%help%__END%               display this help message
+echo     %__BEG_O%help%__END%           display this help message
 goto :eof
 
 @rem output parameter(s): _CPPCHECK_HOME

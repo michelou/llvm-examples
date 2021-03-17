@@ -111,15 +111,15 @@ We distinguish different sets of batch commands:
    Usage: setenv { &lt;option&gt; | &lt;subcommand&gt; }
    &nbsp;
      Options::
-       -bash        start Git bash shell instead of Windows command prompt
-       -debug       show commands executed by this script
-       -llvm:&lt;8|9&gt;  select version of LLVM installation
-       -verbose     display progress messages
+       -bash          start Git bash shell instead of Windows command prompt
+       -debug         show commands executed by this script
+       -llvm:&lt;8..12&gt;  select version of LLVM installation
+       -verbose       display progress messages
    &nbsp;
      Subcommands:
-       help         display this help message</pre>
+       help           display this help message</pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-10.0.0\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-11.1.0\`**).
 
    <pre style="font-size:80%;max-width:484px;">
    <b>&gt; <a href="bin/llvm/build.bat">build</a> help</b>
@@ -427,6 +427,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
 [git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.31.0.txt
+[github_markdown]: https://github.github.com/gfm/
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples
