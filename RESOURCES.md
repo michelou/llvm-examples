@@ -11,8 +11,8 @@
 
 ## <span id="articles">Articles</span>
 
-- [A Brief Introduction to Clang-Tidy][article_clang_tidy], by Bartlomeij Filipek, January 2021.
-- [MIR: A lightweight JIT compiler project][article_mir], by Vladimir Makarov, January 2020.
+- [*A Brief Introduction to Clang-Tidy*][article_clang_tidy], by Bartlomeij Filipek, January 2021.
+- [*MIR: A lightweight JIT compiler project*][article_mir], by Vladimir Makarov, January 2020.
 - [*A look at LLVM Advanced Data Types*][article_data_types] by Serge Guelton, April 2019.
 - [*Compiler Performance and LLVM*][article_compiler_perf] by Jonathan Goodwin, March 2019.
 - [*LLVM IR and Go*][article_ir_go] by Robin Eklind, December 2018.
@@ -44,9 +44,9 @@
 
 ## <span id="courses">Courses</span>
 
-- [Compilers](https://anoopsarkar.github.io/compilers-class/index.html): [Code Generation with LLVM](https://anoopsarkar.github.io/compilers-class/llvm-practice.html) by [Anoop Sarkar](https://www2.cs.sfu.ca/~anoop/) (instructor), Summer 2019.
-- [EEECS 582: Advanced Compilers](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
-- [Advanced compilers](https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015) by Vesa Hirvisalo (instructor), 2015.
+- [*Compilers*](https://anoopsarkar.github.io/compilers-class/index.html): [*Code Generation with LLVM*](https://anoopsarkar.github.io/compilers-class/llvm-practice.html) by [Anoop Sarkar](https://www2.cs.sfu.ca/~anoop/) (instructor), Summer 2019.
+- [*EEECS 582: Advanced Compilers*](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
+- [*Advanced compilers*](https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015) by Vesa Hirvisalo (instructor), 2015.
 
 ## News
 
@@ -99,7 +99,7 @@ We mention here only publications from <a href="http://nondot.org/~sabre/" rel="
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/February 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/March 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

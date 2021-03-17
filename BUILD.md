@@ -12,64 +12,64 @@
 
 [**`build.bat`**](bin/llvm/build.bat) consists of ~350 lines of batch/PowerShell code we wrote to generate additional Windows binaries not available in the <a href="https://llvm.org/">LLVM</a> binary distribution.
 
-> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-11.0.1-win64.exe`][llvm_downloads]).
+> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-11.1.0-win64.exe`][llvm_downloads]).
 
 
 ## <span id="usage_examples">Usage examples</span>
 
-Directory **`llvm-11.0.1.src\`** is setup as follows:
+Directory **`llvm-11.1.0.src\`** is setup as follows:
 <pre style="font-size:80%;">
-<b>&gt; <a href="https://curl.haxx.se/docs/manpage.html">curl</a> -sL -o llvm-11.0.1.src.tar.xz <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.0.1">llvm-11.0.1.src.tar.xz</a></b>
-<b>&gt; <a href="http://linuxcommand.org/lc3_man_pages/tar1.html">tar</a> xzvf llvm-11.0.1.src.tar.xz</b>
-<b>&gt; <a href="https://man7.org/linux/man-pages/man1/cp.1.html">cp</cp> <a href="bin/llvm/build.bat">bin\llvm\build.bat</a> llvm-11.0.1.src</b>
-<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-11.0.1.src</b>
+<b>&gt; <a href="https://curl.haxx.se/docs/manpage.html">curl</a> -sL -o llvm-11.1.0.src.tar.xz <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a></b>
+<b>&gt; <a href="http://linuxcommand.org/lc3_man_pages/tar1.html">tar</a> xzvf llvm-11.1.0.src.tar.xz</b>
+<b>&gt; <a href="https://man7.org/linux/man-pages/man1/cp.1.html">cp</cp> <a href="bin/llvm/build.bat">bin\llvm\build.bat</a> llvm-11.1.0.src</b>
+<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-11.1.0.src</b>
 </pre>
 
-> **:mag_right:** In our case we have the choice between the source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\`, `llvm-10.0.1.src\` and `llvm-11.0.1.src\`.
+> **:mag_right:** In our case we have the choice between the source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\`, `llvm-10.0.1.src\`, `llvm-11.0.1.src\` and `llvm-11.1.0.src\`.
 
 Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a></b>
-L:\llvm-11.0.1.src
+L:\llvm-11.1.0.src
 &nbsp;
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose compile</b>
 Toolset: MSVC/MSBuild, Project: LLVM
 **********************************************************************
-** Visual Studio 2019 Developer Command Prompt v16.5.1
+** Visual Studio 2019 Developer Command Prompt v16.9.1
 ** Copyright (c) 2019 Microsoft Corporation
 **********************************************************************
 [vcvarsall.bat] Environment initialized for: 'x64'
 INCLUDE="..."
 LIB="..."
 Configuration: Debug, Platform: x64
-[build] Current directory is: L:\llvm-11.0.1.src\build
+[build] Current directory is: L:\llvm-11.1.0.src\build
 [...]
 &nbsp;
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/dir">dir</a> build\Release\bin\ll?.exe | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> /b [0-9]</b>
-25.01.2021  16:30        52 828 160 llc.exe
-25.01.2021  16:30        19 796 992 lli.ex
+17.03.2021  11:11        52 706 304 llc.exe
+17.03.2021  11:11        19 697 664 lli.exe
 </pre>
 
-Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-11.0.1\`**).
+Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-11.1.0\`**).
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose install</b>
-Do really want to copy files from 'build\' to 'c:\opt\LLVM-11.0.1\' (Y/N)? y
-Copy files from directory build\Release\bin to C:\opt\LLVM-11.0.1\bin\
-Copy files from directory build\Release\lib to C:\opt\LLVM-11.0.1\lib\
-Copy files from directory build\lib\cmake to C:\opt\LLVM-11.0.1\lib\cmake\
-Copy files from directory include to C:\opt\LLVM-11.0.1\include\
+Do really want to copy files from 'build\' to 'c:\opt\LLVM-11.1.0\' (Y/N)? y
+Copy files from directory build\Release\bin to C:\opt\LLVM-11.1.0\bin\
+Copy files from directory build\Release\lib to C:\opt\LLVM-11.1.0\lib\
+Copy files from directory build\lib\cmake to C:\opt\LLVM-11.1.0\lib\cmake\
+Copy files from directory include to C:\opt\LLVM-11.1.0\include\
 </pre>
 
 > **:mag_right:** Before installation our [LLVM] installation directory contains 14 `llvm-*.exe` executables:
 > <pre style="font-size:80%;">
-> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-11.0.1 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
+> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-11.1.0 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
 > 14
 > </pre>
 > and after installation it contains 61 `llvm-*.exe` executables:
 > <pre style="font-size:80%;">
-> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-11.0.1 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
+> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-11.1.0 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
 > 63
 > </pre>
 
@@ -77,12 +77,12 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /t clang llc lld lldb lli opt</b>
-  91295744   06.01.2021      10:59:44  C:\opt\LLVM-11.0.1\bin\clang.exe
-  52828160   19.01.2021      20:12:12  C:\opt\LLVM-11.0.1\bin\llc.exe
-  63278080   06.01.2021      11:01:40  C:\opt\LLVM-11.0.1\bin\lld.exe
-    227840   06.01.2021      11:03:16  C:\opt\LLVM-11.0.1\bin\lldb.exe
-  19796992   19.01.2021      20:12:26  C:\opt\LLVM-11.0.1\bin\lli.exe
-  57277440   19.01.2021      20:19:23  C:\opt\LLVM-11.0.1\bin\opt.exe
+  91429376   17.02.2021      12:23:50  c:\opt\LLVM-11.1.0\bin\clang.exe
+  52706304   17.03.2021      11:11:21  c:\opt\LLVM-11.1.0\bin\llc.exe
+  63417344   17.02.2021      12:25:44  c:\opt\LLVM-11.1.0\bin\lld.exe
+    230400   17.02.2021      12:27:18  c:\opt\LLVM-11.1.0\bin\lldb.exe
+  19697664   17.03.2021      11:11:37  c:\opt\LLVM-11.1.0\bin\lli.exe
+  57141760   17.03.2021      11:18:40  c:\opt\LLVM-11.1.0\bin\opt.exe
 </pre>
 
 <!--
@@ -101,7 +101,7 @@ No issue so far.
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/February 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/March 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -109,9 +109,9 @@ No issue so far.
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
-[llvm_clang]: https://releases.llvm.org/11.0.1/tools/clang/docs/ClangCommandLineReference.html
+[llvm_clang]: https://releases.llvm.org/11.1.0/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.0.1
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
