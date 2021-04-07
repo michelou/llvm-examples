@@ -18,32 +18,8 @@ if not %_EXITCODE%==0 goto end
 @rem #########################################################################
 @rem ## Main
 
-if %_HELP%==1 (
-    call :help
-    exit /b !_EXITCODE!
-)
-if %_CLEAN%==1 (
-    call :clean
-    if not !_EXITCODE!==0 goto end
-)
-if %_COMPILE%==1 (
-    call :compile
-    if not !_EXITCODE!==0 goto end
-)
-if %_DOC%==1 (
-    call :doc
-    if not !_EXITCODE!==0 goto end
-)
-if %_DUMP%==1 (
-    call :dump
-    if not !_EXITCODE!==0 goto end
-)
-if %_RUN%==1 (
-    call :run
-    if not !_EXITCODE!==0 goto end
-)
-if %_TEST%==1 (
-    call :test
+for %%i in (%_COMMANDS%) do (
+    call :%%i
     if not !_EXITCODE!==0 goto end
 )
 goto end
@@ -52,10 +28,11 @@ goto end
 @rem ## Subroutines
 
 @rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
-@rem                    _PROJ_NAME, _PROJ_PLATFORM
+@rem                    _PROJ_NAME, _PROJ_CONFIG, _PROJ_PLATFORM
 :env
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
+set _TIMER=0
 
 call :env_colors
 set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
@@ -70,10 +47,24 @@ if not exist "%__CMAKE_LIST_FILE%" (
 )
 set _PROJ_NAME=llvm-hello
 for /f "tokens=1,2,* delims=( " %%f in ('findstr /b project "%__CMAKE_LIST_FILE%" 2^>NUL') do set "_PROJ_NAME=%%g"
+set _PROJ_CONFIG=Debug
+@rem set _PROJ_CONFIG=Release
 set _PROJ_PLATFORM=x64
 
+set "_SOURCE_DIR=%_ROOT_DIR%src"
 set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
+
+set _CPPCHECK_CMD=
+if exist "%CPPCHECK_HOME%\cppcheck.exe" (
+    set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
+)
+if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
+    echo %_ERROR_LABEL% Doxygen installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_DOXYGEN_CMD=%DOXYGEN_HOME%\bin\doxygen.exe"
 
 if not exist "%MSYS_HOME%\usr\bin\make.exe" (
     echo %_ERROR_LABEL% MSYS installation not found 1>&2
@@ -81,6 +72,7 @@ if not exist "%MSYS_HOME%\usr\bin\make.exe" (
     goto :eof
 )
 set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
+set "_WINDRES_CMD=%MSYS_HOME%\mingw64\bin\windres.exe"
 
 if not exist "%LLVM_HOME%\bin\lli.exe" (
     echo %_ERROR_LABEL% lli command not found 1>&2
@@ -89,8 +81,7 @@ if not exist "%LLVM_HOME%\bin\lli.exe" (
 )
 set "_LLI_CMD=%LLVM_HOME%\bin\lli.exe"
 
-set _PELOOK_CMD=pelook.exe
-set _PELOOK_OPTS=
+set "_PELOOK_CMD=%_ROOT_DIR%bin\pelook.exe"
 goto :eof
 
 :env_colors
@@ -140,17 +131,11 @@ set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
-@rem output parameter(s): _CLEAN, _COMPILE, _RUN, _DEBUG, _TEST, _TOOLSET, _VERBOSE
+@rem output parameter(s): _COMMANDS, _DEBUG, _TIMER, _TOOLSET, _VERBOSE
 :args
-set _CLEAN=0
-set _COMPILE=0
-set _DOC=0
+set _COMMANDS=
 set _DOC_OPEN=0
-set _DUMP=0
-set _HELP=0
 set _PROJ_CONFIG=Release
-set _RUN=0
-set _TEST=0
 set _TIMER=0
 set _TOOLSET=msvc
 set _VERBOSE=0
@@ -158,7 +143,7 @@ set __N=0
 :args_loop
 set "__ARG=%~1"
 if not defined __ARG (
-    if !__N!==0 set _HELP=1
+    if !__N!==0 set _COMMANDS=help
     goto args_done
 )
 if "%__ARG:~0,1%"=="-" (
@@ -181,13 +166,14 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     @rem subcommand
-    if "%__ARG%"=="clean" ( set _CLEAN=1
-    ) else if "%__ARG%"=="compile" ( set _COMPILE=1
-    ) else if "%__ARG%"=="doc" ( set _DOC=1
-    ) else if "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
-    ) else if "%__ARG%"=="help" ( set _HELP=1
-    ) else if "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
-    ) else if "%__ARG%"=="test" ( set _COMPILE=1& set _RUN=1& set _TEST=1
+    if "%__ARG%"=="clean" ( set _COMMANDS=!_COMMANDS! clean
+    ) else if "%__ARG%"=="compile" ( set _COMMANDS=!_COMMANDS! compile
+    ) else if "%__ARG%"=="doc" ( set _COMMANDS=!_COMMANDS! doc
+    ) else if "%__ARG%"=="dump" ( set _COMMANDS=!_COMMANDS! compile dump
+    ) else if "%__ARG%"=="help" ( set _COMMANDS=help
+    ) else if "%__ARG%"=="lint" ( set _COMMANDS=!_COMMANDS! lint
+    ) else if "%__ARG%"=="run" ( set _COMMANDS=!_COMMANDS! compile run
+    ) else if "%__ARG%"=="test" ( set _COMMANDS=!_COMMANDS! compile run test
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -201,14 +187,20 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
-if %_DOC_OPEN%==1 if %_DOC%==0 (
+if not "%_COMMANDS:lint=%"=="%_COMMANDS%" if not defined _CPPCHECK_CMD (
+    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
+    set _COMMANDS=%_COMMANDS:lint=%
+)
+if %_DOC_OPEN%==1 if "%_COMMANDS:doc=%"=="%_COMMANDS%" (
     echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
     set _DOC_OPEN=0
 )
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
-    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _RUN=%_RUN% _TEST=%_TEST% 1>&2
-    echo %_DEBUG_LABEL% Variables  : LLVM_HOME="%LLVM_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Subcommands: %_COMMANDS% 1>&2
+    echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : LLVM_HOME="%LLVM_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : MSYS_HOME="%MSYS_HOME%" 1>&2
 )
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
@@ -244,8 +236,10 @@ echo     %__BEG_O%compile%__END%        generate executable ^(default config: %_
 echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
 echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
 echo     %__BEG_O%help%__END%           display this help message
+echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%Cppcheck%__END%
 echo     %__BEG_O%run%__END%            run generated executable
 echo     %__BEG_O%test%__END%           test generated IR code
+goto :eof
 
 :clean
 call :rmdir "%_TARGET_DIR%"
@@ -265,6 +259,21 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
+:cppcheck
+if %_TOOLSET%==gcc ( set __CPPCHECK_OPTS=--template=gcc --std=c++14
+) else if %_TOOLSET%==msvc ( set __CPPCHECK_OPTS=--template=vs --std=c++17
+) else ( set __CPPCHECK_OPTS=--std=c++14
+)
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%" 1>&2
+) else if %_VERBOSE%==1 ( echo Analyze C++ source files in directory "!_SOURCE_DIR=%_ROOT_DIR%=!" 1>&2
+)
+call "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%"
+if not %ERRORLEVEL%==0 (
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
 :compile
 setlocal
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
@@ -273,6 +282,8 @@ if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/GNU Make
 ) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/GNU Make
 ) else ( set _TOOLSET_NAME=MSVC/MSBuild
 )
+set "LLVM_DIR=%LLVM_HOME%\lib\cmake\llvm"
+
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 ) else if %_VERBOSE%==1 ( echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 )
@@ -283,10 +294,10 @@ endlocal & set _EXITCODE=%_EXITCODE%
 goto :eof
 
 :compile_clang
-set CC=clang.exe
-set CXX=clang++.exe
+set "CC=%LLVM_HOME%\bin\clang.exe"
+set "CXX=%LLVM_HOME%\bin\clang++.exe"
 set "MAKE=%_MAKE_CMD%"
-set RC=windres.exe
+set "RC=%_WINDRES_CMD%"
 
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"
@@ -308,7 +319,7 @@ if not %ERRORLEVEL%==0 (
 if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
 ) else ( set __MAKE_OPTS=--debug=n
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD% "%__MAKE_OPTS% 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
 )
 call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
@@ -322,14 +333,10 @@ popd
 goto :eof
 
 :compile_gcc
-echo %_ERROR_LABEL% GCC/GNU Make toolset not supported 1>&2
-set _EXITCODE=1
-goto :eof
-
-set CC=gcc.exe
-set CXX=g++.exe
+set "CC=%MSYS_HOME%\mingw64\bin\gcc.exe"
+set "CXX=%MSYS_HOME%\mingw64\bin\g++.exe"
 set "MAKE=%_MAKE_CMD%"
-set RC=windres.exe
+set "RC=%WINDRES_CMD%"
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"
 
@@ -434,10 +441,12 @@ if not exist "%__DOXYFILE%" (
     set _EXITCODE=1
     goto :eof
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
+set __DOXYGEN_OPTS=-s
+
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYFILE%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate HTML documentation 1>&2
 )
-call "%_DOXYGEN_CMD%" %_DOXYGEN_OPTS% "%__DOXYFILE%"
+call "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYFILE%"
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Generation of HTML documentation failed 1>&2
     set _EXITCODE=1
@@ -448,7 +457,7 @@ if %_DOC_OPEN%==1 (
     if %_DEBUG%==1 ( echo %_DEBUG_LABEL% start "%_BASENAME%" "%__INDEX_FILE%" 1>&2
     ) else if %_VERBOSE%==1 ( echo Open HTML documentation in default browser 1>&2
     )
-    start "%_BASENAME%" "%_TARGET_DOCS_DIR%\html\index.html"
+    start "%_BASENAME%" "%__INDEX_FILE%"
 )
 goto :eof
 
@@ -462,13 +471,15 @@ if not exist "%__EXE_FILE%" (
     set _EXITCODE=1
     goto :eof
 )
+set __PELOOK_OPTS=
+
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" 1>&2
-    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%"
+    echo %_DEBUG_LABEL% "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" 1>&2
+    call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%"
 ) else (
-    if %_VERBOSE%==1 echo Dump PE/COFF infos for executable !__EXE_FILE:%_ROOT_DIR%=! 1>&2
+    if %_VERBOSE%==1 echo Dump PE/COFF infos for executable "!__EXE_FILE:%_ROOT_DIR%=!" 1>&2
     echo executable:           !__EXE_FILE:%_ROOT_DIR%=!
-    call "%_PELOOK_CMD%" %_PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
+    call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
     echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2

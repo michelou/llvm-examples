@@ -18,32 +18,8 @@ if not %_EXITCODE%==0 goto end
 @rem #########################################################################
 @rem ## Main
 
-if %_HELP%==1 (
-    call :help
-    exit /b !_EXITCODE!
-)
-if %_CLEAN%==1 (
-    call :clean
-    if not !_EXITCODE!==0 goto end
-)
-if %_LINT%==1 (
-    call :cppcheck
-    if not !_EXITCODE!==0 goto end
-)
-if %_COMPILE%==1 (
-    call :compile
-    if not !_EXITCODE!==0 goto end
-)
-if %_DOC%==1 (
-    call :doc
-    if not !_EXITCODE!==0 goto end
-)
-if %_DUMP%==1 (
-    call :dump
-    if not !_EXITCODE!==0 goto end
-)
-if %_RUN%==1 (
-    call :run
+for %%i in (%_COMMANDS%) do (
+    call :%%i
     if not !_EXITCODE!==0 goto end
 )
 goto end
@@ -103,6 +79,7 @@ if not exist "%MSYS_HOME%\usr\bin\make.exe" (
     goto :eof
 )
 set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
+set "_WINDRES_CMD=%MSYS_HOME%\mingw64\bin\windres.exe"
 
 set "_PELOOK_CMD=%_ROOT_DIR%bin\pelook.exe"
 goto :eof
@@ -154,17 +131,11 @@ set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
-@rem output parameter(s): _CLEAN, _COMPILE, _DEBUG, _RUN, _TIMER, _TOOLSET, _VERBOSE
+@rem output parameter(s): _COMMANDS, _DEBUG, _TIMER, _TOOLSET, _VERBOSE
 :args
-set _CLEAN=0
-set _COMPILE=0
-set _DOC=0
+set _COMMANDS=
 set _DOC_OPEN=0
-set _DUMP=0
-set _HELP=0
-set _LINT=0
 set _PROJ_CONFIG=Release
-set _RUN=0
 set _TIMER=0
 set _TOOLSET=msvc
 set _VERBOSE=0
@@ -172,7 +143,7 @@ set __N=0
 :args_loop
 set "__ARG=%~1"
 if not defined __ARG (
-    if !__N!==0 set _HELP=1
+    if !__N!==0 set _COMMANDS=help
     goto args_done
 )
 if "%__ARG:~0,1%"=="-" (
@@ -195,13 +166,14 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     @rem subcommand
-    if "%__ARG%"=="clean" ( set _CLEAN=1
-    ) else if "%__ARG%"=="compile" ( set _COMPILE=1
-    ) else if "%__ARG%"=="doc" ( set _DOC=1
-    ) else if "%__ARG%"=="dump" ( set _COMPILE=1& set _DUMP=1
-    ) else if "%__ARG%"=="help" ( set _HELP=1
-    ) else if "%__ARG%"=="lint" ( set _LINT=1
-    ) else if "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
+    if "%__ARG%"=="clean" ( set _COMMANDS=!_COMMANDS! clean
+    ) else if "%__ARG%"=="compile" ( set _COMMANDS=!_COMMANDS! compile
+    ) else if "%__ARG%"=="doc" ( set _COMMANDS=!_COMMANDS! doc
+    ) else if "%__ARG%"=="dump" ( set _COMMANDS=!_COMMANDS! compile dump
+    ) else if "%__ARG%"=="help" ( set _COMMANDS=help
+    ) else if "%__ARG%"=="lint" ( set _COMMANDS=!_COMMANDS! lint
+    ) else if "%__ARG%"=="run" ( set _COMMANDS=!_COMMANDS! compile run
+    ) else if "%__ARG%"=="test" ( set _COMMANDS=!_COMMANDS! compile run test
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -215,19 +187,22 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
 
-if %_LINT%==1 if not defined _CPPCHECK_CMD (
+if not "%_COMMANDS:lint=%"=="%_COMMANDS%" if not defined _CPPCHECK_CMD (
     echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
-    set _LINT=0
+    set _COMMANDS=%_COMMANDS:lint=%
 )
-if %_DOC_OPEN%==1 if %_DOC%==0 (
+if %_DOC_OPEN%==1 if "%_COMMANDS:doc=%"=="%_COMMANDS%" (
     echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
     set _DOC_OPEN=0
 )
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
-    echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _LINT=%_LINT% _RUN=%_RUN% 1>&2
+    echo %_DEBUG_LABEL% Subcommands: %_COMMANDS% 1>&2
     echo %_DEBUG_LABEL% Variables  : CPPCHECK_HOME="%CPPCHECK_HOME%" 1>&2
-    echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : LLVM_HOME="%LLVM_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : MSVS_HOME="%MSVS_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : MSYS_HOME="%MSYS_HOME%" 1>&2
 )
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
@@ -259,12 +234,12 @@ echo     %__BEG_O%-verbose%__END%       display progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
 echo     %__BEG_O%clean%__END%          delete generated files
-echo     %__BEG_O%compile%__END%        generate executable
+echo     %__BEG_O%compile%__END%        generate executable ^(default config: %__BEG_O%Release%__END%^)
 echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
 echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
 echo     %__BEG_O%help%__END%           display this help message
 echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%Cppcheck%__END%
-echo     %__BEG_O%run%__END%            run the generated executable
+echo     %__BEG_O%run%__END%            run generated executable
 goto :eof
 
 :clean
@@ -308,6 +283,8 @@ if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/GNU Make
 ) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/GNU Make
 ) else ( set _TOOLSET_NAME=MSVC/MSBuild
 )
+set "LLVM_DIR=%LLVM_HOME%\lib\cmake\llvm"
+
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 ) else if %_VERBOSE%==1 ( echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 )
@@ -318,10 +295,10 @@ endlocal & set _EXITCODE=%_EXITCODE%
 goto :eof
 
 :compile_clang
-set CC=clang.exe
-set CXX=clang++.exe
-set MAKE=make.exe
-set RC=windres.exe
+set "CC=%LLVM_HOME%\bin\clang.exe"
+set "CXX=%LLVM_HOME%\bin\clang++.exe"
+set "MAKE=%_MAKE_CMD%"
+set "RC=%_WINDRES_CMD%"
 
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"
@@ -394,6 +371,7 @@ if not %ERRORLEVEL%==0 (
 popd
 goto :eof
 
+@rem output parameters: _CMAKE_CMD, _MSBUILD_CMD
 :init_msvc
 set _CMAKE_CMD=
 for /f "delims=" %%f in ('where /r "%MSVS_HOME%" cmake.exe') do set "_CMAKE_CMD=%%f"
@@ -526,6 +504,9 @@ if not %ERRORLEVEL%==0 (
     set _EXITCODE=1
     goto :eof
 )
+goto :eof
+
+:test
 goto :eof
 
 @rem output parameter: _DURATION

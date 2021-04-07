@@ -100,6 +100,7 @@ if not exist "%MSYS_HOME%\usr\bin\make.exe" (
     goto :eof
 )
 set "_MAKE_CMD=%MSYS_HOME%\usr\bin\make.exe"
+set "_WINDRES_CMD=%MSYS_HOME%\mingw64\bin\windres.exe"
 
 set "_PELOOK_CMD=%_ROOT_DIR%bin\pelook.exe"
 
@@ -232,7 +233,9 @@ if %_DOC_OPEN%==1 if %_DOC%==0 (
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
     echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _DOC=%_DOC% _DUMP=%_DUMP% _LINT=%_LINT% _RUN=%_RUN% 1>&2
-    echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : DOXYGEN_HOME="%DOXYGEN_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : LLVM_HOME="%LLVM_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : MSYS_HOME="%MSYS_HOME%" 1>&2
 )
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
@@ -270,7 +273,7 @@ echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executa
 echo     %__BEG_O%help%__END%           display this help message
 echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%Cppcheck%__END%
 echo     %__BEG_O%run%__END%            run generated executable
-echo     %__BEG_O%test%__END%        test generated IR code
+echo     %__BEG_O%test%__END%           test generated IR code
 goto :eof
 
 :clean
@@ -314,6 +317,8 @@ if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/GNU Make
 ) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/GNU Make
 ) else ( set _TOOLSET_NAME=MSVC/MSBuild
 )
+set "LLVM_DIR=%LLVM_HOME%\lib\cmake\llvm"
+
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 ) else if %_VERBOSE%==1 ( echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 )
@@ -326,8 +331,8 @@ goto :eof
 :compile_clang
 set "CC=%LLVM_HOME%\bin\clang.exe"
 set "CXX=%LLVM_HOME%\bin\clang++.exe"
-set "MAKE=%MSYS_HOME%\usr\bin\make.exe"
-set "RC=%MSYS_HOME%\mingw64\bin\windres.exe"
+set "MAKE=%_MAKE_CMD%"
+set "RC=%_WINDRES_CMD%"
 
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"

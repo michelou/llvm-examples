@@ -22,51 +22,55 @@ static IRBuilder<> Builder(TheContext);
 std::unique_ptr<Module> buildModule()
 {
 #if (LLVM_VERSION_MAJOR > 9) // https://reviews.llvm.org/D66259
-	std::unique_ptr<Module> module = std::make_unique<Module>("top", TheContext);
+    std::unique_ptr<Module> module = std::make_unique<Module>("top", TheContext);
 #else
-	std::unique_ptr<Module> module = llvm::make_unique<Module>("top", TheContext);
+    std::unique_ptr<Module> module = llvm::make_unique<Module>("top", TheContext);
 #endif
 
-	/* Create main function */
-	FunctionType *funcType = FunctionType::get(Builder.getInt32Ty(), false);	
-	Function *mainFunc = Function::Create(funcType, Function::ExternalLinkage, "main", module.get());
-	BasicBlock *entry = BasicBlock::Create(TheContext, "entrypoint", mainFunc);
-	Builder.SetInsertPoint(entry);
+    /* Create main function */
+    FunctionType *funcType = FunctionType::get(Builder.getInt32Ty(), false);    
+    Function *mainFunc = Function::Create(funcType, Function::ExternalLinkage, "main", module.get());
+    BasicBlock *entry = BasicBlock::Create(TheContext, "entrypoint", mainFunc);
+    Builder.SetInsertPoint(entry);
 
-	/* String constant */
-	Value *helloWorldStr = Builder.CreateGlobalStringPtr("hello world!\n");
+    /* String constant */
+    Value *helloWorldStr = Builder.CreateGlobalStringPtr("hello world!\n");
 
-	/* Create "puts" function */
-	std::vector<Type *> putsArgs;
-	putsArgs.push_back(Builder.getInt8Ty()->getPointerTo());
-	ArrayRef<Type*> argsRef(putsArgs);
-	FunctionType *putsType = FunctionType::get(Builder.getInt32Ty(), argsRef, false);
+    /* Create "puts" function */
+    std::vector<Type *> putsTypes;
+    putsTypes.push_back(Builder.getInt8Ty()->getPointerTo());
+    ArrayRef<Type*> typesRef(putsTypes);
+    FunctionType *putsType = FunctionType::get(Builder.getInt32Ty(), typesRef, false);
+
 #if (LLVM_VERSION_MAJOR > 8)
+    std::vector<Value *> putsArgs;
+    putsArgs.push_back(helloWorldStr);
+    ArrayRef<Value *> argsRef(putsArgs);
     FunctionCallee putsFunc = module->getOrInsertFunction("puts", putsType);
-	/* Invoke it */
-	Builder.CreateCall(putsFunc.getCallee(), helloWorldStr);
+    /* Invoke it */
+    Builder.CreateCall(putsFunc, argsRef); //helloWorldStr);
 #else
-	Constant *putsFunc = module->getOrInsertFunction("puts", putsType);
-	/* Invoke it */
-	Builder.CreateCall(putsFunc, helloWorldStr);
+    Constant *putsFunc = module->getOrInsertFunction("puts", putsType);
+    /* Invoke it */
+    Builder.CreateCall(putsFunc, helloWorldStr);
 #endif
 
-	/* Return zero */
-	Builder.CreateRet(ConstantInt::get(TheContext, APInt(32, 0)));
+    /* Return zero */
+    Builder.CreateRet(ConstantInt::get(TheContext, APInt(32, 0)));
 
-	return module;
+    return module;
 }
 
 void writeModuleToFile(Module *module)
 {
-	std::ofstream std_file_stream("program.ll");
-	raw_os_ostream file_stream(std_file_stream);
-	module->print(file_stream, nullptr);
+    std::ofstream std_file_stream("program.ll");
+    raw_os_ostream file_stream(std_file_stream);
+    module->print(file_stream, nullptr);
 }
 
 int main()
 {
-	std::unique_ptr<Module> module = buildModule();
-	writeModuleToFile(module.get());
-	return 0;
+    std::unique_ptr<Module> module = buildModule();
+    writeModuleToFile(module.get());
+    return 0;
 }

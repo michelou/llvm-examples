@@ -24,7 +24,6 @@ if %_HELP%==1 (
 )
 
 set _MSYS_PATH=
-set _LLVM_PATH=
 set _GIT_PATH=
 
 call :cppcheck
@@ -393,18 +392,16 @@ if not exist "%_MSYS_HOME%\usr\bin\make.exe" (
 set "_MSYS_PATH=;%_MSYS_HOME%\usr\bin;%_MSYS_HOME%\mingw64\bin"
 goto :eof
 
-rem output parameter(s): _LLVM_HOME, _LLVM_PATH
+rem output parameter: _LLVM_HOME
 :llvm
 set _LLVM_HOME=
-set _LLVM_PATH=
 
 set __CLANG_CMD=
 for /f %%f in ('where clang.exe 2^>NUL') do set "__CLANG_CMD=%%f"
 if defined __CLANG_CMD (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Clang executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__CLANG_CMD%") do set "__LLVM_BIN_DIR=%%~dpi"
     for /f "delims=" %%f in ("!__LLVM_BIN_DIR!\.") do set "_LLVM_HOME=%%~dpf"
-    @rem keep _LLVM_PATH undefined since executable already in path
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Clang executable found in PATH 1>&2
     goto :eof
 ) else if defined LLVM_HOME (
     set "_LLVM_HOME=%LLVM_HOME%"
@@ -425,7 +422,7 @@ if not exist "%_LLVM_HOME%\bin\clang.exe" (
 )
 if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default LLVM installation directory "%_LLVM_HOME%" 1>&2
 
-set "_LLVM_PATH=;%_LLVM_HOME%\bin"
+@rem set "_LLVM_PATH=;%_LLVM_HOME%\bin"
 goto :eof
 
 rem output paramters: _MSVC_HOME, _MSVS_HOME
@@ -690,7 +687,7 @@ endlocal & (
         if not defined MSYS_HOME set "MSYS_HOME=%_MSYS_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
         if not defined SDK_HOME set "SDK_HOME=%_SDK_HOME%"
-        set "PATH=%PATH%%_MSYS_PATH%%_LLVM_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
+        set "PATH=%PATH%%_MSYS_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
         call :print_env %_VERBOSE% "%_GIT_HOME%"
         if %_BASH%==1 (
             if %_DEBUG%==1 echo %_DEBUG_LABEL% %_GIT_HOME%\usr\bin\bash.exe --login 1>&2

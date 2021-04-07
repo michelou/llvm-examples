@@ -628,25 +628,8 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <i style="color:#66aa66;">@rem #########################################################################
 @rem ## Main</i>
 &nbsp;
-<b>if</b> %_CLEAN%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:clean</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
-)
-
-<b>if</b> %_LINT%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:cppcheck</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
-)
-<b>if</b> %_COMPILE%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:compile</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
-)
-<b>if</b> %_DOC%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:doc</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
-)
-<b>if</b> %_RUN%==1 (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:run</span>
+<b>for</b> %%i <b>in</b> (%_COMMANDS%) <b>do</b> (
+&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:%%i</span>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>goto <span style="color:#9966ff;">end</span></b>
@@ -689,7 +672,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/February 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/April 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
