@@ -178,8 +178,9 @@ if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
     echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% _INSTALL=%_INSTALL% 1>&2
-    echo %_DEBUG_LABEL% Variables  : MSVS_HOME="%MSVS_HOME%" 1>&2
-    echo %_DEBUG_LABEL% Variables  : LLVM_HOME="%LLVM_HOME%" MSYS_HOME="%MSYS_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : "LLVM_HOME=%LLVM_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : "MSVS_HOME=%MSVS_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : "MSYS_HOME=%MSYS_HOME%" 1>&2
 )
 if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
@@ -262,8 +263,8 @@ goto :eof
 call :init_msvc
 if not %_EXITCODE%==0 goto :eof
 
-set __PYTHON_CMD=%PYTHON_HOME%\python.exe
-set __CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe
+set "__PYTHON_CMD=%PYTHON_HOME%\python.exe"
+set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated -DPYTHON_EXECUTABLE=%__PYTHON_CMD%
 @rem see http://lists.llvm.org/pipermail/llvm-dev/2017-February/110590.html
 set __CMAKE_OPTS=%__CMAKE_OPTS% -G "Visual Studio 16 2019"

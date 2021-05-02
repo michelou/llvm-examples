@@ -82,8 +82,9 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_
 <b>&gt; <a href="hello/build.bat">build</a> -debug run</b>
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
-[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
+[build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+[build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
 [build] Current directory is: L:\examples\hello\build
@@ -120,7 +121,8 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
-[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
+[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1"
+[build] Variables  :  MSYS_HOME="C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -188,8 +190,9 @@ Command [**`build -debug lint`**](hello/build.bat) preformes code analysis with 
 <b>&gt; <a href="hello/build.bat">build</a> -debug lint</b>
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
-[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
-[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
+[build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+[build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
 1/2 files checked 30% done
@@ -672,7 +675,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/April 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/May 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -687,7 +690,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 [llvm_docs]: https://llvm.org/docs/index.html
 [llvm_hello]: https://github.com/zilder/llvm-hello-world-example
 [llvm_lld]: https://lld.llvm.org/
-[llvm_ir]: https://releases.llvm.org/11.0.1/docs/LangRef.html
+[llvm_ir]: https://releases.llvm.org/12.0.0/docs/LangRef.html
 [llvm_msvs]: https://llvm.org/docs/GettingStartedVS.html
 [llvm_tutorial1]: https://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html
 [llvm_tutorial2]: https://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html

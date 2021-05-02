@@ -35,6 +35,7 @@
 
 ## <span id="books">Books</span>
 
+- [LLVM Techniques, Tips and Best Practices][book_hsu] by Min-Yih Hsu, April 2021.
 - [*Tutorial: Creating an LLVM Backend for the Cpu0 Architecture*][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
 - [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
 - [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
@@ -99,7 +100,7 @@ We mention here only publications from <a href="http://nondot.org/~sabre/" rel="
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/April 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/May 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -112,6 +113,7 @@ We mention here only publications from <a href="http://nondot.org/~sabre/" rel="
 [article_power_sums]: https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html
 [article_toy_compiler]: https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
 [book_cpu0]: https://jonathan2251.github.io/lbd/llvmstructure.html
+[book_hsu]: https://www.packtpub.com/product/llvm-techniques-tips-and-best-practices-clang-and-middle-end-libraries/9781838824952
 [news_llvmweekly]: http://llvmweekly.org/ "LLVM Weekly"
 [news_planet_clang]: http://planet.clang.org/ "Planet Clang"
 [tools_godbolt]: https://www.godbolt.org/

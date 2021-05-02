@@ -659,15 +659,15 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
 )
 if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo Environment variables: 1>&2
-    echo    CMAKE_HOME="%CMAKE_HOME%" 1>&2
-    echo    CPPCHECK_HOME="%CPPCHECK_HOME%" 1>&2
-    echo    DOXYGEN_HOME="%DOXYGEN_HOME%" 1>&2
-    echo    LLVM_HOME="%LLVM_HOME%" 1>&2
-    echo    MSVC_HOME="%MSVC_HOME%" 1>&2
-    echo    MSVS_HOME="%MSVS_HOME%" 1>&2
-    echo    MSVS_CMAKE_HOME="%MSVS_CMAKE_HOME%" 1>&2
-    echo    MSYS_HOME="%MSYS_HOME%" 1>&2
-    echo    PYTHON_HOME="%PYTHON_HOME%" 1>&2
+    echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
+    echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
+    echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
+    echo    "LLVM_HOME=%LLVM_HOME%" 1>&2
+    echo    "MSVC_HOME=%MSVC_HOME%" 1>&2
+    echo    "MSVS_HOME=%MSVS_HOME%" 1>&2
+    echo    "MSVS_CMAKE_HOME=%MSVS_CMAKE_HOME%" 1>&2
+    echo    "MSYS_HOME=%MSYS_HOME%" 1>&2
+    echo    "PYTHON_HOME=%PYTHON_HOME%" 1>&2
 )
 goto :eof
 
