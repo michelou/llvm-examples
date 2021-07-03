@@ -135,14 +135,14 @@ if not defined __ARG goto args_done
 
 if "%__ARG:~0,1%"=="-" (
     @rem option
-    if /i "%__ARG%"=="-bash" ( set _BASH=1
-    ) else if /i "%__ARG%"=="-debug" ( set _DEBUG=1
-    ) else if /i "%__ARG%"=="-llvm:8" ( set _LLVM_PREFIX=LLVM-8
-    ) else if /i "%__ARG%"=="-llvm:9" ( set _LLVM_PREFIX=LLVM-9
-    ) else if /i "%__ARG%"=="-llvm:10" ( set _LLVM_PREFIX=LLVM-10
-    ) else if /i "%__ARG%"=="-llvm:11" ( set _LLVM_PREFIX=LLVM-11
-    ) else if /i "%__ARG%"=="-llvm:12" ( set _LLVM_PREFIX=LLVM-12
-    ) else if /i "%__ARG%"=="-verbose" ( set _VERBOSE=1
+    if "%__ARG%"=="-bash" ( set _BASH=1
+    ) else if "%__ARG%"=="-debug" ( set _DEBUG=1
+    ) else if "%__ARG%"=="-llvm:8" ( set _LLVM_PREFIX=LLVM-8
+    ) else if "%__ARG%"=="-llvm:9" ( set _LLVM_PREFIX=LLVM-9
+    ) else if "%__ARG%"=="-llvm:10" ( set _LLVM_PREFIX=LLVM-10
+    ) else if "%__ARG%"=="-llvm:11" ( set _LLVM_PREFIX=LLVM-11
+    ) else if "%__ARG%"=="-llvm:12" ( set _LLVM_PREFIX=LLVM-12
+    ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
         set _EXITCODE=1
@@ -150,7 +150,7 @@ if "%__ARG:~0,1%"=="-" (
     )
 ) else (
     @rem subcommand
-    if /i "%__ARG%"=="help" ( set _HELP=1
+    if "%__ARG%"=="help" ( set _HELP=1
     ) else (
         echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
         set _EXITCODE=1
@@ -175,7 +175,7 @@ set __DRIVE_NAME=%~1
 set "__GIVEN_PATH=%~2"
 
 if not "%__DRIVE_NAME:~-1%"==":" set __DRIVE_NAME=%__DRIVE_NAME%:
-if /i "%__DRIVE_NAME%"=="%__GIVEN_PATH:~0,2%" goto :eof
+if "%__DRIVE_NAME%"=="%__GIVEN_PATH:~0,2%" goto :eof
 
 if "%__GIVEN_PATH:~-1%"=="\" set "__GIVEN_PATH=%__GIVEN_PATH:~0,-1%"
 if not exist "%__GIVEN_PATH%" (
@@ -358,7 +358,7 @@ if not exist "%_PYTHON_HOME%\Scripts\pylint.exe" (
 )
 goto :eof
 
-@rem output parameter(s): _MSYS_HOME, _MSYS_PATH
+@rem output parameters: _MSYS_HOME, _MSYS_PATH
 :msys
 set _MSYS_HOME=
 set _MSYS_PATH=
@@ -514,7 +514,7 @@ if not defined __ASSIGNED_PATH (
 set _SUBST_PATH=%__DRIVE_NAME%
 goto :eof
 
-@rem output parameter(s): _GIT_HOME, _GIT_PATH
+@rem output parameters: _GIT_HOME, _GIT_PATH
 :git
 set _GIT_HOME=
 set _GIT_PATH=
@@ -553,30 +553,29 @@ if not exist "%_GIT_HOME%\bin\git.exe" (
 set "_GIT_PATH=;%_GIT_HOME%\bin;%_GIT_HOME%\mingw64\bin;%_GIT_HOME%\usr\bin"
 goto :eof
 
-@rem output parameter(s): _SDK_HOME
+@rem output parameter: _SDK_HOME
 :sdk
 set _SDK_HOME=
 
 for /f "delims=" %%f in ("%ProgramFiles%\Microsoft SDKs\Windows\v7.1") do set "_SDK_HOME=%%~f"
 if not exist "%_SDK_HOME%" (
-    echo %_ERROR_LABEL% Could not find installation directory for Microsoft Windows SDK 7.1 1>&2
+    echo %_WARNING_LABEL% Could not find installation directory for Microsoft Windows SDK 7.1 1>&2
     echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
-    set _EXITCODE=1
+    rem set _EXITCODE=1
     goto :eof
 )
 goto :eof
 
 :print_env
 set __VERBOSE=%1
-set __GIT_HOME=%~2
 set "__VERSIONS_LINE1=  "
 set "__VERSIONS_LINE2=  "
 set "__VERSIONS_LINE3=  "
 set __WHERE_ARGS=
-where /q clang.exe
+where /q "%LLVM_HOME%\bin:clang.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('clang.exe --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% clang %%k,"
-    set __WHERE_ARGS=%__WHERE_ARGS% clang.exe
+    for /f "tokens=1,2,3,*" %%i in ('"%LLVM_HOME%\bin\clang.exe" --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% clang %%k,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%LLVM_HOME%\bin:clang.exe"
 )
 where /q "%LLVM_HOME%\bin:lli.exe"
 if %ERRORLEVEL%==0 (
@@ -611,36 +610,36 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,*" %%i in ('"%CPPCHECK_HOME%\cppcheck.exe" --version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cppcheck %%j,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%CPPCHECK_HOME%:cppcheck.exe"
 )
-where /q make.exe
+where /q "%MSYS_HOME%\usr\bin:make.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('make.exe --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% make %%k,"
-    set __WHERE_ARGS=%__WHERE_ARGS% make.exe
+    for /f "tokens=1,2,3,*" %%i in ('"%MSYS_HOME%\usr\bin\make.exe" --version 2^>^&1 ^| findstr Make') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% make %%k,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%MSYS_HOME%\usr\bin:make.exe"
 )
-where /q gcc.exe
+where /q "%MSYS_HOME%\mingw64\bin:gcc.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-7,*" %%i in ('gcc.exe --version 2^>^&1 ^| findstr gcc') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% gcc %%o,"
-    set __WHERE_ARGS=%__WHERE_ARGS% gcc.exe
+    for /f "tokens=1-7,*" %%i in ('"%MSYS_HOME%\mingw64\bin\gcc.exe" --version 2^>^&1 ^| findstr gcc') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% gcc %%o,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%MSYS_HOME%\mingw64\bin:gcc.exe"
 )
 where /q "%PYTHON%:python.exe"
 if %ERRORLEVEL%==0 (
     for /f "tokens=1,*" %%i in ('"%PYTHON%\python.exe" --version 2^>^&1') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% python %%j,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%PYTHON%:python.exe"
 )
-where /q diff.exe
+where /q "%GIT_HOME%\usr\bin:diff.exe"
 if %ERRORLEVEL%==0 (
-   for /f "tokens=1-3,*" %%i in ('diff.exe --version ^| findstr diff') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% diff %%l"
-    set __WHERE_ARGS=%__WHERE_ARGS% diff.exe
+   for /f "tokens=1-3,*" %%i in ('"%GIT_HOME%\usr\bin\diff.exe" --version ^| findstr diff') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% diff %%l"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\usr\bin:diff.exe"
 )
-where /q git.exe
+where /q "%GIT_HOME%\bin:git.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,*" %%i in ('git.exe --version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% git %%k,"
-    set __WHERE_ARGS=%__WHERE_ARGS% git.exe
+    for /f "tokens=1,2,*" %%i in ('"%GIT_HOME%\bin\git.exe" --version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% git %%k,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\bin:git.exe"
 )
-where /q "%__GIT_HOME%\bin":bash.exe
+where /q "%GIT_HOME%\bin":bash.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-3,4,*" %%i in ('"%__GIT_HOME%\bin\bash.exe" --version ^| findstr bash') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% bash %%l,"
+    for /f "tokens=1-3,4,*" %%i in ('"%GIT_HOME%\bin\bash.exe" --version ^| findstr bash') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% bash %%l,"
     )
-    set __WHERE_ARGS=%__WHERE_ARGS% "%__GIT_HOME%\bin:bash.exe"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\bin:bash.exe"
 )
 @rem see https://github.com/Microsoft/vswhere/releases
 where /q vswhere.exe
@@ -662,6 +661,7 @@ if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
     echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
     echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
+    echo    "GIT_HOME=%GIT_HOME%" 1>&2
     echo    "LLVM_HOME=%LLVM_HOME%" 1>&2
     echo    "MSVC_HOME=%MSVC_HOME%" 1>&2
     echo    "MSVS_HOME=%MSVS_HOME%" 1>&2
@@ -680,6 +680,7 @@ endlocal & (
         if not defined CMAKE_HOME set "CMAKE_HOME=%_CMAKE_HOME%"
         if not defined CPPCHECK_HOME set "CPPCHECK_HOME=%_CPPCHECK_HOME%"
         if not defined DOXYGEN_HOME set "DOXYGEN_HOME=%_DOXYGEN_HOME%"
+        if not defined GIT_HOME set "GIT_HOME=%_GIT_HOME%"
         if not defined LLVM_HOME set "LLVM_HOME=%_LLVM_HOME%"
         if not defined MSVC_HOME set "MSVC_HOME=%_MSVC_HOME%"
         if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
@@ -688,7 +689,7 @@ endlocal & (
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
         if not defined SDK_HOME set "SDK_HOME=%_SDK_HOME%"
         set "PATH=%PATH%%_MSYS_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
-        call :print_env %_VERBOSE% "%_GIT_HOME%"
+        call :print_env %_VERBOSE%
         if %_BASH%==1 (
             if %_DEBUG%==1 echo %_DEBUG_LABEL% %_GIT_HOME%\usr\bin\bash.exe --login 1>&2
             cmd.exe /c "%_GIT_HOME%\usr\bin\bash.exe --login"

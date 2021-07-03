@@ -15,7 +15,7 @@
 
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
-- [CMake 3.20][cmake_downloads] ([*release notes*][cmake_relnotes])
+- [CMake 3.21][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [LLVM 12 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
 - [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>  ([*release notes*][vs2019_relnotes])
 - [Python 3.9][python_downloads] ([*changelog*][python_changelog])
@@ -24,7 +24,7 @@ Optionally one may also install the following software:
 
 - [Cppcheck 2.4][cppcheck_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
-- [Git 2.31][git_downloads] ([*release notes*][git_relnotes])
+- [Git 2.32][git_downloads] ([*release notes*][git_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
 
 <!--
@@ -34,9 +34,9 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*May 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.20.2\                                            <i>(  84 MB)</i>
+C:\opt\cmake-3.21.0\                                            <i>(  84 MB)</i>
 C:\opt\doxygen-1.9.1\                                           <i>(  81 MB)</i>
-C:\opt\Git-2.31.1\                                              <i>( 279 MB)</i>
+C:\opt\Git-2.32.0\                                              <i>( 279 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
@@ -45,7 +45,7 @@ C:\opt\LLVM-12.0.0\                                             <i>(1.5 resp 3.7
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files\Cppcheck\                                      <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
-C:\opt\Python-3.9.4\                                            <i>( 201 MB)</i>
+C:\opt\Python-3.9.6\                                            <i>( 201 MB)</i>
 </pre>
 
 <!--
@@ -148,13 +148,13 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 12.0.0, lli 12.0.0, opt 12.0.0, doxygen 1.9.1, pelook v1.73,
-   cmake 3.20.2, cppcheck 2.4.1, make 4.3, gcc 10.2.0, python 3.9.4, diff 3.7
-   git 2.31.1.windows.1, bash 4.4.23(1)-release
+   cmake 3.21.0, cppcheck 2.4.1, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
+   git 2.32.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-12.0.0\bin\clang.exe
-C:\opt\Git-2.31.1\bin\git.exe
-C:\opt\Git-2.31.1\mingw64\bin\git.exe
+C:\opt\Git-2.32.0\bin\git.exe
+C:\opt\Git-2.32.0\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -166,33 +166,33 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 12.0.0, lli 12.0.0, opt 12.0.0, doxygen 1.9.1, pelook v1.73,
-   cmake 3.20.2, cppcheck 2.4.1, make 4.3, gcc 10.2.0, python 3.9.4, diff 3.7
-   git 2.31.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
+   cmake 3.21.0, cppcheck 2.4.1, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
+   git 2.32.0.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-12.0.0\bin\clang.exe
    C:\opt\LLVM-12.0.0\bin\lli.exe
    C:\opt\LLVM-12.0.0\bin\opt.exe
-   C:\opt\cmake-3.20.2\bin\cmake.exe
+   C:\opt\cmake-3.21.0\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
-   C:\opt\Python-3.9.4\python.exe
+   C:\opt\Python-3.9.6\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.31.1\usr\bin\diff.exe
-   C:\opt\Git-2.31.1\bin\git.exe
-   C:\opt\Git-2.31.1\mingw64\bin\git.exe
-   C:\opt\Git-2.31.1\bin\bash.exe
+   C:\opt\Git-2.32.0\usr\bin\diff.exe
+   C:\opt\Git-2.32.0\bin\git.exe
+   C:\opt\Git-2.32.0\mingw64\bin\git.exe
+   C:\opt\Git-2.32.0\bin\bash.exe
 Environment variables:
-   CMAKE_HOME="C:\opt\cmake-3.20.2-win64-x64"
-   CPPCHECK_HOME="C:\Program Files\Cppcheck"
-   DOXYGEN_HOME="C:\opt\doxygen-1.9.1"
-   LLVM_HOME="C:\opt\LLVM-12.0.0"
-   MSVC_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
-   MSVS_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019"
-   MSVS_CMAKE_HOME="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
-   MSYS_HOME="C:\opt\msys64"
-   PYTHON_HOME="C:\opt\Python-3.9.4"
+   "CMAKE_HOME=C:\opt\cmake-3.21.0-win64-x64"
+   "CPPCHECK_HOME=C:\Program Files\Cppcheck"
+   "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+   "LLVM_HOME=C:\opt\LLVM-12.0.0"
+   "MSVC_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
+   "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
+   "MSVS_CMAKE_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
+   "MSYS_HOME=C:\opt\msys64"
+   "PYTHON_HOME=C:\opt\Python-3.9.6"
 </pre>
 
 ### **`llvm-X.Y.Z.src\build.bat`**
@@ -272,14 +272,14 @@ Error: Generation of build configuration failed
 <p style="margin:0 0 1em 20px;">
 The <a href="http://cppcheck.sourceforge.net/">Cppcheck</a> static analysis tool can be installed in two ways on MS Windows, namely:<p>
 <ul>
-<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.3-x64-Setup.msi</code></a> from the Windows desktop.
+<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.4.1-x64-Setup.msi</code></a> from the Windows desktop.
 <li>MSYS2 package <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64"><code>mingw-w64-x86_64-cppcheck</code></a>.</li>
 </ul>
 <p style="margin:0 0 1em 20px;">
 Below we execute the command <code>pacman -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></code> and then check the <code>cppcheck</code> installation :
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;">
-<b>$ pacman -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></b>
+<b>$ <a href="https://www.archlinux.org/pacman/pacman.8.html">pacman</a> -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></b>
 resolving dependencies...
 looking for conflicting packages...
 
@@ -317,7 +317,7 @@ We give here three differences between <a href="http://repo.msys2.org/distrib/x8
 <table style="margin:0 0 1em 20px;">
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
 <tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
-<tr><td>Version/architecture</td><td><code>gcc 10.2</code></td><td><code>gcc 8.1</code></td></tr>
+<tr><td>Version/architecture</td><td><code>gcc 10.3</code></td><td><code>gcc 8.1</code></td></tr>
 <tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get upgrade</code></a> <sup>(2)</sup></td></tr>
 </table>
 <p style="margin:-16px 0 1em 30px; font-size:80%;">
@@ -343,7 +343,7 @@ c:\opt\msys64\usr\bin\make.exe
 c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | findstr gcc</b>
-gcc (Rev3, Built by MSYS2 project) 10.2.0
+gcc (Rev3, Built by MSYS2 project) 10.3.0
 &nbsp;
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | findstr Make</b>
 GNU Make 4.3
@@ -388,10 +388,10 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.20.2-win64-x64.zip</a>        <i>( 35 MB)</i>
-<a href="http://cppcheck.sourceforge.net/">cppcheck-2.3-x64-Setup.msi</a>        <i>( 20 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.21.0-win64-x64.zip</a>        <i>( 35 MB)</i>
+<a href="http://cppcheck.sourceforge.net/">cppcheck-2.4.1-x64-Setup.msi</a>      <i>( 20 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.1.windows.x64.bin.zip</a> <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.31.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.32.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
@@ -400,7 +400,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.0">llvm-12.0.0.src.tar.xz</a>            <i>( 41 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.9.4-amd64.exe</a>            <i>( 27 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.9.6-amd64.exe</a>            <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
 </pre>
 <p style="margin:0 0 1em 20px;">
@@ -409,7 +409,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/May 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/July 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -422,10 +422,10 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [cmake_modules]: https://cmake.org/cmake/help/v3.20/manual/cmake-modules.7.html
 [cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.20.html
 [doxygen_changelog]: https://www.doxygen.nl/manual/changelog.html
-[doxygen_downloads]: https://www.doxygen.nl/download.html
+[doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.31.1.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.32.0.txt
 [github_markdown]: https://github.github.com/gfm/
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
@@ -446,7 +446,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
-[python_changelog]: https://docs.python.org/release/3.9.4/whatsnew/changelog.html
+[python_changelog]: https://docs.python.org/release/3.9.6/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
 [scala3_examples]: https://github.com/michelou/dotty-examples
 [trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples

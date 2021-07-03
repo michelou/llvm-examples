@@ -1,29 +1,46 @@
+include ../Makefile.inc
+
+##############################################################################
+## main rules
+
 SOURCE_FILES=$(wildcard src/main/cpp/*.cpp)
 
-CXX=g++
-RM=/usr/bin/rm
-
 PROGRAM_NAME=program
+
+CONFIG=$(shell $(LLVM_CONFIG) --cxxflags --ldflags --system-libs --libs core)
 
 all: build
 
 build: $(SOURCE_FILES)
-	$(CXX) -g -O3 `llvm-config --cxxflags --ldflags --system-libs --libs core` -o main $<
+	$(CXX) -g -O3 $(CONFIG) -o main $<
 
 executable: build
 	./main
-	llc -filetype=obj $(PROGRAM_NAME).ll -o $(PROGRAM_NAME).o
+	$(LLC) -filetype=obj $(PROGRAM_NAME).ll -o $(PROGRAM_NAME).o
 	$(CXX) $(PROGRAM_NAME).o -o $(PROGRAM_NAME)
-	echo "'$(PROGRAM_NAME)' created!"
+	@$(ECHO) "'$(PROGRAM_NAME)' created!"
 
 run: executable
 	./$(PROGRAM_NAME)
 
 clean:
-	$(RM) -f main
-	$(RM) -rf main.dSYM
-	$(RM) -f $(PROGRAM_NAME).ll
-	$(RM) -f $(PROGRAM_NAME).o
-	$(RM) -f $(PROGRAM_NAME) 
+	[ -f "main" ] && $(RM) -f main
+	[ -d "main.dSYM" ] && $(RM) -rf main.dSYM
+	[ -f "$(PROGRAM_NAME).ll" ] && $(RM) -f $(PROGRAM_NAME).ll
+	[ -f "$(PROGRAM_NAME).o" ] && $(RM) -f $(PROGRAM_NAME).o
+	[ -f "$(PROGRAM_NAME)" ] && $(RM) -f $(PROGRAM_NAME)
 
-.PHONY: all build clean executable run
+help:
+	@$(ECHO) "Usage: make all|build|clean|executable|help|run"
+	@$(ECHO) ""
+	@$(ECHO) "  Subcommands:"
+	@$(ECHO) "    all    alias for build"
+	@$(ECHO) "    build  compile C++ source files"
+	@$(ECHO) "    clean  delete generated files"
+	@$(ECHO) "    help   display this help message"
+	@$(ECHO) "    run    execute main program $(PROGRAM_NAME)"
+
+##############################################################################
+## phony
+
+.PHONY: all build clean executable help run
