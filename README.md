@@ -22,7 +22,7 @@ This project depends on the following external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
-- [Cppcheck 2.4][cppcheck_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup> ([*changelog*][cppcheck_changelog])
+- [Cppcheck 2.5][cppcheck_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.32][git_downloads] ([*release notes*][git_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
@@ -31,7 +31,7 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*May 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
+For instance our development environment looks as follows (*July 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
 
 <pre style="font-size:80%;max-width:560px;">
 C:\opt\cmake-3.21.0\                                            <i>(  84 MB)</i>
@@ -148,7 +148,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 12.0.0, lli 12.0.0, opt 12.0.0, doxygen 1.9.1, pelook v1.73,
-   cmake 3.21.0, cppcheck 2.4.1, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
+   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
    git 2.32.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -166,7 +166,7 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 12.0.0, lli 12.0.0, opt 12.0.0, doxygen 1.9.1, pelook v1.73,
-   cmake 3.21.0, cppcheck 2.4.1, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
+   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
    git 2.32.0.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-12.0.0\bin\clang.exe
@@ -236,7 +236,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 <span name="footnote_01">[1]</span> ***LLVM version*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-LLVM versions 8, 9, 10, 11 and 12 are supported. Command <b><code>setenv</code></b> searches for version 11 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (idem for LLVM 9).
+We support LLVM versions 8, 9, 10, 11 and 12. Command <b><code>setenv</code></b> searches for version 11 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (and so on).
 </p>
 
 <span name="footnote_02">[2]</span> ***Visual Studio version*** [↩](#anchor_02)
@@ -272,7 +272,7 @@ Error: Generation of build configuration failed
 <p style="margin:0 0 1em 20px;">
 The <a href="http://cppcheck.sourceforge.net/">Cppcheck</a> static analysis tool can be installed in two ways on MS Windows, namely:<p>
 <ul>
-<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.4.1-x64-Setup.msi</code></a> from the Windows desktop.
+<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.5-x64-Setup.msi</code></a> from the Windows desktop.
 <li>MSYS2 package <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64"><code>mingw-w64-x86_64-cppcheck</code></a>.</li>
 </ul>
 <p style="margin:0 0 1em 20px;">
@@ -342,10 +342,10 @@ c:\opt\msys64\mingw64\bin\gcc.exe
 c:\opt\msys64\usr\bin\make.exe
 c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
-<b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | findstr gcc</b>
+<b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> gcc</b>
 gcc (Rev3, Built by MSYS2 project) 10.3.0
 &nbsp;
-<b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | findstr Make</b>
+<b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> Make</b>
 GNU Make 4.3
 </pre>
 
@@ -389,7 +389,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;max-width:500px;">
 <a href="https://cmake.org/download/">cmake-3.21.0-win64-x64.zip</a>        <i>( 35 MB)</i>
-<a href="http://cppcheck.sourceforge.net/">cppcheck-2.4.1-x64-Setup.msi</a>      <i>( 20 MB)</i>
+<a href="http://cppcheck.sourceforge.net/">cppcheck-2.5-x64-Setup.msi</a>        <i>( 20 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.1.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.32.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>

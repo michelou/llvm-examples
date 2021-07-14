@@ -45,8 +45,9 @@ OS="$(getOS)"
 if [[ $OS == "cygwin" || $OS == "mingw" ]]; then
     [[ $OS == "cygwin" ]] && prefix="/cygdrive" || prefix=""
     export HOME=$prefix/c/Users/$USER
-	export CMAKE_HOME="$(getPath "$prefix/c/opt/cmake-3")"
-	export DOXYGEN_HOME="$(getPath "$prefix/c/opt/doxygen-1")"
+    export CMAKE_HOME="$(getPath "$prefix/c/opt/cmake-3")"
+    export CPPCHECK_HOME="$(getPath "$ProgramFiles/CppCheck")"
+    export DOXYGEN_HOME="$(getPath "$prefix/c/opt/doxygen-1")"
     export GIT_HOME="$(getPath "$prefix/c/opt/Git-2")"
     export LLVM_HOME="$(getPath "$prefix/c/opt/LLVM-12")"
     PATH1="$PATH"
