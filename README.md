@@ -41,7 +41,7 @@ C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
 C:\opt\LLVM-11.1.0\                                             <i>(1.5 resp 3.0 GB)</i>
-C:\opt\LLVM-12.0.0\                                             <i>(1.5 resp 3.7 GB)</i>
+C:\opt\LLVM-12.0.1\                                             <i>(1.5 resp 3.7 GB)</i>
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files\Cppcheck\                                      <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
@@ -68,7 +68,7 @@ llvm-8.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llv
 llvm-9.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>)</i>
 llvm-10.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>)</i>
 llvm-11.1.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>)</i>
-llvm-12.0.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.0">llvm-12.0.0.src.tar.xz</a>)</i>
+llvm-12.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>)</i>
 <a href="BUILD.md">BUILD.md</a>
 README.md
 <a href="BUILD.md">RESOURCES.md</a>
@@ -84,7 +84,7 @@ where
 - directory **`llvm-9.0.1.src\`** contains the [LLVM] 9 source code distribution.
 - directory **`llvm-10.0.1.src\`** contains the [LLVM] 10 source code distribution.
 - directory **`llvm-11.1.0.src\`** contains the [LLVM] 11 source code distribution.
-- directory **`llvm-12.0.0.src\`** contains the [LLVM] 12 source code distribution.
+- directory **`llvm-12.0.1.src\`** contains the [LLVM] 12 source code distribution.
 - file [**`BUILD.md`**](BUILD.md) describes the build from the source distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`RESOURCES.md`**](RESOURCES.md) is the [Markdown][github_markdown] document presenting external resources.
@@ -119,7 +119,7 @@ We distinguish different sets of batch commands:
      Subcommands:
        help           display this help message</pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-12.0.0\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-12.0.1\`**).
 
    <pre style="font-size:80%;max-width:484px;">
    <b>&gt; <a href="bin/llvm/build.bat">build</a> help</b>
@@ -147,12 +147,12 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;max-width:520px;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 12.0.0, lli 12.0.0, opt 12.0.0, doxygen 1.9.1, pelook v1.73,
+   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.1, pelook v1.73,
    cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
    git 2.32.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
-C:\opt\LLVM-12.0.0\bin\clang.exe
+C:\opt\LLVM-12.0.1\bin\clang.exe
 C:\opt\Git-2.32.0\bin\git.exe
 C:\opt\Git-2.32.0\mingw64\bin\git.exe
 </pre>
@@ -165,13 +165,13 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 12.0.0, lli 12.0.0, opt 12.0.0, doxygen 1.9.1, pelook v1.73,
+   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.1, pelook v1.73,
    cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
    git 2.32.0.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
-   C:\opt\LLVM-12.0.0\bin\clang.exe
-   C:\opt\LLVM-12.0.0\bin\lli.exe
-   C:\opt\LLVM-12.0.0\bin\opt.exe
+   C:\opt\LLVM-12.0.1\bin\clang.exe
+   C:\opt\LLVM-12.0.1\bin\lli.exe
+   C:\opt\LLVM-12.0.1\bin\opt.exe
    C:\opt\cmake-3.21.0\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
@@ -187,7 +187,7 @@ Environment variables:
    "CMAKE_HOME=C:\opt\cmake-3.21.0-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
-   "LLVM_HOME=C:\opt\LLVM-12.0.0"
+   "LLVM_HOME=C:\opt\LLVM-12.0.1"
    "MSVC_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
    "MSVS_CMAKE_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
@@ -199,7 +199,7 @@ Environment variables:
 
 We wrote the [batch file][batch_file] [**`build.bat`**](bin/llvm/build.bat) to generate additional Windows binaries not available in the <a href="https://llvm.org/">LLVM</a> binary distribution. 
 
-> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-12.0.0-win64.exe`][llvm_downloads]).
+> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-12.0.1-win64.exe`][llvm_downloads]).
 
 It provides the following options and subcommands:
 
@@ -395,10 +395,11 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">LLVM-12.0.1-win64.exe</a>             <i>(182 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>             <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>            <i>( 31 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.0">llvm-12.0.0.src.tar.xz</a>            <i>( 41 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>            <i>( 41 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
 <a href="https://www.python.org/downloads/windows/">python-3.9.6-amd64.exe</a>            <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
@@ -433,15 +434,15 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [linux_opt]: https://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
-[llvm_clang]: https://releases.llvm.org/12.0.0/tools/clang/docs/ClangCommandLineReference.html
+[llvm_clang]: https://releases.llvm.org/12.0.1/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.0
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
 [llvm_lli]: https://llvm.org/docs/CommandGuide/lli.html
 [llvm_opt]: https://llvm.org/docs/CommandGuide/opt.html
-[llvm_relnotes]: https://releases.llvm.org/12.0.0/docs/ReleaseNotes.html
+[llvm_relnotes]: https://releases.llvm.org/12.0.1/docs/ReleaseNotes.html
 [llvm_tools]: https://llvm.org/docs/CommandGuide/
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
