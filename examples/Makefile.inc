@@ -7,6 +7,7 @@ endif
 
 ifeq ($(OS),Windows_NT)
 PSEP        = ;
+CC          = $(subst \,/,$(MSYS_HOME))/mingw64/bin/cc.exe
 CXX         = $(subst \,/,$(MSYS_HOME))/mingw64/bin/g++.exe
 ECHO        = $(subst \,/,$(MSYS_HOME))/usr/bin/echo.exe
 FIND        = $(subst \,/,$(MSYS_HOME))/usr/bin/find.exe
@@ -17,6 +18,7 @@ RM          = $(subst \,/,$(MSYS_HOME))/usr/bin/rm.exe
 TOUCH       = $(subst \,/,$(MSYS_HOME))/usr/bin/touch.exe
 else
 PSEP        = :
+CC          = cc
 CXX         = g++
 ECHO        = echo
 FIND        = find

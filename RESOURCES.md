@@ -35,12 +35,13 @@
 
 ## <span id="books">Books</span>
 
+- [Learn LLVM 12](https://www.packtpub.com/product/learn-llvm-12/9781839213502) by Kai Nacke, Packt Publishing, May 2021<br/>(392 p., ISBN 978-1-83921-350-2).
 - [LLVM Techniques, Tips and Best Practices][book_hsu] by Min-Yih Hsu, April 2021.
 - [*Tutorial: Creating an LLVM Backend for the Cpu0 Architecture*][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
 - [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
-- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015 (166 p., ISBN 978-1-78528-080-1).
-- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015 (296 p., ISBN 978-1-78528-598-1).
-- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014 (314 p., ISBN 978-1-78216-692-4).
+- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015<br/>(166 p., ISBN 978-1-78528-080-1).
+- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015<br/>(296 p., ISBN 978-1-78528-598-1).
+- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014<br/>(314 p., ISBN 978-1-78216-692-4).
 
 
 ## <span id="courses">Courses</span>
@@ -49,7 +50,7 @@
 - [*EEECS 582: Advanced Compilers*](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
 - [*Advanced compilers*](https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015) by Vesa Hirvisalo (instructor), 2015.
 
-## News
+## <span id="news">News</span>
 
 - [*LLVM Weekly*][news_llvmweekly] - A weekly newsletter covering developments in LLVM, Clang, and related projects.
 - [*Planet Clang*][news_planet_clang] - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
@@ -66,17 +67,15 @@
 
 ## <span id="papers">Papers</span>
 
-<p style="margin:0 0 1em 20px;">
-See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/" rel="external">LLVM</a> website.
-</p>
-<p style="margin:0 0 1em 20px;">
-We mention here only publications from <a href="http://nondot.org/~sabre/" rel="external">Chris Lattner</a>'s and <a href="https://vikram.cs.illinois.edu/">Vikram Adve</a>:
-</p>
-<ul style="margin:0 0 1em 20px;">
-<li><a href="http://aosabook.org/en/llvm.html"><i>Design decisions that shapped LLVM</i></a> by Chris Lattner (March 2012).</li>
-<li><a href="https://llvm.org/pubs/2002-08-09-LLVMCompilationStrategy.pdf"><i>The LLVM Instruction Set and Compilation Strategy</i></a> by Chris Lattner and Vikram Adve (August 2002).</li>
-<li><a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html" rel="external"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).</li>
-</ul>
+- [Alive2: Bounded Translation Validation for LLVM](https://www.cs.utah.edu/~regehr/#pubs) by Nuno P. Lopes, PLDI 2021, Jun 2021.
+
+> See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/" rel="external">LLVM</a> website.
+> 
+> We mention here only publications from <a href="http://nondot.org/~sabre/" rel="external">Chris Lattner</a>'s and <a href="https://vikram.cs.illinois.edu/">Vikram Adve</a>:
+>
+> - <a href="http://aosabook.org/en/llvm.html"><i>Design decisions that shapped LLVM</i></a> by Chris Lattner (March 2012).
+> - <a href="https://llvm.org/pubs/2002-08-09-LLVMCompilationStrategy.pdf"><i>The LLVM Instruction Set and Compilation Strategy</i></a> by Chris Lattner and Vikram Adve (August 2002).
+> - <a href="http://llvm.org/pubs/2002-12-LattnerMSThesis.html" rel="external"><i>LLVM: An infrastructure for Multi-Stage Optimization</i></a> by Chris Lattner (Master Thesis, December 2002).
 
 ## <span id="tools">Tools</span>
 
@@ -100,7 +99,7 @@ We mention here only publications from <a href="http://nondot.org/~sabre/" rel="
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

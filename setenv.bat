@@ -23,6 +23,7 @@ if %_HELP%==1 (
     exit /b !_EXITCODE!
 )
 
+set _CMAKE_PATH=
 set _MSYS_PATH=
 set _GIT_PATH=
 
@@ -288,10 +289,10 @@ if not exist "%_DOXYGEN_HOME%\bin\doxygen.exe" (
 )
 goto :eof
 
-@rem output parameter(s): _CMAKE_HOME
+@rem output parameters: _CMAKE_HOME, _CMAKE_PATH
 :cmake
 set _CMAKE_HOME=
-@rem set _CMAKE_PATH=
+set _CMAKE_PATH=
 
 set __CMAKE_CMD=
 for /f %%f in ('where cmake.exe 2^>NUL') do set "__CMAKE_CMD=%%f"
@@ -318,7 +319,7 @@ if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
     set _EXITCODE=1
     goto :eof
 )
-@rem set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
+set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
 goto :eof
 
 @rem output parameter: _PYTHON_HOME
@@ -688,7 +689,7 @@ endlocal & (
         if not defined MSYS_HOME set "MSYS_HOME=%_MSYS_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
         if not defined SDK_HOME set "SDK_HOME=%_SDK_HOME%"
-        set "PATH=%PATH%%_MSYS_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
+        set "PATH=%PATH%%_CMAKE_PATH%%_MSYS_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
         call :print_env %_VERBOSE%
         if %_BASH%==1 (
             if %_DEBUG%==1 echo %_DEBUG_LABEL% %_GIT_HOME%\usr\bin\bash.exe --login 1>&2

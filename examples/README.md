@@ -120,17 +120,17 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 <b>&gt; <a href="hello/build.bat">build</a> -debug -clang clean run</b>
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
-[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1"
-[build] Variables  :  MSYS_HOME="C:\opt\msys64"
+[build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+[build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is Clang 11.0.1 with GNU-like command-line
--- The CXX compiler identification is Clang 11.0.1 with GNU-like command-line
--- Check for working C compiler: C:/opt/LLVM-11.0.1/bin/clang.exe
--- Check for working C compiler: C:/opt/LLVM-11.0.1/bin/clang.exe -- works
+-- The C compiler identification is Clang 12.0.1 with GNU-like command-line
+-- The CXX compiler identification is Clang 12.0.1 with GNU-like command-line
+-- Check for working C compiler: C:/opt/LLVM-12.0.1/bin/clang.exe
+-- Check for working C compiler: C:/opt/LLVM-12.0.1/bin/clang.exe -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Detecting C compile features
@@ -675,7 +675,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

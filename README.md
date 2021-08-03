@@ -31,10 +31,10 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*July 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
+For instance our development environment looks as follows (*August 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.21.0\                                            <i>(  84 MB)</i>
+C:\opt\cmake-3.21.1-windows-x86_64\                             <i>(  88 MB)</i>
 C:\opt\doxygen-1.9.1\                                           <i>(  81 MB)</i>
 C:\opt\Git-2.32.0\                                              <i>( 279 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
@@ -410,7 +410,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -420,8 +420,8 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [cppcheck_changelog]: https://sourceforge.net/p/cppcheck/news/
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
 [cmake_downloads]: https://cmake.org/download/
-[cmake_modules]: https://cmake.org/cmake/help/v3.20/manual/cmake-modules.7.html
-[cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.20.html
+[cmake_modules]: https://cmake.org/cmake/help/v3.21/manual/cmake-modules.7.html
+[cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.21.html
 [doxygen_changelog]: https://www.doxygen.nl/manual/changelog.html
 [doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
 [git_downloads]: https://git-scm.com/download/win
