@@ -184,7 +184,7 @@ Tool paths:
    C:\opt\Git-2.32.0\mingw64\bin\git.exe
    C:\opt\Git-2.32.0\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.21.0-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.21.1-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
    "LLVM_HOME=C:\opt\LLVM-12.0.1"
@@ -388,7 +388,7 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.21.0-win64-x64.zip</a>        <i>( 35 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.21.1-win64-x64.zip</a>        <i>( 35 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.5-x64-Setup.msi</a>        <i>( 20 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.1.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.32.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
