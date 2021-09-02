@@ -33,10 +33,10 @@ if not %_EXITCODE%==0 (
     echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
     set _EXITCODE=0
 )
-call :doxygen
+call :cmake
 if not %_EXITCODE%==0 goto end
 
-call :cmake
+call :doxygen
 if not %_EXITCODE%==0 goto end
 
 call :python
@@ -160,13 +160,14 @@ if "%__ARG:~0,1%"=="-" (
     set /a __N+=1
 )
 shift
-goto :args_loop
+goto args_loop
 :args_done
 call :subst %_DRIVE_NAME% "%_ROOT_DIR%"
 if not %_EXITCODE%==0 goto :eof
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% Options  : _BASH=%_BASH% _HELP=%_HELP% _LLVM_PREFIX=%_LLVM_PREFIX% _VERBOSE=%_VERBOSE% 1>&2
-    echo %_DEBUG_LABEL% Variables: _DRIVE_NAME=%_DRIVE_NAME% 1>&2
+    echo %_DEBUG_LABEL% Options    : _BASH=%_BASH% _LLVM_PREFIX=%_LLVM_PREFIX% _VERBOSE=%_VERBOSE% 1>&2
+    echo %_DEBUG_LABEL% Subcommands: _HELP=%_HELP% 1>&2
+    echo %_DEBUG_LABEL% Variables  : _DRIVE_NAME=%_DRIVE_NAME% 1>&2
 )
 goto :eof
 
@@ -176,7 +177,7 @@ set __DRIVE_NAME=%~1
 set "__GIVEN_PATH=%~2"
 
 if not "%__DRIVE_NAME:~-1%"==":" set __DRIVE_NAME=%__DRIVE_NAME%:
-if "%__DRIVE_NAME%"=="%__GIVEN_PATH:~0,2%" goto :eof
+if /i "%__DRIVE_NAME%"=="%__GIVEN_PATH:~0,2%" goto :eof
 
 if "%__GIVEN_PATH:~-1%"=="\" set "__GIVEN_PATH=%__GIVEN_PATH:~0,-1%"
 if not exist "%__GIVEN_PATH%" (
@@ -232,63 +233,6 @@ echo   %__BEG_P%Subcommands:%__END%
 echo     %__BEG_O%help%__END%           display this help message
 goto :eof
 
-@rem output parameter(s): _CPPCHECK_HOME
-:cppcheck
-set _CPPCHECK_HOME=
-
-set __CPPCHECK_CMD=
-for /f %%f in ('where cppcheck.exe 2^>NUL') do set "__CPPCHECK_CMD=%%f"
-if defined __CPPCHECK_CMD (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CppCheck executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__CPPCHECK_CMD%") do set "_CPPCHECK_HOME=%%~dpi"
-    goto :eof
-) else if defined CPPCHECK_HOME (
-    set "_CPPCHECK_HOME=%CPPCHECK_HOME%"
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CPPCHECK_HOME 1>&2
-) else (
-    set "__PATH=%ProgramFiles%"
-    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Cppcheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
-    if not defined _CPPCHECK_HOME (
-        set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\CppCheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
-    )
-)
-if not exist "%_CPPCHECK_HOME%\cppcheck.exe" (
-    echo %_ERROR_LABEL% CppCheck executable not found ^(%_CPPCHECK_HOME%^) 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-goto :eof
-
-@rem output parameter(s): _DOXYGEN_HOME
-:doxygen
-set _DOXYGEN_HOME=
-
-set __DOXYGEN_CMD=
-for /f %%f in ('where doxygen.exe 2^>NUL') do set "__DOXYGEN_CMD=%%f"
-if defined __DOXYGEN_CMD (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Doxygen executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__DOXYGEN_CMD%") do set "__DOXY_BIN_DIR=%%~dpi"
-    for %%f in ("!__DOXY_BIN_DIR!") do set "_DOXYGEN_HOME=%%~dpf"
-    goto :eof
-) else if defined DOXY_HOME (
-    set "_DOXYGEN_HOME=%DOXY_HOME%"
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable DOXY_HOME 1>&2
-) else (
-    set "__PATH=%ProgramFiles%"
-    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
-    if not defined _DOXYGEN_HOME (
-        set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
-    )
-)
-if not exist "%_DOXYGEN_HOME%\bin\doxygen.exe" (
-    echo %_ERROR_LABEL% Doxygen executable not found ^(%_DOXYGEN_HOME%^) 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-goto :eof
-
 @rem output parameters: _CMAKE_HOME, _CMAKE_PATH
 :cmake
 set _CMAKE_HOME=
@@ -320,6 +264,63 @@ if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
     goto :eof
 )
 set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
+goto :eof
+
+@rem output parameter: _CPPCHECK_HOME
+:cppcheck
+set _CPPCHECK_HOME=
+
+set __CPPCHECK_CMD=
+for /f %%f in ('where cppcheck.exe 2^>NUL') do set "__CPPCHECK_CMD=%%f"
+if defined __CPPCHECK_CMD (
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CppCheck executable found in PATH 1>&2
+    for /f "delims=" %%i in ("%__CPPCHECK_CMD%") do set "_CPPCHECK_HOME=%%~dpi"
+    goto :eof
+) else if defined CPPCHECK_HOME (
+    set "_CPPCHECK_HOME=%CPPCHECK_HOME%"
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CPPCHECK_HOME 1>&2
+) else (
+    set "__PATH=%ProgramFiles%"
+    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Cppcheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
+    if not defined _CPPCHECK_HOME (
+        set __PATH=C:\opt
+        for /f %%f in ('dir /ad /b "!__PATH!\CppCheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
+    )
+)
+if not exist "%_CPPCHECK_HOME%\cppcheck.exe" (
+    echo %_ERROR_LABEL% CppCheck executable not found ^(%_CPPCHECK_HOME%^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+goto :eof
+
+@rem output parameter: _DOXYGEN_HOME
+:doxygen
+set _DOXYGEN_HOME=
+
+set __DOXYGEN_CMD=
+for /f %%f in ('where doxygen.exe 2^>NUL') do set "__DOXYGEN_CMD=%%f"
+if defined __DOXYGEN_CMD (
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Doxygen executable found in PATH 1>&2
+    for /f "delims=" %%i in ("%__DOXYGEN_CMD%") do set "__DOXY_BIN_DIR=%%~dpi"
+    for %%f in ("!__DOXY_BIN_DIR!") do set "_DOXYGEN_HOME=%%~dpf"
+    goto :eof
+) else if defined DOXY_HOME (
+    set "_DOXYGEN_HOME=%DOXY_HOME%"
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable DOXY_HOME 1>&2
+) else (
+    set "__PATH=%ProgramFiles%"
+    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
+    if not defined _DOXYGEN_HOME (
+        set __PATH=C:\opt
+        for /f %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
+    )
+)
+if not exist "%_DOXYGEN_HOME%\bin\doxygen.exe" (
+    echo %_ERROR_LABEL% Doxygen executable not found ^(%_DOXYGEN_HOME%^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 goto :eof
 
 @rem output parameter: _PYTHON_HOME
@@ -393,7 +394,7 @@ if not exist "%_MSYS_HOME%\usr\bin\make.exe" (
 set "_MSYS_PATH=;%_MSYS_HOME%\usr\bin;%_MSYS_HOME%\mingw64\bin"
 goto :eof
 
-rem output parameter: _LLVM_HOME
+@rem output parameter: _LLVM_HOME
 :llvm
 set _LLVM_HOME=
 
@@ -426,8 +427,8 @@ if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default LLVM installation directory "%_
 @rem set "_LLVM_PATH=;%_LLVM_HOME%\bin"
 goto :eof
 
-rem output paramters: _MSVC_HOME, _MSVS_HOME
-rem Visual Studio 10
+@rem output parameters: _MSVC_HOME, _MSVS_HOME
+@rem Visual Studio 10
 :msvs_2010
 set _MSVC_HOME=
 set _MSVS_HOME=
@@ -500,7 +501,7 @@ set __ASSIGNED_PATH=
 for /f "tokens=1,2,*" %%f in ('subst ^| findstr /b "%__DRIVE_NAME%" 2^>NUL') do (
     if not "%%h"=="%_SUBST_PATH%" (
         echo %_WARNING_LABEL% Drive %__DRIVE_NAME% already assigned to %%h 1>&2
-        goto :eof
+        goto subst_path_end
     )
     set "__ASSIGNED_PATH=%%h"
 )
@@ -512,7 +513,8 @@ if not defined __ASSIGNED_PATH (
         goto :eof
     )
 )
-set _SUBST_PATH=%__DRIVE_NAME%
+:subst_path_end
+set "_SUBST_PATH=%__DRIVE_NAME%"
 goto :eof
 
 @rem output parameters: _GIT_HOME, _GIT_PATH
@@ -537,7 +539,7 @@ if defined __GIT_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable GIT_HOME 1>&2
 ) else (
     set __PATH=C:\opt
-    if exist "!__PATH!\Git\" ( set _GIT_HOME=!__PATH!\Git
+    if exist "!__PATH!\Git\" ( set "_GIT_HOME=!__PATH!\Git"
     ) else (
         for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "_GIT_HOME=!__PATH!\%%f"
         if not defined _GIT_HOME (
@@ -628,7 +630,7 @@ if %ERRORLEVEL%==0 (
 )
 where /q "%GIT_HOME%\usr\bin:diff.exe"
 if %ERRORLEVEL%==0 (
-   for /f "tokens=1-3,*" %%i in ('"%GIT_HOME%\usr\bin\diff.exe" --version ^| findstr diff') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% diff %%l"
+    for /f "tokens=1-3,*" %%i in ('"%GIT_HOME%\usr\bin\diff.exe" --version ^| findstr diff') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% diff %%l"
     set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\usr\bin:diff.exe"
 )
 where /q "%GIT_HOME%\bin:git.exe"
@@ -659,16 +661,16 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
 )
 if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo Environment variables: 1>&2
-    echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
-    echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
-    echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
-    echo    "GIT_HOME=%GIT_HOME%" 1>&2
+    if defined CMAKE_HOME echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
+    if defined CPPCHECK_HOME echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
+    if defined DOXYGEN_HOME echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
+    if defined GIT_HOME echo    "GIT_HOME=%GIT_HOME%" 1>&2
     echo    "LLVM_HOME=%LLVM_HOME%" 1>&2
     echo    "MSVC_HOME=%MSVC_HOME%" 1>&2
     echo    "MSVS_HOME=%MSVS_HOME%" 1>&2
     echo    "MSVS_CMAKE_HOME=%MSVS_CMAKE_HOME%" 1>&2
     echo    "MSYS_HOME=%MSYS_HOME%" 1>&2
-    echo    "PYTHON_HOME=%PYTHON_HOME%" 1>&2
+    if defined PYTHON_HOME echo    "PYTHON_HOME=%PYTHON_HOME%" 1>&2
 )
 goto :eof
 
@@ -683,9 +685,9 @@ endlocal & (
         if not defined DOXYGEN_HOME set "DOXYGEN_HOME=%_DOXYGEN_HOME%"
         if not defined GIT_HOME set "GIT_HOME=%_GIT_HOME%"
         if not defined LLVM_HOME set "LLVM_HOME=%_LLVM_HOME%"
+        if not defined MSVS_CMAKE_HOME set "MSVS_CMAKE_HOME=%_MSVS_CMAKE_HOME%"
         if not defined MSVC_HOME set "MSVC_HOME=%_MSVC_HOME%"
         if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
-        if not defined MSVS_CMAKE_HOME set "MSVS_CMAKE_HOME=%_MSVS_CMAKE_HOME%"
         if not defined MSYS_HOME set "MSYS_HOME=%_MSYS_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
         if not defined SDK_HOME set "SDK_HOME=%_SDK_HOME%"

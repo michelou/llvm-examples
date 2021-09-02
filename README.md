@@ -24,7 +24,7 @@ Optionally one may also install the following software:
 
 - [Cppcheck 2.5][cppcheck_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
-- [Git 2.32][git_downloads] ([*release notes*][git_relnotes])
+- [Git 2.33][git_downloads] ([*release notes*][git_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
 
 <!--
@@ -426,7 +426,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.32.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.33.0.txt
 [github_markdown]: https://github.github.com/gfm/
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
