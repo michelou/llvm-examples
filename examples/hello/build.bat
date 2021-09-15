@@ -260,7 +260,7 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
-:cppcheck
+:lint
 if %_TOOLSET%==gcc ( set __CPPCHECK_OPTS=--template=gcc --std=c++14
 ) else if %_TOOLSET%==msvc ( set __CPPCHECK_OPTS=--template=vs --std=c++17
 ) else ( set __CPPCHECK_OPTS=--std=c++14
@@ -334,10 +334,10 @@ popd
 goto :eof
 
 :compile_gcc
-set CC=gcc.exe
-set CXX=g++.exe
-set MAKE=make.exe
-set RC=windres.exe
+set "CC=%MSYS_HOME%\mingw64\bin\gcc.exe"
+set "CXX=%MSYS_HOME%\mingw64\bin\g++.exe"
+set "MAKE=%_MAKE_CMD%"
+set "RC=%_WINDRES_CMD%"
 
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"
@@ -524,7 +524,7 @@ goto :eof
 if %_TIMER%==1 (
     for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
     call :duration "%_TIMER_START%" "!__TIMER_END!"
-    echo Total elapsed time: !_DURATION! 1>&2
+    echo Total execution time: !_DURATION! 1>&2
 )
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%

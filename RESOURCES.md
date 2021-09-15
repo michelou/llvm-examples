@@ -11,6 +11,7 @@
 
 ## <span id="articles">Articles</span>
 
+- [Remote LLVM development with Visual Studio Code][article_kleine] by Konrad Kleine, April 2021.
 - [*A Brief Introduction to Clang-Tidy*][article_clang_tidy], by Bartlomeij Filipek, January 2021.
 - [*MIR: A lightweight JIT compiler project*][article_mir], by Vladimir Makarov, January 2020.
 - [*A look at LLVM Advanced Data Types*][article_data_types] by Serge Guelton, April 2019.
@@ -99,7 +100,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/August 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/September 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -108,6 +109,7 @@
 [article_compiler_perf]: http://pling.jondgoodwin.com/post/compiler-performance/
 [article_data_types]: https://developers.redhat.com/blog/2019/04/01/a-look-at-llvm-advanced-data-types-and-trivially-copyable-types/
 [article_ir_go]: https://blog.gopheracademy.com/advent-2018/llvm-ir-and-go/
+[article_kleine]: https://developers.redhat.com/blog/2021/04/22/remote-llvm-development-with-visual-studio-code#
 [article_mir]: https://developers.redhat.com/blog/2020/01/20/mir-a-lightweight-jit-compiler-project/
 [article_power_sums]: https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html
 [article_toy_compiler]: https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/

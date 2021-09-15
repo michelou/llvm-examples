@@ -9,7 +9,7 @@
   </tr>
 </table>
 
-[GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Scala 3][scala3_examples] and [TruffleSqueak][trufflesqueak_examples] are other trending topics we are currently monitoring.
+[Deno][deno_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples] and [TruffleSqueak][trufflesqueak_examples] are other trending topics we are currently monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
@@ -31,12 +31,12 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*August 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
+For instance our development environment looks as follows (*September 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
 
 <pre style="font-size:80%;max-width:560px;">
 C:\opt\cmake-3.21.1-windows-x86_64\                             <i>(  88 MB)</i>
-C:\opt\doxygen-1.9.1\                                           <i>(  81 MB)</i>
-C:\opt\Git-2.32.0\                                              <i>( 279 MB)</i>
+C:\opt\doxygen-1.9.2\                                           <i>(  81 MB)</i>
+C:\opt\Git-2.33.0\                                              <i>( 279 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
@@ -45,7 +45,7 @@ C:\opt\LLVM-12.0.1\                                             <i>(1.5 resp 3.7
 C:\opt\msys64\                                                  <i>(2.85 GB)</i>
 C:\Program Files\Cppcheck\                                      <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
-C:\opt\Python-3.9.6\                                            <i>( 201 MB)</i>
+C:\opt\Python-3.9.7\                                            <i>( 201 MB)</i>
 </pre>
 
 <!--
@@ -95,7 +95,7 @@ We also define a virtual drive **`L:`** in our working environment in order to r
 > **:mag_right:** We use the Windows external command [**`subst`**][windows_subst] to create virtual drives; for instance:
 >
 > <pre style="font-size:80%;">
-> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/subst">subst</a> L: %USERPROFILE%\workspace\llvm-examples</b>
+> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/subst">subst</a> L: <a href="https://en.wikipedia.org/wiki/Environment_variable#Default_values">%USERPROFILE%</a>\workspace\llvm-examples</b>
 > </pre>
 
 In the next section we give a brief description of the [batch files][batch_file] present in this project.
@@ -147,14 +147,14 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;max-width:520px;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.1, pelook v1.73,
-   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
-   git 2.32.0.windows.1, bash 4.4.23(1)-release
+   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.2, pelook v1.73,
+   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.3.0, python 3.9.7, diff 3.7
+   git 2.33.0.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-12.0.1\bin\clang.exe
-C:\opt\Git-2.32.0\bin\git.exe
-C:\opt\Git-2.32.0\mingw64\bin\git.exe
+C:\opt\Git-2.33.0\bin\git.exe
+C:\opt\Git-2.33.0\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -165,9 +165,9 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.1, pelook v1.73,
-   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.2.0, python 3.9.6, diff 3.7
-   git 2.32.0.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
+   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.2, pelook v1.73,
+   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.3.0, python 3.9.7, diff 3.7
+   git 2.33.0.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-12.0.1\bin\clang.exe
    C:\opt\LLVM-12.0.1\bin\lli.exe
@@ -175,24 +175,24 @@ Tool paths:
    C:\opt\cmake-3.21.0\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
-   C:\opt\Python-3.9.6\python.exe
+   C:\opt\Python-3.9.7\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.32.0\usr\bin\diff.exe
-   C:\opt\Git-2.32.0\bin\git.exe
-   C:\opt\Git-2.32.0\mingw64\bin\git.exe
-   C:\opt\Git-2.32.0\bin\bash.exe
+   C:\opt\Git-2.33.0\usr\bin\diff.exe
+   C:\opt\Git-2.33.0\bin\git.exe
+   C:\opt\Git-2.33.0\mingw64\bin\git.exe
+   C:\opt\Git-2.33.0\bin\bash.exe
 Environment variables:
    "CMAKE_HOME=C:\opt\cmake-3.21.1-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-   "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+   "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
    "LLVM_HOME=C:\opt\LLVM-12.0.1"
    "MSVC_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
    "MSVS_CMAKE_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
    "MSYS_HOME=C:\opt\msys64"
-   "PYTHON_HOME=C:\opt\Python-3.9.6"
+   "PYTHON_HOME=C:\opt\Python-3.9.7"
 </pre>
 
 ### **`llvm-X.Y.Z.src\build.bat`**
@@ -390,8 +390,8 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <pre style="margin:0 0 1em 20px; font-size:80%;max-width:500px;">
 <a href="https://cmake.org/download/">cmake-3.21.1-win64-x64.zip</a>        <i>( 35 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.5-x64-Setup.msi</a>        <i>( 20 MB)</i>
-<a href="https://www.doxygen.nl/download.html">doxygen-1.9.1.windows.x64.bin.zip</a> <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.32.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
+<a href="https://www.doxygen.nl/download.html">doxygen-1.9.2.windows.x64.bin.zip</a> <i>( 22 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.33.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
@@ -401,7 +401,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>            <i>( 41 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.9.6-amd64.exe</a>            <i>( 27 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.9.7-amd64.exe</a>            <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
 </pre>
 <p style="margin:0 0 1em 20px;">
@@ -410,7 +410,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/August 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/September 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -447,7 +447,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
-[python_changelog]: https://docs.python.org/release/3.9.6/whatsnew/changelog.html
+[python_changelog]: https://docs.python.org/release/3.9.7/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
 [scala3_examples]: https://github.com/michelou/dotty-examples
 [trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples

@@ -5,7 +5,8 @@ project(JITTutorial1 VERSION 1.0.0 LANGUAGES CXX)
 find_package(LLVM REQUIRED CONFIG)
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_DIR}")
-#message(STATUS "[DEBUG] CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}")
+message(STATUS "[DEBUG] CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}")
+message(STATUS "[DEBUG] LLVM_DIR=${LLVM_DIR}")
 
 # macro "add_llvm_executable"
 include(AddLLVM)

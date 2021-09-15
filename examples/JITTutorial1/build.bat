@@ -261,7 +261,7 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
-:cppcheck
+:lint
 if %_TOOLSET%==gcc ( set __CPPCHECK_OPTS=--template=gcc --std=c++14
 ) else if %_TOOLSET%==msvc ( set __CPPCHECK_OPTS=--template=vs --std=c++17
 ) else ( set __CPPCHECK_OPTS=--std=c++14
