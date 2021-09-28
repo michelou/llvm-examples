@@ -17,24 +17,24 @@ This project depends on the following external software for the **Microsoft Wind
 
 - [CMake 3.21][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [LLVM 12 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
-- [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02"><a href="#footnote_02">[2]</a></sup>  ([*release notes*][vs2019_relnotes])
+- [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[[2]](#footnote_02)</sup>  ([*release notes*][vs2019_relnotes])
 - [Python 3.9][python_downloads] ([*changelog*][python_changelog])
 
 Optionally one may also install the following software:
 
-- [Cppcheck 2.5][cppcheck_downloads] <sup id="anchor_03"><a href="#footnote_03">[3]</a></sup> ([*changelog*][cppcheck_changelog])
+- [Cppcheck 2.5][cppcheck_downloads] <sup id="anchor_03">[[3]](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.33][git_downloads] ([*release notes*][git_relnotes])
-- [MSYS2][msys2_downloads] <sup id="anchor_04"><a href="#footnote_04">[4]</a></sup>
+- [MSYS2][msys2_downloads] <sup id="anchor_04">[[4]](#footnote_04)</sup>
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*September 2021*) <sup id="anchor_05"><a href="#footnote_05">[5]</a></sup>:
+For instance our development environment looks as follows (*September 2021*) <sup id="anchor_05">[[5]](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.21.1-windows-x86_64\                             <i>(  88 MB)</i>
+C:\opt\cmake-3.21.3-windows-x86_64\                             <i>(  88 MB)</i>
 C:\opt\doxygen-1.9.2\                                           <i>(  81 MB)</i>
 C:\opt\Git-2.33.0\                                              <i>( 279 MB)</i>
 C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
@@ -184,7 +184,7 @@ Tool paths:
    C:\opt\Git-2.33.0\mingw64\bin\git.exe
    C:\opt\Git-2.33.0\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.21.1-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.21.3-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
    "LLVM_HOME=C:\opt\LLVM-12.0.1"
@@ -388,7 +388,7 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.21.1-win64-x64.zip</a>        <i>( 35 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.21.3-win64-x64.zip</a>        <i>( 35 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.5-x64-Setup.msi</a>        <i>( 20 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.2.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.33.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
@@ -416,6 +416,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 <!-- link refs -->
 
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
+[deno_examples]: https://github.com/michelou/deno-examples
 [gnu_cmake]: https://cmake.org/
 [cppcheck_changelog]: https://sourceforge.net/p/cppcheck/news/
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
@@ -449,6 +450,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
 [python_changelog]: https://docs.python.org/release/3.9.7/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
+[rust_examples]: https://github.com/michelou/rust-examples
 [scala3_examples]: https://github.com/michelou/dotty-examples
 [trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples
 [vs2019_downloads]: https://visualstudio.microsoft.com/en/downloads/

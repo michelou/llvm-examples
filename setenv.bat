@@ -665,11 +665,12 @@ if %__VERBOSE%==1 if defined CMAKE_HOME (
     if defined CPPCHECK_HOME echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
     if defined DOXYGEN_HOME echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
     if defined GIT_HOME echo    "GIT_HOME=%GIT_HOME%" 1>&2
+    if defined LLVM_DIR echo    "LLVM_DIR=%LLVM_DIR%" 1>&2
     echo    "LLVM_HOME=%LLVM_HOME%" 1>&2
     echo    "MSVC_HOME=%MSVC_HOME%" 1>&2
     echo    "MSVS_HOME=%MSVS_HOME%" 1>&2
-    echo    "MSVS_CMAKE_HOME=%MSVS_CMAKE_HOME%" 1>&2
-    echo    "MSYS_HOME=%MSYS_HOME%" 1>&2
+    if defined MSVS_CMAKE_HOME echo    "MSVS_CMAKE_HOME=%MSVS_CMAKE_HOME%" 1>&2
+    if defined MSYS_HOME echo    "MSYS_HOME=%MSYS_HOME%" 1>&2
     if defined PYTHON_HOME echo    "PYTHON_HOME=%PYTHON_HOME%" 1>&2
 )
 goto :eof
@@ -684,6 +685,7 @@ endlocal & (
         if not defined CPPCHECK_HOME set "CPPCHECK_HOME=%_CPPCHECK_HOME%"
         if not defined DOXYGEN_HOME set "DOXYGEN_HOME=%_DOXYGEN_HOME%"
         if not defined GIT_HOME set "GIT_HOME=%_GIT_HOME%"
+        if not defined LLVM_DIR set "LLVM_DIR=%_LLVM_HOME%\lib\cmake\llvm"
         if not defined LLVM_HOME set "LLVM_HOME=%_LLVM_HOME%"
         if not defined MSVS_CMAKE_HOME set "MSVS_CMAKE_HOME=%_MSVS_CMAKE_HOME%"
         if not defined MSVC_HOME set "MSVC_HOME=%_MSVC_HOME%"

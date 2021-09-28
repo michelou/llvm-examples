@@ -34,15 +34,19 @@
 - [*Building an LLVM-based tool. Lessons learned*](https://lowlevelbits.org/building-an-llvm-based-tool.-lessons-learned/) by Alex Denisov, April 2019 ([EuroLLVM 2019](http://llvm.org/devmtg/2019-04/)).
 -->
 
+## <span id="blogs">Blogs</span>
+
+- [Compiling With Clang Optimization Flags](https://www.incredibuild.com/blog/compiling-with-clang-optimization-flags) by Dori Exterman, August 2021.
+
 ## <span id="books">Books</span>
 
-- [Learn LLVM 12](https://www.packtpub.com/product/learn-llvm-12/9781839213502) by Kai Nacke, Packt Publishing, May 2021<br/>(392 p., ISBN 978-1-83921-350-2).
-- [LLVM Techniques, Tips and Best Practices][book_hsu] by Min-Yih Hsu, April 2021.
+- [Learn LLVM 12](https://www.packtpub.com/product/learn-llvm-12/9781839213502) by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-83921-350-2, 392 pages)</span>
+- [LLVM Techniques, Tips and Best Practices][book_hsu] by Min-Yih Hsu, April 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8388-2495-2, 370 pages)</span>
 - [*Tutorial: Creating an LLVM Backend for the Cpu0 Architecture*][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
 - [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
-- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, Packt Publishing, December 2015<br/>(166 p., ISBN 978-1-78528-080-1).
-- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, Packt Publishing, May 2015<br/>(296 p., ISBN 978-1-78528-598-1).
-- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, Packt Publishing, August 2014<br/>(314 p., ISBN 978-1-78216-692-4).
+- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, December 2015<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-080-1, 166 pages)</span>.
+- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, May 2015.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-598-1, 296 pages)</span>
+- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, August 2014.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78216-692-4, 314 pages)</span>
 
 
 ## <span id="courses">Courses</span>

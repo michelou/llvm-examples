@@ -88,12 +88,12 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /t clang llc lld lldb lli opt</b>
-  98132992   15.04.2021      11:34:48  C:\opt\LLVM-12.0.1\bin\clang.exe
-  58745856   02.05.2021      13:37:40  C:\opt\LLVM-12.0.1\bin\llc.exe
-  70535680   15.04.2021      11:36:54  C:\opt\LLVM-12.0.1\bin\lld.exe
-    239104   15.04.2021      11:38:44  C:\opt\LLVM-12.0.1\bin\lldb.exe
-  20664832   02.05.2021      13:37:55  C:\opt\LLVM-12.0.1\bin\lli.exe
-  63693312   02.05.2021      13:47:02  C:\opt\LLVM-12.0.1\bin\opt.exe
+  98156032   09.07.2021      12:36:08  C:\opt\LLVM-12.0.1\bin\clang.exe
+  58764288   03.08.2021      21:38:15  C:\opt\LLVM-12.0.1\bin\llc.exe
+  70559232   09.07.2021      12:38:10  C:\opt\LLVM-12.0.1\bin\lld.exe
+    239104   09.07.2021      12:39:58  C:\opt\LLVM-12.0.1\bin\lldb.exe
+  20665856   03.08.2021      21:38:28  C:\opt\LLVM-12.0.1\bin\lli.exe
+  63711744   03.08.2021      21:46:32  C:\opt\LLVM-12.0.1\bin\opt.exe
 </pre>
 
 <!--
@@ -112,7 +112,7 @@ No issue so far.
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/August 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/September 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -120,9 +120,9 @@ No issue so far.
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
-[llvm_clang]: https://releases.llvm.org/11.1.0/tools/clang/docs/ClangCommandLineReference.html
+[llvm_clang]: https://releases.llvm.org/12.0.1/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
