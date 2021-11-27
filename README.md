@@ -9,43 +9,44 @@
   </tr>
 </table>
 
-[Deno][deno_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples] and [TruffleSqueak][trufflesqueak_examples] are other trending topics we are currently monitoring.
+[Deno][deno_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples] and [TruffleSqueak][trufflesqueak_examples] are other trending topics we are continuously monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
-- [CMake 3.21][cmake_downloads] ([*release notes*][cmake_relnotes])
+- [CMake 3.22][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [LLVM 12 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">[1]</a></sup> ([*release notes*][llvm_relnotes])
-- [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[[2]](#footnote_02)</sup>  ([*release notes*][vs2019_relnotes])
+- [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[2](#footnote_02)</sup>  ([*release notes*][vs2019_relnotes])
 - [Python 3.9][python_downloads] ([*changelog*][python_changelog])
 
 Optionally one may also install the following software:
 
-- [Cppcheck 2.5][cppcheck_downloads] <sup id="anchor_03">[[3]](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
+- [Cppcheck 2.6][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.33][git_downloads] ([*release notes*][git_relnotes])
-- [MSYS2][msys2_downloads] <sup id="anchor_04">[[4]](#footnote_04)</sup>
+- [MSYS2][msys2_downloads] <sup id="anchor_04">[4](#footnote_04)</sup>
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*September 2021*) <sup id="anchor_05">[[5]](#footnote_05)</sup>:
+For instance our development environment looks as follows (*November 2021*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.21.3-windows-x86_64\                             <i>(  88 MB)</i>
-C:\opt\doxygen-1.9.2\                                           <i>(  81 MB)</i>
-C:\opt\Git-2.33.0\                                              <i>( 279 MB)</i>
-C:\opt\LLVM-8.0.1\                                              <i>(1.1  GB)</i>
-C:\opt\LLVM-9.0.1\                                              <i>(1.3  GB)</i>
-C:\opt\LLVM-10.0.1\                                             <i>(1.5 resp 2.6 GB)</i>
-C:\opt\LLVM-11.1.0\                                             <i>(1.5 resp 3.0 GB)</i>
-C:\opt\LLVM-12.0.1\                                             <i>(1.5 resp 3.7 GB)</i>
-C:\opt\msys64\                                                  <i>(2.85 GB)</i>
-C:\Program Files\Cppcheck\                                      <i>(  48 MB)</i>
+C:\opt\cmake-3.22.0-windows-x86_64\  <i>(  91 MB)</i>
+C:\opt\doxygen-1.9.2\                <i>(  81 MB)</i>
+C:\opt\Git-2.34.1\                   <i>( 280 MB)</i>
+C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
+C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
+C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
+C:\opt\LLVM-11.1.0\                  <i>(1.5 resp 3.0 GB)</i>
+C:\opt\LLVM-12.0.1\                  <i>(1.5 resp 3.7 GB)</i>
+C:\opt\LLVM-13.0.0\                  <i>(1.5 resp 3.7 GB)</i>
+C:\opt\msys64\                       <i>(2.85 GB)</i>
+C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
-C:\opt\Python-3.9.7\                                            <i>( 201 MB)</i>
+C:\opt\Python-3.9.10\                <i>( 201 MB)</i>
 </pre>
 
 <!--
@@ -69,6 +70,7 @@ llvm-9.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llv
 llvm-10.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>)</i>
 llvm-11.1.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>)</i>
 llvm-12.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>)</i>
+llvm-13.0.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0">llvm-13.0.0.src.tar.xz</a>)</i>
 <a href="BUILD.md">BUILD.md</a>
 README.md
 <a href="BUILD.md">RESOURCES.md</a>
@@ -85,6 +87,7 @@ where
 - directory **`llvm-10.0.1.src\`** contains the [LLVM] 10 source code distribution.
 - directory **`llvm-11.1.0.src\`** contains the [LLVM] 11 source code distribution.
 - directory **`llvm-12.0.1.src\`** contains the [LLVM] 12 source code distribution.
+- directory **`llvm-13.0.0.src\`** contains the [LLVM] 13 source code distribution.
 - file [**`BUILD.md`**](BUILD.md) describes the build from the source distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`RESOURCES.md`**](RESOURCES.md) is the [Markdown][github_markdown] document presenting external resources.
@@ -148,13 +151,13 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.2, pelook v1.73,
-   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.3.0, python 3.9.7, diff 3.7
-   git 2.33.0.windows.1, bash 4.4.23(1)-release
+   cmake 3.22.0, cppcheck 2.6, make 4.3, gcc 10.3.0, python 3.9.10, diff 3.7
+   git 2.34.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-12.0.1\bin\clang.exe
-C:\opt\Git-2.33.0\bin\git.exe
-C:\opt\Git-2.33.0\mingw64\bin\git.exe
+C:\opt\Git-2.34.1\bin\git.exe
+C:\opt\Git-2.34.1\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -166,25 +169,25 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.2, pelook v1.73,
-   cmake 3.21.0, cppcheck 2.5, make 4.3, gcc 10.3.0, python 3.9.7, diff 3.7
-   git 2.33.0.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
+   cmake 3.22.0, cppcheck 2.6, make 4.3, gcc 10.3.0, python 3.9.10, diff 3.7
+   git 2.34.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-12.0.1\bin\clang.exe
    C:\opt\LLVM-12.0.1\bin\lli.exe
    C:\opt\LLVM-12.0.1\bin\opt.exe
-   C:\opt\cmake-3.21.0\bin\cmake.exe
+   C:\opt\cmake-3.22.0\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
-   C:\opt\Python-3.9.7\python.exe
+   C:\opt\Python-3.9.10\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.33.0\usr\bin\diff.exe
-   C:\opt\Git-2.33.0\bin\git.exe
-   C:\opt\Git-2.33.0\mingw64\bin\git.exe
-   C:\opt\Git-2.33.0\bin\bash.exe
+   C:\opt\Git-2.34.1\usr\bin\diff.exe
+   C:\opt\Git-2.34.1\bin\git.exe
+   C:\opt\Git-2.34.1\mingw64\bin\git.exe
+   C:\opt\Git-2.34.1\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.21.3-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.22.0-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
    "LLVM_HOME=C:\opt\LLVM-12.0.1"
@@ -192,7 +195,7 @@ Environment variables:
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
    "MSVS_CMAKE_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
    "MSYS_HOME=C:\opt\msys64"
-   "PYTHON_HOME=C:\opt\Python-3.9.7"
+   "PYTHON_HOME=C:\opt\Python-3.9.10"
 </pre>
 
 ### **`llvm-X.Y.Z.src\build.bat`**
@@ -272,7 +275,7 @@ Error: Generation of build configuration failed
 <p style="margin:0 0 1em 20px;">
 The <a href="http://cppcheck.sourceforge.net/">Cppcheck</a> static analysis tool can be installed in two ways on MS Windows, namely:<p>
 <ul>
-<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.5-x64-Setup.msi</code></a> from the Windows desktop.
+<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.6-x64-Setup.msi</code></a> from the Windows desktop.
 <li>MSYS2 package <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64"><code>mingw-w64-x86_64-cppcheck</code></a>.</li>
 </ul>
 <p style="margin:0 0 1em 20px;">
@@ -388,20 +391,22 @@ GNU Make 4.2.1
 In our case we downloaded the following installation files (see <a href="#proj_deps">section 1</a>):
 </p>
 <pre style="margin:0 0 1em 20px; font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.21.3-win64-x64.zip</a>        <i>( 35 MB)</i>
-<a href="http://cppcheck.sourceforge.net/">cppcheck-2.5-x64-Setup.msi</a>        <i>( 20 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.22.0-win64-x64.zip</a>        <i>( 35 MB)</i>
+<a href="http://cppcheck.sourceforge.net/">cppcheck-2.6-x64-Setup.msi</a>        <i>( 20 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.2.windows.x64.bin.zip</a> <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.33.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.34.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">LLVM-12.0.1-win64.exe</a>             <i>(182 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0">LLVM-13.0.0-win64.exe</a>             <i>(228 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>             <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>            <i>( 31 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>            <i>( 41 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0">llvm-13.0.0.src.tar.xz</a>            <i>( 43 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.9.7-amd64.exe</a>            <i>( 27 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.9.10-amd64.exe</a>           <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
 </pre>
 <p style="margin:0 0 1em 20px;">
@@ -410,7 +415,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/September 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/November 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -421,13 +426,13 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [cppcheck_changelog]: https://sourceforge.net/p/cppcheck/news/
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
 [cmake_downloads]: https://cmake.org/download/
-[cmake_modules]: https://cmake.org/cmake/help/v3.21/manual/cmake-modules.7.html
-[cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.21.html
+[cmake_modules]: https://cmake.org/cmake/help/v3.22/manual/cmake-modules.7.html
+[cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.22.html
 [doxygen_changelog]: https://www.doxygen.nl/manual/changelog.html
 [doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.33.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.34.1.txt
 [github_markdown]: https://github.github.com/gfm/
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
@@ -448,7 +453,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
-[python_changelog]: https://docs.python.org/release/3.9.7/whatsnew/changelog.html
+[python_changelog]: https://docs.python.org/release/3.9.10/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
 [rust_examples]: https://github.com/michelou/rust-examples
 [scala3_examples]: https://github.com/michelou/dotty-examples

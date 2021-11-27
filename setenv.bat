@@ -55,7 +55,7 @@ if not %_EXITCODE%==0 goto end
 call :git
 if not %_EXITCODE%==0 goto end
 
-call :sdk
+call :winsdk 10
 if not %_EXITCODE%==0 goto end
 
 goto end
@@ -329,6 +329,10 @@ set _PYTHON_HOME=
 
 set __PYTHON_CMD=
 for /f %%f in ('where python.exe 2^>NUL') do set "__PYTHON_CMD=%%f"
+if defined __PYTHON_CMD if not "%__PYTHON_CMD:WindowsApps=%"=="%__PYTHON_CMD%" (
+    echo %_WARNING_LABEL% Ignore Microsoft installed Python in PATH 1>&2
+    set __PYTHON_CMD=
+)
 if defined __PYTHON_CMD (
     for /f "delims=" %%i in ("%__PYTHON_CMD%") do set "_PYTHON_HOME=%%~dpi"
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Python executable found in PATH 1>&2
@@ -556,13 +560,15 @@ if not exist "%_GIT_HOME%\bin\git.exe" (
 set "_GIT_PATH=;%_GIT_HOME%\bin;%_GIT_HOME%\mingw64\bin;%_GIT_HOME%\usr\bin"
 goto :eof
 
-@rem output parameter: _SDK_HOME
-:sdk
-set _SDK_HOME=
+@rem input parameter: %1=SDK version
+@rem output parameter: _WINSDK_HOME
+:winsdk
+set "__VERSION=%~1"
 
-for /f "delims=" %%f in ("%ProgramFiles%\Microsoft SDKs\Windows\v7.1") do set "_SDK_HOME=%%~f"
-if not exist "%_SDK_HOME%" (
-    echo %_WARNING_LABEL% Could not find installation directory for Microsoft Windows SDK 7.1 1>&2
+set _WINSDK_HOME=
+for /f "delims=" %%f in ('dir /b /s "%ProgramFiles(x86)%\Microsoft SDKs\Windows\v%__VERSION%*"') do set "_WINSDK_HOME=%%f"
+if not exist "%_WINSDK_HOME%" (
+    echo %_WARNING_LABEL% Could not find installation directory for Microsoft Windows SDK %__VERSION% 1>&2
     echo        ^(see https://github.com/oracle/graal/blob/master/compiler/README.md^) 1>&2
     rem set _EXITCODE=1
     goto :eof
@@ -585,7 +591,7 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('"%LLVM_HOME%\bin\lli.exe" --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% lli %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%LLVM_HOME%\bin:lli.exe"
 ) else (
-    echo Warning: lli executable not found in directory "%LLVM_HOME%" 1>&2
+    echo %_WARNING_LABEL% lli executable not found in directory "%LLVM_HOME%" 1>&2
     echo ^(LLVM installation directory needs additional binaries^) 1>&2
 )
 where /q "%LLVM_HOME%\bin:opt.exe"
@@ -692,7 +698,7 @@ endlocal & (
         if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
         if not defined MSYS_HOME set "MSYS_HOME=%_MSYS_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
-        if not defined SDK_HOME set "SDK_HOME=%_SDK_HOME%"
+        if not defined SDK_HOME set "SDK_HOME=%_WINSDK_HOME%"
         set "PATH=%PATH%%_CMAKE_PATH%%_MSYS_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
         call :print_env %_VERBOSE%
         if %_BASH%==1 (
