@@ -51,6 +51,9 @@
 
 ## <span id="courses">Courses</span>
 
+- [Introduction to the Low-Level Virtual Machine (LLVM)](https://www.youtube.com/playlist?list=PLDSTpI7ZVmVnvqtebWnnI8YeB8bJoGOyv), October 2021.
+- [*CS 6120: Advanced Compilers: The Self-Guided Online Course*](https://www.cs.cornell.edu/courses/cs6120/2020fa/self-guided/) by Adrian Sampson, 2020.
+- [*DCC888: Static Program Analysis*](https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/) by Fernando Pereira, January 2020.
 - [*Compilers*](https://anoopsarkar.github.io/compilers-class/index.html): [*Code Generation with LLVM*](https://anoopsarkar.github.io/compilers-class/llvm-practice.html) by [Anoop Sarkar](https://www2.cs.sfu.ca/~anoop/) (instructor), Summer 2019.
 - [*EEECS 582: Advanced Compilers*](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
 - [*Advanced compilers*](https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015) by Vesa Hirvisalo (instructor), 2015.
@@ -104,7 +107,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/November 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/December 2021* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
