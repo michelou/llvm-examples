@@ -26,8 +26,8 @@
 - [*LLVM for Grad Students*](http://www.cs.cornell.edu/~asampson/blog/llvm.html) by Adrian Sampson, August 2015.
 - [*A deeper look into the LLVM code generator, Part 1*](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, February 2013.
 - [*Life of an instruction in LLVM*](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
-- [*Create a working compiler with the LLVM framework, Part 2*](https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html) by Arpan Sen, June 2012.
-- [*Create a working compiler with the LLVM framework, Part 1*](https://www.ibm.com/developerworks/library/os-createcompilerllvm1/index.html) by Arpan Sen, June 2012.
+- [*Create a working compiler with the LLVM framework, Part 2*][article_sen_2] by Arpan Sen, June 2012.
+- [*Create a working compiler with the LLVM framework, Part 1*][article_sen_1] by Arpan Sen, June 2012.
 - [*Writing Your Own Toy Compiler Using Flex, Bison and LLVM*][article_toy_compiler], by Loren Segal, September 2009.
 
 <!--
@@ -36,17 +36,19 @@
 
 ## <span id="blogs">Blogs</span>
 
-- [Compiling With Clang Optimization Flags](https://www.incredibuild.com/blog/compiling-with-clang-optimization-flags) by Dori Exterman, August 2021.
+- [LLVM Infrastructure and Rust][blog_modebadze] by Beka Modebadze, December 2021.
+- [Compiling With Clang Optimization Flags][blog_exterman] by Dori Exterman, August 2021.
 
 ## <span id="books">Books</span>
 
-- [Learn LLVM 12](https://www.packtpub.com/product/learn-llvm-12/9781839213502) by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-83921-350-2, 392 pages)</span>
+- [Advanced Compiler Design with LLVM][book_chisnall] by David Chisnall, March 2022.<br/><span style="font-size:80%;">(Pearson, ISBN  978-0-1337-9864-7, 360 pages)</span>
+- [Learn LLVM 12][book_nacke] by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8392-1350-2, 392 pages)</span>
 - [LLVM Techniques, Tips and Best Practices][book_hsu] by Min-Yih Hsu, April 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8388-2495-2, 370 pages)</span>
 - [*Tutorial: Creating an LLVM Backend for the Cpu0 Architecture*][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
 - [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
-- [*LLVM Essentials*](https://www.packtpub.com/application-development/llvm-essentials) by S. Sarda &amp; M. Pandey, December 2015<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-080-1, 166 pages)</span>.
-- [*LLVM Cookbook*](https://www.packtpub.com/application-development/llvm-cookbook), by M. Pandey &amp; S. Sarda, May 2015.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-598-1, 296 pages)</span>
-- [*Getting Started with LLVM Core Libraries*](https://www.packtpub.com/application-development/getting-started-llvm-core-libraries) by B. Cardoso Lopez &amp; R. Auler, August 2014.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78216-692-4, 314 pages)</span>
+- [*LLVM Essentials*][book_sarda] by S. Sarda &amp; M. Pandey, December 2015<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-080-1, 166 pages)</span>.
+- [*LLVM Cookbook*][book_pandey], by M. Pandey &amp; S. Sarda, May 2015.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-598-1, 296 pages)</span>
+- [*Getting Started with LLVM Core Libraries*][book_lopez] by B. Cardoso Lopez &amp; R. Auler, August 2014.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78216-692-4, 314 pages)</span>
 
 
 ## <span id="courses">Courses</span>
@@ -56,7 +58,7 @@
 - [*DCC888: Static Program Analysis*](https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/) by Fernando Pereira, January 2020.
 - [*Compilers*](https://anoopsarkar.github.io/compilers-class/index.html): [*Code Generation with LLVM*](https://anoopsarkar.github.io/compilers-class/llvm-practice.html) by [Anoop Sarkar](https://www2.cs.sfu.ca/~anoop/) (instructor), Summer 2019.
 - [*EEECS 582: Advanced Compilers*](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
-- [*Advanced compilers*](https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015) by Vesa Hirvisalo (instructor), 2015.
+- [*Advanced compilers*][course_hirvisalo] by Vesa Hirvisalo (instructor), 2015.
 
 ## <span id="news">News</span>
 
@@ -107,7 +109,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/December 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/January 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -119,9 +121,19 @@
 [article_kleine]: https://developers.redhat.com/blog/2021/04/22/remote-llvm-development-with-visual-studio-code#
 [article_mir]: https://developers.redhat.com/blog/2020/01/20/mir-a-lightweight-jit-compiler-project/
 [article_power_sums]: https://kristerw.blogspot.com/2019/04/how-llvm-optimizes-geometric-sums.html
+[article_sen_1]: https://www.ibm.com/developerworks/library/os-createcompilerllvm1/index.html
+[article_sen_2]: https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html
 [article_toy_compiler]: https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
+[blog_exterman]: https://www.incredibuild.com/blog/compiling-with-clang-optimization-flags
+[blog_modebadze]: https://www.bexxmodd.com/log/llvm-infrastrucutre-and-rust/7
+[book_chisnall]: https://www.amazon.com/Advanced-Compiler-Pearson-Software-Development/dp/013379864X
 [book_cpu0]: https://jonathan2251.github.io/lbd/llvmstructure.html
 [book_hsu]: https://www.packtpub.com/product/llvm-techniques-tips-and-best-practices-clang-and-middle-end-libraries/9781838824952
+[book_lopez]: https://www.packtpub.com/application-development/getting-started-llvm-core-libraries
+[book_nacke]: https://www.packtpub.com/product/learn-llvm-12/978183921350
+[book_pandey]: https://www.packtpub.com/application-development/llvm-cookbook
+[book_sarda]: https://www.packtpub.com/application-development/llvm-essentials
+[course_hirvisalo]: https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015
 [news_llvmweekly]: http://llvmweekly.org/ "LLVM Weekly"
 [news_planet_clang]: http://planet.clang.org/ "Planet Clang"
 [tools_godbolt]: https://www.godbolt.org/

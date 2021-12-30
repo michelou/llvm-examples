@@ -6,12 +6,12 @@
     <a href="https://llvm.org/"><img style="border:0;width:120px;" src="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM logo"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
-    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/">LLVM</a> project and tested on a Windows machine.
+    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/" rel="external">LLVM</a> project and tested on a Windows machine.
   </td>
   </tr>
 </table>
 
-In this document we present the following examples in more detail (each of them is a [**`CMake`**][gnu_cmake] project <sup id="anchor_01">[[1]](#footnote_01)</sup>):
+In this document we present the following examples in more detail (each of them is a [**`CMake`**][gnu_cmake] project <sup id="anchor_01">[1](#footnote_01)</sup>):
 
 - [**`hello`**](#hello)
 - [**`JITTutorial1`**](#tut1)
@@ -83,7 +83,7 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -121,7 +121,7 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
@@ -157,7 +157,7 @@ Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [
 [build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
-[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
+[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.2" MSYS_HOME="C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -191,7 +191,7 @@ Command [**`build -debug lint`**](hello/build.bat) preformes code analysis with 
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.1"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
@@ -571,7 +571,7 @@ It generates a file **`program.ll`** which simply prints message **`"hello world
 <b>&gt; <a href="llvm-hello/build.bat">build</a> clean run</b>
 Generate file program.ll
 
-<b>&gt; cat program.ll</b>
+<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/type">type</a> program.ll</b>
 ; ModuleID = 'top'
 source_filename = "top"
 
@@ -593,24 +593,27 @@ hello world!
 
 ## <span id="footnotes">Footnotes</a>
 
-<b name="footnote_01">[1]</b> ***C++ Standards*** [↩](#anchor_01)
+<span id="footnote_01">[1]</span> ***C++ Standards*** [↩](#anchor_01)
 
-<p style="margin:0 0 1em 20px;">
+<dl><dd>
 Clang and <a href="https://llvm.org/">LLVM</a> are using C++14 since August 14, 2019 (see Bastien's post on the <a href="http://lists.llvm.org/pipermail/llvm-dev/2019-August/134577.html"><b>llvm-dev</b></a> mailing list). We thus specify either C++14 (<a href="https://www.gnu.org/software/make/manual/html_node/Options-Summary.html"><b><code>GNU Make</code></b></a>) or C++17 (<a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019"><b><code>MSBuild</code></b></a>) in our CMake configuration files.
-</p>
+</dd></dl>
 
-<b name="footnote_02">[2]</b> ***Coding conventions*** [↩](#anchor_02)
+<span id="footnote_02">[2]</span> ***Coding conventions*** [↩](#anchor_02)
 
-<p style="margin:0 0 1em 20px;">
+<dl><dd>
 Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code></b></a>) do obey the following coding conventions:
+</dd>
+<dd>
 <ul>
 <li>We use at most 80 characters per line. In practice we observe that 80 characters fit well with 4:3 screens and 100 characters fit well with 16:9 screens (<a href="https://google.github.io/styleguide/javaguide.html#s4.4-column-limit">Google's convention</a> is 100 characters).</li>
 <li>We organize our code in 4 sections: <code>Environment setup</code>, <code>Main</code>, <code>Subroutines</code> and <code>Cleanups</code>.</li>
 <li>We write exactly <i>one exit instruction</i> (label <b><code>end</code></b> in section <b><code>Cleanups</code></b>).</li>
 <li>We adopt the following naming conventions for variables: global variables start with character <code>_</code> (shell variables defined in the user environment start with a letter) and local variables (e.g. inside subroutines or  <b><code>if/for</code></b> constructs) start with <code>__</code> (two <code>_</code> characters).</li>
 </ul>
-</p>
-<pre style="margin:0 0 1em 20px;font-size:80%;">
+</dd>
+<dd>
+<pre style="font-size:80%;">
 <b>@echo off</b>
 <b>setlocal enabledelayedexpansion</b>
 &nbsp;
@@ -672,10 +675,11 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 ...
 <b>exit</b> /b %_EXITCODE%
 </pre>
+</dd></dl>
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/September 2021* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/January 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
