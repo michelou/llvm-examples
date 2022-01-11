@@ -182,7 +182,7 @@ if "%__ARG:~0,1%"=="-" (
     set /a __N+=1
 )
 shift
-goto :args_loop
+goto args_loop
 :args_done
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>^&2
@@ -243,6 +243,8 @@ echo     %__BEG_O%run%__END%            run generated executable
 goto :eof
 
 :clean
+if exist "%_ROOT_DIR%CMakeCache.txt" del "%_ROOT_DIR%CMakeCache.txt"
+call :rmdir "%_ROOT_DIR%CMakeFiles"
 call :rmdir "%_TARGET_DIR%"
 goto :eof
 

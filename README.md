@@ -9,7 +9,7 @@
   </tr>
 </table>
 
-[Deno][deno_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX][wix_examples] are other trending topics we are continuously monitoring.
+[Ada][ada_examples], [Deno][deno_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX][wix_examples] are other trending topics we are continuously monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
@@ -432,6 +432,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 <!-- link refs -->
 
+[ada_examples]: https://github.com/michelou/ada-examples
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [deno_examples]: https://github.com/michelou/deno-examples
 [gnu_cmake]: https://cmake.org/
