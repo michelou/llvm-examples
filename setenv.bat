@@ -143,6 +143,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-llvm:10" ( set _LLVM_PREFIX=LLVM-10
     ) else if "%__ARG%"=="-llvm:11" ( set _LLVM_PREFIX=LLVM-11
     ) else if "%__ARG%"=="-llvm:12" ( set _LLVM_PREFIX=LLVM-12
+    ) else if "%__ARG%"=="-llvm:13" ( set _LLVM_PREFIX=LLVM-13
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -164,6 +165,7 @@ goto args_loop
 :args_done
 call :subst %_DRIVE_NAME% "%_ROOT_DIR%"
 if not %_EXITCODE%==0 goto :eof
+
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _BASH=%_BASH% _LLVM_PREFIX=%_LLVM_PREFIX% _VERBOSE=%_VERBOSE% 1>&2
     echo %_DEBUG_LABEL% Subcommands: _HELP=%_HELP% 1>&2
@@ -171,7 +173,7 @@ if %_DEBUG%==1 (
 )
 goto :eof
 
-@rem input parameter(s): %1: drive letter, %2: path to be substituted
+@rem input parameters: %1: drive letter, %2: path to be substituted
 :subst
 set __DRIVE_NAME=%~1
 set "__GIVEN_PATH=%~2"
@@ -226,7 +228,7 @@ echo.
 echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-bash%__END%          start Git bash shell instead of Windows command prompt
 echo     %__BEG_O%-debug%__END%         show commands executed by this script
-echo     %__BEG_O%-llvm:^<8..12^>%__END%  select version of LLVM installation ^(default: %__BEG_N%11%__END%^)
+echo     %__BEG_O%-llvm:^<8..13^>%__END%  select version of LLVM installation ^(default: %__BEG_N%11%__END%^)
 echo     %__BEG_O%-verbose%__END%       display progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
@@ -328,8 +330,8 @@ goto :eof
 set _PYTHON_HOME=
 
 set __PYTHON_CMD=
-for /f %%f in ('where python.exe 2^>NUL') do set "__PYTHON_CMD=%%f"
-if defined __PYTHON_CMD if not "%__PYTHON_CMD:WindowsApps=%"=="%__PYTHON_CMD%" (
+for /f "delims=" %%f in ('where python.exe 2^>NUL') do set "__PYTHON_CMD=%%f"
+if defined __PYTHON_CMD if not "!__PYTHON_CMD:WindowsApps=!"=="%__PYTHON_CMD%" (
     echo %_WARNING_LABEL% Ignore Microsoft installed Python in PATH 1>&2
     set __PYTHON_CMD=
 )
