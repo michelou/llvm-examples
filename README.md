@@ -22,7 +22,7 @@ This project depends on the following external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
-- [Cppcheck 2.6][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
+- [Cppcheck 2.7][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.35][git_downloads] ([*release notes*][git_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04">[4](#footnote_04)</sup>
@@ -31,11 +31,11 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*January 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*February 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
 C:\opt\cmake-3.22.1-windows-x86_64\  <i>(  91 MB)</i>
-C:\opt\doxygen-1.9.2\                <i>(  81 MB)</i>
+C:\opt\doxygen-1.9.3\                <i>( 120 MB)</i>
 C:\opt\Git-2.35.1\                   <i>( 282 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
@@ -116,7 +116,7 @@ We distinguish different sets of batch commands:
      Options::
        -bash          start Git bash shell instead of Windows command prompt
        -debug         show commands executed by this script
-       -llvm:&lt;8..12&gt;  select version of LLVM installation
+       -llvm:&lt;8..13&gt;  select version of LLVM installation
        -verbose       display progress messages
    &nbsp;
      Subcommands:
@@ -150,8 +150,8 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;max-width:520px;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.2, pelook v1.73,
-   cmake 3.22.1, cppcheck 2.6, make 4.3, gcc 10.3.0, python 3.10.2, diff 3.8
+   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.3, pelook v1.73,
+   cmake 3.22.1, cppcheck 2.6, make 4.3, gcc 11.2.0, python 3.10.2, diff 3.8
    git 2.35.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -168,8 +168,8 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.2, pelook v1.73,
-   cmake 3.22.1, cppcheck 2.6, make 4.3, gcc 10.3.0, python 3.10.2, diff 3.8
+   clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.3, pelook v1.73,
+   cmake 3.22.1, cppcheck 2.6, make 4.3, gcc 11.2.0, python 3.10.2, diff 3.8
    git 2.35.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-12.0.1\bin\clang.exe
@@ -189,7 +189,7 @@ Tool paths:
 Environment variables:
    "CMAKE_HOME=C:\opt\cmake-3.22.1-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-   "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
+   "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
    "LLVM_HOME=C:\opt\LLVM-12.0.1"
    "MSVC_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
@@ -290,12 +290,12 @@ Below we execute the command <code>pacman -S <a href="https://packages.msys2.org
 <b>$ <a href="https://www.archlinux.org/pacman/pacman.8.html">pacman</a> -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></b>
 resolving dependencies...
 looking for conflicting packages...
-
+&nbsp;
 Packages (1) mingw-w64-x86_64-cppcheck-2.3-1
-
+&nbsp;
 Total Download Size:    3.43 MiB
 Total Installed Size:  13.39 MiB
-
+&nbsp;
 :: Proceed with installation? [Y/n] y
 :: Retrieving packages...
  mingw-w64-x86_64-cppcheck-2.3-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
@@ -327,8 +327,16 @@ We give here three differences between <a href="http://repo.msys2.org/distrib/x8
 <table>
 <tr><th>Criteria</th><th>MSYS64</th><th>MingGW-w64</th></tr>
 <tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
-<tr><td>Version/architecture</td><td><code>gcc 10.3</code></td><td><code>gcc 8.1</code></td></tr>
-<tr><td>Update tool</td><td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td><td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get upgrade</code></a> <sup>(2)</sup></td></tr>
+<tr>
+  <td>Version/architecture</td>
+  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 11.2</code></a></td>
+  <td><a href="https://gcc.gnu.org/gcc-8/changes.html"><code>gcc 8.1</code></a></td>
+</tr>
+<tr>
+  <td>Update tool</td>
+  <td><a href="https://wiki.archlinux.org/index.php/Pacman"><code>pacman -Syu</code></a> <sup>(1)</sup></td>
+  <td><a href="https://osdn.net/projects/mingw/releases/68260"><code>mingw-get upgrade</code></a> <sup>(2)</sup></td>
+</tr>
 </table>
 </dd>
 <dd>
@@ -341,7 +349,7 @@ We give here three differences between <a href="http://repo.msys2.org/distrib/x8
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:484px;">
-<b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.archlinux.org/pacman/pacman.8.html">pacman.exe</a> -Syu</b>
+<b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.archlinux.org/pacman/pacman.8.html">pacman.exe</a> -Syu</b></b>
 :: Synchronizing package databases...
 [...]
 :: Running post-transaction hooks...
@@ -355,17 +363,20 @@ c:\opt\msys64\usr\bin\make.exe
 c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> gcc</b>
-gcc (Rev3, Built by MSYS2 project) 10.3.0
+gcc (Rev3, Built by MSYS2 project) 11.2.0
 &nbsp;
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> Make</b>
 GNU Make 4.3
 </pre>
-</dd></dl>
-
-> **&#9755;** ***Key "XXX" is unknown***<br/>
-> One may encounter the MSYS error '<code>key "XXX" is unkown</code>' when running **`pacman -Syu`** from the Windows prompt. Simply run the command once from the MingW64 shell (command **`%MSYS_HOME%\mingw64.exe`**) to solve the issue.
-
-<pre style="margin:0 0 1em 35px; font-size:80%;max-width:620px;">
+</dd>
+<dd>
+<blockquote>
+<b>&#9755;</b> <i>Key "XXX" is unknown</i><br/>
+One may encounter the MSYS error <code>key "XXX" is unkown</code> when running <b><code>pacman -Syu</code></b> from the Windows prompt. Simply run the command once from the MingW64 shell (command <b><code>%MSYS_HOME%\mingw64.exe</code></b>) to solve the issue.
+</blockquote>
+</dd>
+<dd>
+<pre style="font-size:80%;max-width:620px;">
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.archlinux.org/pacman/pacman.8.html">pacman.exe</a> -Syu</b>
 error: msys: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" is unknown
 :: Import PGP key 4A6129F4E4B84AE46ED7F635628F528CF3053E04? [Y/n] y
@@ -378,11 +389,12 @@ error: msys: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" is unknown
     error: key "4A6129F4E4B84AE46ED7F635628F528CF3053E04" could not be looked up remotely
 [..]
 </pre>
-
-<p style="margin:0 0 1em 20px;">
+</dd>
+<dd>
 2. MinGW-w64 tools:
-</p>
-<pre style="margin:0 0 1em 35px; font-size:80%;max-width:484px;">
+</dd>
+<dd>
+<pre style="font-size:80%;max-width:484px;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r . gcc mingw-get mingw32-make</b>
 c:\opt\mingw-w64\mingw64\bin\gcc.exe
 c:\opt\mingw-w64\mingw64\bin\mingw-get.exe
@@ -394,6 +406,7 @@ gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
 <b>&gt; <a href="http://www.gnu.org/software/make/manual/">mingw32-make</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> Make</b>
 GNU Make 4.2.1
 </pre>
+</dd></dl>
 
 <span id="footnote_05">[5]</span> ***Downloads*** [↩](#anchor_05)
 
@@ -403,8 +416,8 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <dd>
 <pre style="font-size:80%;max-width:500px;">
 <a href="https://cmake.org/download/">cmake-3.22.1-win64-x64.zip</a>        <i>( 35 MB)</i>
-<a href="http://cppcheck.sourceforge.net/">cppcheck-2.6-x64-Setup.msi</a>        <i>( 20 MB)</i>
-<a href="https://www.doxygen.nl/download.html">doxygen-1.9.2.windows.x64.bin.zip</a> <i>( 22 MB)</i>
+<a href="http://cppcheck.sourceforge.net/">cppcheck-2.7-x64-Setup.msi</a>        <i>( 21 MB)</i>
+<a href="https://www.doxygen.nl/download.html">doxygen-1.9.3.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.35.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
@@ -436,7 +449,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [deno_examples]: https://github.com/michelou/deno-examples
 [gnu_cmake]: https://cmake.org/
-[cppcheck_changelog]: https://sourceforge.net/p/cppcheck/news/
+[cppcheck_changelog]: https://github.com/danmar/cppcheck/releases
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
 [cmake_downloads]: https://cmake.org/download/
 [cmake_modules]: https://cmake.org/cmake/help/v3.22/manual/cmake-modules.7.html

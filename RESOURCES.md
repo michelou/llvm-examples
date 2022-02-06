@@ -12,9 +12,9 @@
 ## <span id="articles">Articles</span>
 
 - [Remote LLVM development with Visual Studio Code][article_kleine] by Konrad Kleine, April 2021.
-- [*A Brief Introduction to Clang-Tidy*][article_clang_tidy], by Bartlomeij Filipek, January 2021.
-- [*MIR: A lightweight JIT compiler project*][article_mir], by Vladimir Makarov, January 2020.
-- [*A look at LLVM Advanced Data Types*][article_data_types] by Serge Guelton, April 2019.
+- [A Brief Introduction to Clang-Tidy][article_clang_tidy], by Bartlomeij Filipek, January 2021.
+- [MIR: A lightweight JIT compiler project][article_mir], by Vladimir Makarov, January 2020.
+- [A look at LLVM Advanced Data Types][article_data_types] by Serge Guelton, April 2019.
 - [*Compiler Performance and LLVM*][article_compiler_perf] by Jonathan Goodwin, March 2019.
 - [*LLVM IR and Go*][article_ir_go] by Robin Eklind, December 2018.
 - [*How LLVM optimizes a function*](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
@@ -25,10 +25,10 @@
 - [*A Tourist’s Guide to the LLVM Source Code*](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
 - [*LLVM for Grad Students*](http://www.cs.cornell.edu/~asampson/blog/llvm.html) by Adrian Sampson, August 2015.
 - [*A deeper look into the LLVM code generator, Part 1*](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, February 2013.
-- [*Life of an instruction in LLVM*](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
-- [*Create a working compiler with the LLVM framework, Part 2*][article_sen_2] by Arpan Sen, June 2012.
-- [*Create a working compiler with the LLVM framework, Part 1*][article_sen_1] by Arpan Sen, June 2012.
-- [*Writing Your Own Toy Compiler Using Flex, Bison and LLVM*][article_toy_compiler], by Loren Segal, September 2009.
+- [Life of an instruction in LLVM](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
+- [Create a working compiler with the LLVM framework, Part 2][article_sen_2] by Arpan Sen, June 2012.
+- [Create a working compiler with the LLVM framework, Part 1][article_sen_1] by Arpan Sen, June 2012.
+- [Writing Your Own Toy Compiler Using Flex, Bison and LLVM][article_toy_compiler], by Loren Segal, September 2009.
 
 <!--
 - [*Building an LLVM-based tool. Lessons learned*](https://lowlevelbits.org/building-an-llvm-based-tool.-lessons-learned/) by Alex Denisov, April 2019 ([EuroLLVM 2019](http://llvm.org/devmtg/2019-04/)).
@@ -36,6 +36,9 @@
 
 ## <span id="blogs">Blogs</span>
 
+- [LLVM Project Blog](https://blog.llvm.org/):
+  - [Improving LLVM Infrastructure - Part 1: Mailing lists][blog_llvm2022], January 2022.
+  - [LLVM’s New Pass Manager][blog_llvm2021], March 2021.
 - [LLVM Infrastructure and Rust][blog_modebadze] by Beka Modebadze, December 2021.
 - [Compiling With Clang Optimization Flags][blog_exterman] by Dori Exterman, August 2021.
 
@@ -54,11 +57,11 @@
 ## <span id="courses">Courses</span>
 
 - [Introduction to the Low-Level Virtual Machine (LLVM)](https://www.youtube.com/playlist?list=PLDSTpI7ZVmVnvqtebWnnI8YeB8bJoGOyv), October 2021.
-- [*CS 6120: Advanced Compilers: The Self-Guided Online Course*](https://www.cs.cornell.edu/courses/cs6120/2020fa/self-guided/) by Adrian Sampson, 2020.
-- [*DCC888: Static Program Analysis*](https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/) by Fernando Pereira, January 2020.
-- [*Compilers*](https://anoopsarkar.github.io/compilers-class/index.html): [*Code Generation with LLVM*](https://anoopsarkar.github.io/compilers-class/llvm-practice.html) by [Anoop Sarkar](https://www2.cs.sfu.ca/~anoop/) (instructor), Summer 2019.
-- [*EEECS 582: Advanced Compilers*](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
-- [*Advanced compilers*][course_hirvisalo] by Vesa Hirvisalo (instructor), 2015.
+- [CS 6120: Advanced Compilers: The Self-Guided Online Course](https://www.cs.cornell.edu/courses/cs6120/2020fa/self-guided/) by Adrian Sampson, 2020.
+- [DCC888: Static Program Analysis](https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/) by Fernando Pereira, January 2020.
+- [Compilers](https://anoopsarkar.github.io/compilers-class/index.html): [*Code Generation with LLVM](https://anoopsarkar.github.io/compilers-class/llvm-practice.html) by [Anoop Sarkar](https://www2.cs.sfu.ca/~anoop/) (instructor), Summer 2019.
+- [EEECS 582: Advanced Compilers](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
+- [Advanced compilers][course_hirvisalo] by Vesa Hirvisalo (instructor), 2015.
 
 ## <span id="news">News</span>
 
@@ -125,6 +128,8 @@
 [article_sen_2]: https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html
 [article_toy_compiler]: https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
 [blog_exterman]: https://www.incredibuild.com/blog/compiling-with-clang-optimization-flags
+[blog_llvm2021]: https://blog.llvm.org/posts/2021-03-26-the-new-pass-manager/
+[blog_llvm2022]: https://blog.llvm.org/posts/2022-01-07-moving-to-discourse/
 [blog_modebadze]: https://www.bexxmodd.com/log/llvm-infrastrucutre-and-rust/7
 [book_chisnall]: https://www.amazon.com/Advanced-Compiler-Pearson-Software-Development/dp/013379864X
 [book_cpu0]: https://jonathan2251.github.io/lbd/llvmstructure.html
