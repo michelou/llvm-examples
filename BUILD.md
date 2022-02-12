@@ -8,7 +8,7 @@
   </tr>
 </table>
 
-## `build.bat` command
+## <span id="build">`build.bat` command</span>
 
 [**`build.bat`**](bin/llvm/build.bat) consists of ~350 lines of batch/PowerShell code we wrote to generate additional Windows binaries not available in the <a href="https://llvm.org/">LLVM</a> binary distribution.
 
@@ -25,7 +25,7 @@ Directory **`llvm-12.0.1.src\`** is setup as follows:
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-12.0.1.src</b>
 </pre>
 
-> **:mag_right:** In our case we have the choice between the source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\`, `llvm-10.0.1.src\`, `llvm-11.0.1.src\`, `llvm-11.1.0.src\` and `llvm-12.0.1.src\`.
+> **:mag_right:** In our case we have the choice between the source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\`, `llvm-10.0.1.src\`, `llvm-11.0.1.src\`, `llvm-11.1.0.src\`, `llvm-12.0.1.src\` and `llvm-13.0.1.src\`..
 
 Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 

@@ -3,15 +3,20 @@
 
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
-*.c text
+*.adb text linguist-language=Ada
+*.adc text
+*.ads text linguist-language=Ada
+*.c text linguist-language=C
 *.cpp text
 *.h text
 *.hpp text
-*.java text
+*.java text linguist-language=Java
 *.json text
 *.js text
-*.sbt text
-*.scala text
+*.md text linguist-documentation=true
+*.sbt text linguist-language=Scala
+*.sc text linguist-language=Scala
+*.scala text linguist-language=Scala
 *.txt text
 *.xml text
 *.yaml text
@@ -34,4 +39,7 @@
 *.m4a binary
 *.pdf binary
 *.png binary
+*.rtf binary
 *.zip binary
+
+docs/* linguist-documentation

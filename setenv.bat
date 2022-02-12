@@ -127,7 +127,7 @@ goto :eof
 :args
 set _BASH=0
 set _HELP=0
-set _LLVM_PREFIX=LLVM-11
+set _LLVM_PREFIX=LLVM-12
 set _VERBOSE=0
 set __N=0
 :args_loop

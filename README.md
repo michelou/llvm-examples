@@ -16,7 +16,7 @@
 This project depends on the following external software for the **Microsoft Windows** plaform:
 
 - [CMake 3.22][cmake_downloads] ([*release notes*][cmake_relnotes])
-- [LLVM 12 Windows binaries][llvm_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm_relnotes])
+- [LLVM 13 Windows binaries][llvm13_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm13_relnotes])
 - [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[2](#footnote_02)</sup>  ([*release notes*][vs2019_relnotes])
 - [Python 3.10][python_downloads] ([*changelog*][python_changelog])
 
@@ -25,6 +25,7 @@ Optionally one may also install the following software:
 - [Cppcheck 2.7][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.35][git_downloads] ([*release notes*][git_relnotes])
+- [LLVM 12 Windows binaries][llvm12_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm12_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04">[4](#footnote_04)</sup>
 
 <!--
@@ -42,7 +43,7 @@ C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
 C:\opt\LLVM-11.1.0\                  <i>(1.5 resp 3.0 GB)</i>
 C:\opt\LLVM-12.0.1\                  <i>(1.5 resp 3.7 GB)</i>
-C:\opt\LLVM-13.0.0\                  <i>(1.5 resp 3.7 GB)</i>
+C:\opt\LLVM-13.0.1\                  <i>(1.5 resp 3.7 GB)</i>
 C:\opt\msys64\                       <i>(2.85 GB)</i>
 C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
@@ -70,7 +71,7 @@ llvm-9.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llv
 llvm-10.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>)</i>
 llvm-11.1.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>)</i>
 llvm-12.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>)</i>
-llvm-13.0.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0">llvm-13.0.0.src.tar.xz</a>)</i>
+llvm-13.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>)</i>
 <a href="BUILD.md">BUILD.md</a>
 README.md
 <a href="BUILD.md">RESOURCES.md</a>
@@ -87,7 +88,7 @@ where
 - directory **`llvm-10.0.1.src\`** contains the [LLVM] 10 source code distribution.
 - directory **`llvm-11.1.0.src\`** contains the [LLVM] 11 source code distribution.
 - directory **`llvm-12.0.1.src\`** contains the [LLVM] 12 source code distribution.
-- directory **`llvm-13.0.0.src\`** contains the [LLVM] 13 source code distribution.
+- directory **`llvm-13.0.1.src\`** contains the [LLVM] 13 source code distribution.
 - file [**`BUILD.md`**](BUILD.md) describes the build from the source distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`RESOURCES.md`**](RESOURCES.md) is the [Markdown][github_markdown] document presenting external resources.
@@ -239,7 +240,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 <span id="footnote_01">[1]</span> ***LLVM version*** [↩](#anchor_01)
 
 <dl><dd>
-We support LLVM versions 8, 9, 10, 11 and 12. Command <b><code>setenv</code></b> searches for version 11 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (and so on).
+We support LLVM versions 8, 9, 10, 11, 12 and 13. Command <b><code>setenv</code></b> searches for version 12 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (and so on).
 </dd></dl>
 
 <span id="footnote_02">[2]</span> ***Visual Studio version*** [↩](#anchor_02)
@@ -423,12 +424,12 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">LLVM-12.0.1-win64.exe</a>             <i>(182 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0">LLVM-13.0.0-win64.exe</a>             <i>(228 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">LLVM-13.0.1-win64.exe</a>             <i>(228 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>             <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>            <i>( 31 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>            <i>( 41 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0">llvm-13.0.0.src.tar.xz</a>            <i>( 43 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>            <i>( 43 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
 <a href="https://www.python.org/downloads/windows/">python-3.10.2-amd64.exe</a>           <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
@@ -469,14 +470,16 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
 [llvm_clang]: https://releases.llvm.org/12.0.1/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
 [llvm_lli]: https://llvm.org/docs/CommandGuide/lli.html
 [llvm_opt]: https://llvm.org/docs/CommandGuide/opt.html
-[llvm_relnotes]: https://releases.llvm.org/12.0.1/docs/ReleaseNotes.html
 [llvm_tools]: https://llvm.org/docs/CommandGuide/
+[llvm12_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1
+[llvm12_relnotes]: https://releases.llvm.org/12.0.1/docs/ReleaseNotes.html
+[llvm13_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1
+[llvm13_relnotes]: https://releases.llvm.org/13.0.1/docs/ReleaseNotes.html
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
