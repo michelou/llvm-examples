@@ -9,7 +9,7 @@
   </tr>
 </table>
 
-[Ada][ada_examples], [Deno][deno_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX][wix_examples] are other trending topics we are continuously monitoring.
+[Ada][ada_examples], [Akka][akka_examples], [Deno][deno_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX][wix_examples] are other trending topics we are continuously monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
@@ -35,7 +35,7 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*February 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.22.1-windows-x86_64\  <i>(  91 MB)</i>
+C:\opt\cmake-3.22.2-windows-x86_64\  <i>(  91 MB)</i>
 C:\opt\doxygen-1.9.3\                <i>( 120 MB)</i>
 C:\opt\Git-2.35.1\                   <i>( 282 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
@@ -152,7 +152,7 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.3, pelook v1.73,
-   cmake 3.22.1, cppcheck 2.6, make 4.3, gcc 11.2.0, python 3.10.2, diff 3.8
+   cmake 3.22.2, cppcheck 2.6, make 4.3, gcc 11.2.0, python 3.10.2, diff 3.8
    git 2.35.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -170,13 +170,13 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 12.0.1, lli 12.0.1, opt 12.0.1, doxygen 1.9.3, pelook v1.73,
-   cmake 3.22.1, cppcheck 2.6, make 4.3, gcc 11.2.0, python 3.10.2, diff 3.8
+   cmake 3.22.2, cppcheck 2.6, make 4.3, gcc 11.2.0, python 3.10.2, diff 3.8
    git 2.35.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-12.0.1\bin\clang.exe
    C:\opt\LLVM-12.0.1\bin\lli.exe
    C:\opt\LLVM-12.0.1\bin\opt.exe
-   C:\opt\cmake-3.22.1\bin\cmake.exe
+   C:\opt\cmake-3.22.2\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.10.2\python.exe
@@ -188,7 +188,7 @@ Tool paths:
    C:\opt\Git-2.35.1\mingw64\bin\git.exe
    C:\opt\Git-2.35.1\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.22.1-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.22.2-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
    "LLVM_HOME=C:\opt\LLVM-12.0.1"
@@ -416,7 +416,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.22.1-win64-x64.zip</a>        <i>( 35 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.22.2-win64-x64.zip</a>        <i>( 35 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.7-x64-Setup.msi</a>        <i>( 21 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.3.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.35.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
@@ -447,6 +447,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 <!-- link refs -->
 
 [ada_examples]: https://github.com/michelou/ada-examples
+[akka_examples]: https://github.com/michelou/akka-examples
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [deno_examples]: https://github.com/michelou/deno-examples
 [gnu_cmake]: https://cmake.org/
