@@ -3,34 +3,48 @@
 
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
+*.ada text linguist-language=Ada
 *.adb text linguist-language=Ada
-*.adc text
 *.ads text linguist-language=Ada
+*.awk text linguist-vendored=false
 *.c text linguist-language=C
-*.cpp text
-*.h text
-*.hpp text
+*.cabal text linguist-language=Cabal Config
+*.cpp text linguist-language=C++
+*.daml text linguist-language=Haskell
+*.es text linguist-language=JavaScript
+*.go text linguist-language=Go
+*.h text linguist-language=C
+*.hpp text linguist-language=C++
+*.hs text linguist-language=Haskell
+*.hsc text linguist-language=Haskell
+*.ini text linguist-language=INI
 *.java text linguist-language=Java
-*.json text
-*.js text
+*.js text linguist-language=JavaScript
+*.json text linguist-language=JSON
+*.jsx text linguist-language=JavaScript
 *.md text linguist-documentation=true
+*.properties text linguist-language=INI
+*.py text linguist-language=Python
+*.rs text linguist-language=Rust
 *.sbt text linguist-language=Scala
 *.sc text linguist-language=Scala
 *.scala text linguist-language=Scala
-*.txt text
-*.xml text
-*.yaml text
+*.txt text linguist-language=Text
+*.xml text linguist-language=XML
+*.xslt text linguist-language=XSLT
+*.yaml text linguist-language=MiniYAML
 
 # Declare files that will always have CRLF line endings on checkout.
 *.bat eol=crlf linguist-detectable=false
-*.cmd eol=crlf
-*.ps1 eol=crlf
-*.sln text eol=crlf
+*.cmd eol=crlf linguist-detectable=false
+*.ps1 eol=crlf linguist-detectable=false
+*.sln text eol=crlf linguist-detectable=false
 
 # Declare files that will always have LF line endings on checkout.
-*.sh eol=lf
+*.sh eol=lf linguist-detectable=false
 
 # Denote all files that are truly binary and should not be modified.
+*.bmp binary
 *.class binary
 *.dll binary
 *.gif binary
