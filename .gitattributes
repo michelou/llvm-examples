@@ -22,6 +22,8 @@
 *.js text linguist-language=JavaScript
 *.json text linguist-language=JSON
 *.jsx text linguist-language=JavaScript
+*.kt text linguist-vendored=Kotlin
+*.kts text linguist-vendored=Kotlin
 *.md text linguist-documentation=true
 *.properties text linguist-language=INI
 *.py text linguist-language=Python
@@ -39,6 +41,10 @@
 *.cmd eol=crlf linguist-detectable=false
 *.ps1 eol=crlf linguist-detectable=false
 *.sln text eol=crlf linguist-detectable=false
+
+# https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
+Makefile text eol=crlf linguist-detectable=false
+Makefile.inc text eol=crlf linguist-detectable=false
 
 # Declare files that will always have LF line endings on checkout.
 *.sh eol=lf linguist-detectable=false
