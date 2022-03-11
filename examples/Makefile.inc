@@ -6,8 +6,10 @@ $(error Variable MSYS_HOME is not set)
 endif
 
 ifeq ($(OS),Windows_NT)
+EXE_EXT     = .exe
 PSEP        = ;
 CC          = $(subst \,/,$(MSYS_HOME))/mingw64/bin/cc.exe
+CP          = $(subst \,/,$(MSYS_HOME))/usr/bin/cp.exe
 CXX         = $(subst \,/,$(MSYS_HOME))/mingw64/bin/g++.exe
 ECHO        = $(subst \,/,$(MSYS_HOME))/usr/bin/echo.exe
 FIND        = $(subst \,/,$(MSYS_HOME))/usr/bin/find.exe
@@ -17,8 +19,10 @@ MKDIR       = $(subst \,/,$(MSYS_HOME))/usr/bin/mkdir.exe
 RM          = $(subst \,/,$(MSYS_HOME))/usr/bin/rm.exe
 TOUCH       = $(subst \,/,$(MSYS_HOME))/usr/bin/touch.exe
 else
+EXE_EXT     =
 PSEP        = :
 CC          = cc
+CP          = cp
 CXX         = g++
 ECHO        = echo
 FIND        = find

@@ -2,7 +2,7 @@
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
-  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="docs/images/llvm.png" width="120" alt="LLVM logo"/></a></td>
+  <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="docs/images/llvm.png" width="120" alt="LLVM project"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This document gathers a few <a href="https://llvm.org/" rel="external">LLVM</a> related resources that caught our attention.
   </td>
   </tr>
@@ -41,6 +41,7 @@
   - [LLVM’s New Pass Manager][blog_llvm2021], March 2021.
 - [LLVM Infrastructure and Rust][blog_modebadze] by Beka Modebadze, December 2021.
 - [Compiling With Clang Optimization Flags][blog_exterman] by Dori Exterman, August 2021.
+- [Building llvm-project with Ninja on MacOS][blog_guo] by Yilong Guo (Intel), May 2021.
 
 ## <span id="books">Books</span>
 
@@ -75,7 +76,7 @@
 
 ## <span id="tools">Online Tools</span>
 
-- [Compiler Explorer][tools_godbolt] (type your C/C++ code in the left pane, then select "*x86-64 clang 8.0.0*" and add a new pane "*IR output*").
+- [Compiler Explorer][tools_godbolt] (type your C/C++ code in the left pane, then select "*x86-64 clang 13.0.1*" and add a new pane "*IR output*").
 
 
 ## <span id="papers">Papers</span>
@@ -128,6 +129,7 @@
 [article_sen_2]: https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html
 [article_toy_compiler]: https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
 [blog_exterman]: https://www.incredibuild.com/blog/compiling-with-clang-optimization-flags
+[blog_guo]: https://blog.nuullll.com/2021/05/15/building-llvm-project-with-ninja-on-macos.html
 [blog_llvm2021]: https://blog.llvm.org/posts/2021-03-26-the-new-pass-manager/
 [blog_llvm2022]: https://blog.llvm.org/posts/2022-01-07-moving-to-discourse/
 [blog_modebadze]: https://www.bexxmodd.com/log/llvm-infrastrucutre-and-rust/7
