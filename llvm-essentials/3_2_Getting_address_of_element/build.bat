@@ -133,7 +133,6 @@ set _COMPILE=0
 set _RUN=0
 set _DEBUG=0
 set _HELP=0
-set _TIMER=0
 set _TOOLSET=msvc
 set _VERBOSE=0
 set __N=0
@@ -147,7 +146,6 @@ if "%__ARG:~0,1%"=="-" (
     @rem option
     if "%__ARG%"=="-debug" ( set _DEBUG=1
     ) else if "%__ARG%"=="-help" ( set _HELP=1
-    ) else if "%__ARG%"=="-timer" ( set _TIMER=1
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -173,17 +171,13 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
 
-if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/CMake
-) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/CMake
-) else ( set _TOOLSET_NAME=MSVC/MSBuild
-)
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+    echo %_DEBUG_LABEL% Options    : _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
     echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% 1>&2
     echo %_DEBUG_LABEL% Variables  : "LLVM_HOME=%LLVM_HOME%" 1>&2
+    echo %_DEBUG_LABEL% Variables  : "MSVS_CMAKE_HOME=%MSVS_CMAKE_HOME%" 1>&2
     echo %_DEBUG_LABEL% Variables  : "MSVS_HOME=%MSVS_HOME%" 1>&2
 )
-if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
 :help
@@ -202,7 +196,6 @@ echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
 echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-debug%__END%      show commands executed by this script
-echo     %__BEG_O%-timer%__END%      display total elapsed time
 echo     %__BEG_O%-verbose%__END%    display progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
@@ -234,7 +227,11 @@ goto :eof
 setlocal
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
-if %_VERBOSE%==1 echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
+if %_TOOLSET%==clang ( set __TOOLSET_NAME=Clang/CMake
+) else if %_TOOLSET%==gcc ( set __TOOLSET_NAME=GCC/CMake
+) else ( set __TOOLSET_NAME=MSVC/MSBuild
+)
+if %_VERBOSE%==1 echo Toolset: %__TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 
 call :compile_%_TOOLSET%
 
@@ -304,23 +301,10 @@ if not %ERRORLEVEL%==0 (
 )
 goto :eof
 
-@rem output parameter: _DURATION
-:duration
-set __START=%~1
-set __END=%~2
-
-for /f "delims=" %%i in ('powershell -c "$interval = New-TimeSpan -Start '%__START%' -End '%__END%'; Write-Host $interval"') do set _DURATION=%%i
-goto :eof
-
 @rem #########################################################################
 @rem ## Cleanups
 
 :end
-if %_TIMER%==1 (
-    for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
-    call :duration "%_TIMER_START%" "!__TIMER_END!"
-    echo Total execution time: !_DURATION! 1>&2
-)
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%
 endlocal

@@ -1,3 +1,4 @@
+ifeq ($(OS),Windows_NT)
 ifndef LLVM_HOME
 $(error Variable LLVM_HOME is not set)
 endif
@@ -5,7 +6,6 @@ ifndef MSYS_HOME
 $(error Variable MSYS_HOME is not set)
 endif
 
-ifeq ($(OS),Windows_NT)
 EXE_EXT     = .exe
 PSEP        = ;
 CC          = $(subst \,/,$(MSYS_HOME))/mingw64/bin/cc.exe

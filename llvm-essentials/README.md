@@ -6,7 +6,7 @@
     <a href="https://llvm.org/" rel="external"><img src="../docs/images/llvm.png" width="120" alt="LLVM project"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
-    Directory <a href="."><strong><code>llvm-essentials\</code></strong></a> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" alt="LLVM">LLVM</a> code examples from the book <a href="https://www.packtpub.com/application-development/llvm-essentials">LLVM Essentials</a> by S. Sarda &amp; M. Pandey (Packt Publishing, December 2015).<br/>
+    Directory <a href="."><strong><code>llvm-essentials\</code></strong></a> contains <a href="https://llvm.org/img/LLVM-Logo-Derivative-1.png" rel="external" alt="LLVM">LLVM</a> code examples from the book <a href="https://www.packtpub.com/application-development/llvm-essentials" rel="external">LLVM Essentials</a> by S. Sarda &amp; M. Pandey (Packt Publishing, December 2015).<br/>
   It also includes several <a href="https://en.wikibooks.org/wiki/Windows_Batch_Scripting" rel="external">batch files</a> for running the example on a Windows machine.
   </td>
   </tr>
@@ -52,7 +52,7 @@ attributes #0 = { noinline nounwind optnone [...] }
 
 !0 = !{i32 1, !"wchar_size", i32 2}
 !1 = !{i32 7, !"PIC Level", i32 2}
-!2 = !{!"clang version 11.1.0"}
+!2 = !{!"clang version 14.0.0"}
 </pre>
 
 ## <span id="3_2">3.2 Getting_address_of_element</span>
@@ -148,7 +148,7 @@ the assembly code in file `add.ll` can not be executed with <a href="https://llv
 <dd>
 <pre style="font-size:80%;">
 <b>&gt; %LLVM_HOME%\bin\<a href="https://llvm.org/docs/CommandGuide/lli.html">lli.exe</a> build\add.ll</b>
-C:\opt\LLVM-12.0.1\\bin\lli.exe: error: 'main' function not found in module.
+C:\opt\LLVM-14.0.0\\bin\lli.exe: error: 'main' function not found in module.
 </pre>
 </dd></dl>
 

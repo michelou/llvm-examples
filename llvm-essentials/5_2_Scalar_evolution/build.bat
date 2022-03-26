@@ -134,10 +134,6 @@ goto :args_loop
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
 
-if %_TOOLSET%==clang ( set _TOOLSET_NAME=Clang/CMake
-) else if %_TOOLSET%==gcc (  set _TOOLSET_NAME=GCC/CMake
-) else ( set _TOOLSET_NAME=MSVC/MSBuild
-)
 if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Options    : _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
     echo %_DEBUG_LABEL% Subcommands: _CLEAN=%_CLEAN% _COMPILE=%_COMPILE% _RUN=%_RUN% 1>&2
@@ -184,7 +180,11 @@ goto :eof
 setlocal
 if not exist "%_TARGET_DIR%" mkdir "%_TARGET_DIR%"
 
-if %_VERBOSE%==1 echo Toolset: %_TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
+if %_TOOLSET%==clang ( set __TOOLSET_NAME=Clang/CMake
+) else if %_TOOLSET%==gcc ( set __TOOLSET_NAME=GCC/CMake
+) else ( set __TOOLSET_NAME=MSVC/MSBuild
+)
+if %_VERBOSE%==1 echo Toolset: %__TOOLSET_NAME%, Project: %_PROJ_NAME% 1>&2
 
 call :compile_%_TOOLSET%
 

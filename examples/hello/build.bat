@@ -32,7 +32,6 @@ goto end
 :env
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
-set _TIMER=0
 
 call :env_colors
 set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
@@ -65,6 +64,13 @@ if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
     goto :eof
 )
 set "_DOXYGEN_CMD=%DOXYGEN_HOME%\bin\doxygen.exe"
+
+if not exist "%MSVS_CMAKE_HOME%\bin\cmake.exe" (
+    echo %_ERROR_LABEL% Microsoft CMake installation not found 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
+set "_MS_CMAKE_CMD=%MSVS_CMAKE_HOME%\bin\cmake.exe"
 
 if not exist "%MSVS_HOME%\Community\MSBuild\Current\Bin\amd64\MSBuild.exe" (
     echo %_ERROR_LABEL% MSBuild installation not found 1>&2
@@ -131,12 +137,12 @@ set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
-@rem output parameter(s): _COMMANDS, _DEBUG, _TIMER, _TOOLSET, _VERBOSE
+@rem output parameter(s): _COMMANDS, _DEBUG, _TOOLSET, _VERBOSE
 :args
 set _COMMANDS=
+set _CPP_STD=c++14
 set _DOC_OPEN=0
 set _PROJ_CONFIG=Release
-set _TIMER=0
 set _TOOLSET=msvc
 set _VERBOSE=0
 set __N=0
@@ -157,7 +163,6 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-help" ( set _HELP=1
     ) else if "%__ARG%"=="-msvc" ( set _TOOLSET=msvc
     ) else if "%__ARG%"=="-open" ( set _DOC_OPEN=1
-    ) else if "%__ARG%"=="-timer" ( set _TIMER=1
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -196,7 +201,7 @@ if %_DOC_OPEN%==1 if "%_COMMANDS:doc=%"=="%_COMMANDS%" (
     set _DOC_OPEN=0
 )
 if %_DEBUG%==1 (
-    echo %_DEBUG_LABEL% Options    : _TIMER=%_TIMER% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
+    echo %_DEBUG_LABEL% Options    : _CPP_STD=%_CPP_STD% _TOOLSET=%_TOOLSET% _VERBOSE=%_VERBOSE% 1>&2
     echo %_DEBUG_LABEL% Subcommands: %_COMMANDS% 1>&2
     echo %_DEBUG_LABEL% Variables  : "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
     echo %_DEBUG_LABEL% Variables  : "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
@@ -204,7 +209,6 @@ if %_DEBUG%==1 (
     echo %_DEBUG_LABEL% Variables  : "MSVS_HOME=%MSVS_HOME%" 1>&2
     echo %_DEBUG_LABEL% Variables  : "MSYS_HOME=%MSYS_HOME%" 1>&2
 )
-if %_TIMER%==1 for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set _TIMER_START=%%i
 goto :eof
 
 :help
@@ -229,7 +233,6 @@ echo     %__BEG_O%-debug%__END%         show commands executed by this script
 echo     %__BEG_O%-gcc%__END%           use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-msvc%__END%          use MSVC/MSBuild toolset ^(alias for option %__BEG_O%-cl%__END%^)
 echo     %__BEG_O%-open%__END%          display generated HTML documentation ^(subcommand %__BEG_O%doc%__END%^)
-echo     %__BEG_O%-timer%__END%         display total elapsed time
 echo     %__BEG_O%-verbose%__END%       display progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
@@ -263,9 +266,9 @@ if not %ERRORLEVEL%==0 (
 goto :eof
 
 :lint
-if %_TOOLSET%==gcc ( set __CPPCHECK_OPTS=--template=gcc --std=c++14
-) else if %_TOOLSET%==msvc ( set __CPPCHECK_OPTS=--template=vs --std=c++17
-) else ( set __CPPCHECK_OPTS=--std=c++14
+if %_TOOLSET%==gcc ( set __CPPCHECK_OPTS=--template=gcc --std=%_CPP_STD%
+) else if %_TOOLSET%==msvc ( set __CPPCHECK_OPTS=--template=vs --std=%_CPP_STD%
+) else ( set __CPPCHECK_OPTS=--std=%_CPP_STD%
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%" 1>&2
 ) else if %_VERBOSE%==1 ( echo Analyze C++ source files in directory "!_SOURCE_DIR=%_ROOT_DIR%=!" 1>&2
@@ -315,7 +318,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of build configuration failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -323,12 +326,12 @@ if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
 ) else ( set __MAKE_OPTS=--debug=n
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
-) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable "%_PROJ_NAME%.exe" 1>&2
 )
 call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate executable "%_PROJ_NAME%.exe" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -345,7 +348,7 @@ set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 set __CMAKE_OPTS=-G "Unix Makefiles"
 
 pushd "%_TARGET_DIR%"
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Current directory is: "%CD%" 1>&2
 
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
@@ -353,7 +356,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of build configuration failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -361,67 +364,46 @@ if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
 ) else ( set __MAKE_OPTS=--debug=n
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
-) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable "%_PROJ_NAME%.exe" 1>&2
 )
 call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    echo %_ERROR_LABEL% Failed to generation executable "%_PROJ_NAME%.exe" failed 1>&2
     set _EXITCODE=1
     goto :eof
 )
 popd
 goto :eof
 
-@rem output parameters: _CMAKE_CMD, _MSBUILD_CMD
-:init_msvc
-set _CMAKE_CMD=
-for /f "delims=" %%f in ('where /r "%MSVS_HOME%" cmake.exe') do set "_CMAKE_CMD=%%f"
-if not defined _CMAKE_CMD (
-    echo %_ERROR_LABEL% Microsoft CMake tool not found 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-set _MSBUILD_CMD=
-for /f "delims=" %%f in ('where /r "%MSVS_HOME%" MSBuild.exe ^| findstr amd64') do set "_MSBUILD_CMD=%%f"
-if not defined _MSBUILD_CMD (
-    echo %_ERROR_LABEL% Microsoft MSBuild tool not found 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
-goto :eof
-
 :compile_msvc
-call :init_msvc
-if not %_EXITCODE%==0 goto :eof
-
-set __CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
+set __MS_CMAKE_OPTS=-Thost=%_PROJ_PLATFORM% -A %_PROJ_PLATFORM% -Wdeprecated
 
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
 ) else if %_VERBOSE%==1 ( echo Configuration: %_PROJ_CONFIG%, Platform: %_PROJ_PLATFORM% 1>&2
 )
 pushd "%_TARGET_DIR%"
-if %_DEBUG%==1 echo %_DEBUG_LABEL% Current directory is: %CD% 1>&2
+if %_DEBUG%==1 echo %_DEBUG_LABEL% Current directory is: "%CD%" 1>&2
 
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "!_CMAKE_CMD:%MSVS_HOME%\=!" %__CMAKE_OPTS% .. 1>&2
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "!_MS_CMAKE_CMD:%MSVS_HOME%\=!" %__MS_CMAKE_OPTS% .. 1>&2
 ) else if %_VERBOSE%==1 ( echo Generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
 )
-call "%_CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
+call "%_MS_CMAKE_CMD%" %__MS_CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of build configuration failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
 set __MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "!_MSBUILD_CMD:%MSVS_HOME%\=!" %__MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1>&2
-) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable "%_PROJ_NAME%.exe" 1>&2
 )
 call "%_MSBUILD_CMD%" %__MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate executable "%_PROJ_NAME%.exe" 1>&2
     set _EXITCODE=1
     goto :eof
 )

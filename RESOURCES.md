@@ -73,12 +73,6 @@
 - [LLVM Archive](https://www.linux-magazin.de/tag/llvm/) - Linux-Magazin.
 -->
 
-
-## <span id="tools">Online Tools</span>
-
-- [Compiler Explorer][tools_godbolt] (type your C/C++ code in the left pane, then select "*x86-64 clang 13.0.1*" and add a new pane "*IR output*").
-
-
 ## <span id="papers">Papers</span>
 
 - [Alive2: Bounded Translation Validation for LLVM](https://www.cs.utah.edu/~regehr/#pubs) by Nuno P. Lopes, PLDI 2021, Jun 2021.
@@ -93,12 +87,11 @@
 
 ## <span id="tools">Tools</span>
 
-### `pacman`
-
+<!--
 - [pacman/Tips and tricks](https://wiki.archlinux.org/index.php/Pacman/Tips_and_trick]) from [Arch Linux](https://archlinux.org/), January 2021.
-
-### TableGen
-
+-->
+- [Compiler Explorer][tools_godbolt] (type your C/C++ code in the left pane, then select "*x86-64 clang 13.0.1*" and add a new pane "*IR output*").
+- [Polly](https://polly.llvm.org/) &ndash; a high-level loop and data-locality optimizer and optimization infrastructure for LLVM.
 - [Utilizing TableGen for Non-Compiling Processes](https://www.embecosm.com/2015/04/14/utilizing-tablegen-for-non-compiling-processes/) by Simon Cook, April 2015.
 - [LLVM TableGen](https://wiki.aalto.fi/display/t1065450/LLVM+TableGen) by Sami Teräväinen, February 2015.
 

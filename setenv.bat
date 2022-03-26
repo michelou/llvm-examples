@@ -69,6 +69,8 @@ set _BASENAME=%~n0
 set _DRIVE_NAME=L
 set "_ROOT_DIR=%~dp0"
 
+set _LLVM_PREFIX_DEFAULT=LLVM-12
+
 call :env_colors
 set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
 set _ERROR_LABEL=%_STRONG_FG_RED%Error%_RESET%:
@@ -127,7 +129,7 @@ goto :eof
 :args
 set _BASH=0
 set _HELP=0
-set _LLVM_PREFIX=LLVM-12
+set _LLVM_PREFIX=%_LLVM_PREFIX_DEFAULT%
 set _VERBOSE=0
 set __N=0
 :args_loop
@@ -144,6 +146,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-llvm:11" ( set _LLVM_PREFIX=LLVM-11
     ) else if "%__ARG%"=="-llvm:12" ( set _LLVM_PREFIX=LLVM-12
     ) else if "%__ARG%"=="-llvm:13" ( set _LLVM_PREFIX=LLVM-13
+    ) else if "%__ARG%"=="-llvm:14" ( set _LLVM_PREFIX=LLVM-14
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -228,7 +231,7 @@ echo.
 echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-bash%__END%          start Git bash shell instead of Windows command prompt
 echo     %__BEG_O%-debug%__END%         show commands executed by this script
-echo     %__BEG_O%-llvm:^<8..13^>%__END%  select version of LLVM installation ^(default: %__BEG_N%11%__END%^)
+echo     %__BEG_O%-llvm:^<8..13^>%__END%  select version of LLVM installation ^(default: %__BEG_N%%_LLVM_PREFIX_DEFAULT%%__END%^)
 echo     %__BEG_O%-verbose%__END%       display progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
@@ -483,14 +486,14 @@ if not exist "%__VC_BATCH_FILE%" (
 if "%__VC_BATCH_FILE:Community=%"=="%__VC_BATCH_FILE%" ( set "_MSVC_HOME=%_MSVS_HOME%\BuildTools\VC"
 ) else ( set "_MSVC_HOME=%_MSVS_HOME%\Community\VC"
 )
-set __VS_CMAKE_CMD=
-for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" cmake.exe') do set "__VS_CMAKE_CMD=%%f"
-if not exist "%__VS_CMAKE_CMD%" (
-    echo %_ERROR_LABEL% Could not find file cmake.exe in directory "%_MSVS_HOME%" 1>&2
+set __MS_CMAKE_CMD=
+for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" cmake.exe') do set "__MS_CMAKE_CMD=%%f"
+if not exist "%__MS_CMAKE_CMD%" (
+    echo %_ERROR_LABEL% Could not find Microsoft CMake tool ^("%_MSVS_HOME%"^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
-for /f "delims=" %%i in ("%__VS_CMAKE_CMD%") do set "__VS_CMAKE_BIN_DIR=%%~dpi"
+for /f "delims=" %%i in ("%__MS_CMAKE_CMD%") do set "__VS_CMAKE_BIN_DIR=%%~dpi"
 for %%f in ("!__VS_CMAKE_BIN_DIR!\.") do set "_MSVS_CMAKE_HOME=%%~dpf"
 @rem call :subst_path "%_MSVS_HOME%"
 @rem if not %_EXITCODE%==0 goto :eof
@@ -674,12 +677,15 @@ if %__VERBOSE%==1 if defined CMAKE_HOME (
     if defined DOXYGEN_HOME echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
     if defined GIT_HOME echo    "GIT_HOME=%GIT_HOME%" 1>&2
     if defined LLVM_DIR echo    "LLVM_DIR=%LLVM_DIR%" 1>&2
-    echo    "LLVM_HOME=%LLVM_HOME%" 1>&2
-    echo    "MSVC_HOME=%MSVC_HOME%" 1>&2
-    echo    "MSVS_HOME=%MSVS_HOME%" 1>&2
+    if defined LLVM_HOME echo    "LLVM_HOME=%LLVM_HOME%" 1>&2
+    if defined MSVC_HOME echo    "MSVC_HOME=%MSVC_HOME%" 1>&2
+    if defined MSVS_HOME echo    "MSVS_HOME=%MSVS_HOME%" 1>&2
     if defined MSVS_CMAKE_HOME echo    "MSVS_CMAKE_HOME=%MSVS_CMAKE_HOME%" 1>&2
     if defined MSYS_HOME echo    "MSYS_HOME=%MSYS_HOME%" 1>&2
     if defined PYTHON_HOME echo    "PYTHON_HOME=%PYTHON_HOME%" 1>&2
+    if defined WINSDK_HOME echo    "WINSDK_HOME=%WINSDK_HOME%" 1>&2
+    echo Path associations: 1>&2
+    for /f "delims=" %%i in ('subst') do echo    %%i 1>&2
 )
 goto :eof
 
@@ -700,7 +706,7 @@ endlocal & (
         if not defined MSVS_HOME set "MSVS_HOME=%_MSVS_HOME%"
         if not defined MSYS_HOME set "MSYS_HOME=%_MSYS_HOME%"
         if not defined PYTHON_HOME set "PYTHON_HOME=%_PYTHON_HOME%"
-        if not defined SDK_HOME set "SDK_HOME=%_WINSDK_HOME%"
+        if not defined WINSDK_HOME set "WINSDK_HOME=%_WINSDK_HOME%"
         set "PATH=%PATH%%_CMAKE_PATH%%_MSYS_PATH%%_GIT_PATH%;%_ROOT_DIR%bin"
         call :print_env %_VERBOSE%
         if %_BASH%==1 (
