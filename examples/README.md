@@ -6,7 +6,7 @@
     <a href="https://llvm.org/" rel="external"><img style="border:0;width:120px;" src="../docs/images/llvm.png" alt="LLVM project"/></a>
   </td>
   <td style="border:0;padding:0;vertical-align:text-top;">
-    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/" rel="external">LLVM</a> project and tested on a Windows machine.
+    Directory <a href="."><strong><code>examples\</code></strong></a> contains <a href="https://llvm.org/" rel="external" alt="LLVM">LLVM</a> code examples coming from various websites - mostly from the <a href="https://llvm.org/" rel="external">LLVM</a> project and tested on a Windows machine.
   </td>
   </tr>
 </table>
@@ -83,7 +83,7 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -121,7 +121,7 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
@@ -156,8 +156,9 @@ Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [
 <b>&gt; <a href="hello/build.bat">build</a> -debug -gcc clean run</b>
 [build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : CPPCHECK_HOME="C:\Program Files\Cppcheck"
-[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.2" MSYS_HOME="C:\opt\msys64"
+[build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
+[build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
@@ -184,14 +185,14 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Command [**`build -debug lint`**](hello/build.bat) preformes code analysis with the [Cppcheck](http://cppcheck.sourceforge.net/) tool :
+Command [**`build -debug lint`**](hello/build.bat) performs code analysis with the [Cppcheck](http://cppcheck.sourceforge.net/) tool :
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug lint</b>
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.2"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
@@ -227,10 +228,10 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
   Subcommands:
     clean          delete generated files
     compile        generate executable
-    doc            generate HTML documentation with <a href="https://www.doxygen.nl/">Doxygen</a>
+    doc            generate HTML documentation with <a href="https://www.doxygen.nl/" rel="external">Doxygen</a>
     dump           dump PE/COFF infos for generated executable
     help           display this help message
-    lint           analyze C++ source files with <a href="http://cppcheck.sourceforge.net/">Cppcheck</a>
+    lint           analyze C++ source files with <a href="http://cppcheck.sourceforge.net/" rel="external">Cppcheck</a>
     run            run executable
 </pre>
 
@@ -277,12 +278,13 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : DOXYGEN_HOME="C:\opt\doxygen-1.9.1" MSYS_HOME="C:\opt\msys64"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
+[build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
 [build] Configuration: Debug, Platform: x64
 [build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
-[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-10.0.0" ..
+[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-14.0.0" ..
 -- Building for: Visual Studio 16 2019
 -- The CXX compiler identification is MSVC 19.21.27702.2
 -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.21.27702/bin/Hostx64/x64/cl.exe
@@ -291,10 +293,10 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- LLVM installation directory: C:\opt\LLVM-10.0.0
--- Found LLVM 9.0.1
--- Using LLVMConfig.cmake in: C:/opt/LLVM-10.0.0/lib/cmake/llvm 
--- Using header files in: L:/llvm-10.0.0.src/include;L:/llvm-10.0.0.src/build/include 
+-- LLVM installation directory: C:\opt\LLVM-14.0.0
+-- Found LLVM 14.0.0
+-- Using LLVMConfig.cmake in: C:/opt/LLVM-14.0.0/lib/cmake/llvm 
+-- Using header files in: L:/llvm-14.0.0.src/include;L:/llvm-14.0.0.src/build/include 
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/JITTutorial1/build
@@ -337,7 +339,7 @@ Finally, one may wonder what's happen if we transform the above [IR code][llvm_i
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> run &gt; tut1.ll</b>
 &nbsp;
-<b>&gt; <a href="https://clang.llvm.org/docs/ClangCommandLineReference.html">clang</a> -Wno-override-module -o tut1.exe tut1.ll</b>
+<b>&gt; <a href="https://clang.llvm.org/docs/ClangCommandLineReference.html" ref="external">clang</a> -Wno-override-module -o tut1.exe tut1.ll</b>
 LINK : fatal error LNK1561: entry point must be defined
 clang: error: linker command failed with exit code 1561 (use -v to see invocation)
 </pre>
