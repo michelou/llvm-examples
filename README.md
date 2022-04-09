@@ -33,7 +33,7 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*March 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*April 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
 C:\opt\cmake-3.23.0-windows-x86_64\  <i>(  92 MB)</i>
@@ -421,7 +421,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.23.0-win64-x64.zip</a>        <i>( 35 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.23.0-win64-x64.zip</a>        <i>( 37 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.7-x64-Setup.msi</a>        <i>( 21 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.3.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.35.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
@@ -446,7 +446,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/March 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/April 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -461,7 +461,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
 [cmake_downloads]: https://cmake.org/download/
 [cmake_modules]: https://cmake.org/cmake/help/v3.23/manual/cmake-modules.7.html
-[cmake_relnotes]: https://cmake.org/cmake/help/latest/release/3.23.html
+[cmake_relnotes]: https://cmake.org/cmake/help/v3.23/release/3.23.html
 [doxygen_changelog]: https://www.doxygen.nl/manual/changelog.html
 [doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
 [git_downloads]: https://git-scm.com/download/win
