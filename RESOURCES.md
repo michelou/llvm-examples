@@ -48,11 +48,11 @@
 - [Advanced Compiler Design with LLVM][book_chisnall] by David Chisnall, March 2022.<br/><span style="font-size:80%;">(Pearson, ISBN  978-0-1337-9864-7, 360 pages)</span>
 - [Learn LLVM 12][book_nacke] by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8392-1350-2, 392 pages)</span>
 - [LLVM Techniques, Tips and Best Practices][book_hsu] by Min-Yih Hsu, April 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8388-2495-2, 370 pages)</span>
-- [*Tutorial: Creating an LLVM Backend for the Cpu0 Architecture*][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
-- [*Mapping High Level Constructs to LVVM IR*](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
-- [*LLVM Essentials*][book_sarda] by S. Sarda &amp; M. Pandey, December 2015<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-080-1, 166 pages)</span>.
-- [*LLVM Cookbook*][book_pandey], by M. Pandey &amp; S. Sarda, May 2015.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-598-1, 296 pages)</span>
-- [*Getting Started with LLVM Core Libraries*][book_lopez] by B. Cardoso Lopez &amp; R. Auler, August 2014.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78216-692-4, 314 pages)</span>
+- [Tutorial: Creating an LLVM Backend for the Cpu0 Architecture][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
+- [Mapping High Level Constructs to LVVM IR](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
+- [LLVM Essentials][book_sarda] by S. Sarda &amp; M. Pandey, December 2015<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-080-1, 166 pages)</span>.
+- [LLVM Cookbook][book_pandey], by M. Pandey &amp; S. Sarda, May 2015.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-598-1, 296 pages)</span>
+- [Getting Started with LLVM Core Libraries][book_lopez] by B. Cardoso Lopez &amp; R. Auler, August 2014.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78216-692-4, 314 pages)</span>
 
 
 ## <span id="courses">Courses</span>
@@ -106,7 +106,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/April 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/May 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

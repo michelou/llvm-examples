@@ -17,33 +17,33 @@
 
 ## <span id="usage_examples">Usage examples</span>
 
-Directory **`llvm-14.0.0.src\`** is setup as follows:
+Directory **`llvm-14.0.3.src\`** is setup as follows:
 <pre style="font-size:80%;">
-<b>&gt; <a href="https://curl.haxx.se/docs/manpage.html">curl</a> -sL -o llvm-14.0.0.src.tar.xz <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.0">llvm-14.0.0.src.tar.xz</a></b>
-<b>&gt; <a href="http://linuxcommand.org/lc3_man_pages/tar1.html">tar</a> xzvf llvm-14.0.0.src.tar.xz</b>
-<b>&gt; <a href="https://man7.org/linux/man-pages/man1/cp.1.html">cp</cp> <a href="bin/llvm/build.bat">bin\llvm\build.bat</a> llvm-14.0.0.src</b>
-<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-14.0.0.src</b>
+<b>&gt; <a href="https://curl.haxx.se/docs/manpage.html">curl</a> -sL -o llvm-14.0.3.src.tar.xz <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.0">llvm-14.0.3.src.tar.xz</a></b>
+<b>&gt; <a href="http://linuxcommand.org/lc3_man_pages/tar1.html">tar</a> xzvf llvm-14.0.3.src.tar.xz</b>
+<b>&gt; <a href="https://man7.org/linux/man-pages/man1/cp.1.html">cp</cp> <a href="bin/llvm/build.bat">bin\llvm\build.bat</a> llvm-14.0.3.src</b>
+<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-14.0.3.src</b>
 </pre>
 
-> **:mag_right:** In our case we have the choice between the source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\`, `llvm-10.0.1.src\`, `llvm-11.0.1.src\`, `llvm-11.1.0.src\`, `llvm-12.0.1.src\`, `llvm-13.0.1.src\` and `llvm-14.0.0.src\`.
+> **:mag_right:** In our case we have the choice between the source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\`, `llvm-10.0.1.src\`, `llvm-11.0.1.src\`, `llvm-11.1.0.src\`, `llvm-12.0.1.src\`, `llvm-13.0.1.src\` and `llvm-14.0.3.src\`.
 
 Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a></b>
-L:\llvm-14.0.0.src
+L:\llvm-14.0.3.src
 &nbsp;
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose compile</b>
 Toolset: MSVC/MSBuild, Project: LLVM
 **********************************************************************
-** Visual Studio 2019 Developer Command Prompt v16.9.1
+** Visual Studio 2019 Developer Command Prompt v16.11.11
 ** Copyright (c) 2019 Microsoft Corporation
 **********************************************************************
 [vcvarsall.bat] Environment initialized for: 'x64'
 INCLUDE="..."
 LIB="..."
 Configuration: Debug, Platform: x64
-[build] Current directory is: L:\llvm-14.0.0.src\build
+[build] Current directory is: L:\llvm-14.0.3.src\build
 [...]
 &nbsp;
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/dir">dir</a> build\Release\bin\ll?.exe | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> /b [0-9]</b>
@@ -57,31 +57,31 @@ Configuration: Debug, Platform: x64
 > Generate LLVM executables (LLVM.sln)
 > Execute build\Release\bin\lli.exe --version
 > LLVM (http://llvm.org/):
->   LLVM version 14.0.0
+>   LLVM version 14.0.3
 >   Optimized build.
 >   Default target: x86_64-pc-windows-msvc
 >   Host CPU: haswell
 </pre>
 
-Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-14.0.0\`**).
+Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-14.0.3\`**).
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose install</b>
-Do really want to copy files from 'build\' to 'c:\opt\LLVM-14.0.0\' (Y/N)? y
-Copy files from directory build\Release\bin to C:\opt\LLVM-14.0.0\bin\
-Copy files from directory build\Release\lib to C:\opt\LLVM-14.0.0\lib\
-Copy files from directory build\lib\cmake to C:\opt\LLVM-14.0.0\lib\cmake\
-Copy files from directory include to C:\opt\LLVM-14.0.0\include\
+Do really want to copy files from 'build\' to 'c:\opt\LLVM-14.0.3\' (Y/N)? y
+Copy files from directory build\Release\bin to C:\opt\LLVM-14.0.3\bin\
+Copy files from directory build\Release\lib to C:\opt\LLVM-14.0.3\lib\
+Copy files from directory build\lib\cmake to C:\opt\LLVM-14.0.3\lib\cmake\
+Copy files from directory include to C:\opt\LLVM-14.0.3\include\
 </pre>
 
 > **:mag_right:** Before installation our [LLVM] installation directory contains 14 `llvm-*.exe` executables:
 > <pre style="font-size:80%;">
-> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-14.0.0 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
+> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-14.0.3 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
 > 14
 > </pre>
 > and after installation it contains 75 `llvm-*.exe` executables:
 > <pre style="font-size:80%;">
-> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-14.0.0 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
+> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-14.0.3 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
 > 75
 > </pre>
 
@@ -89,12 +89,12 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /t clang llc lld lldb lli opt</b>
-  98156032   09.07.2021      11:36:08  C:\opt\LLVM-12.0.1\bin\clang.exe
-  58764288   12.02.2022      23:53:02  C:\opt\LLVM-12.0.1\bin\llc.exe
-  70559232   09.07.2021      11:38:10  C:\opt\LLVM-12.0.1\bin\lld.exe
-    239104   09.07.2021      11:39:58  C:\opt\LLVM-12.0.1\bin\lldb.exe
-  20665856   12.02.2022      23:53:15  C:\opt\LLVM-12.0.1\bin\lli.exe
-  63711744   12.02.2022      23:57:38  C:\opt\LLVM-12.0.1\bin\opt.exe
+  98156032   09.07.2021      11:36:08  C:\opt\LLVM-14.0.3\bin\clang.exe
+  58764288   12.02.2022      23:53:02  C:\opt\LLVM-14.0.3\bin\llc.exe
+  70559232   09.07.2021      11:38:10  C:\opt\LLVM-14.0.3\bin\lld.exe
+    239104   09.07.2021      11:39:58  C:\opt\LLVM-14.0.3\bin\lldb.exe
+  20665856   12.02.2022      23:53:15  C:\opt\LLVM-14.0.3\bin\lli.exe
+  63711744   12.02.2022      23:57:38  C:\opt\LLVM-14.0.3\bin\opt.exe
 </pre>
 
 <!--
@@ -113,7 +113,7 @@ No issue so far.
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/April 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/May 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -121,7 +121,7 @@ No issue so far.
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
-[llvm_clang]: https://releases.llvm.org/12.0.1/tools/clang/docs/ClangCommandLineReference.html
+[llvm_clang]: https://releases.llvm.org/14.0.0/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
 [llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.0
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
