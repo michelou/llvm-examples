@@ -43,7 +43,7 @@
 - [Compiling With Clang Optimization Flags][blog_exterman] by Dori Exterman, August 2021.
 - [Building llvm-project with Ninja on MacOS][blog_guo] by Yilong Guo (Intel), May 2021.
 
-## <span id="books">Books</span>
+## <span id="books">Books</span>[**&#x25B4;**](#top)
 
 - [Advanced Compiler Design with LLVM][book_chisnall] by David Chisnall, March 2022.<br/><span style="font-size:80%;">(Pearson, ISBN  978-0-1337-9864-7, 360 pages)</span>
 - [Learn LLVM 12][book_nacke] by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8392-1350-2, 392 pages)</span>
@@ -64,7 +64,7 @@
 - [EEECS 582: Advanced Compilers](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
 - [Advanced compilers][course_hirvisalo] by Vesa Hirvisalo (instructor), 2015.
 
-## <span id="news">News</span>
+## <span id="news">News</span>[**&#x25B4;**](#top)
 
 - [*LLVM Weekly*][news_llvmweekly] - A weekly newsletter covering developments in LLVM, Clang, and related projects.
 - [*Planet Clang*][news_planet_clang] - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
@@ -106,7 +106,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/May 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

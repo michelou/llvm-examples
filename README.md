@@ -17,12 +17,12 @@ This project depends on the following external software for the **Microsoft Wind
 
 - [CMake 3.23][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [LLVM 14 Windows binaries][llvm14_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm14_relnotes])
-- [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[2](#footnote_02)</sup>  ([*release notes*][vs2019_relnotes])
+- [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[2](#footnote_02)</sup> ([*release notes*][vs2019_relnotes])
 - [Python 3.10][python_downloads] ([*changelog*][python_changelog])
 
 Optionally one may also install the following software:
 
-- [Cppcheck 2.7][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
+- [Cppcheck 2.8][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
 - [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [Git 2.36][git_downloads] ([*release notes*][git_relnotes])
 - [LLVM 12 Windows binaries][llvm12_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm12_relnotes])
@@ -33,10 +33,10 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*May 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*June 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.23.1-windows-x86_64\  <i>(  92 MB)</i>
+C:\opt\cmake-3.23.2-windows-x86_64\  <i>(  92 MB)</i>
 C:\opt\doxygen-1.9.4\                <i>( 120 MB)</i>
 C:\opt\Git-2.36.1\                   <i>( 282 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
@@ -44,7 +44,7 @@ C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
 C:\opt\LLVM-11.1.0\                  <i>(1.5 resp 3.0 GB)</i>
 C:\opt\LLVM-12.0.1\                  <i>(1.5 resp 3.7 GB)</i>
-C:\opt\LLVM-14.0.3\                  <i>(2.1 resp 3.1 GB)</i>
+C:\opt\LLVM-14.0.4\                  <i>(2.1 resp 3.1 GB)</i>
 C:\opt\msys64\                       <i>(2.85 GB)</i>
 C:\opt\ninja-1.10.2\                 <i>( 0.5 MB)</i>
 C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
@@ -74,7 +74,7 @@ llvm-10.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llv
 llvm-11.1.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>)</i>
 llvm-12.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>)</i>
 llvm-13.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>)</i>
-llvm-14.0.3.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.3">llvm-14.0.3.src.tar.xz</a>)</i>
+llvm-14.0.4.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.4">llvm-14.0.4.src.tar.xz</a>)</i>
 llvm-essentials{<a href="./llvm-essentials/README.md">README.md</a>, <a href="./llvm-essentials/1_2_Getting_familiar_with_LLVM_IR/">1_2_Getting_familiar_with_LLVM_IR</a>, etc.}
 <a href="BUILD.md">BUILD.md</a>
 README.md
@@ -93,7 +93,7 @@ where
 - directory **`llvm-11.1.0.src\`** contains the [LLVM] 11 source code distribution.
 - directory **`llvm-12.0.1.src\`** contains the [LLVM] 12 source code distribution.
 - directory **`llvm-13.0.1.src\`** contains the [LLVM] 13 source code distribution.
-- directory **`llvm-14.0.3.src\`** contains the [LLVM] 14 source code distribution.
+- directory **`llvm-14.0.4.src\`** contains the [LLVM] 14 source code distribution.
 - file [**`BUILD.md`**](BUILD.md) describes the build from the source distribution.
 - file [**`README.md`**](README.md) is the Markdown document for this page.
 - file [**`RESOURCES.md`**](RESOURCES.md) is the [Markdown][github_markdown] document presenting external resources.
@@ -128,7 +128,7 @@ We distinguish different sets of batch commands:
      Subcommands:
        help           display this help message</pre>
 
-2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-12.0.1\`**).
+2. [**`bin\llvm\build.bat`**](bin/llvm/build.bat) - This batch command generates/installs additional files such as executables, header files, library files, [CMake modules][cmake_modules] not available in [LLVM] installation directory (in our case **`C:\opt\LLVM-14.0.4\`**).
 
    <pre style="font-size:80%;max-width:484px;">
    <b>&gt; <a href="bin/llvm/build.bat">build</a> help</b>
@@ -147,7 +147,7 @@ We distinguish different sets of batch commands:
        run         run executable</pre>
 
 
-## <span id="usage">Usage examples</span>
+## <span id="usage">Usage examples</span>[**&#x25B4;**](#top)
 
 ### **`setenv.bat`**
 
@@ -156,12 +156,12 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 14.0.3, lli 14.0.3, opt 14.0.3, doxygen 1.9.4, pelook v1.73,
-   cmake 3.23.1, cppcheck 2.7, make 4.3, gcc 11.3.0, python 3.10.4, diff 3.8
+   clang 14.0.4, lli 14.0.4, opt 14.0.4, doxygen 1.9.4, pelook v1.73,
+   cmake 3.23.2, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.10.4, diff 3.8
    git 2.36.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
-C:\opt\LLVM-14.0.3\bin\clang.exe
+C:\opt\LLVM-14.0.4\bin\clang.exe
 C:\opt\Git-2.36.1\bin\git.exe
 C:\opt\Git-2.36.1\mingw64\bin\git.exe
 </pre>
@@ -174,14 +174,14 @@ Command **`setenv -verbose`** also displays the tool paths:
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 14.0.3, lli 14.0.3, opt 14.0.3, doxygen 1.9.4, pelook v1.73,
-   cmake 3.23.1, cppcheck 2.7, make 4.3, gcc 11.3.0, python 3.10.4, diff 3.8
+   clang 14.0.4, lli 14.0.4, opt 14.0.4, doxygen 1.9.4, pelook v1.73,
+   cmake 3.23.2, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.10.4, diff 3.8
    git 2.36.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
-   C:\opt\LLVM-14.0.3\bin\clang.exe
-   C:\opt\LLVM-14.0.3\bin\lli.exe
-   C:\opt\LLVM-14.0.3\bin\opt.exe
-   C:\opt\cmake-3.23.1\bin\cmake.exe
+   C:\opt\LLVM-14.0.4\bin\clang.exe
+   C:\opt\LLVM-14.0.4\bin\lli.exe
+   C:\opt\LLVM-14.0.4\bin\opt.exe
+   C:\opt\cmake-3.23.2\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.10.4\python.exe
@@ -193,10 +193,10 @@ Tool paths:
    C:\opt\Git-2.36.1\mingw64\bin\git.exe
    C:\opt\Git-2.36.1\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.23.1-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.23.2-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
-   "LLVM_HOME=C:\opt\LLVM-14.0.3"
+   "LLVM_HOME=C:\opt\LLVM-14.0.4"
    "MSVC_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
    "MSVS_CMAKE_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
@@ -208,7 +208,7 @@ Environment variables:
 
 We wrote the [batch file][batch_file] [**`build.bat`**](bin/llvm/build.bat) to generate additional Windows binaries not available in the <a href="https://llvm.org/">LLVM</a> binary distribution. 
 
-> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-14.0.3-win64.exe`][llvm14_downloads]).
+> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-14.0.4-win64.exe`][llvm14_downloads]).
 
 It provides the following options and subcommands:
 
@@ -240,7 +240,7 @@ See document [**`examples\README.md`**](examples/README.md).
 See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 
 
-## <span id="footnotes">Footnotes</span>
+## <span id="footnotes">Footnotes</span>[**&#x25B4;**](#top)
 
 <span id="footnote_01">[1]</span> ***LLVM version*** [↩](#anchor_01)
 
@@ -280,12 +280,12 @@ Error: Generation of build configuration failed
 <span id="footnote_03">[3]</span> ***Cppcheck installation*** [↩](#anchor_03)
 
 <dl><dd>
-The <a href="http://cppcheck.sourceforge.net/">Cppcheck</a> static analysis tool can be installed in two ways on MS Windows, namely:
+The <a href="http://cppcheck.sourceforge.net/" rel="external">Cppcheck</a> static analysis tool can be installed in two ways on MS Windows, namely:
 </dd>
 <dd>
 <ul>
-<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download"><code>cppcheck-2.6-x64-Setup.msi</code></a> from the Windows desktop.
-<li>MSYS2 package <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64"><code>mingw-w64-x86_64-cppcheck</code></a>.</li>
+<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download" rel="external"><code>cppcheck-2.6-x64-Setup.msi</code></a> from the Windows desktop.
+<li>MSYS2 package <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64" rel="external"><code>mingw-w64-x86_64-cppcheck</code></a>.</li>
 </ul>
 </dd>
 <dd>
@@ -335,7 +335,7 @@ We give here three differences between <a href="http://repo.msys2.org/distrib/x8
 <tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
 <tr>
   <td>Version/architecture</td>
-  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 11.2</code></a></td>
+  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 11.3</code></a></td>
   <td><a href="https://gcc.gnu.org/gcc-8/changes.html"><code>gcc 8.1</code></a></td>
 </tr>
 <tr>
@@ -421,8 +421,8 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.23.1-win64-x64.zip</a>        <i>( 37 MB)</i>
-<a href="http://cppcheck.sourceforge.net/">cppcheck-2.7-x64-Setup.msi</a>        <i>( 21 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.23.2-win64-x64.zip</a>        <i>( 37 MB)</i>
+<a href="http://cppcheck.sourceforge.net/">cppcheck-2.8-x64-Setup.msi</a>        <i>( 21 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.4.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.36.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
@@ -436,7 +436,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>            <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>            <i>( 43 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.3">llvm-14.0.3.src.tar.xz</a>            <i>( 47 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.4">llvm-14.0.4.src.tar.xz</a>            <i>( 47 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
 <a href="https://www.python.org/downloads/windows/">python-3.10.4-amd64.exe</a>           <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
@@ -448,7 +448,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/May 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -489,8 +489,8 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [llvm12_relnotes]: https://releases.llvm.org/12.0.1/docs/ReleaseNotes.html
 [llvm13_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1
 [llvm13_relnotes]: https://releases.llvm.org/13.0.1/docs/ReleaseNotes.html
-[llvm14_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.3
-[llvm14_relnotes]: https://releases.llvm.org/14.0.3/docs/ReleaseNotes.html
+[llvm14_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.4
+[llvm14_relnotes]: https://releases.llvm.org/14.0.0/docs/ReleaseNotes.html
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [ninja_downloads]: https://github.com/ninja-build/ninja/releases/tag/v1.10.2
 [ninja_relnotes]: https://github.com/ninja-build/ninja/releases/tag/v1.10.2

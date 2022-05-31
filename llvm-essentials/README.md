@@ -52,10 +52,10 @@ attributes #0 = { noinline nounwind optnone [...] }
 
 !0 = !{i32 1, !"wchar_size", i32 2}
 !1 = !{i32 7, !"PIC Level", i32 2}
-!2 = !{!"clang version 14.0.0"}
+!2 = !{!"clang version 14.0.4"}
 </pre>
 
-## <span id="3_2">3.2 Getting_address_of_element</span>
+## <span id="3_2">3.2 Getting_address_of_element</span>[**&#x25B4;**](#top)
 
 This code example consists of two files: [**`src\toy.cpp`**](./3_2_Getting_address_of_element/src/toy.cpp) and [**`build.bat`**](./3_2_Getting_address_of_element/build.bat).
 
@@ -102,7 +102,7 @@ entry:
 }
 </pre>
 
-## <span id="3_4">3.4 Writing to memory</span>
+## <span id="3_4">3.4 Writing to memory</span>[**&#x25B4;**](#top)
 
 This code example consists of two files: [**`src\toy.cpp`**](./3_4_Writing_to_memory/src/toy.cpp) and [**`build.bat`**](./3_4_Writing_to_memory/build.bat).
 
@@ -143,18 +143,18 @@ entry:
 <span id="footnote_02">[2]</span> **`main`** ***function not found*** [↩](#anchor_02)
 
 <dl><dd>
-the assembly code in file `add.ll` can not be executed with <a href="https://llvm.org/docs/CommandGuide/lli.html"><code><b>lli.exe</b></code></a> since it doesn't define a <code>main</code> function as the program entry point : 
+The assembly code in file <code>add.ll</code> can not be executed with <a href="https://llvm.org/docs/CommandGuide/lli.html"><code><b>lli.exe</b></code></a> since it doesn't define a <code>main</code> function as the program entry point : 
 </dd>
 <dd>
 <pre style="font-size:80%;">
 <b>&gt; %LLVM_HOME%\bin\<a href="https://llvm.org/docs/CommandGuide/lli.html">lli.exe</a> build\add.ll</b>
-C:\opt\LLVM-14.0.0\\bin\lli.exe: error: 'main' function not found in module.
+C:\opt\LLVM-14.0.4\bin\lli.exe: error: 'main' function not found in module.
 </pre>
 </dd></dl>
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/March 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- hyperrefs -->

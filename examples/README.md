@@ -83,7 +83,7 @@ Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -121,7 +121,7 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
@@ -157,7 +157,7 @@ Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [
 [build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
@@ -192,7 +192,7 @@ Command [**`build -debug lint`**](hello/build.bat) performs code analysis with t
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
@@ -278,7 +278,7 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.3"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
@@ -295,8 +295,8 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 -- Detecting CXX compile features - done
 -- LLVM installation directory: C:\opt\LLVM-14.0.0
 -- Found LLVM 14.0.0
--- Using LLVMConfig.cmake in: C:/opt/LLVM-14.0.0/lib/cmake/llvm 
--- Using header files in: L:/llvm-14.0.0.src/include;L:/llvm-14.0.0.src/build/include 
+-- Using LLVMConfig.cmake in: C:/opt/LLVM-14.0.4/lib/cmake/llvm 
+-- Using header files in: L:/llvm-14.0.4.src/include;L:/llvm-14.0.4.src/build/include 
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/JITTutorial1/build
@@ -681,7 +681,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/April 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
