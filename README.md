@@ -27,7 +27,7 @@ Optionally one may also install the following software:
 - [Git 2.36][git_downloads] ([*release notes*][git_relnotes])
 - [LLVM 12 Windows binaries][llvm12_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm12_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04">[4](#footnote_04)</sup>
-- [Ninja 1.10][ninja_downloads] ([*release notes*][ninja_relnotes])
+- [Ninja 1.11][ninja_downloads] ([*release notes*][ninja_relnotes])
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
@@ -46,7 +46,7 @@ C:\opt\LLVM-11.1.0\                  <i>(1.5 resp 3.0 GB)</i>
 C:\opt\LLVM-12.0.1\                  <i>(1.5 resp 3.7 GB)</i>
 C:\opt\LLVM-14.0.4\                  <i>(2.1 resp 3.1 GB)</i>
 C:\opt\msys64\                       <i>(2.85 GB)</i>
-C:\opt\ninja-1.10.2\                 <i>( 0.5 MB)</i>
+C:\opt\ninja-1.11.0\                 <i>( 0.5 MB)</i>
 C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 C:\opt\Python-3.10.4\                <i>( 201 MB)</i>
@@ -438,6 +438,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>            <i>( 43 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.4">llvm-14.0.4.src.tar.xz</a>            <i>( 47 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
+<a href="https://github.com/ninja-build/ninja/releases/tag/v1.11.0">ninja-win.zip</a>                     <i>(0.2 MB)</i>
 <a href="https://www.python.org/downloads/windows/">python-3.10.4-amd64.exe</a>           <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
 </pre>
@@ -477,7 +478,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [linux_opt]: https://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
-[llvm_clang]: https://releases.llvm.org/14.0.3/tools/clang/docs/ClangCommandLineReference.html
+[llvm_clang]: https://releases.llvm.org/14.0.0/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
@@ -492,8 +493,8 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [llvm14_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.4
 [llvm14_relnotes]: https://releases.llvm.org/14.0.0/docs/ReleaseNotes.html
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
-[ninja_downloads]: https://github.com/ninja-build/ninja/releases/tag/v1.10.2
-[ninja_relnotes]: https://github.com/ninja-build/ninja/releases/tag/v1.10.2
+[ninja_downloads]: https://github.com/ninja-build/ninja/releases/tag/v1.11.0
+[ninja_relnotes]: https://github.com/ninja-build/ninja/releases/tag/v1.11.0
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
 [python_changelog]: https://docs.python.org/release/3.10.4/whatsnew/changelog.html

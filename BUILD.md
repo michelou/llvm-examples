@@ -31,7 +31,7 @@ Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the add
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a></b>
-L:\llvm-14.0.3.src
+L:\llvm-14.0.4.src
 &nbsp;
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose compile</b>
 Toolset: MSVC/MSBuild, Project: LLVM
@@ -123,7 +123,7 @@ No issue so far.
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
 [llvm_clang]: https://releases.llvm.org/14.0.0/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.0
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.4
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
