@@ -36,9 +36,9 @@ Optionally one may also install the following software:
 For instance our development environment looks as follows (*July 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.24.0-windows-x86_64\  <i>(  92 MB)</i>
+C:\opt\cmake-3.24.0-windows-x86_64\  <i>(  95 MB)</i>
 C:\opt\doxygen-1.9.4\                <i>( 120 MB)</i>
-C:\opt\Git-2.37.1\                   <i>( 282 MB)</i>
+C:\opt\Git-2.37.1\                   <i>( 289 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
@@ -51,6 +51,8 @@ C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 C:\opt\Python-3.10.5\                <i>( 201 MB)</i>
 </pre>
+
+<!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB -->
 
 <!--
 https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
