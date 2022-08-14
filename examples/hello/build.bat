@@ -32,6 +32,7 @@ goto end
 :env
 set _BASENAME=%~n0
 set "_ROOT_DIR=%~dp0"
+set _TIMER=0
 
 call :env_colors
 set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
@@ -491,6 +492,7 @@ if not %ERRORLEVEL%==0 (
 goto :eof
 
 :test
+echo nyi
 goto :eof
 
 @rem output parameter: _DURATION

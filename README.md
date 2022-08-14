@@ -1,4 +1,4 @@
-# <span id="top">LLVM on Microsoft Windows</span>
+# <span id="top">Playing with LLVM on Windows</span>
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
@@ -33,12 +33,12 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*July 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*August 2022*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
 C:\opt\cmake-3.24.0-windows-x86_64\  <i>(  95 MB)</i>
 C:\opt\doxygen-1.9.4\                <i>( 120 MB)</i>
-C:\opt\Git-2.37.1\                   <i>( 289 MB)</i>
+C:\opt\Git-2.37.2\                   <i>( 289 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
@@ -49,7 +49,7 @@ C:\opt\msys64\                       <i>(2.85 GB)</i>
 C:\opt\ninja-1.11.0\                 <i>( 0.5 MB)</i>
 C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
-C:\opt\Python-3.10.5\                <i>( 201 MB)</i>
+C:\opt\Python-3.10.6\                <i>(  61 MB)</i>
 </pre>
 
 <!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB -->
@@ -159,13 +159,13 @@ Command [**`setenv`**](setenv.bat) is executed once to setup our development env
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 14.0.6, lli 14.0.6, opt 14.0.6, doxygen 1.9.4, pelook v1.73,
-   cmake 3.24.0, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.10.5, diff 3.8
-   git 2.37.1.windows.1, bash 4.4.23(1)-release
+   cmake 3.24.0, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.10.6, diff 3.8
+   git 2.37.2.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-14.0.6\bin\clang.exe
-C:\opt\Git-2.37.1\bin\git.exe
-C:\opt\Git-2.37.1\mingw64\bin\git.exe
+C:\opt\Git-2.37.2\bin\git.exe
+C:\opt\Git-2.37.2\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -177,8 +177,8 @@ Command **`setenv -verbose`** also displays the tool paths:
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 14.0.6, lli 14.0.6, opt 14.0.6, doxygen 1.9.4, pelook v1.73,
-   cmake 3.24.0, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.10.5, diff 3.8
-   git 2.37.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
+   cmake 3.24.0, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.10.6, diff 3.8
+   git 2.37.2.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-14.0.6\bin\clang.exe
    C:\opt\LLVM-14.0.6\bin\lli.exe
@@ -186,14 +186,14 @@ Tool paths:
    C:\opt\cmake-3.24.0\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
-   C:\opt\Python-3.10.5\python.exe
+   C:\opt\Python-3.10.6\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.37.1\usr\bin\diff.exe
-   C:\opt\Git-2.37.1\bin\git.exe
-   C:\opt\Git-2.37.1\mingw64\bin\git.exe
-   C:\opt\Git-2.37.1\bin\bash.exe
+   C:\opt\Git-2.37.2\usr\bin\diff.exe
+   C:\opt\Git-2.37.2\bin\git.exe
+   C:\opt\Git-2.37.2\mingw64\bin\git.exe
+   C:\opt\Git-2.37.2\bin\bash.exe
 Environment variables:
    "CMAKE_HOME=C:\opt\cmake-3.24.0-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
@@ -203,7 +203,7 @@ Environment variables:
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
    "MSVS_CMAKE_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
    "MSYS_HOME=C:\opt\msys64"
-   "PYTHON_HOME=C:\opt\Python-3.10.5"
+   "PYTHON_HOME=C:\opt\Python-3.10.6"
 </pre>
 
 ### **`llvm-X.Y.Z.src\build.bat`**
@@ -424,13 +424,13 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://cmake.org/download/">cmake-3.24.0-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.8-x64-Setup.msi</a>        <i>( 21 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.4.windows.x64.bin.zip</a> <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.37.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.37.2-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">LLVM-12.0.1-win64.exe</a>             <i>(182 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">LLVM-13.0.1-win64.exe</a>             <i>(228 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">LLVM-14.0.6-win64.exe</a>             <i>(263 MB)</a>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">LLVM-14.0.6-win64.exe</a>             <i>(263 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>             <i>( 29 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>            <i>( 31 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
@@ -439,7 +439,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">llvm-14.0.6.src.tar.xz</a>            <i>( 47 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
 <a href="https://github.com/ninja-build/ninja/releases/tag/v1.11.0">ninja-win.zip</a>                     <i>(0.2 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.10.5-amd64.exe</a>           <i>( 27 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.10.6-amd64.exe</a>           <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
 </pre>
 </dd>
@@ -449,7 +449,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -469,7 +469,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.37.1.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.37.2.txt
 [github_markdown]: https://github.github.com/gfm/
 [golang_examples]: https://github.com/michelou/golang-examples
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
@@ -497,7 +497,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [ninja_relnotes]: https://github.com/ninja-build/ninja/releases/tag/v1.11.0
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
-[python_changelog]: https://docs.python.org/release/3.10.5/whatsnew/changelog.html
+[python_changelog]: https://docs.python.org/release/3.10.6/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
 [rust_examples]: https://github.com/michelou/rust-examples
 [scala3_examples]: https://github.com/michelou/dotty-examples

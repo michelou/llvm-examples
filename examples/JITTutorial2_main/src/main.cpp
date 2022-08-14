@@ -27,7 +27,7 @@ int main(int argc, char**argv) {
     verifyModule(*Mod);
 
     legacy::PassManager PM;
-    PM.add(createPrintModulePass(outs()));
+    PM.add((Pass*) createPrintModulePass(outs()));
     PM.run(*Mod);
 
     delete Mod;  
@@ -36,6 +36,7 @@ int main(int argc, char**argv) {
 
 #define CONST_INT32(X) ConstantInt::get(Ctx, APInt(32, X))
 
+static Type* TYPE_INT8 = Type::getInt8Ty(TheContext);
 static Type* TYPE_INT32 = Type::getInt32Ty(TheContext);
 // or: static Type* TYPE_INT32 = IntegerType::get(TheContext, 32);
 static Type* TYPE_CHAR_PTR = Type::getInt8PtrTy(TheContext);
@@ -43,9 +44,9 @@ static Type* TYPE_CHAR_PTR = Type::getInt8PtrTy(TheContext);
 static LoadInst* loadArrayElement(Module* Mod, IRBuilder<> Builder, LoadInst* ArrBase, unsigned i) {
     LLVMContext& Ctx = Mod->getContext();
     ConstantInt* Offset = ConstantInt::get(Ctx, APInt(64, i));
-    Value* ElemAddr = Builder.CreateInBoundsGEP(ArrBase, { Offset }); // addr = base + offset
-    LoadInst* elem_i = Builder.CreateLoad(ElemAddr, "elem_i");
-    elem_i->setAlignment(8); // arr[idx]
+    Value* ElemAddr = Builder.CreateInBoundsGEP(TYPE_INT8, ArrBase, { Offset }); // addr = base + offset
+    LoadInst* elem_i = Builder.CreateLoad(TYPE_INT8, ElemAddr, "elem_i");
+    elem_i->setAlignment(Align(8)); // arr[idx]
     
     return elem_i;
  }
@@ -76,18 +77,19 @@ static MainFrame createMainPrologue(Module* Mod, IRBuilder<> Builder, Function* 
     Value* argv = args++;
     argv->setName("argv");
 
-    AllocaInst* a0 = Builder.CreateAlloca(TYPE_INT32); a0->setAlignment(4);
-    AllocaInst* a1 = Builder.CreateAlloca(TYPE_INT32); a1->setAlignment(4);
+    Align align4(4), align8(8);
+    AllocaInst* a0 = Builder.CreateAlloca(TYPE_INT32); a0->setAlignment(align4);
+    AllocaInst* a1 = Builder.CreateAlloca(TYPE_INT32); a1->setAlignment(align4);
     Type* argvType = PointerType::get(TYPE_CHAR_PTR, 0);
-    AllocaInst* a2 = Builder.CreateAlloca(argvType); a2->setAlignment(8);
+    AllocaInst* a2 = Builder.CreateAlloca(argvType); a2->setAlignment(align8);
 
     ConstantInt* zero = ConstantInt::get(Ctx, APInt(32, 0));
-    StoreInst* s0 = Builder.CreateStore(zero, a0); s0->setAlignment(4);
-    StoreInst* s1 = Builder.CreateStore(argc, a1); s1->setAlignment(4);
-    StoreInst* s2 = Builder.CreateStore(argv, a2); s2->setAlignment(8);
+    StoreInst* s0 = Builder.CreateStore(zero, a0); s0->setAlignment(align4);
+    StoreInst* s1 = Builder.CreateStore(argc, a1); s1->setAlignment(align4);
+    StoreInst* s2 = Builder.CreateStore(argv, a2); s2->setAlignment(align8);
     
-    MainFrame Frame = { Builder.CreateLoad(a1), Builder.CreateLoad(a2) };
-    Frame.argv->setAlignment(8);
+    MainFrame Frame = { Builder.CreateLoad(TYPE_INT32, a1), Builder.CreateLoad(argvType, a2) };
+    Frame.argv->setAlignment(align8);
 
     return Frame;
 }

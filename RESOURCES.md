@@ -15,11 +15,11 @@
 - [A Brief Introduction to Clang-Tidy][article_clang_tidy], by Bartlomeij Filipek, January 2021.
 - [MIR: A lightweight JIT compiler project][article_mir], by Vladimir Makarov, January 2020.
 - [A look at LLVM Advanced Data Types][article_data_types] by Serge Guelton, April 2019.
-- [*Compiler Performance and LLVM*][article_compiler_perf] by Jonathan Goodwin, March 2019.
-- [*LLVM IR and Go*][article_ir_go] by Robin Eklind, December 2018.
-- [*How LLVM optimizes a function*](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
-- [*How LLVM optimizes power sums*][article_power_sums] by Krister Walfridsson, April 2018.
-- [*Adventures in JIT compilation: Part 3 - LLVM*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
+- [Compiler Performance and LLVM][article_compiler_perf] by Jonathan Goodwin, March 2019.
+- [LLVM IR and Go][article_ir_go] by Robin Eklind, December 2018.
+- [How LLVM optimizes a function](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
+- [How LLVM optimizes power sums][article_power_sums] by Krister Walfridsson, April 2018.
+- [Adventures in JIT compilation: Part 3 - LLVM](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
 - [*Adventures in JIT compilation: Part 2 - an x64 JIT*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-2-an-x64-jit/) by Eli Bendersky, March 2017.
 - [*Adventures in JIT compilation: Part 1 - an interpreter*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-1-an-interpreter/) by Eli Bendersky, March 2017.
 - [*A Tourist’s Guide to the LLVM Source Code*](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
@@ -42,6 +42,7 @@
 - [LLVM Infrastructure and Rust][blog_modebadze] by Beka Modebadze, December 2021.
 - [Compiling With Clang Optimization Flags][blog_exterman] by Dori Exterman, August 2021.
 - [Building llvm-project with Ninja on MacOS][blog_guo] by Yilong Guo (Intel), May 2021.
+- [Code alignment options in LLVM](https://easyperf.net/blog/2018/01/25/Code_alignment_options_in_llvm) by Denis Bakhvalov, January 2018.
 
 ## <span id="books">Books</span>[**&#x25B4;**](#top)
 
@@ -106,7 +107,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

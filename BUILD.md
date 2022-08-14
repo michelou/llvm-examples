@@ -25,7 +25,7 @@ Directory **`llvm-14.0.6.src\`** is setup as follows:
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-14.0.6.src</b>
 </pre>
 
-> **:mag_right:** In our case we have the choice between the source directories `llvm-8.0.1.src\`, `llvm-9.0.1.src\`, `llvm-10.0.1.src\`, `llvm-11.0.1.src\`, `llvm-11.1.0.src\`, `llvm-12.0.1.src\`, `llvm-13.0.1.src\` and `llvm-14.0.6.src\`.
+> **:mag_right:** In our case we successively worked with versions `8.0.1`, `9.0.1`, `10.0.1`, `11.0.1`, `11.1.0`, `12.0.1`, `13.0.1` of the [LLVM] source distribution and today we build our binaries from directory `llvm-14.0.6.src\`.
 
 Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
@@ -89,12 +89,12 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /t clang llc lld lldb lli opt</b>
- 105689600   25.05.2022      15:43:02  C:\opt\LLVM-14.0.6\bin\clang.exe
-  24143872   31.06.2022      00:32:53  C:\opt\LLVM-14.0.6\bin\llc.exe
-  77356544   25.05.2022      15:44:50  C:\opt\LLVM-14.0.6\bin\lld.exe
-    212480   25.05.2022      15:46:42  C:\opt\LLVM-14.0.6\bin\lldb.exe
-  22501376   31.06.2022      00:33:05  C:\opt\LLVM-14.0.6\bin\lli.exe
-  30115840   31.06.2022      00:41:12  C:\opt\LLVM-14.0.6\bin\opt.exe
+ 105695744   27.06.2022      10:46:14  C:\opt\LLVM-14.0.6\bin\clang.exe
+  24143872   14.08.2022      01:34:48  C:\opt\LLVM-14.0.6\bin\llc.exe
+  77358592   27.06.2022      10:48:04  C:\opt\LLVM-14.0.6\bin\lld.exe
+    212480   27.06.2022      10:50:04  C:\opt\LLVM-14.0.6\bin\lldb.exe
+  22501376   14.08.2022      01:35:01  C:\opt\LLVM-14.0.6\bin\lli.exe
+  30115840   14.08.2022      01:43:52  C:\opt\LLVM-14.0.6\bin\opt.exe
 </pre>
 
 <!--

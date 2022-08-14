@@ -24,7 +24,7 @@ int main(int argc, char**argv) {
     verifyModule(*Mod);
 
     legacy::PassManager PM;
-    PM.add(createPrintModulePass(outs()));
+    PM.add((Pass*) createPrintModulePass(outs()));
     PM.run(*Mod);
 
     delete Mod;
