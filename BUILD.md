@@ -27,7 +27,7 @@ Directory **`llvm-14.0.6.src\`** is setup as follows:
 
 > **:mag_right:** In our case we successively worked with versions `8.0.1`, `9.0.1`, `10.0.1`, `11.0.1`, `11.1.0`, `12.0.1`, `13.0.1` of the [LLVM] source distribution and today we build our binaries from directory `llvm-14.0.6.src\`.
 
-Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
+Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) <sup id="anchor_01">[1](#footnote_01)</sup> generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a></b>
@@ -97,23 +97,27 @@ We list below several executables in the [LLVM] installation directory; e.g. com
   30115840   14.08.2022      01:43:52  C:\opt\LLVM-14.0.6\bin\opt.exe
 </pre>
 
-<!--
-## <span id="troubleshooting">Troubleshooting</span>
+## <span id="footnotes">Footnotes</span>[**&#x25B4;**](#top)
 
-No issue so far.
-
-
-## <span id="footnotes">Footnotes</span>
-
-<a name="footnote_01">[1]</a> ***2 GraalVM editions*** [↩](#anchor_01)
+<a name="footnote_01">[1]</a> ***CmakeLists.txt*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
+We need to comment out the lines marked with <span style="color:green;"><code>#ME#</code></span> in file <code>CMakeLists.txt</code> in order to build a LLVM distribution in our Windows environment :
+<pre style="font-size:80%;">
+<b>if</b> (LLVM_INCLUDE_BENCHMARKS)
+  ...
+  <span style="color:green;"># Since LLVM requires C++11 it is safe to assume that std::regex is available.</span>
+  <b>set</b>(HAVE_STD_REGEX ON CACHE BOOL "OK" FORCE)
+  <span style="color:green;">#ME# add_subdirectory(${LLVM_THIRD_PARTY_DIR}/benchmark </span>
+  <span style="color:green;">#ME#   ${CMAKE_CURRENT_BINARY_DIR}/third-party/benchmark)</span>
+  <span style="color:green;">#ME# add_subdirectory(benchmarks)</span>
+<b>endif()</b>
+</pre>
 </p>
--->
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/August 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/October 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

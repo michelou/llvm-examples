@@ -127,10 +127,10 @@ Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clan
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is Clang 12.0.1 with GNU-like command-line
--- The CXX compiler identification is Clang 12.0.1 with GNU-like command-line
--- Check for working C compiler: C:/opt/LLVM-12.0.1/bin/clang.exe
--- Check for working C compiler: C:/opt/LLVM-12.0.1/bin/clang.exe -- works
+-- The C compiler identification is Clang 14.0.6 with GNU-like command-line
+-- The CXX compiler identification is Clang 14.0.6 with GNU-like command-line
+-- Check for working C compiler: C:/opt/LLVM-14.0.6/bin/clang.exe
+-- Check for working C compiler: C:/opt/LLVM-14.0.6/bin/clang.exe -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Detecting C compile features
@@ -284,7 +284,7 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
 [build] Configuration: Debug, Platform: x64
 [build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
-[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-14.0.0" ..
+[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-14.0.6" ..
 -- Building for: Visual Studio 16 2019
 -- The CXX compiler identification is MSVC 19.21.27702.2
 -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.21.27702/bin/Hostx64/x64/cl.exe
@@ -293,10 +293,10 @@ Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- LLVM installation directory: C:\opt\LLVM-14.0.0
--- Found LLVM 14.0.0
--- Using LLVMConfig.cmake in: C:/opt/LLVM-14.0.4/lib/cmake/llvm 
--- Using header files in: L:/llvm-14.0.4.src/include;L:/llvm-14.0.4.src/build/include 
+-- LLVM installation directory: C:\opt\LLVM-14.0.6
+-- Found LLVM 14.0.6
+-- Using LLVMConfig.cmake in: C:/opt/LLVM-14.0.6/lib/cmake/llvm 
+-- Using header files in: L:/llvm-14.0.6.src/include;L:/llvm-14.0.6.src/build/include 
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/JITTutorial1/build
@@ -617,27 +617,27 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <dd>
 <pre style="font-size:80%;">
 <b>@echo off</b>
-<b>setlocal enabledelayedexpansion</b>
+<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/setlocal"><b>setlocal</b></a> <b>enabledelayedexpansion</b>
 &nbsp;
 <i style="color:#66aa66;">@rem #########################################################################
 @rem ## Environment setup</i>
 &nbsp;
-<b>set</b> _EXITCODE=0
+<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1"><b>set</b></a> _EXITCODE=0
 &nbsp;
-<b>call <span style="color:#9966ff;">:env</span></b>
+<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <b><span style="color:#9966ff;">:env</span></b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
-<b>call <span style="color:#9966ff;">:props</span></b>
+<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <b><span style="color:#9966ff;">:props</span></b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
-<b>call <span style="color:#9966ff;">:args</span> %*</b>
+<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <b><span style="color:#9966ff;">:args</span> %*</b>
 <b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
 <i style="color:#66aa66;">@rem #########################################################################
 @rem ## Main</i>
 &nbsp;
 <b>for</b> %%i <b>in</b> (%_COMMANDS%) <b>do</b> (
-&nbsp;&nbsp;&nbsp;&nbsp;<b>call</b> <span style="color:#9966ff;">:%%i</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <span style="color:#9966ff;">:%%i</span>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
 )
 <b>goto <span style="color:#9966ff;">end</span></b>
@@ -675,13 +675,13 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 &nbsp;
 <span style="color:#9966ff;">:end</span>
 ...
-<b>exit</b> /b %_EXITCODE%
+<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/exit"><b>exit</b></a> /b %_EXITCODE%
 </pre>
 </dd></dl>
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/October 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
