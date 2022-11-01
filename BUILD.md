@@ -8,9 +8,9 @@
   </tr>
 </table>
 
-## <span id="build">`build.bat` command</span>
+## <span id="build">`build.bat`</span>
 
-[**`build.bat`**](bin/llvm/build.bat) consists of ~350 lines of batch/PowerShell code we wrote to generate additional Windows binaries not available in the <a href="https://llvm.org/" rel="external">LLVM</a> binary distribution.
+Command [**`build.bat`**](bin/llvm/build.bat) consists of ~350 lines of batch/PowerShell code we wrote to generate additional Windows binaries not available in the <a href="https://llvm.org/" rel="external">LLVM</a> binary distribution.
 
 > **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-14.0.6-win64.exe`][llvm_downloads]).
 
@@ -63,7 +63,7 @@ Configuration: Debug, Platform: x64
 >   Host CPU: haswell
 </pre>
 
-Running command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-14.0.6\`**).
+Command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-14.0.6\`**).
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose install</b>
@@ -117,7 +117,7 @@ We need to comment out the lines marked with <span style="color:green;"><code>#M
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/October 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/November 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

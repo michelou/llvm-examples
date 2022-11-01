@@ -154,7 +154,7 @@ C:\opt\LLVM-14.0.6\bin\lli.exe: error: 'main' function not found in module.
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/August 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/November 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- hyperrefs -->

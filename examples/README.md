@@ -27,9 +27,9 @@ Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** t
 
 Our main goal here is to refresh our knowledge of the build tools [**`Clang`**][llvm_clang], [**`CMake`**][gnu_cmake], [**`GCC`**][gnu_gcc], [**`GNU Make`**][gnu_make] and [**`MSBuild`**][windows_msbuild] (see also the page [*"Getting Started with the LLVM System using Microsoft Visual Studio"*][llvm_msvs] from the [LLVM documentation][llvm_docs]). 
 
-Command [**`build`**](hello/build.bat) with no argument displays the available options and subcommands:
+Command [**`build.bat`**](hello/build.bat) with no argument displays the available options and subcommands:
 
-> **:mag_right:** Command [**`build`**](hello/build.bat) is a basic batch file consisting of ~500 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets MSVC/MSBuild, Clang/GNU Make and GCC/GNU Make.
+> **:mag_right:** Command [**`build.bat`**](hello/build.bat) is a basic batch file consisting of ~500 lines of code <sup id="anchor_02">[[2]](#footnote_02)</sup>; it provides support for the three toolsets MSVC/MSBuild, Clang/GNU Make and GCC/GNU Make.
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a></b>
@@ -56,14 +56,14 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
     run            run the generated executable
 </pre>
 
-Command [**`build clean run`**](hello/build.bat) produces the following output (default toolset: MSVC/MSBuild):
+Command [**`build.bat clean run`**](hello/build.bat) produces the following output (default toolset: MSVC/MSBuild):
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> clean run</b>
 Hello world !
 </pre>
 
-Command [**`build -verbose clean run`**](hello/build.bat) also displays progress messages:
+Command [**`build.bat -verbose clean run`**](hello/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -verbose clean run</b>
@@ -76,7 +76,7 @@ Execute build\Release\hello.exe
 Hello world !
 </pre>
 
-Command [**`build -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_msvc]/[**`MSBuild`**][windows_msbuild] toolset to generate executable **`hello.exe`**
+Command [**`build.bat -debug run`**](hello/build.bat) uses the [**`MSVC`**][windows_msvc]/[**`MSBuild`**][windows_msbuild] toolset to generate executable **`hello.exe`**
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug run</b>
@@ -114,7 +114,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Command [**`build -debug -clang clean run`**](hello/build.bat) uses the [**`Clang`**][llvm_clang]/[**`GNU Make`**][gnu_make] toolset instead of [**`MSVC`**][windows_msvc]/[**`MSBuild`**][windows_msbuild] to generate executable **`hello.exe`**:
+Command [**`build.bat -debug -clang clean run`**](hello/build.bat) uses the [**`Clang`**][llvm_clang]/[**`GNU Make`**][gnu_make] toolset instead of [**`MSVC`**][windows_msvc]/[**`MSBuild`**][windows_msbuild] to generate executable **`hello.exe`**:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug -clang clean run</b>
@@ -150,7 +150,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Finally, command [**`build -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**][gnu_gcc]/[**`GNU Make`**][gnu_make] toolset to generate executable **`hello.exe`** :
+Finally, command [**`build.bat -debug -gcc clean run`**](hello/build.bat) uses the [**`GCC`**][gnu_gcc]/[**`GNU Make`**][gnu_make] toolset to generate executable **`hello.exe`** :
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug -gcc clean run</b>
@@ -185,7 +185,7 @@ Hello world !
 [build] _EXITCODE=0
 </pre>
 
-Command [**`build -debug lint`**](hello/build.bat) performs code analysis with the [Cppcheck](http://cppcheck.sourceforge.net/) tool :
+Command [**`build.bat -debug lint`**](hello/build.bat) performs code analysis with the [Cppcheck](http://cppcheck.sourceforge.net/) tool :
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="hello/build.bat">build</a> -debug lint</b>
@@ -208,7 +208,7 @@ Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Func
 
 It defines a function **`mul_add`** and generates its [IR code](llvm_ir) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
 
-Command [**`build`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands :
+Command [**`build.bat`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands :
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1/build.bat">build</a></b>
@@ -235,7 +235,7 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
     run            run executable
 </pre>
 
-Command [**`build clean run`**](JITTutorial1/build.bat) produces the following output:
+Command [**`build.bat clean run`**](JITTutorial1/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> clean run</b>
@@ -250,7 +250,7 @@ entry:
 }
 </pre>
 
-Command [**`build -verbose clean run`**](JITTutorial1/build.bat) also displays progress messages:
+Command [**`build.bat -verbose clean run`**](JITTutorial1/build.bat) also displays progress messages:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -verbose clean run</b>
@@ -272,7 +272,7 @@ entry:
 } 
 </pre>
 
-Finally, command [**`build -debug clean run`**](JITTutorial1/build.bat) displays the commands executed during the build process:
+Finally, command [**`build.bat -debug clean run`**](JITTutorial1/build.bat) displays the commands executed during the build process:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
@@ -374,7 +374,7 @@ The [LLVM linker][llvm_lld] requires an entry point to successfully generate an 
 
 > **:mag_right:** The source code has been reorganized in order to better distinguish between prototype definition and code generation ([**`main.cpp`**](JITTutorial1_main/src/main.cpp), [**`tut1.h`**](JITTutorial1_main/src/tut1.h) and [**`tut1.cpp`**](JITTutorial1_main/src/tut1.cpp)).
 
-Command [**`build clean run`**](JITTutorial1_main/build.bat) produces the following output:
+Command [**`build.bat clean run`**](JITTutorial1_main/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial1_main/build.bat">build</a> clean run</b>
@@ -429,7 +429,7 @@ Now, let's transform the above [IR code][llvm_ir] into an executable:
 
 It defines a function **`gcd`** (*greatest common denominator*) and generates its [IR code][llvm_ir] (source: [**`tut2.cpp`**](JITTutorial2/src/tut2.cpp)).
 
-Command [**`build clean run`**](JITTutorial2/build.bat) produces the following output:
+Command [**`build.bat clean run`**](JITTutorial2/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial2/build.bat">build</a> clean run</b>
@@ -488,7 +488,7 @@ cond_false1:                                      ; preds = %cond_false
 > </pre>
 > We use function **`initModule(Module* mod)`** to include the two fields **`target datalayout`** and **`target triple`** into the generated [IR code](llvm_ir) (see below); that solves the warning "**`warning: overriding the module target triple`**" we encountered in example [**`JITTutorial1_main`**](#tut1_main).
 
-Command [**`build clean run`**](JITTutorial2_main/build.bat) produces the following output:
+Command [**`build.bat clean run`**](JITTutorial2_main/build.bat) produces the following output:
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial2_main/build.bat">build</a> clean run</b>
@@ -542,7 +542,7 @@ declare dso_local i32 @printf(i8*, ...)
 declare dso_local i32 @strtol(i8*, i8**, i32, ...)
 </pre>
 
-Command [**`build clean test`**](JITTutorial2_main/build.bat) produces the following output (arguments **`12`** and **`4`** are hard-coded in subcommand **`test`**):
+Command [**`build.bat clean test`**](JITTutorial2_main/build.bat) produces the following output (arguments **`12`** and **`4`** are hard-coded in subcommand **`test`**):
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="JITTutorial2_main/build.bat">build</a> clean test</b>
@@ -681,7 +681,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/October 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/November 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
