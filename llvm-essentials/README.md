@@ -148,13 +148,13 @@ The assembly code in file <code>add.ll</code> can not be executed with <a href="
 <dd>
 <pre style="font-size:80%;">
 <b>&gt; %LLVM_HOME%\bin\<a href="https://llvm.org/docs/CommandGuide/lli.html">lli.exe</a> build\add.ll</b>
-C:\opt\LLVM-14.0.6\bin\lli.exe: error: 'main' function not found in module.
+C:\opt\LLVM-15.0.6\bin\lli.exe: error: 'main' function not found in module.
 </pre>
 </dd></dl>
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/November 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/December 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- hyperrefs -->

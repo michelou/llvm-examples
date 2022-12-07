@@ -83,7 +83,7 @@ Command [**`build.bat -debug run`**](hello/build.bat) uses the [**`MSVC`**][wind
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -121,16 +121,16 @@ Command [**`build.bat -debug -clang clean run`**](hello/build.bat) uses the [**`
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is Clang 14.0.6 with GNU-like command-line
--- The CXX compiler identification is Clang 14.0.6 with GNU-like command-line
--- Check for working C compiler: C:/opt/LLVM-14.0.6/bin/clang.exe
--- Check for working C compiler: C:/opt/LLVM-14.0.6/bin/clang.exe -- works
+-- The C compiler identification is Clang 15.0.6 with GNU-like command-line
+-- The CXX compiler identification is Clang 15.0.6 with GNU-like command-line
+-- Check for working C compiler: C:/opt/LLVM-15.0.6/bin/clang.exe
+-- Check for working C compiler: C:/opt/LLVM-15.0.6/bin/clang.exe -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Detecting C compile features
@@ -157,7 +157,7 @@ Finally, command [**`build.bat -debug -gcc clean run`**](hello/build.bat) uses t
 [build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
@@ -192,7 +192,7 @@ Command [**`build.bat -debug lint`**](hello/build.bat) performs code analysis wi
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
@@ -278,25 +278,23 @@ Finally, command [**`build.bat -debug clean run`**](JITTutorial1/build.bat) disp
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.4"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
 [build] Configuration: Debug, Platform: x64
-[build] LLVM_TARGET_TRIPLE=x86_64-pc-windows-msvc19.22.27905
-[build] cmake.exe -Thost=x64 -A x64 -Wdeprecated -DLLVM_INSTALL_DIR="C:\opt\LLVM-14.0.6" ..
+[build] "Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -Thost=x64 -A x64 -Wdeprecated ..
 -- Building for: Visual Studio 16 2019
--- The CXX compiler identification is MSVC 19.21.27702.2
+-- Selecting Windows SDK version 10.0.22000.0 to target Windows 10.0.22621.
+-- The CXX compiler identification is MSVC 19.29.30137.0
 -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.21.27702/bin/Hostx64/x64/cl.exe
 -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.21.27702/bin/Hostx64/x64/cl.exe -- works
 -- Detecting CXX compiler ABI info 
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- LLVM installation directory: C:\opt\LLVM-14.0.6
--- Found LLVM 14.0.6
--- Using LLVMConfig.cmake in: C:/opt/LLVM-14.0.6/lib/cmake/llvm 
--- Using header files in: L:/llvm-14.0.6.src/include;L:/llvm-14.0.6.src/build/include 
+-- [DEBUG] CMAKE_MODULE_PATH=C:/opt/LLVM-15.0.6/lib/cmake/llvm;C:/opt/LLVM-15.0.6/lib/cmake/llvm
+-- [DEBUG] LLVM_DIR=C:/opt/LLVM-15.0.6/lib/cmake/llvm
 -- Configuring done
 -- Generating done
 -- Build files have been written to: L:/examples/JITTutorial1/build
@@ -681,7 +679,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/November 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/December 2022* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
