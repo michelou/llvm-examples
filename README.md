@@ -44,13 +44,13 @@ C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
 C:\opt\LLVM-11.1.0\                  <i>(1.5 resp 3.0 GB)</i>
 C:\opt\LLVM-12.0.1\                  <i>(1.5 resp 3.7 GB)</i>
-C:\opt\LLVM-15.0.6\                  <i>(2.1 resp 3.1 GB)</i>
-C:\opt\LLVM-15.0.5\                  <i>(3.1 GB)</i>
+C:\opt\LLVM-14.0.6\                  <i>(2.1 resp 3.1 GB)</i>
+C:\opt\LLVM-15.0.6\                  <i>(3.1 GB)</i>
 C:\opt\msys64\                       <i>(2.85 GB)</i>
 C:\opt\ninja-1.11.1\                 <i>( 0.5 MB)</i>
 C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
-C:\opt\Python-3.11.0\                <i>(  61 MB)</i>
+C:\opt\Python-3.11.1\                <i>(  61 MB)</i>
 </pre>
 
 <!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB, 3.25.1 = MB -->
@@ -162,7 +162,7 @@ Command [**`setenv.bat`**](setenv.bat) is executed once to setup our development
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 15.0.6, lli 15.0.6, opt 15.0.6, doxygen 1.9.5, pelook v1.73,
-   cmake 3.25.1, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.0, diff 3.8
+   cmake 3.25.1, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.1, diff 3.8
    git 2.38.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -183,7 +183,7 @@ Command [**`setenv.bat`**](setenv.bat) with option **`-verbose`** displays addit
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 15.0.6, lli 15.0.6, opt 15.0.6, doxygen 1.9.5, pelook v1.73,
-   cmake 3.25.1, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.0, diff 3.8
+   cmake 3.25.1, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.1, diff 3.8
    git 2.38.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-15.0.6\bin\clang.exe
@@ -192,7 +192,7 @@ Tool paths:
    C:\opt\cmake-3.25.1\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
-   C:\opt\Python-3.11.0\python.exe
+   C:\opt\Python-3.11.1\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
@@ -209,7 +209,7 @@ Environment variables:
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
    "MSVS_CMAKE_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\..\Cmake"
    "MSYS_HOME=C:\opt\msys64"
-   "PYTHON_HOME=C:\opt\Python-3.11.0"
+   "PYTHON_HOME=C:\opt\Python-3.11.1"
 Path associations:
    L:\: => C:\Users\michelou\workspace-perso\llvm-examples
 </pre>
@@ -255,7 +255,7 @@ See document [**`RESOURCES.md`**](RESOURCES.md) for [LLVM] related resources.
 <span id="footnote_01">[1]</span> ***LLVM version*** [↩](#anchor_01)
 
 <dl><dd>
-We support LLVM versions 8 up to 15. Command <b><code>setenv</code></b> searches for version 12 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (and so on).
+We support LLVM versions 8 up to 15. Command <b><code>setenv</code></b> searches for version 15 per default; use command <b><code>setenv -llvm:8</code></b> to work with LLVM 8 (and so on).
 </dd></dl>
 
 <span id="footnote_02">[2]</span> ***Visual Studio version*** [↩](#anchor_02)
@@ -294,7 +294,7 @@ The <a href="http://cppcheck.sourceforge.net/" rel="external">Cppcheck</a> stati
 </dd>
 <dd>
 <ul>
-<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download" rel="external"><code>cppcheck-2.6-x64-Setup.msi</code></a> from the Windows desktop.
+<li>MS Windows installer <a href="http://cppcheck.sourceforge.net/#download" rel="external"><code>cppcheck-2.9-x64-Setup.msi</code></a> from the Windows desktop.
 <li>MSYS2 package <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64" rel="external"><code>mingw-w64-x86_64-cppcheck</code></a>.</li>
 </ul>
 </dd>
@@ -305,21 +305,21 @@ Below we execute the command <code>pacman -S <a href="https://packages.msys2.org
 resolving dependencies...
 looking for conflicting packages...
 &nbsp;
-Packages (1) mingw-w64-x86_64-cppcheck-2.3-1
+Packages (1) mingw-w64-x86_64-cppcheck-2.9.1-1
 &nbsp;
 Total Download Size:    3.43 MiB
 Total Installed Size:  13.39 MiB
 &nbsp;
 :: Proceed with installation? [Y/n] y
 :: Retrieving packages...
- mingw-w64-x86_64-cppcheck-2.3-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
-(1/1) checking keys in keyring                                    [#############################] 100%
-(1/1) checking package integrity                                  [#############################] 100%
-(1/1) loading package files                                       [#############################] 100%
-(1/1) checking for file conflicts                                 [#############################] 100%
-(1/1) checking available disk space                               [#############################] 100%
+ mingw-w64-x86_64-cppcheck-2.9.1-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
+(1/1) checking keys in keyring                                      [#############################] 100%
+(1/1) checking package integrity                                    [#############################] 100%
+(1/1) loading package files                                         [#############################] 100%
+(1/1) checking for file conflicts                                   [#############################] 100%
+(1/1) checking available disk space                                 [#############################] 100%
 :: Processing package changes...
-(1/1) installing mingw-w64-x86_64-cppcheck                        [#############################] 100%
+(1/1) installing mingw-w64-x86_64-cppcheck                          [#############################] 100%
 Optional dependencies for mingw-w64-x86_64-cppcheck
     mingw-w64-x86_64-qt5: cppcheck-gui
     mingw-w64-x86_64-python-pygments: cppcheck-htmlreport
@@ -328,7 +328,7 @@ Optional dependencies for mingw-w64-x86_64-cppcheck
 /mingw64/bin/cppcheck
 &nbsp;
 <b>$ <a href="https://linux.die.net/man/1/cppcheck">cppcheck</a> --version</b>
-Cppcheck 2.3
+Cppcheck 2.9
 </pre>
 </dd></dl>
 
@@ -343,7 +343,7 @@ We give here three differences between <a href="http://repo.msys2.org/distrib/x8
 <tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
 <tr>
   <td>Version/architecture</td>
-  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 11.3</code></a></td>
+  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 12.2.0</code></a></td>
   <td><a href="https://gcc.gnu.org/gcc-8/changes.html"><code>gcc 8.1</code></a></td>
 </tr>
 <tr>
@@ -377,10 +377,10 @@ c:\opt\msys64\usr\bin\make.exe
 c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> gcc</b>
-gcc (Rev3, Built by MSYS2 project) 11.3.0
+gcc (Rev3, Built by MSYS2 project) 12.2.0
 &nbsp;
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> Make</b>
-GNU Make 4.3
+GNU Make 4.4
 </pre>
 </dd>
 <dd>
@@ -449,7 +449,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.6">llvm-15.0.6.src.tar.xz</a>            <i>( 47 MB)</i>
 <a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
 <a href="https://github.com/ninja-build/ninja/releases/tag/v1.11.1">ninja-win.zip</a>                     <i>(0.2 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.11.0-amd64.exe</a>           <i>( 27 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.11.1-amd64.exe</a>           <i>( 27 MB)</i>
 vs_2019_community.exe             <i>(1.7 GB)</i>
 </pre>
 </dd>
@@ -510,7 +510,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [ninja_relnotes]: https://github.com/ninja-build/ninja/releases/tag/v1.11.1
 [nodejs_examples]: https://github.com/michelou/nodejs-examples
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
-[python_changelog]: https://docs.python.org/release/3.11.0/whatsnew/changelog.html
+[python_changelog]: https://docs.python.org/release/3.11.1/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
 [rust_examples]: https://github.com/michelou/rust-examples
 [scala3_examples]: https://github.com/michelou/dotty-examples

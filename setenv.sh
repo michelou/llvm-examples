@@ -49,7 +49,7 @@ if [[ $OS == "cygwin" || $OS == "mingw" ]]; then
     export CPPCHECK_HOME="$(getPath "$ProgramFiles/CppCheck")"
     export DOXYGEN_HOME="$(getPath "$prefix/c/opt/doxygen-1")"
     export GIT_HOME="$(getPath "$prefix/c/opt/Git-2")"
-    export LLVM_HOME="$(getPath "$prefix/c/opt/LLVM-12")"
+    export LLVM_HOME="$(getPath "$prefix/c/opt/LLVM-15")"
     PATH1="$PATH"
     [[ -x "$GIT_HOME/bin/git" ]] && PATH1="$PATH1:$GIT_HOME/bin"
     export PATH="$PATH1"

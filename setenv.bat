@@ -69,7 +69,7 @@ set _BASENAME=%~n0
 set _DRIVE_NAME=L
 set "_ROOT_DIR=%~dp0"
 
-set _LLVM_PREFIX_DEFAULT=LLVM-14
+set _LLVM_PREFIX_DEFAULT=LLVM-15
 
 call :env_colors
 set _DEBUG_LABEL=%_NORMAL_BG_CYAN%[%_BASENAME%]%_RESET%
@@ -147,6 +147,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-llvm:12" ( set _LLVM_PREFIX=LLVM-12
     ) else if "%__ARG%"=="-llvm:13" ( set _LLVM_PREFIX=LLVM-13
     ) else if "%__ARG%"=="-llvm:14" ( set _LLVM_PREFIX=LLVM-14
+    ) else if "%__ARG%"=="-llvm:15" ( set _LLVM_PREFIX=LLVM-15
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
