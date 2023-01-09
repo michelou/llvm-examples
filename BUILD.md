@@ -74,7 +74,7 @@ Copy files from directory build\lib\cmake to C:\opt\LLVM-15.0.6\lib\cmake\
 Copy files from directory include to C:\opt\LLVM-15.0.6\include\
 </pre>
 
-> **:mag_right:** Before installation our [LLVM] installation directory contains 14 `llvm-*.exe` executables:
+> **:mag_right:** Before installation our [LLVM] installation directory contains 18 `llvm-*.exe` executables:
 > <pre style="font-size:80%;">
 > <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-15.0.6 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
 > 18
@@ -124,7 +124,7 @@ We need to comment out the lines marked with <span style="color:green;"><code>#M
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/December 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/January 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

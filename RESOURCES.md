@@ -36,7 +36,11 @@
 
 ## <span id="blogs">Blogs</span>
 
-- [LLVM Project Blog](https://blog.llvm.org/):
+- [nikic's Blog](https://www.npopov.com/) :
+  - [This year in LLVM (2022)](https://www.npopov.com/2022/12/20/This-year-in-LLVM-2022.html), December 2022.
+  - [Design issues in LLVM IR](https://www.npopov.com/2021/06/02/Design-issues-in-LLVM-IR.html), June 2021.
+  - [Make LLVM fast again](https://www.npopov.com/2020/05/10/Make-LLVM-fast-again.html), May 2020.
+- [LLVM Project Blog](https://blog.llvm.org/) :
   - [Improving LLVM Infrastructure - Part 1: Mailing lists][blog_llvm2022], January 2022.
   - [LLVM’s New Pass Manager][blog_llvm2021], March 2021.
 - [LLVM Infrastructure and Rust][blog_modebadze] by Beka Modebadze, December 2021.
@@ -44,7 +48,7 @@
 - [Building llvm-project with Ninja on MacOS][blog_guo] by Yilong Guo (Intel), May 2021.
 - [Code alignment options in LLVM](https://easyperf.net/blog/2018/01/25/Code_alignment_options_in_llvm) by Denis Bakhvalov, January 2018.
 
-## <span id="books">Books</span>[**&#x25B4;**](#top)
+## <span id="books">Books</span> [**&#x25B4;**](#top)
 
 - [Advanced Compiler Design with LLVM][book_chisnall] by David Chisnall, March 2022.<br/><span style="font-size:80%;">(Pearson, ISBN  978-0-1337-9864-7, 360 pages)</span>
 - [Learn LLVM 12][book_nacke] by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8392-1350-2, 392 pages)</span>
@@ -65,7 +69,7 @@
 - [EEECS 582: Advanced Compilers](http://web.eecs.umich.edu/~mahlke/courses/583f18/), Fall 2018.
 - [Advanced compilers][course_hirvisalo] by Vesa Hirvisalo (instructor), 2015.
 
-## <span id="news">News</span>[**&#x25B4;**](#top)
+## <span id="news">News</span> [**&#x25B4;**](#top)
 
 - [*LLVM Weekly*][news_llvmweekly] - A weekly newsletter covering developments in LLVM, Clang, and related projects.
 - [*Planet Clang*][news_planet_clang] - Planet Clang is a window into the world, work and lives of Clang developers, contributors and the standards they implement.
@@ -107,7 +111,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/December 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/January 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

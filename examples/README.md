@@ -83,7 +83,7 @@ Command [**`build.bat -debug run`**](hello/build.bat) uses the [**`MSVC`**][wind
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.6"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -121,7 +121,7 @@ Command [**`build.bat -debug -clang clean run`**](hello/build.bat) uses the [**`
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.6"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
@@ -157,14 +157,14 @@ Finally, command [**`build.bat -debug -gcc clean run`**](hello/build.bat) uses t
 [build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.6"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
 [build] Current directory is: L:\examples\hello\build
 [build] cmake.exe -G "Unix Makefiles" ..
--- The C compiler identification is GNU 10.2.0
--- The CXX compiler identification is GNU 10.2.0
+-- The C compiler identification is GNU 12.2.0
+-- The CXX compiler identification is GNU 12.2.0
 -- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe
 -- Check for working C compiler: C:/opt/msys64/mingw64/bin/gcc.exe -- works
 -- Detecting C compiler ABI info
@@ -192,7 +192,7 @@ Command [**`build.bat -debug lint`**](hello/build.bat) performs code analysis wi
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
 [build] Variables  : "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.6"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
@@ -278,7 +278,7 @@ Finally, command [**`build.bat -debug clean run`**](JITTutorial1/build.bat) disp
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.5"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.6"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
@@ -623,22 +623,22 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1"><b>set</b></a> _EXITCODE=0
 &nbsp;
 <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <b><span style="color:#9966ff;">:env</span></b>
-<b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/if" rel="external">if</a> not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
 <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <b><span style="color:#9966ff;">:props</span></b>
-<b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/if" rel="external">if</a> not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
 <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <b><span style="color:#9966ff;">:args</span> %*</b>
-<b>if not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/if" rel="external">if</a> not</b> %_EXITCODE%==0 <b>goto <span style="color:#9966ff;">end</span></b>
 &nbsp;
 <i style="color:#66aa66;">@rem #########################################################################
 @rem ## Main</i>
 &nbsp;
-<b>for</b> %%i <b>in</b> (%_COMMANDS%) <b>do</b> (
+<a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/for"><b>for</b></a> %%i <b>in</b> (%_COMMANDS%) <b>do</b> (
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/call"><b>call</b></a> <span style="color:#9966ff;">:%%i</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<b>if not</b> !_EXITCODE!==0 <b>goto end</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/if" rel="external">if</a> not</b> !_EXITCODE!==0 <b>goto end</b>
 )
-<b>goto <span style="color:#9966ff;">end</span></b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> <span style="color:#9966ff;">end</span></b>
 &nbsp;
 <i style="color:#66aa66;">@rem #########################################################################
 @rem ## Subroutines</i>
@@ -648,25 +648,25 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 <b>goto :eof</b>
 <span style="color:#9966ff;">:props</span>
 ... <i>(read property file)</i> ...
-<b>goto :eof</b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> :eof</b>
 <span style="color:#9966ff;">:args</span>
 ... <i>(handle program arguments)</i> ...
-<b>goto :eof</b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> :eof</b>
 <span style="color:#9966ff;">:clean</span>
 ...
-<b>goto :eof</b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> :eof</b>
 <span style="color:#9966ff;">:lint</span>
 ...
-<b>goto :eof</b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> :eof</b>
 <span style="color:#9966ff;">:compile</span>
 ...
-<b>goto :eof</b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> :eof</b>
 <span style="color:#9966ff;">:doc</span>
 ...
-<b>goto :eof</b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> :eof</b>
 <span style="color:#9966ff;">:run</span>
 ...
-<b>goto :eof</b>
+<b><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/goto" rel="external">goto</a> :eof</b>
 &nbsp;
 <i style="color:#66aa66;">@rem #########################################################################
 @rem ## Cleanups</i>
@@ -679,7 +679,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/December 2022* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/January 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
