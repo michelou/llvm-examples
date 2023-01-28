@@ -1,4 +1,4 @@
-# <span id="top">LLVM examples on Microsoft Windows</span> <span style="size:30%;"><a href="../README.md">⬆</a></span>
+# <span id="top">LLVM examples on Windows</span> <span style="size:30%;"><a href="../README.md">⬆</a></span>
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
@@ -202,7 +202,7 @@ Checking L:\examples\hello\src\main\cpp\hello.cpp ...
 [build] _EXITCODE=0
 </pre>
 
-## <span id="tut1">`JITTutorial1`</span>
+## <span id="tut1">`JITTutorial1` Example</span>
 
 Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Function"*][llvm_tutorial1] (*outdated*) from the LLVM 2.6 tutorial.
 
@@ -362,7 +362,7 @@ In section <a href="http://llvm.org/docs/Frontend/PerformanceTips.html#the-basic
 The [LLVM linker][llvm_lld] requires an entry point to successfully generate an executable, ie. we have to add a function **`main`** to our [IR code][llvm_ir]; we present our solution in our extended example [**`JITTutorial1_main`**](#tut1_main/).
 
 
-## <span id="tut1_main">`JITTutorial1_main`</span>
+## <span id="tut1_main">`JITTutorial1_main` Example</span>
 
 [**`JITTutorial1_main\`**](JITTutorial1_main/) is our extended version of previous example [**`JITTutorial1`**](#tut1):
 
@@ -421,7 +421,7 @@ Now, let's transform the above [IR code][llvm_ir] into an executable:
 > We will address that warning message in our extended example [**`JITTutorial2_main`**](#tut2_main).
 
 
-## <span id="tut2">`JITTutorial2`</span>
+## <span id="tut2">`JITTutorial2` Example</span>
 
 [**`JITTutorial2\`**](JITTutorial2/) is based on example [*"A More Complicated Function"*][llvm_tutorial2] (*outdated*) from the LLVM 2.6 tutorial.
 
@@ -459,7 +459,7 @@ cond_false1:                                      ; preds = %cond_false
 </pre>
 
 
-## <span id="tut2_main">`JITTutorial2_main`</span>
+## <span id="tut2_main">`JITTutorial2_main` Example</span>
 
 [**`JITTutorial2_main\`**](JITTutorial2_main/) is our extended version of previous example [**`JITTutorial2`**](#tut2):
 
@@ -561,7 +561,7 @@ result=15
 </pre>
 
 
-## <span id="llvm-hello">`llvm-hello`</span>
+## <span id="llvm-hello">`llvm-hello` Example</span>
 
 Example [**`llvm-hello\`**](llvm-hello/) is based on the simple [C++ example][llvm_hello] from [Ildar Musin](https://www.linkedin.com/in/ildar-musin-8586985b/) (February 2016).
 
@@ -591,7 +591,7 @@ Command **`lli program.ll`** prints the message **`"hello world !"`** to the con
 hello world!
 </pre>
 
-## <span id="footnotes">Footnotes</a>
+## <span id="footnotes">Footnotes</a> [**&#x25B4;**](#top)
 
 <span id="footnote_01">[1]</span> ***C++ Standards*** [↩](#anchor_01)
 
@@ -679,7 +679,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/January 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/February 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

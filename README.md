@@ -9,11 +9,11 @@
   </tr>
 </table>
 
-[Ada][ada_examples], [Akka][akka_examples], [C++][cpp_examples], [Deno][deno_examples], [Flix][flix_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spark][spark_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX Toolset][wix_examples] are other trending topics we are continuously monitoring.
+[Ada][ada_examples], [Akka][akka_examples], [C++][cpp_examples], [Deno][deno_examples], [Flix][flix_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kafka][kafka_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spark][spark_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX Toolset][wix_examples] are other trending topics we are continuously monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
-This project depends on the following external software for the **Microsoft Windows** plaform:
+This project depends on the following external software for the **Microsoft Windows** platform:
 
 - [CMake 3.25][cmake_downloads] ([*release notes*][cmake_relnotes])
 - [Git 2.39][git_downloads] ([*release notes*][git_relnotes])
@@ -33,12 +33,12 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*January 2023*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*February 2023*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.25.1-windows-x86_64\  <i>(  95 MB)</i>
+C:\opt\cmake-3.25.2-windows-x86_64\  <i>(  95 MB)</i>
 C:\opt\doxygen-1.9.6\                <i>( 115 MB)</i>
-C:\opt\Git-2.39.0\                   <i>( 314 MB)</i>
+C:\opt\Git-2.39.1\                   <i>( 314 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
@@ -53,7 +53,7 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 C:\opt\Python-3.11.1\                <i>(  61 MB)</i>
 </pre>
 
-<!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB, 3.25.1 = MB -->
+<!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB, 3.25.2 = 98 MB -->
 
 <!--
 https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
@@ -62,7 +62,7 @@ https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
 > **&#9755;** ***Installation policy***<br/>
 > When possible we install software from a [Zip archive][zip_archive] rather than via a Windows installer. In our case we defined **`C:\opt\`** as the installation directory for optional software tools (*in reference to* the [**`/opt/`**][linux_opt] directory on Unix).
 
-## <span id="structure">Directory structure</span>
+## <span id="structure">Directory structure</span> [**&#x25B4;**](#top)
 
 This project is organized as follows:
 <pre style="font-size:80%;max-width:500px;">
@@ -162,13 +162,13 @@ Command [**`setenv.bat`**](setenv.bat) is executed once to setup our development
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 15.0.6, lli 15.0.6, opt 15.0.6, doxygen 1.9.6, pelook v1.73,
-   cmake 3.25.1, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.1, diff 3.8
-   git 2.39.0.windows.1, bash 4.4.23(1)-release
+   cmake 3.25.2, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.1, diff 3.8
+   git 2.39.1.windows.1, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-15.0.6\bin\clang.exe
-C:\opt\Git-2.39.0\bin\git.exe
-C:\opt\Git-2.39.0\mingw64\bin\git.exe
+C:\opt\Git-2.39.1\bin\git.exe
+C:\opt\Git-2.39.1\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -183,25 +183,25 @@ Command [**`setenv.bat`**](setenv.bat) with option **`-verbose`** displays addit
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 15.0.6, lli 15.0.6, opt 15.0.6, doxygen 1.9.6, pelook v1.73,
-   cmake 3.25.1, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.1, diff 3.8
-   git 2.39.0.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
+   cmake 3.25.2, cppcheck 2.8, make 4.3, gcc 11.3.0, python 3.11.1, diff 3.8
+   git 2.39.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
 Tool paths:
    C:\opt\LLVM-15.0.6\bin\clang.exe
    C:\opt\LLVM-15.0.6\bin\lli.exe
    C:\opt\LLVM-15.0.6\bin\opt.exe
-   C:\opt\cmake-3.25.1\bin\cmake.exe
+   C:\opt\cmake-3.25.2\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.11.1\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.39.0\usr\bin\diff.exe
-   C:\opt\Git-2.39.0\bin\git.exe
-   C:\opt\Git-2.39.0\mingw64\bin\git.exe
-   C:\opt\Git-2.39.0\bin\bash.exe
+   C:\opt\Git-2.39.1\usr\bin\diff.exe
+   C:\opt\Git-2.39.1\bin\git.exe
+   C:\opt\Git-2.39.1\mingw64\bin\git.exe
+   C:\opt\Git-2.39.1\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.25.1-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.25.2-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.6"
    "LLVM_HOME=C:\opt\LLVM-15.0.6"
@@ -429,10 +429,10 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.25.1-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.25.2-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
 <a href="http://cppcheck.sourceforge.net/">cppcheck-2.9-x64-Setup.msi</a>        <i>( 17 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.6.windows.x64.bin.zip</a> <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.39.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.39.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
@@ -459,7 +459,7 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/January 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/February 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -479,12 +479,13 @@ Microsoft doesn't provide an offline installer for <a href="https://visualstudio
 [flix_examples]: https://github.com/michelou/flix-examples
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.39.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.39.1.txt
 [github_markdown]: https://github.github.com/gfm/
 [gnu_cmake]: https://cmake.org/
 [golang_examples]: https://github.com/michelou/golang-examples
 [graalvm_examples]: https://github.com/michelou/graalvm-examples
 [haskell_examples]: https://github.com/michelou/haskell-examples
+[kafka_examples]: https://github.com/michelou/kafka-examples
 [kotlin_examples]: https://github.com/michelou/kotlin-examples
 [linux_opt]: https://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html
 [llvm]: https://llvm.org/
