@@ -5,7 +5,7 @@ include ../Makefile.inc
 
 SOURCE_FILES=$(wildcard src/main/cpp/*.cpp)
 
-PROGRAM_NAME=program
+PROGRAM_NAME=hello
 
 CONFIG=$(shell $(LLVM_CONFIG) --cxxflags --ldflags --system-libs --libs core)
 
@@ -38,7 +38,7 @@ help:
 	@$(ECHO) "    build  compile C++ source files"
 	@$(ECHO) "    clean  delete generated files"
 	@$(ECHO) "    help   display this help message"
-	@$(ECHO) "    run    execute main program \"$(PROGRAM_NAME)\""
+	@$(ECHO) "    run    execute main program $(PROGRAM_NAME)"
 
 ##############################################################################
 ## phony

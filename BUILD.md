@@ -1,6 +1,6 @@
 # <span id="top">Building LLVM on Windows</span> <span style="size:30%;"><a href="README.md">↩</a></span>
 
-<table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
+<table style="font-family:Helvetica,Arial;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="docs/images/llvm.png" width="120" alt="LLVM project"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This document presents our build from the <a href="https://llvm.org/" rel="external">LLVM</a> source distribution on a Windows machine.
@@ -12,26 +12,26 @@
 
 Command [**`build.bat`**](bin/llvm/build.bat) consists of ~350 lines of batch/PowerShell code we wrote to generate additional Windows binaries not available in the <a href="https://llvm.org/" rel="external">LLVM</a> binary distribution.
 
-> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-15.0.6-win64.exe`][llvm_downloads]).
+> **:mag_right:** For instance, [LLVM tools][llvm_tools] such as [**`llvm-as.exe`**][llvm_as] (assembler), [**`llvm-dis.exe`**][llvm_dis] (disassembler), [**`opt.exe`**][llvm_opt] (optimizer), [**`llc.exe`**][llvm_llc] (static compiler) and [**`lli.exe`**][llvm_lli] (bitcode interpreter) are not part of the [LLVM] binary distribution (e.g. [`LLVM-15.0.7-win64.exe`][llvm_downloads]).
 
 
 ## <span id="usage_examples">Usage examples</span>
 
-Directory **`llvm-15.0.6.src\`** <sup id="anchor_01">[1](#footnote_01)</sup> is setup as follows:
+Directory **`llvm-15.0.7.src\`** <sup id="anchor_01">[1](#footnote_01)</sup> is setup as follows:
 <pre style="font-size:80%;">
-<b>&gt; <a href="https://curl.haxx.se/docs/manpage.html">curl</a> -sL -o llvm-15.0.6.src.tar.xz https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.6/<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.6">llvm-15.0.6.src.tar.xz</a></b>
-<b>&gt; <a href="http://linuxcommand.org/lc3_man_pages/tar1.html">tar</a> xzvf llvm-15.0.6.src.tar.xz</b>
-<b>&gt; <a href="https://man7.org/linux/man-pages/man1/cp.1.html">cp</cp> <a href="bin/llvm/build.bat">bin\llvm\build.bat</a> llvm-15.0.6.src</b>
-<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-15.0.6.src</b>
+<b>&gt; <a href="https://curl.haxx.se/docs/manpage.html">curl</a> -sL -o llvm-15.0.7.src.tar.xz https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7/<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7">llvm-15.0.7.src.tar.xz</a></b>
+<b>&gt; <a href="http://linuxcommand.org/lc3_man_pages/tar1.html">tar</a> xzvf llvm-15.0.7.src.tar.xz</b>
+<b>&gt; <a href="https://man7.org/linux/man-pages/man1/cp.1.html">cp</cp> <a href="bin/llvm/build.bat">bin\llvm\build.bat</a> llvm-15.0.7.src</b>
+<b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a> llvm-15.0.7.src</b>
 </pre>
 
-> **:mag_right:** In our case we successively worked with versions `8.0.1`, `9.0.1`, `10.0.1`, `11.0.1`, `11.1.0`, `12.0.1`, `13.0.1`, `14.0.6` of the [LLVM] source distribution and today we build our binaries from directory `L:\llvm-15.0.6.src\`.
+> **:mag_right:** In our case we successively worked with versions `8.0.1`, `9.0.1`, `10.0.1`, `11.0.1`, `11.1.0`, `12.0.1`, `13.0.1`, `14.0.6`, `15.0.6` of the [LLVM] source distribution and today we build our binaries from directory `L:\llvm-15.0.7.src\`.
 
 Command [**`build.bat -verbose compile`**](bin/llvm/build.bat) <sup id="anchor_02">[2](#footnote_02)</sup> generates the additional binaries (both **`.exe`** and **`.lib`** files) into directory **`build\Release\`** (resp. **`build\Debug\`**). Be patient, build time is about 55 minutes on an Intel i7-4th with 16 GB of memory.
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cd">cd</a></b>
-L:\llvm-15.0.6.src
+L:\llvm-15.0.7.src
 &nbsp;
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose compile</b>
 Toolset: MSVC/MSBuild, Project: LLVM
@@ -43,7 +43,7 @@ Toolset: MSVC/MSBuild, Project: LLVM
 INCLUDE="..."
 LIB="..."
 Configuration: Debug, Platform: x64
-[build] Current directory is: L:\llvm-15.0.6.src\build
+[build] Current directory is: L:\llvm-15.0.7.src\build
 [...]
 &nbsp;
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/dir">dir</a> build\Release\bin\ll?.exe | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> /b [0-9]</b>
@@ -57,31 +57,31 @@ Configuration: Debug, Platform: x64
 > Generate LLVM executables (LLVM.sln)
 > Execute build\Release\bin\lli.exe --version
 > LLVM (http://llvm.org/):
->   LLVM version 15.0.6
+>   LLVM version 15.0.7
 >   Optimized build.
 >   Default target: x86_64-pc-windows-msvc
 >   Host CPU: haswell
 </pre>
 
-Command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-15.0.6\`**).
+Command [**`build.bat -verbose install`**](bin/llvm/build.bat) copies the generated binaries to the [LLVM] installation directory (in our case **`C:\opt\LLVM-15.0.7\`**).
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="bin/llvm/build.bat">build</a> -verbose install</b>
-Do really want to copy files from 'build\' to 'c:\opt\LLVM-15.0.6\' (Y/N)? y
-Copy files from directory build\Release\bin to C:\opt\LLVM-15.0.6\bin\
-Copy files from directory build\Release\lib to C:\opt\LLVM-15.0.6\lib\
-Copy files from directory build\lib\cmake to C:\opt\LLVM-15.0.6\lib\cmake\
-Copy files from directory include to C:\opt\LLVM-15.0.6\include\
+Do really want to copy files from 'build\' to 'c:\opt\LLVM-15.0.7\' (Y/N)? y
+Copy files from directory build\Release\bin to C:\opt\LLVM-15.0.7\bin\
+Copy files from directory build\Release\lib to C:\opt\LLVM-15.0.7\lib\
+Copy files from directory build\lib\cmake to C:\opt\LLVM-15.0.7\lib\cmake\
+Copy files from directory include to C:\opt\LLVM-15.0.7\include\
 </pre>
 
 > **:mag_right:** Before installation our [LLVM] installation directory contains 18 `llvm-*.exe` executables:
 > <pre style="font-size:80%;">
-> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-15.0.6 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
+> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-15.0.7 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
 > 18
 > </pre>
 > and after installation it contains 78 `llvm-*.exe` executables:
 > <pre style="font-size:80%;">
-> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-15.0.6 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
+> <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /r c:\opt\LLVM-15.0.7 llvm*.exe | <a href="https://man7.org/linux/man-pages/man1/wc.1.html">wc</a> -l</b>
 > 78
 > </pre>
 
@@ -89,12 +89,12 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 
 <pre style="font-size:80%;">
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> /t clang llc lld lldb lli opt</b>
- 111801856   30.11.2022      10:46:14  C:\opt\LLVM-15.0.6\bin\clang.exe
-  72299520   07.12.2022      01:34:48  C:\opt\LLVM-15.0.6\bin\llc.exe
-  82472960   30.11.2022      10:48:04  C:\opt\LLVM-15.0.6\bin\lld.exe
-    215552   30.11.2022      10:50:04  C:\opt\LLVM-15.0.6\bin\lldb.exe
-  23104512   07.12.2022      01:35:01  C:\opt\LLVM-15.0.6\bin\lli.exe
-  77778432   07.12.2022      01:43:52  C:\opt\LLVM-15.0.6\bin\opt.exe
+ 111801856   30.11.2022      10:46:14  C:\opt\LLVM-15.0.7\bin\clang.exe
+  72299520   07.12.2022      01:34:48  C:\opt\LLVM-15.0.7\bin\llc.exe
+  82472960   30.11.2022      10:48:04  C:\opt\LLVM-15.0.7\bin\lld.exe
+    215552   30.11.2022      10:50:04  C:\opt\LLVM-15.0.7\bin\lldb.exe
+  23104512   07.12.2022      01:35:01  C:\opt\LLVM-15.0.7\bin\lli.exe
+  77778432   07.12.2022      01:43:52  C:\opt\LLVM-15.0.7\bin\opt.exe
 </pre>
 
 ## <span id="footnotes">Footnotes</span> [**&#x25B4;**](#top)
@@ -103,7 +103,7 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 
 <p style="margin:0 0 1em 20px;">
 To successfully generate LLVM 15 from the sources we need to copy the two missing CMake files <a href="https://github.com/llvm/llvm-project/blob/release/15.x/cmake/Modules/ExtendPath.cmake" rel="external"><code>ExtendPath.cmake</code></a> and <code>FindPrefixFromConfig.cmake</code> from the URL
-<a href="https://github.com/llvm/llvm-project/tree/release/15.x/cmake/Modules" rel="external"><code>https://github.com/llvm/llvm-project/tree/release/15.x/cmake/Modules</code></a> to the local directory <code>L:\llvm-15.0.6.src\cmake\modules\\</code>.
+<a href="https://github.com/llvm/llvm-project/tree/release/15.x/cmake/Modules" rel="external"><code>https://github.com/llvm/llvm-project/tree/release/15.x/cmake/Modules</code></a> to the local directory <code>L:\llvm-15.0.7.src\cmake\modules\\</code>.
 </p>
 
 <a name="footnote_02">[2]</a> ***CmakeLists.txt*** [↩](#anchor_02)
@@ -134,7 +134,7 @@ We need to comment out the lines marked with <span style="color:green;"><code>#M
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
 [llvm_clang]: https://releases.llvm.org/14.0.0/tools/clang/docs/ClangCommandLineReference.html
 [llvm_dis]: https://llvm.org/docs/CommandGuide/llvm-dis.html
-[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.6
+[llvm_downloads]: https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7
 [llvm_llc]: https://llvm.org/docs/CommandGuide/llc.html
 [llvm_lld]: https://lld.llvm.org/
 [llvm_lldb]: https://lldb.llvm.org/
