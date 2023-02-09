@@ -138,7 +138,7 @@ set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
-@rem output parameter(s): _COMMANDS, _DEBUG, _TOOLSET, _VERBOSE
+@rem output parameters: _COMMANDS, _DEBUG, _TOOLSET, _VERBOSE
 :args
 set _COMMANDS=
 set _CPP_STD=c++14

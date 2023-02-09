@@ -46,4 +46,4 @@ help:
 .PHONY: all build clean executable help run
 
 .SUFFIXES:
-.SUFFIXES: .c .o .obj .exe
+.SUFFIXES: .c .cpp .o .obj .exe
