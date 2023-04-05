@@ -1,6 +1,6 @@
 # <span id="top">Playing with LLVM on Windows</span>
 
-<table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
+<table style="font-family:Helvetica,Arial;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="docs/images/llvm.png" width="120" alt="LLVM project"/></a></td>
   <td style="border:0;padding:0;vertical-align:text-top;">This repository gathers <a href="https://llvm.org/" rel="external">LLVM</a> code examples coming from various websites and books.<br/>
@@ -16,7 +16,7 @@
 This project depends on the following external software for the **Microsoft Windows** platform:
 
 - [CMake 3.26][cmake_downloads] ([*release notes*][cmake_relnotes])
-- [Git 2.39][git_downloads] ([*release notes*][git_relnotes])
+- [Git 2.40][git_downloads] ([*release notes*][git_relnotes])
 - [LLVM 15 Windows binaries][llvm15_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm14_relnotes])
 - [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[2](#footnote_02)</sup> ([*release notes*][vs2019_relnotes])
 - [Python 3.11][python_downloads] ([*changelog*][python_changelog])
@@ -33,12 +33,12 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*February 2023*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*April 2023*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.26.0-windows-x86_64\  <i>(  95 MB)</i>
+C:\opt\cmake-3.26.3-windows-x86_64\  <i>(100 MB)</i>
 C:\opt\doxygen-1.9.6\                <i>( 115 MB)</i>
-C:\opt\Git-2.39.1\                   <i>( 314 MB)</i>
+C:\opt\Git-2.40.0\                   <i>( 314 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
 C:\opt\LLVM-10.0.1\                  <i>(1.5 resp 2.6 GB)</i>
@@ -53,7 +53,7 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 C:\opt\Python-3.11.1\                <i>(  61 MB)</i>
 </pre>
 
-<!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB, 3.26.0 = 98 MB -->
+<!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB, 3.26.0 = 98 MB, 2.26.3 = 100 MB -->
 
 <!--
 https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
@@ -114,7 +114,7 @@ We also define a virtual drive **`L:`** in our working environment in order to r
 
 In the next section we give a brief description of the [batch files][batch_file] present in this project.
 
-## <span id="commands">Batch commands</span>
+## <span id="commands">Batch commands</span> [**&#x25B4;**](#top)
 
 We distinguish different sets of batch commands:
 
@@ -162,13 +162,13 @@ Command [**`setenv.bat`**](setenv.bat) is executed once to setup our development
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.6, pelook v1.73,
-   cmake 3.26.0, cppcheck 2.9, make 4.3, gcc 12.2.0, python 3.11.1, diff 3.8
-   git 2.39.1.windows.1, bash 4.4.23(1)-release
+   cmake 3.26.3, cppcheck 2.10, make 4.3, gcc 12.2.0, python 3.11.1,
+   git 2.40.0.windows.1, diff 3.9, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-15.0.7\bin\clang.exe
-C:\opt\Git-2.39.1\bin\git.exe
-C:\opt\Git-2.39.1\mingw64\bin\git.exe
+C:\opt\Git-2.40.0\bin\git.exe
+C:\opt\Git-2.40.0\mingw64\bin\git.exe
 </pre>
 
 > **&#9755;** ***Important note***<br/>
@@ -183,25 +183,25 @@ Command [**`setenv.bat`**](setenv.bat) with option **`-verbose`** displays addit
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.6, pelook v1.73,
-   cmake 3.26.0, cppcheck 2.9, make 4.3, gcc 12.2.0, python 3.11.1, diff 3.8
-   git 2.39.1.windows.1, bash 4.4.23(1)-release, vswhere 2.7.1+180c706d56
+   cmake 3.26.3, cppcheck 2.10, make 4.3, gcc 12.2.0, python 3.11.1,
+   git 2.40.0.windows.1, diff 3.9, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-15.0.7\bin\clang.exe
    C:\opt\LLVM-15.0.7\bin\lli.exe
    C:\opt\LLVM-15.0.7\bin\opt.exe
-   C:\opt\cmake-3.26.0\bin\cmake.exe
+   C:\opt\cmake-3.26.3\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.11.1\python.exe
    C:\opt\msys64\usr\bin\python.exe
    C:\opt\msys64\mingw64\bin\python.exe
    C:\opt\msys64\usr\bin\diff.exe
-   C:\opt\Git-2.39.1\usr\bin\diff.exe
-   C:\opt\Git-2.39.1\bin\git.exe
-   C:\opt\Git-2.39.1\mingw64\bin\git.exe
-   C:\opt\Git-2.39.1\bin\bash.exe
+   C:\opt\Git-2.40.0\usr\bin\diff.exe
+   C:\opt\Git-2.40.0\bin\git.exe
+   C:\opt\Git-2.40.0\mingw64\bin\git.exe
+   C:\opt\Git-2.40.0\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.26.0-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.26.3-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.6"
    "LLVM_HOME=C:\opt\LLVM-15.0.7"
@@ -305,14 +305,14 @@ Below we execute the command <code>pacman -S <a href="https://packages.msys2.org
 resolving dependencies...
 looking for conflicting packages...
 &nbsp;
-Packages (1) mingw-w64-x86_64-cppcheck-2.9.1-1
+Packages (1) mingw-w64-x86_64-cppcheck-2.10.2-1
 &nbsp;
 Total Download Size:    3.43 MiB
 Total Installed Size:  13.39 MiB
 &nbsp;
 :: Proceed with installation? [Y/n] y
 :: Retrieving packages...
- mingw-w64-x86_64-cppcheck-2.9.1-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
+ mingw-w64-x86_64-cppcheck-2.10.2-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
 (1/1) checking keys in keyring                                      [#############################] 100%
 (1/1) checking package integrity                                    [#############################] 100%
 (1/1) loading package files                                         [#############################] 100%
@@ -328,7 +328,7 @@ Optional dependencies for mingw-w64-x86_64-cppcheck
 /mingw64/bin/cppcheck
 &nbsp;
 <b>$ <a href="https://linux.die.net/man/1/cppcheck">cppcheck</a> --version</b>
-Cppcheck 2.9
+Cppcheck 2.10.2
 </pre>
 </dd></dl>
 
@@ -429,10 +429,10 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.26.0-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
-<a href="http://cppcheck.sourceforge.net/">cppcheck-2.9-x64-Setup.msi</a>        <i>( 17 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.26.3-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
+<a href="http://cppcheck.sourceforge.net/">cppcheck-2.10-x64-Setup.msi</a>       <i>( 17 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.6.windows.x64.bin.zip</a> <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.39.1-64-bit.7z.exe</a>  <i>( 41 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.40.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
@@ -459,7 +459,7 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/February 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/April 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -480,7 +480,7 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 [flix_examples]: https://github.com/michelou/flix-examples
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.39.1.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.40.0.txt
 [github_markdown]: https://github.github.com/gfm/
 [gnu_cmake]: https://cmake.org/
 [golang_examples]: https://github.com/michelou/golang-examples

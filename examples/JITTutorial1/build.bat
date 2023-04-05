@@ -56,16 +56,13 @@ set "_TARGET_DIR=%_ROOT_DIR%build"
 set "_TARGET_DOCS_DIR=%_TARGET_DIR%\docs"
 
 set _CPPCHECK_CMD=
-if exist "%CPPCHECK_HOME%\cppcheck.exe" (
-    set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
+if exist "%MSYS_HOME%\mingw64\bin\cppcheck.exe" (
+    set "_CPPCHECK_CMD=%MSYS_HOME%\mingw64\bin\cppcheck.exe"
 )
-if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
-    echo %_ERROR_LABEL% Doxygen installation not found 1>&2
-    set _EXITCODE=1
-    goto :eof
+set _DOXYGEN_CMD=
+if exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
+    set "_DOXYGEN_CMD=%DOXYGEN_HOME%\bin\doxygen.exe"
 )
-set "_DOXYGEN_CMD=%DOXYGEN_HOME%\bin\doxygen.exe"
-
 if not exist "%MSYS_HOME%\usr\bin\make.exe" (
     echo %_ERROR_LABEL% MSYS installation not found 1>&2
     set _EXITCODE=1
@@ -191,6 +188,10 @@ if not "%_COMMANDS:lint=%"=="%_COMMANDS%" if not defined _CPPCHECK_CMD (
     echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
     set _COMMANDS=%_COMMANDS:lint=%
 )
+if not "%_COMMANDS:doc=%"=="%_COMMANDS%" if not defined _DOXYGEN_CMD (
+    echo %_WARNING_LABEL% Doxygen installation not found 1>&2
+    set _COMMANDS=%_COMMANDS:doc=%
+)
 if %_DOC_OPEN%==1 if "%_COMMANDS:doc=%"=="%_COMMANDS%" (
     echo %_WARNING_LABEL% Ignore option '-open' because subcommand 'doc' is not present 1>&2
     set _DOC_OPEN=0
@@ -225,7 +226,7 @@ echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-cl%__END%            use MSVC/MSBuild toolset ^(default^)
 echo     %__BEG_O%-clang%__END%         use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-config:^(D^|R^)%__END%  use %__BEG_O%D%__END%^)ebug or %__BEG_O%R%__END%^)elease ^(default^) configuration
-echo     %__BEG_O%-debug%__END%         show commands executed by this script
+echo     %__BEG_O%-debug%__END%         display commands executed by this script
 echo     %__BEG_O%-gcc%__END%           use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-msvc%__END%          use MSVC/MSBuild toolset ^(alias for option %__BEG_O%-cl%__END%^)
 echo     %__BEG_O%-open%__END%          display generated HTML documentation ^(subcommand %__BEG_O%doc%__END%^)
@@ -256,6 +257,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "%__DIR%" 1>&2
 )
 rmdir /s /q "%__DIR%"
 if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Failed to delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -271,6 +273,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOUR
 )
 call "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%"
 if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Found errors while analyzing C++ source files in directory "!_SOURCE_DIR=%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -314,7 +317,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__CMAKE_CMD%" %__CMAKE_OPTS% .. 1>&2
 call "%__CMAKE_CMD%" %__CMAKE_OPTS% .. %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of build configuration failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate configuration files into directory "!_TARGET_DIR:%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -322,12 +325,12 @@ if %_DEBUG%==1 ( set __MAKE_OPTS=--debug=v
 ) else ( set __MAKE_OPTS=--debug=n
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_MAKE_CMD%" %__MAKE_OPTS% 1>&2
-) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable "%_PROJ_NAME%.exe" 1>&2
 )
 call "%_MAKE_CMD%" %__MAKE_OPTS% %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate executable "%_PROJ_NAME%.exe" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -382,12 +385,12 @@ if not %ERRORLEVEL%==0 (
 set __MSBUILD_OPTS=/nologo /m /p:Configuration=%_PROJ_CONFIG% /p:Platform="%_PROJ_PLATFORM%"
 
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "!_MSBUILD_CMD:%MSVS_HOME%\=!" %__MSBUILD_OPTS% "%_PROJ_NAME%.sln" 1>&2
-) else if %_VERBOSE%==1 ( echo Generate executable %_PROJ_NAME%.exe 1>&2
+) else if %_VERBOSE%==1 ( echo Generate executable "%_PROJ_NAME%.exe" 1>&2
 )
 call "%_MSBUILD_CMD%" %__MSBUILD_OPTS% "%_PROJ_NAME%.sln" %_STDOUT_REDIRECT%
 if not %ERRORLEVEL%==0 (
     popd
-    echo %_ERROR_LABEL% Generation of executable %_PROJ_NAME%.exe failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate executable "%_PROJ_NAME%.exe" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -413,7 +416,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYF
 )
 call "%_DOXYGEN_CMD%" %__DOXYGEN_OPTS% "%__DOXYFILE%"
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Generation of HTML documentation failed 1>&2
+    echo %_ERROR_LABEL% Failed to generate HTML documentation 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -432,7 +435,7 @@ if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
 if not exist "%__EXE_FILE%" (
-    echo %_ERROR_LABEL% Executable %_PROJ_NAME%.exe not found 1>&2
+    echo %_ERROR_LABEL% Executable "%_PROJ_NAME%.exe" not found 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -447,7 +450,7 @@ if %_DEBUG%==1 (
     call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2
+    echo %_ERROR_LABEL% Failed to dump of executable "%_PROJ_NAME%.exe" ^(PELook^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -468,7 +471,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" 1>&2
 )
 call "%__EXE_FILE%"
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Execution status is %ERRORLEVEL% 1>&2
+    echo %_ERROR_LABEL% Failed to execute "!__EXE_FILE:%_ROOT_DIR%=!" ^(%ERRORLEVEL%^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -490,7 +493,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_FILE%" 1^> "%__IR_OUTFILE%" 1>&2
 )
 call "%__EXE_FILE%" 1> %__IR_OUTFILE%
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Execution status is %ERRORLEVEL% 1>&2
+    echo %_ERROR_LABEL% failed to generate IR code to file "!__IR_OUTFILE:%_ROOT_DIR%=!" ^(%ERRORLEVEL%^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -505,11 +508,11 @@ if not %ERRORLEVEL%==0 (
     goto :eof
 )
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%__EXE_OUTFILE%" 1>&2
-) else if %_VERBOSE%==1 ( echo Execute !__EXE_OUTFILE:%_ROOT_DIR%=! 1>&2
+) else if %_VERBOSE%==1 ( echo Execute "!__EXE_OUTFILE:%_ROOT_DIR%=!" 1>&2
 )
 call "%__EXE_OUTFILE%"
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Execution status is %ERRORLEVEL% 1>&2
+    echo %_ERROR_LABEL% Failed to execute "!__EXE_OUTFILE:%_ROOT_DIR%=!" ^(%ERRORLEVEL%^) 1>&2
 )
 goto :eof
 
@@ -528,7 +531,7 @@ goto :eof
 if %_TIMER%==1 (
     for /f "delims=" %%i in ('powershell -c "(Get-Date)"') do set __TIMER_END=%%i
     call :duration "%_TIMER_START%" "!__TIMER_END!"
-    echo Total elapsed time: !_DURATION! 1>&2
+    echo Total execution time: !_DURATION! 1>&2
 )
 if %_DEBUG%==1 echo %_DEBUG_LABEL% _EXITCODE=%_EXITCODE% 1>&2
 exit /b %_EXITCODE%

@@ -27,12 +27,6 @@ set _CMAKE_PATH=
 set _MSYS_PATH=
 set _GIT_PATH=
 
-call :cppcheck
-if not %_EXITCODE%==0 (
-    @rem optional
-    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
-    set _EXITCODE=0
-)
 call :cmake
 if not %_EXITCODE%==0 goto end
 
@@ -50,7 +44,7 @@ if not %_EXITCODE%==0 goto end
 
 @rem call :msvs_2010
 call :msvs
-if not %_EXITCODE%==0 goto end
+@rem if not %_EXITCODE%==0 goto end
 
 call :git
 if not %_EXITCODE%==0 goto end
@@ -148,6 +142,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-llvm:13" ( set _LLVM_PREFIX=LLVM-13
     ) else if "%__ARG%"=="-llvm:14" ( set _LLVM_PREFIX=LLVM-14
     ) else if "%__ARG%"=="-llvm:15" ( set _LLVM_PREFIX=LLVM-15
+    ) else if "%__ARG%"=="-llvm:16" ( set _LLVM_PREFIX=LLVM-16
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
         echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
@@ -270,34 +265,6 @@ if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
     goto :eof
 )
 set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
-goto :eof
-
-@rem output parameter: _CPPCHECK_HOME
-:cppcheck
-set _CPPCHECK_HOME=
-
-set __CPPCHECK_CMD=
-for /f %%f in ('where cppcheck.exe 2^>NUL') do set "__CPPCHECK_CMD=%%f"
-if defined __CPPCHECK_CMD (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CppCheck executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__CPPCHECK_CMD%") do set "_CPPCHECK_HOME=%%~dpi"
-    goto :eof
-) else if defined CPPCHECK_HOME (
-    set "_CPPCHECK_HOME=%CPPCHECK_HOME%"
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CPPCHECK_HOME 1>&2
-) else (
-    set "__PATH=%ProgramFiles%"
-    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Cppcheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
-    if not defined _CPPCHECK_HOME (
-        set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\CppCheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
-    )
-)
-if not exist "%_CPPCHECK_HOME%\cppcheck.exe" (
-    echo %_ERROR_LABEL% CppCheck executable not found ^(%_CPPCHECK_HOME%^) 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
 goto :eof
 
 @rem output parameter: _DOXYGEN_HOME
@@ -450,9 +417,9 @@ if not exist "%_MSVS_HOME%" (
     set _EXITCODE=1
     goto :eof
 )
-set __VC_BATCH_FILE=
-for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" vcvarsall.bat') do set "__VC_BATCH_FILE=%%f"
-if not exist "%__VC_BATCH_FILE%" (
+set __BATCH_FILE=
+for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" vcvarsall.bat') do set "__BATCH_FILE=%%f"
+if not exist "%__BATCH_FILE%" (
     echo %_ERROR_LABEL% Could not find file vcvarsall.bat in directory "%_MSVS_HOME%" 1>&2
     set _EXITCODE=1
     goto :eof
@@ -477,18 +444,21 @@ if not exist "%_MSVS_HOME%\" (
     set _EXITCODE=1
     goto :eof
 )
-set __VC_BATCH_FILE=
-for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" vcvarsall.bat') do set "__VC_BATCH_FILE=%%f"
-if not exist "%__VC_BATCH_FILE%" (
+set __BATCH_FILE=
+for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" vcvarsall.bat 2^>NUL') do set "__BATCH_FILE=%%f"
+if not defined __BATCH_FILE (
+    for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" VsDevCmd.bat 2^>NUL') do set "__BATCH_FILE=%%f"
+)
+if not exist "%__BATCH_FILE%" (
     echo %_ERROR_LABEL% Could not find file vcvarsall.bat in directory "%_MSVS_HOME%" 1>&2
     set _EXITCODE=1
     goto :eof
 )
-if "%__VC_BATCH_FILE:Community=%"=="%__VC_BATCH_FILE%" ( set "_MSVC_HOME=%_MSVS_HOME%\BuildTools\VC"
+if "%__BATCH_FILE:Community=%"=="%__BATCH_FILE%" ( set "_MSVC_HOME=%_MSVS_HOME%\BuildTools\VC"
 ) else ( set "_MSVC_HOME=%_MSVS_HOME%\Community\VC"
 )
 set __MS_CMAKE_CMD=
-for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" cmake.exe') do set "__MS_CMAKE_CMD=%%f"
+for /f "delims=" %%f in ('where /r "%_MSVS_HOME%" cmake.exe 2^>NUL') do set "__MS_CMAKE_CMD=%%f"
 if not exist "%__MS_CMAKE_CMD%" (
     echo %_ERROR_LABEL% Could not find Microsoft CMake tool ^("%_MSVS_HOME%"^) 1>&2
     set _EXITCODE=1
@@ -620,10 +590,10 @@ set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
     for /f "tokens=1,2,3,*" %%i in ('%__CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cmake %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%CMAKE_HOME%\bin:cmake.exe"
 @rem )
-where  /q "%CPPCHECK_HOME%:cppcheck.exe"
+where  /q "%MSYS_HOME%\mingw64\bin:cppcheck.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,*" %%i in ('"%CPPCHECK_HOME%\cppcheck.exe" --version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cppcheck %%j,"
-    set __WHERE_ARGS=%__WHERE_ARGS% "%CPPCHECK_HOME%:cppcheck.exe"
+    for /f "tokens=1,*" %%i in ('"%MSYS_HOME%\mingw64\bin\cppcheck.exe" --version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cppcheck %%j,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%MSYS_HOME%\mingw64\bin:cppcheck.exe"
 )
 where /q "%MSYS_HOME%\usr\bin:make.exe"
 if %ERRORLEVEL%==0 (
@@ -640,15 +610,15 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,*" %%i in ('"%PYTHON%\python.exe" --version 2^>^&1') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% python %%j,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%PYTHON%:python.exe"
 )
-where /q "%GIT_HOME%\usr\bin:diff.exe"
-if %ERRORLEVEL%==0 (
-    for /f "tokens=1-3,*" %%i in ('"%GIT_HOME%\usr\bin\diff.exe" --version ^| findstr diff') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% diff %%l"
-    set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\usr\bin:diff.exe"
-)
 where /q "%GIT_HOME%\bin:git.exe"
 if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,*" %%i in ('"%GIT_HOME%\bin\git.exe" --version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% git %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\bin:git.exe"
+)
+where /q "%GIT_HOME%\usr\bin:diff.exe"
+if %ERRORLEVEL%==0 (
+    for /f "tokens=1-3,*" %%i in ('"%GIT_HOME%\usr\bin\diff.exe" --version ^| findstr diff') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% diff %%l"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\usr\bin:diff.exe"
 )
 where /q "%GIT_HOME%\bin":bash.exe
 if %ERRORLEVEL%==0 (
@@ -674,7 +644,6 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
 if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo Environment variables: 1>&2
     if defined CMAKE_HOME echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
-    if defined CPPCHECK_HOME echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
     if defined DOXYGEN_HOME echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
     if defined GIT_HOME echo    "GIT_HOME=%GIT_HOME%" 1>&2
     if defined LLVM_DIR echo    "LLVM_DIR=%LLVM_DIR%" 1>&2
@@ -697,7 +666,6 @@ goto :eof
 endlocal & (
     if %_EXITCODE%==0 (
         if not defined CMAKE_HOME set "CMAKE_HOME=%_CMAKE_HOME%"
-        if not defined CPPCHECK_HOME set "CPPCHECK_HOME=%_CPPCHECK_HOME%"
         if not defined DOXYGEN_HOME set "DOXYGEN_HOME=%_DOXYGEN_HOME%"
         if not defined GIT_HOME set "GIT_HOME=%_GIT_HOME%"
         if not defined LLVM_DIR set "LLVM_DIR=%_LLVM_HOME%\lib\cmake\llvm"
