@@ -230,7 +230,7 @@ echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-cl%__END%            use MSVC/MSBuild toolset ^(default^)
 echo     %__BEG_O%-clang%__END%         use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-config:^(D^|R^)%__END%  use %__BEG_O%D%__END%^)ebug or %__BEG_O%R%__END%^)elease ^(default^) configuration
-echo     %__BEG_O%-debug%__END%         show commands executed by this script
+echo     %__BEG_O%-debug%__END%         display commands executed by this script
 echo     %__BEG_O%-gcc%__END%           use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-msvc%__END%          use MSVC/MSBuild toolset ^(alias for option %__BEG_O%-cl%__END%^)
 echo     %__BEG_O%-open%__END%          display generated HTML documentation ^(subcommand %__BEG_O%doc%__END%^)
@@ -444,8 +444,8 @@ if %_DOC_OPEN%==1 (
 goto :eof
 
 :dump
-if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
-) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
+if %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
+) else ( set "__TARGET_DIR=%_TARGET_DIR%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
 if not exist "%__EXE_FILE%" (
@@ -464,19 +464,19 @@ if %_DEBUG%==1 (
     call "%_PELOOK_CMD%" %__PELOOK_OPTS% "%__EXE_FILE%" | findstr "signature machine linkver modules"
 )
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Dump of executable %_PROJ_NAME%.exe failed ^(PELook^) 1>&2
+    echo %_ERROR_LABEL% Failed to dump of executable "%_PROJ_NAME%.exe" ^(PELook^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
 goto :eof
 
 :run
-if not %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%"
-) else ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
+if %_TOOLSET%==msvc ( set "__TARGET_DIR=%_TARGET_DIR%\%_PROJ_CONFIG%"
+) else ( set "__TARGET_DIR=%_TARGET_DIR%"
 )
 set "__EXE_FILE=%__TARGET_DIR%\%_PROJ_NAME%.exe"
 if not exist "%__EXE_FILE%" (
-    echo %_ERROR_LABEL% Executable %_PROJ_NAME%.exe not found 1>&2
+    echo %_ERROR_LABEL% Executable "%_PROJ_NAME%.exe" not found 1>&2
     set _EXITCODE=1
     goto :eof
 )

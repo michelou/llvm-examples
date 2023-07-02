@@ -15,7 +15,7 @@ else
 ARCH = x86
 endif
 
-EXE_EXT     = .exe
+TARGET_EXT  = .exe
 PSEP        = ;
 CC          = $(subst \,/,$(MSYS_HOME))/mingw64/bin/cc.exe
 CL          = $(subst \,/,$(MSVC_HOME))/bin/Host$(ARCH)/$(ARCH)/cl.exe
@@ -41,7 +41,7 @@ MINGW_XXX      = $(subst \,/,$(MSYS_HOME))/mingw64/include
 MINGW_INCPATH  = $(subst \,/,$(MSYS_HOME))/mingw64/x86_64-w64-mingw32/include
 MINGW_LIBPATH  = $(subst \,/,$(MSYS_HOME))/mingw64/x86_64-w64-mingw32/lib
 else
-EXE_EXT     =
+TARGET_EXT  =
 PSEP        = :
 CC          = cc
 CL          = cl

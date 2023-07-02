@@ -27,6 +27,12 @@ set _CMAKE_PATH=
 set _MSYS_PATH=
 set _GIT_PATH=
 
+call :cppcheck
+if not %_EXITCODE%==0 (
+    @rem optional
+    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
+    set _EXITCODE=0
+)
 call :cmake
 if not %_EXITCODE%==0 goto end
 
@@ -212,7 +218,7 @@ goto :eof
 
 :help
 if %_VERBOSE%==1 (
-    set __BEG_P=%_STRONG_FG_CYAN%%_UNDERSCORE%
+    set __BEG_P=%_STRONG_FG_CYAN%
     set __BEG_O=%_STRONG_FG_GREEN%
     set __BEG_N=%_NORMAL_FG_YELLOW%
     set __END=%_RESET%
@@ -265,6 +271,34 @@ if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
     goto :eof
 )
 set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
+goto :eof
+
+@rem output parameter: _CPPCHECK_HOME
+:cppcheck
+set _CPPCHECK_HOME=
+
+set __CPPCHECK_CMD=
+for /f %%f in ('where cppcheck.exe 2^>NUL') do set "__CPPCHECK_CMD=%%f"
+if defined __CPPCHECK_CMD (
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CppCheck executable found in PATH 1>&2
+    for /f "delims=" %%i in ("%__CPPCHECK_CMD%") do set "_CPPCHECK_HOME=%%~dpi"
+    goto :eof
+) else if defined CPPCHECK_HOME (
+    set "_CPPCHECK_HOME=%CPPCHECK_HOME%"
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CPPCHECK_HOME 1>&2
+) else (
+    set "__PATH=%ProgramFiles%"
+    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Cppcheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
+    if not defined _CPPCHECK_HOME (
+        set __PATH=C:\opt
+        for /f %%f in ('dir /ad /b "!__PATH!\CppCheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
+    )
+)
+if not exist "%_CPPCHECK_HOME%\cppcheck.exe" (
+    echo %_ERROR_LABEL% CppCheck executable not found ^(%_CPPCHECK_HOME%^) 1>&2
+    set _EXITCODE=1
+    goto :eof
+)
 goto :eof
 
 @rem output parameter: _DOXYGEN_HOME
@@ -644,6 +678,7 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
 if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo Environment variables: 1>&2
     if defined CMAKE_HOME echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
+    if defined CPPCHECK_HOME echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
     if defined DOXYGEN_HOME echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
     if defined GIT_HOME echo    "GIT_HOME=%GIT_HOME%" 1>&2
     if defined LLVM_DIR echo    "LLVM_DIR=%LLVM_DIR%" 1>&2
@@ -666,6 +701,7 @@ goto :eof
 endlocal & (
     if %_EXITCODE%==0 (
         if not defined CMAKE_HOME set "CMAKE_HOME=%_CMAKE_HOME%"
+        if not defined CPPCHECK_HOME set "CPPCHECK_HOME=%_CPPCHECK_HOME%"
         if not defined DOXYGEN_HOME set "DOXYGEN_HOME=%_DOXYGEN_HOME%"
         if not defined GIT_HOME set "GIT_HOME=%_GIT_HOME%"
         if not defined LLVM_DIR set "LLVM_DIR=%_LLVM_HOME%\lib\cmake\llvm"

@@ -12,7 +12,7 @@ CONFIG=$(shell $(LLVM_CONFIG) --cxxflags --ldflags --system-libs --libs core)
 all: build
 
 build: $(SOURCE_FILES)
-	$(CXX) -g -O3 $(CONFIG) -o main $<
+	"$(CXX)" -g -O3 $(CONFIG) -o main $<
 
 executable: build
 	./main
@@ -24,8 +24,8 @@ run: executable
 	./$(PROGRAM_NAME)
 
 clean:
-	[ -f "main" ] && $(RM) -f main
-	[ -d "main.dSYM" ] && $(RM) -rf main.dSYM
+	[ -f "main" ] && "$(RM)" -f main
+	[ -d "main.dSYM" ] && "$(RM)" -rf main.dSYM
 	[ -f "$(PROGRAM_NAME).ll" ] && $(RM) -f $(PROGRAM_NAME).ll
 	[ -f "$(PROGRAM_NAME).o" ] && $(RM) -f $(PROGRAM_NAME).o
 	[ -f "$(PROGRAM_NAME)" ] && $(RM) -f $(PROGRAM_NAME)

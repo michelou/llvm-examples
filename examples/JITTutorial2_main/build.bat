@@ -207,7 +207,7 @@ goto :eof
 
 :help
 if %_VERBOSE%==1 (
-    set __P_BEG=%_STRONG_FG_CYAN%%_UNDERSCORE%
+    set __P_BEG=%_STRONG_FG_CYAN%
     set __P_END=%_RESET%
     set __O_BEG=%_STRONG_FG_GREEN%
     set __O_END=%_RESET%

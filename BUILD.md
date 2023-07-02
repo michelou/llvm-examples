@@ -102,8 +102,12 @@ We list below several executables in the [LLVM] installation directory; e.g. com
 <a name="footnote_01">[1]</a> ***Cmake modules*** [↩](#anchor_01)
 
 <p style="margin:0 0 1em 20px;">
-To successfully generate LLVM 15 from the sources we need to copy the two missing CMake files <a href="https://github.com/llvm/llvm-project/blob/release/15.x/cmake/Modules/ExtendPath.cmake" rel="external"><code>ExtendPath.cmake</code></a> and <code>FindPrefixFromConfig.cmake</code> from the URL
-<a href="https://github.com/llvm/llvm-project/tree/release/15.x/cmake/Modules" rel="external"><code>https://github.com/llvm/llvm-project/tree/release/15.x/cmake/Modules</code></a> to the local directory <code>L:\llvm-15.0.7.src\cmake\modules\\</code>.
+In order to successfully generate the LLVM distribution from the sources we need to copy some missing CMake files to directory <code>L:\llvm-X.Y.Z.src\cmake\modules\</code>:
+<table>
+<tr><th>LLVM version</th><th>CMake files</th></tr>
+<tr><td><a href="https://github.com/llvm/llvm-project/tree/release/15.x/cmake/Modules">15</a></td><td><a href="https://github.com/llvm/llvm-project/blob/release/15.x/cmake/Modules/ExtendPath.cmake" rel="external"><code>ExtendPath.cmake</code></a><br/><a href="https://github.com/llvm/llvm-project/blob/release/15.x/cmake/Modules/FindPrefixFromConfig.cmake" rel="external"><code>FindPrefixFromConfig.cmake</code></a></td></tr>
+<tr><td><a href="https://github.com/llvm/llvm-project/tree/release/16.x/cmake/Modules">16</a></td><td><a href="https://github.com/llvm/llvm-project/blob/release/16.x/cmake/Modules/CMakePolicy.cmake" rel="external"><code>CMakePolicy.cmake</code></a><br/><a href="https://github.com/llvm/llvm-project/blob/release/16.x/cmake/Modules/ExtendPath.cmake" rel="external"><code>ExtendPath.cmake</code></a><br/><a href="https://github.com/llvm/llvm-project/blob/release/16.x/cmake/Modules/FindPrefixFromConfig.cmake" rel="external"><code>FindPrefixFromConfig.cmake</code></a><br/><a href="https://raw.githubusercontent.com/llvm/llvm-project/release/16.x/cmake/Modules/GNUInstallPackageDir.cmake"><code>GNUInstallPackageDir.cmake</code></a></td></tr>
+</table>
 </p>
 
 <a name="footnote_02">[2]</a> ***CmakeLists.txt*** [↩](#anchor_02)
@@ -124,7 +128,7 @@ We need to comment out the lines marked with <span style="color:green;"><code>#M
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/February 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/July 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
