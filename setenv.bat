@@ -27,12 +27,6 @@ set _CMAKE_PATH=
 set _MSYS_PATH=
 set _GIT_PATH=
 
-call :cppcheck
-if not %_EXITCODE%==0 (
-    @rem optional
-    echo %_WARNING_LABEL% Cppcheck installation not found 1>&2
-    set _EXITCODE=0
-)
 call :cmake
 if not %_EXITCODE%==0 goto end
 
@@ -66,7 +60,6 @@ goto end
 @rem output parameters: _DEBUG_LABEL, _ERROR_LABEL, _WARNING_LABEL
 :env
 set _BASENAME=%~n0
-set _DRIVE_NAME=L
 set "_ROOT_DIR=%~dp0"
 
 set _LLVM_PREFIX_DEFAULT=LLVM-15
@@ -126,6 +119,7 @@ set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
+@rem output parameter: _BASH, _HELP, _VERBOSE
 :args
 set _BASH=0
 set _HELP=0
@@ -168,7 +162,7 @@ if "%__ARG:~0,1%"=="-" (
 shift
 goto args_loop
 :args_done
-call :subst %_DRIVE_NAME% "%_ROOT_DIR%"
+call :drive_name "%_ROOT_DIR%"
 if not %_EXITCODE%==0 goto :eof
 
 if %_DEBUG%==1 (
@@ -178,42 +172,67 @@ if %_DEBUG%==1 (
 )
 goto :eof
 
-@rem input parameters: %1: drive letter, %2: path to be substituted
-:subst
-set __DRIVE_NAME=%~1
-set "__GIVEN_PATH=%~2"
+@rem input parameter: %1: path to be substituted
+@rem output parameter: _DRIVE_NAME
+:drive_name
+set "__GIVEN_PATH=%~1"
+@rem remove trailing path separator if present
+if "%__GIVEN_PATH:~-1,1%"=="\" set "__GIVEN_PATH=%__GIVEN_PATH:~0,-1%"
 
-if not "%__DRIVE_NAME:~-1%"==":" set __DRIVE_NAME=%__DRIVE_NAME%:
-if /i "%__DRIVE_NAME%"=="%__GIVEN_PATH:~0,2%" goto :eof
-
-if "%__GIVEN_PATH:~-1%"=="\" set "__GIVEN_PATH=%__GIVEN_PATH:~0,-1%"
-if not exist "%__GIVEN_PATH%" (
-    echo %_ERROR_LABEL% Provided path does not exist ^(%__GIVEN_PATH%^) 1>&2
+@rem https://serverfault.com/questions/62578/how-to-get-a-list-of-drive-letters-on-a-system-through-a-windows-shell-bat-cmd
+set __DRIVE_NAMES=F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z:
+for /f %%i in ('wmic logicaldisk get deviceid ^| findstr :') do (
+    set "__DRIVE_NAMES=!__DRIVE_NAMES:%%i=!"
+)
+if %_DEBUG%==1 echo %_DEBUG_LABEL% __DRIVE_NAMES=%__DRIVE_NAMES% ^(WMIC^) 1>&2
+if not defined __DRIVE_NAMES (
+    echo %_ERROR_LABEL% No more free drive name 1>&2
     set _EXITCODE=1
     goto :eof
 )
-for /f "tokens=1,2,*" %%f in ('subst ^| findstr /b "%__DRIVE_NAME%" 2^>NUL') do (
+for /f "tokens=1,2,*" %%f in ('subst') do (
+    set "__SUBST_DRIVE=%%f"
+    set "__SUBST_DRIVE=!__SUBST_DRIVE:~0,2!"
     set "__SUBST_PATH=%%h"
-    if "!__SUBST_PATH!"=="!__GIVEN_PATH!" (
-        set __MESSAGE=
-        for /f %%i in ('subst ^| findstr /b "%__DRIVE_NAME%\"') do "set __MESSAGE=%%i"
-        if defined __MESSAGE (
-            if %_DEBUG%==1 ( echo %_DEBUG_LABEL% !__MESSAGE! 1>&2
-            ) else if %_VERBOSE%==1 ( echo !__MESSAGE! 1>&2
-            )
+    if "!__SUBST_DRiVE!"=="!__GIVEN_PATH:~0,2!" (
+        set _DRIVE_NAME=!__SUBST_DRIVE:~0,2!
+        if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Select drive !_DRIVE_NAME! for which a substitution already exists 1>&2
+        ) else if %_VERBOSE%==1 ( echo Select drive !_DRIVE_NAME! for which a substitution already exists 1>&2
+        )
+        goto :eof
+    ) else if "!__SUBST_PATH!"=="!__GIVEN_PATH!" (
+        set "_DRIVE_NAME=!__SUBST_DRIVE!"
+        if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Select drive !_DRIVE_NAME! for which a substitution already exists 1>&2
+        ) else if %_VERBOSE%==1 ( echo Select drive !_DRIVE_NAME! for which a substitution already exists 1>&2
         )
         goto :eof
     )
 )
-if %_DEBUG%==1 ( echo %_DEBUG_LABEL% subst "%__DRIVE_NAME%" "%__GIVEN_PATH%" 1>&2
-) else if %_VERBOSE%==1 ( echo Assign path %__GIVEN_PATH% to drive %__DRIVE_NAME% 1>&2
+for /f "tokens=1,2,*" %%i in ('subst') do (
+    set __USED=%%i
+    call :drive_names "!__USED:~0,2!"
 )
-subst "%__DRIVE_NAME%" "%__GIVEN_PATH%"
+if %_DEBUG%==1 echo %_DEBUG_LABEL% __DRIVE_NAMES=%__DRIVE_NAMES% ^(SUBST^) 1>&2
+
+set "_DRIVE_NAME=!__DRIVE_NAMES:~0,2!"
+if /i "%_DRIVE_NAME%"=="%__GIVEN_PATH:~0,2%" goto :eof
+
+if %_DEBUG%==1 ( echo %_DEBUG_LABEL% subst "%_DRIVE_NAME%" "%__GIVEN_PATH%" 1>&2
+) else if %_VERBOSE%==1 ( echo Assign path "%__GIVEN_PATH%" to drive %_DRIVE_NAME% 1>&2
+)
+subst "%_DRIVE_NAME%" "%__GIVEN_PATH%"
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Failed to assigned drive %__DRIVE_NAME% to path 1>&2
+    echo %_ERROR_LABEL% Failed to assigned drive %_DRIVE_NAME% to path 1>&2
     set _EXITCODE=1
     goto :eof
 )
+goto :eof
+
+@rem input parameter: %1=Used drive name
+@rem output parameter: __DRIVE_NAMES
+:drive_names
+set "__USED_NAME=%~1"
+set "__DRIVE_NAMES=!__DRIVE_NAMES:%__USED_NAME%=!"
 goto :eof
 
 :help
@@ -271,34 +290,6 @@ if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
     goto :eof
 )
 set "_CMAKE_PATH=;%_CMAKE_HOME%\bin"
-goto :eof
-
-@rem output parameter: _CPPCHECK_HOME
-:cppcheck
-set _CPPCHECK_HOME=
-
-set __CPPCHECK_CMD=
-for /f %%f in ('where cppcheck.exe 2^>NUL') do set "__CPPCHECK_CMD=%%f"
-if defined __CPPCHECK_CMD (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CppCheck executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__CPPCHECK_CMD%") do set "_CPPCHECK_HOME=%%~dpi"
-    goto :eof
-) else if defined CPPCHECK_HOME (
-    set "_CPPCHECK_HOME=%CPPCHECK_HOME%"
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable CPPCHECK_HOME 1>&2
-) else (
-    set "__PATH=%ProgramFiles%"
-    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Cppcheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
-    if not defined _CPPCHECK_HOME (
-        set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\CppCheck*" 2^>NUL') do set "_CPPCHECK_HOME=!__PATH!\%%f"
-    )
-)
-if not exist "%_CPPCHECK_HOME%\cppcheck.exe" (
-    echo %_ERROR_LABEL% CppCheck executable not found ^(%_CPPCHECK_HOME%^) 1>&2
-    set _EXITCODE=1
-    goto :eof
-)
 goto :eof
 
 @rem output parameter: _DOXYGEN_HOME
@@ -678,7 +669,6 @@ if %__VERBOSE%==1 if defined __WHERE_ARGS (
 if %__VERBOSE%==1 if defined CMAKE_HOME (
     echo Environment variables: 1>&2
     if defined CMAKE_HOME echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
-    if defined CPPCHECK_HOME echo    "CPPCHECK_HOME=%CPPCHECK_HOME%" 1>&2
     if defined DOXYGEN_HOME echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2
     if defined GIT_HOME echo    "GIT_HOME=%GIT_HOME%" 1>&2
     if defined LLVM_DIR echo    "LLVM_DIR=%LLVM_DIR%" 1>&2
@@ -701,7 +691,6 @@ goto :eof
 endlocal & (
     if %_EXITCODE%==0 (
         if not defined CMAKE_HOME set "CMAKE_HOME=%_CMAKE_HOME%"
-        if not defined CPPCHECK_HOME set "CPPCHECK_HOME=%_CPPCHECK_HOME%"
         if not defined DOXYGEN_HOME set "DOXYGEN_HOME=%_DOXYGEN_HOME%"
         if not defined GIT_HOME set "GIT_HOME=%_GIT_HOME%"
         if not defined LLVM_DIR set "LLVM_DIR=%_LLVM_HOME%\lib\cmake\llvm"
