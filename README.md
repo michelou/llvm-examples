@@ -9,7 +9,7 @@
   </tr>
 </table>
 
-[Ada][ada_examples], [Akka][akka_examples], [C++][cpp_examples], [Dart][dart_examples], [Deno][deno_examples], [Flix][flix_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kafka][kafka_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spark][spark_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX Toolset][wix_examples] are other trending topics we are continuously monitoring.
+[Ada][ada_examples], [Akka][akka_examples], [C++][cpp_examples], [Dart][dart_examples], [Deno][deno_examples], [Docker][docker_examples], [Flix][flix_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kafka][kafka_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spark][spark_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX Toolset][wix_examples] are other trending topics we are continuously monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
@@ -33,10 +33,10 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*July 2023*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*August 2023*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.27.0-windows-x86_64\  <i>( 106 MB)</i>
+C:\opt\cmake-3.27.3-windows-x86_64\  <i>( 106 MB)</i>
 C:\opt\doxygen-1.9.7\                <i>( 115 MB)</i>
 C:\opt\Git-2.41.0\                   <i>( 314 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
@@ -46,6 +46,7 @@ C:\opt\LLVM-11.1.0\                  <i>(1.5 resp 3.0 GB)</i>
 C:\opt\LLVM-12.0.1\                  <i>(1.5 resp 3.7 GB)</i>
 C:\opt\LLVM-14.0.6\                  <i>(2.1 resp 3.1 GB)</i>
 C:\opt\LLVM-15.0.7\                  <i>(3.1 GB)</i>
+C:\opt\LLVM-16.0.6\                  <i>(2.5 GB)</i>
 C:\opt\msys64\                       <i>(2.85 GB)</i>
 C:\opt\ninja-1.11.1\                 <i>( 0.5 MB)</i>
 C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
@@ -65,6 +66,12 @@ https://devblogs.microsoft.com/cppblog/cmake-3-14-and-performance-improvements/
 
 ## <span id="structure">Directory structure</span> [**&#x25B4;**](#top)
 
+<!--
+llvm-8.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i>
+llvm-9.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>)</i>
+llvm-10.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>)</i>
+llvm-11.1.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>)</i>
+-->
 This project is organized as follows:
 <pre style="font-size:80%;max-width:500px;">
 bin\pelook.exe  <i>(<a href="http://bytepointer.com/tools/pelook_changelist.htm">changelist</a>)</i>
@@ -72,14 +79,11 @@ bin\vswhere.exe
 <a href="bin/llvm/build.bat">bin\llvm\build.bat</a>
 docs\
 examples\{<a href="./examples/README.md">README.md</a>, <a href="./examples/hello/">hello</a>, <a href="./examples/JITTutorial1/">JITTutorial1</a>, etc.}
-llvm-8.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>)</i>
-llvm-9.0.1.src\     <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-9.0.1">llvm-9.0.1.src.tar.xz</a>)</i>
-llvm-10.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>)</i>
-llvm-11.1.0.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>)</i>
 llvm-12.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>)</i>
 llvm-13.0.1.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>)</i>
 llvm-14.0.6.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">llvm-14.0.6.src.tar.xz</a>)</i>
 llvm-15.0.7.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7">llvm-15.0.7.src.tar.xz</a>)</i>
+llvm-16.0.6.src\    <i>(extracted from file <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-16.0.6">llvm-16.0.6.src.tar.xz</a>)</i>
 llvm-essentials{<a href="./llvm-essentials/README.md">README.md</a>, <a href="./llvm-essentials/1_2_Getting_familiar_with_LLVM_IR/">1_2_Getting_familiar_with_LLVM_IR</a>, etc.}
 <a href="BUILD.md">BUILD.md</a>
 README.md
@@ -108,7 +112,7 @@ where
 - directory **`llvm-11.1.0.src\`** contains the [LLVM] 11 source code distribution.
 -->
 
-We also define a virtual drive **`L:`** in our working environment in order to reduce/hide the real path of our project directory (see article ["Windows command prompt limitation"][windows_limitation] from Microsoft Support).
+We also define a virtual drive &ndash; e.g. drive **`L:`** &ndash; in our working environment in order to reduce/hide the real path of our project directory (see article ["Windows command prompt limitation"][windows_limitation] from Microsoft Support).
 
 > **:mag_right:** We use the Windows external command [**`subst`**][windows_subst] to create virtual drives; for instance:
 >
@@ -166,7 +170,7 @@ Command [**`setenv.bat`**](setenv.bat) is executed once to setup our development
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.7, pelook v1.73,
-   cmake 3.27.0, cppcheck 2.10, make 4.3, gcc 12.2.0, python 3.11.1,
+   cmake 3.27.3, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
    git 2.41.0.windows.1, diff 3.9, bash 4.4.23(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -187,13 +191,13 @@ Command [**`setenv.bat`**](setenv.bat) with option **`-verbose`** displays addit
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.7, pelook v1.73,
-   cmake 3.27.0, cppcheck 2.10, make 4.3, gcc 12.2.0, python 3.11.1,
+   cmake 3.27.3, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
    git 2.41.0.windows.1, diff 3.9, bash 4.4.23(1)-release
 Tool paths:
    C:\opt\LLVM-15.0.7\bin\clang.exe
    C:\opt\LLVM-15.0.7\bin\lli.exe
    C:\opt\LLVM-15.0.7\bin\opt.exe
-   C:\opt\cmake-3.27.0\bin\cmake.exe
+   C:\opt\cmake-3.27.3\bin\cmake.exe
    C:\opt\msys64\usr\bin\make.exe
    C:\opt\msys64\mingw64\bin\gcc.exe
    C:\opt\Python-3.11.1\python.exe
@@ -205,7 +209,7 @@ Tool paths:
    C:\opt\Git-2.41.0\mingw64\bin\git.exe
    C:\opt\Git-2.41.0\bin\bash.exe
 Environment variables:
-   "CMAKE_HOME=C:\opt\cmake-3.27.0-win64-x64"
+   "CMAKE_HOME=C:\opt\cmake-3.27.3-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
    "DOXYGEN_HOME=C:\opt\doxygen-1.9.7"
    "LLVM_HOME=C:\opt\LLVM-15.0.7"
@@ -347,7 +351,7 @@ We give here three differences between <a href="http://repo.msys2.org/distrib/x8
 <tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
 <tr>
   <td>Version/architecture</td>
-  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 12.2.0</code></a></td>
+  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 13.2.0</code></a></td>
   <td><a href="https://gcc.gnu.org/gcc-8/changes.html"><code>gcc 8.1</code></a></td>
 </tr>
 <tr>
@@ -381,7 +385,7 @@ c:\opt\msys64\usr\bin\make.exe
 c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> gcc</b>
-gcc (Rev3, Built by MSYS2 project) 12.2.0
+gcc (Rev3, Built by MSYS2 project) 13.2.0
 &nbsp;
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> Make</b>
 GNU Make 4.4
@@ -433,8 +437,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.27.0-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
-<a href="http://cppcheck.sourceforge.net/">cppcheck-2.10-x64-Setup.msi</a>       <i>( 17 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.27.3-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
 <a href="https://www.doxygen.nl/download.html">doxygen-1.9.7.windows.x64.bin.zip</a> <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.41.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
@@ -463,7 +466,7 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -473,12 +476,13 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [cpp_examples]: https://github.com/michelou/cpp-examples
 [cmake_downloads]: https://cmake.org/download/
-[cmake_modules]: https://cmake.org/cmake/help/v3.26/manual/cmake-modules.7.html
-[cmake_relnotes]: https://cmake.org/cmake/help/v3.26/release/3.26.html
+[cmake_modules]: https://cmake.org/cmake/help/v3.27/manual/cmake-modules.7.html
+[cmake_relnotes]: https://cmake.org/cmake/help/v3.27/release/3.27.html
 [cppcheck_changelog]: https://github.com/danmar/cppcheck/releases
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
 [dart_examples]: https://github.com/michelou/dart-examples
 [deno_examples]: https://github.com/michelou/deno-examples
+[docker_examples]: https://github.com/michelou/docker-examples
 [doxygen_changelog]: https://www.doxygen.nl/manual/changelog.html
 [doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
 [flix_examples]: https://github.com/michelou/flix-examples

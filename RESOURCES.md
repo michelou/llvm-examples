@@ -1,9 +1,9 @@
 # <span id="top">LLVM Resources</span> <span style="size:30%;"><a href="README.md">↩</a></span>
 
-<table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
+<table style="font-family:Helvetica,Arial;line-height:1.6;">
   <tr>
   <td style="border:0;padding:0 10px 0 0;min-width:120px;"><a href="https://llvm.org/" rel="external"><img src="docs/images/llvm.png" width="120" alt="LLVM project"/></a></td>
-  <td style="border:0;padding:0;vertical-align:text-top;">This document gathers a few <a href="https://llvm.org/" rel="external">LLVM</a> related resources that caught our attention.
+  <td style="border:0;padding:0;vertical-align:text-top;">This document gathers <a href="https://llvm.org/" rel="external">LLVM</a> related resources that caught our attention.
   </td>
   </tr>
 </table>
@@ -82,7 +82,7 @@
 
 - [Alive2: Bounded Translation Validation for LLVM](https://www.cs.utah.edu/~regehr/#pubs) by Nuno P. Lopes, PLDI 2021, Jun 2021.
 
-> See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/" rel="external">LLVM</a> website.
+> **Note:** See page <a href="https://llvm.org/pubs/"><i>"LLVM Related Publications"</i></a> on the official <a href="https://llvm.org/" rel="external">LLVM</a> website.
 > 
 > We mention here only publications from <a href="http://nondot.org/~sabre/" rel="external">Chris Lattner</a>'s and <a href="https://vikram.cs.illinois.edu/">Vikram Adve</a>:
 >
@@ -111,7 +111,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/March 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
