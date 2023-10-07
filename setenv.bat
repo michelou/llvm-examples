@@ -297,10 +297,8 @@ set _DOXYGEN_HOME=
 set __DOXYGEN_CMD=
 for /f %%f in ('where doxygen.exe 2^>NUL') do set "__DOXYGEN_CMD=%%f"
 if defined __DOXYGEN_CMD (
+    for /f "delims=" %%i in ("%__DOXYGEN_CMD%") do set "_DOXYGEN_HOME=%%~dpi"
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Doxygen executable found in PATH 1>&2
-    for /f "delims=" %%i in ("%__DOXYGEN_CMD%") do set "__DOXY_BIN_DIR=%%~dpi"
-    for %%f in ("!__DOXY_BIN_DIR!") do set "_DOXYGEN_HOME=%%~dpf"
-    goto :eof
 ) else if defined DOXY_HOME (
     set "_DOXYGEN_HOME=%DOXY_HOME%"
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable DOXY_HOME 1>&2
@@ -312,8 +310,8 @@ if defined __DOXYGEN_CMD (
         for /f %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
     )
 )
-if not exist "%_DOXYGEN_HOME%\bin\doxygen.exe" (
-    echo %_ERROR_LABEL% Doxygen executable not found ^(%_DOXYGEN_HOME%^) 1>&2
+if not exist "%_DOXYGEN_HOME%\doxygen.exe" (
+    echo %_ERROR_LABEL% Doxygen executable not found ^("%_DOXYGEN_HOME%"^) 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -343,7 +341,7 @@ if defined __PYTHON_CMD (
         for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
         if not defined _PYTHON_HOME (
             set "__PATH=%ProgramFiles%"
-            for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
+            for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
         )
     )
 )
@@ -368,9 +366,9 @@ set _MSYS_PATH=
 set __MAKE_CMD=
 for /f "delims=" %%f in ('where make.exe 2^>NUL') do set "__MAKE_CMD=%%f"
 if defined __MAKE_CMD (
-    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of GNU Make executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__MAKE_CMD%") do set "__MAKE_BIN_DIR=%%~dpi"
-    for %%f in ("!__MAKE_BIN_DIR!\.") do set "_MSYS_HOME=%%~dpf"
+    for /f "delims=" %%f in ("!__MAKE_BIN_DIR!\.") do set "_MSYS_HOME=%%~dpf"
+    if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of GNU Make executable found in PATH 1>&2
     @rem keep _MSYS_PATH undefined since executable already in path
     goto :eof
 ) else if defined MSYS_HOME (
@@ -385,7 +383,7 @@ if defined __MAKE_CMD (
     )
 )
 if not exist "%_MSYS_HOME%\usr\bin\make.exe" (
-    echo %_ERROR_LABEL% GNU Make executable not found ^(%_MSYS_HOME%^) 1>&2
+    echo %_ERROR_LABEL% GNU Make executable not found ^("%_MSYS_HOME%"^) 1>&2
     set _MSYS_HOME=
     set _EXITCODE=1
     goto :eof
@@ -417,7 +415,7 @@ if defined __CLANG_CMD (
     )
 )
 if not exist "%_LLVM_HOME%\bin\clang.exe" (
-    echo %_ERROR_LABEL% clang executable not found ^(%_LLVM_HOME%^) 1>&2
+    echo %_ERROR_LABEL% clang executable not found ^("%_LLVM_HOME%"^) 1>&2
     set _LLVM_HOME=
     set _EXITCODE=1
     goto :eof
@@ -529,7 +527,7 @@ set __GIT_CMD=
 for /f "delims=" %%f in ('where git.exe 2^>NUL') do set "__GIT_CMD=%%f"
 if defined __GIT_CMD (
     for /f "delims=" %%i in ("%__GIT_CMD%") do set "__GIT_BIN_DIR=%%~dpi"
-    for %%f in ("!__GIT_BIN_DIR!\.") do set "_GIT_HOME=%%~dpf"
+    for /f "delims=" %%f in ("!__GIT_BIN_DIR!\.") do set "_GIT_HOME=%%~dpf"
     @rem Executable git.exe is present both in bin\ and \mingw64\bin\
     if not "!_GIT_HOME:mingw=!"=="!_GIT_HOME!" (
         for %%f in ("!_GIT_HOME!\.") do set "_GIT_HOME=%%~dpf"
@@ -608,12 +606,12 @@ if %ERRORLEVEL%==0 (
 )
 set "__PELOOK_CMD=%ROOT_DIR%bin\pelook.exe"
 @rem if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,4,*" %%i in ('%__PELOOK_CMD% /? 2^>^&1 ^| findstr /b PE') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% pelook %%l,"
+    for /f "tokens=1,2,3,4,*" %%i in ('"%__PELOOK_CMD%" /? 2^>^&1 ^| findstr /b PE') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% pelook %%l,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%_ROOT_DIR%bin:pelook.exe"
 @rem )
 set "__CMAKE_CMD=%CMAKE_HOME%\bin\cmake.exe"
 @rem if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,3,*" %%i in ('%__CMAKE_CMD% --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cmake %%k,"
+    for /f "tokens=1,2,3,*" %%i in ('"%__CMAKE_CMD%" --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE2=%__VERSIONS_LINE2% cmake %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%CMAKE_HOME%\bin:cmake.exe"
 @rem )
 where  /q "%MSYS_HOME%\mingw64\bin:cppcheck.exe"
@@ -681,7 +679,11 @@ if %__VERBOSE%==1 if defined CMAKE_HOME (
     if defined PYTHON_HOME echo    "PYTHON_HOME=%PYTHON_HOME%" 1>&2
     if defined WINSDK_HOME echo    "WINSDK_HOME=%WINSDK_HOME%" 1>&2
     echo Path associations: 1>&2
-    for /f "delims=" %%i in ('subst') do echo    %%i 1>&2
+    for /f "delims=" %%i in ('subst') do (
+        set "__LINE=%%i"
+        setlocal enabledelayedexpansion
+        echo    !__LINE:%USERPROFILE%=%%USERPROFILE%%! 1>&2
+    )
 )
 goto :eof
 

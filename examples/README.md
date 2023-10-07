@@ -39,19 +39,19 @@ Usage: build { &lt;option&gt; | &lt;subcommand&gt; }
     -cl            use MSVC/MSBuild toolset (default)
     -clang         use Clang/GNU Make toolset instead of MSVC/MSBuild
     -config:(D|R)  use D)ebug or R)elease (default) configuration
-    -debug         show commands executed by this script
+    -debug         print commands executed by this script
     -gcc           use GCC/GNU Make toolset instead of MSVC/MSBuild
     -msvc          use MSVC/MSBuild toolset (alias for option -cl)
     -open          display generated HTML documentation ^(subcommand 'doc'^)
-    -timer         display total elapsed time
-    -verbose       display progress messages
+    -timer         print total execution time
+    -verbose       print progress messages
 &nbsp;
   Subcommands:
     clean          delete generated files
     compile        generate executable
     doc            generate HTML documentation with <a href="https://www.doxygen.nl/">Doxygen</a>
     dump           dump PE/COFF infos for generated executable
-    help           display this help message
+    help           print this help message
     lint           analyze C++ source files with <a href="http://cppcheck.sourceforge.net/">Cppcheck</a>
     run            run the generated executable
 </pre>
@@ -82,7 +82,7 @@ Command [**`build.bat -debug run`**](hello/build.bat) uses the [**`MSVC`**][wind
 <b>&gt; <a href="hello/build.bat">build</a> -debug run</b>
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.7"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -119,7 +119,7 @@ Command [**`build.bat -debug -clang clean run`**](hello/build.bat) uses the [**`
 <b>&gt; <a href="hello/build.bat">build</a> -debug -clang clean run</b>
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.7"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
@@ -154,7 +154,7 @@ Finally, command [**`build.bat -debug -gcc clean run`**](hello/build.bat) uses t
 <b>&gt; <a href="hello/build.bat">build</a> -debug -gcc clean run</b>
 [build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.7"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
@@ -188,7 +188,7 @@ Command [**`build.bat -debug lint`**](hello/build.bat) performs code analysis wi
 <b>&gt; <a href="hello/build.bat">build</a> -debug lint</b>
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.7"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
@@ -274,7 +274,7 @@ Finally, command [**`build.bat -debug clean run`**](JITTutorial1/build.bat) disp
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.7"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
@@ -675,7 +675,7 @@ Out batch files (eg. <a href="JITTutorial1/build.bat"><b><code>build.bat</code><
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/August 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/October 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

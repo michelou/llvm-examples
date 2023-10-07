@@ -59,12 +59,12 @@ set _CPPCHECK_CMD=
 if exist "%CPPCHECK_HOME%\cppcheck.exe" (
     set "_CPPCHECK_CMD=%CPPCHECK_HOME%\cppcheck.exe"
 )
-if not exist "%DOXYGEN_HOME%\bin\doxygen.exe" (
+if not exist "%DOXYGEN_HOME%\doxygen.exe" (
     echo %_ERROR_LABEL% Doxygen installation not found 1>&2
     set _EXITCODE=1
     goto :eof
 )
-set "_DOXYGEN_CMD=%DOXYGEN_HOME%\bin\doxygen.exe"
+set "_DOXYGEN_CMD=%DOXYGEN_HOME%\doxygen.exe"
 
 if not exist "%MSYS_HOME%\usr\bin\make.exe" (
     echo %_ERROR_LABEL% MSYS installation not found 1>&2
@@ -131,7 +131,7 @@ set _STRONG_BG_BLUE=[104m
 goto :eof
 
 @rem input parameter: %*
-@rem output parameter(s): _COMMANDS, _DEBUG, _TIMER, _TOOLSET, _VERBOSE
+@rem output parameters: _COMMANDS, _DEBUG, _TIMER, _TOOLSET, _VERBOSE
 :args
 set _COMMANDS=
 set _DOC_OPEN=0
@@ -160,7 +160,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-timer" ( set _TIMER=1
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
-        echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
+        echo %_ERROR_LABEL% Unknown option "%__ARG%" 1>&2
         set _EXITCODE=1
         goto args_done
     )
@@ -175,7 +175,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="run" ( set _COMMANDS=!_COMMANDS! compile run
     ) else if "%__ARG%"=="test" ( set _COMMANDS=!_COMMANDS! compile run test
     ) else (
-        echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
+        echo %_ERROR_LABEL% Unknown subcommand "%__ARG%" 1>&2
         set _EXITCODE=1
         goto args_done
     )
@@ -224,19 +224,19 @@ echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-cl%__END%            use MSVC/MSBuild toolset ^(default^)
 echo     %__BEG_O%-clang%__END%         use Clang/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-config:^(D^|R^)%__END%  use %__BEG_O%D%__END%^)ebug or %__BEG_O%R%__END%^)elease ^(default^) configuration
-echo     %__BEG_O%-debug%__END%         show commands executed by this script
+echo     %__BEG_O%-debug%__END%         print commands executed by this script
 echo     %__BEG_O%-gcc%__END%           use GCC/GNU Make toolset instead of MSVC/MSBuild
 echo     %__BEG_O%-msvc%__END%          use MSVC/MSBuild toolset ^(alias for option %__BEG_O%-cl%__END%^)
 echo     %__BEG_O%-open%__END%          display generated HTML documentation ^(subcommand %__BEG_O%doc%__END%^)
-echo     %__BEG_O%-timer%__END%         display total elapsed time
-echo     %__BEG_O%-verbose%__END%       display progress messages
+echo     %__BEG_O%-timer%__END%         print total execution time
+echo     %__BEG_O%-verbose%__END%       print progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
 echo     %__BEG_O%clean%__END%          delete generated files
 echo     %__BEG_O%compile%__END%        generate executable ^(default config: %__BEG_O%Release%__END%^)
 echo     %__BEG_O%doc%__END%            generate HTML documentation with %__BEG_N%Doxygen%__END%
 echo     %__BEG_O%dump%__END%           dump PE/COFF infos for generated executable
-echo     %__BEG_O%help%__END%           display this help message
+echo     %__BEG_O%help%__END%           print this help message
 echo     %__BEG_O%lint%__END%           analyze C++ source files with %__BEG_N%Cppcheck%__END%
 echo     %__BEG_O%run%__END%            run generated executable
 echo     %__BEG_O%test%__END%           test generated IR code
@@ -255,6 +255,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "%__DIR%" 1>&2
 )
 rmdir /s /q "%__DIR%"
 if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Failed to delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -270,6 +271,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOUR
 )
 call "%_CPPCHECK_CMD%" %__CPPCHECK_OPTS% "%_SOURCE_DIR%"
 if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Found errors while analyzing C++ source files in directory "!_SOURCE_DIR=%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
