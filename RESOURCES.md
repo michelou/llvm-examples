@@ -11,6 +11,7 @@
 
 ## <span id="articles">Articles</span>
 
+- [What is LLVM? The power behind Swift, Rust, Clang, and more][article_yegulalp] by Serdar Yeulalp, August 2023.
 - [Remote LLVM development with Visual Studio Code][article_kleine] by Konrad Kleine, April 2021.
 - [A Brief Introduction to Clang-Tidy][article_clang_tidy], by Bartlomeij Filipek, January 2021.
 - [MIR: A lightweight JIT compiler project][article_mir], by Vladimir Makarov, January 2020.
@@ -20,11 +21,11 @@
 - [How LLVM optimizes a function](https://blog.regehr.org/archives/1603) by John Regehr, September 2018.
 - [How LLVM optimizes power sums][article_power_sums] by Krister Walfridsson, April 2018.
 - [Adventures in JIT compilation: Part 3 - LLVM](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-3-llvm/) by Eli Bendersky, May 2017.
-- [*Adventures in JIT compilation: Part 2 - an x64 JIT*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-2-an-x64-jit/) by Eli Bendersky, March 2017.
-- [*Adventures in JIT compilation: Part 1 - an interpreter*](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-1-an-interpreter/) by Eli Bendersky, March 2017.
-- [*A Tourist’s Guide to the LLVM Source Code*](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
-- [*LLVM for Grad Students*](http://www.cs.cornell.edu/~asampson/blog/llvm.html) by Adrian Sampson, August 2015.
-- [*A deeper look into the LLVM code generator, Part 1*](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, February 2013.
+- [Adventures in JIT compilation: Part 2 - an x64 JIT](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-2-an-x64-jit/) by Eli Bendersky, March 2017.
+- [Adventures in JIT compilation: Part 1 - an interpreter](https://eli.thegreenplace.net/2017/adventures-in-jit-compilation-part-1-an-interpreter/) by Eli Bendersky, March 2017.
+- [A Tourist’s Guide to the LLVM Source Code](https://blog.regehr.org/archives/1453) by John Regehr, January 2017.
+- [LLVM for Grad Students](http://www.cs.cornell.edu/~asampson/blog/llvm.html) by Adrian Sampson, August 2015.
+- [A deeper look into the LLVM code generator, Part 1](https://eli.thegreenplace.net/2013/02/25/a-deeper-look-into-the-llvm-code-generator-part-1) by Eli Bendersky, February 2013.
 - [Life of an instruction in LLVM](https://eli.thegreenplace.net/2012/11/24/life-of-an-instruction-in-llvm) by Eli Bendersky, November 2012.
 - [Create a working compiler with the LLVM framework, Part 2][article_sen_2] by Arpan Sen, June 2012.
 - [Create a working compiler with the LLVM framework, Part 1][article_sen_1] by Arpan Sen, June 2012.
@@ -37,6 +38,8 @@
 ## <span id="blogs">Blogs</span>
 
 - [nikic's Blog](https://www.npopov.com/) :
+  - [How to reduce LLVM crashes](https://www.npopov.com/2023/10/22/How-to-reduce-LLVM-crashes.html), October 2023.
+  - [LLVM: The middle-end optimization pipeline](https://www.npopov.com/2023/04/07/LLVM-middle-end-pipeline.html), April 2023.
   - [This year in LLVM (2022)](https://www.npopov.com/2022/12/20/This-year-in-LLVM-2022.html), December 2022.
   - [Design issues in LLVM IR](https://www.npopov.com/2021/06/02/Design-issues-in-LLVM-IR.html), June 2021.
   - [Make LLVM fast again](https://www.npopov.com/2020/05/10/Make-LLVM-fast-again.html), May 2020.
@@ -111,7 +114,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/October 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/December 2023* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -126,6 +129,7 @@
 [article_sen_1]: https://www.ibm.com/developerworks/library/os-createcompilerllvm1/index.html
 [article_sen_2]: https://www.ibm.com/developerworks/library/os-createcompilerllvm2/index.html
 [article_toy_compiler]: https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
+[article_yegulalp]: https://www.infoworld.com/article/3247799/what-is-llvm-the-power-behind-swift-rust-clang-and-more.html
 [blog_exterman]: https://www.incredibuild.com/blog/compiling-with-clang-optimization-flags
 [blog_guo]: https://blog.nuullll.com/2021/05/15/building-llvm-project-with-ninja-on-macos.html
 [blog_llvm2021]: https://blog.llvm.org/posts/2021-03-26-the-new-pass-manager/

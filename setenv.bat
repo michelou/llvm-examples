@@ -73,10 +73,6 @@ goto :eof
 :env_colors
 @rem ANSI colors in standard Windows 10 shell
 @rem see https://gist.github.com/mlocati/#file-win10colors-cmd
-set _RESET=[0m
-set _BOLD=[1m
-set _UNDERSCORE=[4m
-set _INVERSE=[7m
 
 @rem normal foreground colors
 set _NORMAL_FG_BLACK=[30m
@@ -114,6 +110,12 @@ set _STRONG_BG_RED=[101m
 set _STRONG_BG_GREEN=[102m
 set _STRONG_BG_YELLOW=[103m
 set _STRONG_BG_BLUE=[104m
+
+@rem we define _RESET in last position to avoid crazy console output with type command
+set _BOLD=[1m
+set _UNDERSCORE=[4m
+set _INVERSE=[7m
+set _RESET=[0m
 goto :eof
 
 @rem input parameter: %*
@@ -143,7 +145,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-llvm:16" ( set _LLVM_PREFIX=LLVM-16
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
-        echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
+        echo %_ERROR_LABEL% Unknown option "%__ARG%" 1>&2
         set _EXITCODE=1
         goto args_done
     )
@@ -151,7 +153,7 @@ if "%__ARG:~0,1%"=="-" (
     @rem subcommand
     if "%__ARG%"=="help" ( set _HELP=1
     ) else (
-        echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
+        echo %_ERROR_LABEL% Unknown subcommand "%__ARG%" 1>&2
         set _EXITCODE=1
         goto args_done
     )
@@ -216,11 +218,11 @@ set "_DRIVE_NAME=!__DRIVE_NAMES:~0,2!"
 if /i "%_DRIVE_NAME%"=="%__GIVEN_PATH:~0,2%" goto :eof
 
 if %_DEBUG%==1 ( echo %_DEBUG_LABEL% subst "%_DRIVE_NAME%" "%__GIVEN_PATH%" 1>&2
-) else if %_VERBOSE%==1 ( echo Assign path "%__GIVEN_PATH%" to drive %_DRIVE_NAME% 1>&2
+) else if %_VERBOSE%==1 ( echo Assign drive %_DRIVE_NAME% to path "!__GIVEN_PATH:%USERPROFILE%=%%USERPROFILE%%!" 1>&2
 )
 subst "%_DRIVE_NAME%" "%__GIVEN_PATH%"
 if not %ERRORLEVEL%==0 (
-    echo %_ERROR_LABEL% Failed to assign drive %_DRIVE_NAME% to path 1>&2
+    echo %_ERROR_LABEL% Failed to assign drive %_DRIVE_NAME% to path "!__GIVEN_PATH:%USERPROFILE%=%%USERPROFILE%%!" 1>&2
     set _EXITCODE=1
     goto :eof
 )
@@ -249,12 +251,12 @@ echo Usage: %__BEG_O%%_BASENAME% { ^<option^> ^| ^<subcommand^> }%__END%
 echo.
 echo   %__BEG_P%Options:%__END%
 echo     %__BEG_O%-bash%__END%          start Git bash shell instead of Windows command prompt
-echo     %__BEG_O%-debug%__END%         display commands executed by this script
+echo     %__BEG_O%-debug%__END%         print commands executed by this script
 echo     %__BEG_O%-llvm:^<8..15^>%__END%  select version of LLVM installation ^(default: %__BEG_N%%_LLVM_PREFIX_DEFAULT%%__END%^)
-echo     %__BEG_O%-verbose%__END%       display progress messages
+echo     %__BEG_O%-verbose%__END%       print progress messages
 echo.
 echo   %__BEG_P%Subcommands:%__END%
-echo     %__BEG_O%help%__END%           display this help message
+echo     %__BEG_O%help%__END%           print this help message
 goto :eof
 
 @rem output parameters: _CMAKE_HOME, _CMAKE_PATH
@@ -267,7 +269,7 @@ for /f "delims=" %%f in ('where cmake.exe 2^>NUL') do set "__CMAKE_CMD=%%f"
 if defined __CMAKE_CMD (
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of CMake executable found in PATH 1>&2
     for /f "delims=" %%i in ("%__CMAKE_CMD%") do set "__CMAKE_BIN_DIR=%%~dpi"
-    for %%f in ("!__CMAKE_BIN_DIR!") do set "_CMAKE_HOME=%%~dpf"
+    for /f "delims=" %%f in ("!__CMAKE_BIN_DIR!") do set "_CMAKE_HOME=%%~dpf"
     @rem keep _CMAKE_PATH undefined since executable already in path
     goto :eof
 ) else if defined CMAKE_HOME (
@@ -278,7 +280,7 @@ if defined __CMAKE_CMD (
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\cmake*" 2^>NUL') do set "_CMAKE_HOME=!__PATH!\%%f"
     if not defined _CMAKE_HOME (
         set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\cmake*" 2^>NUL') do set "_CMAKE_HOME=!__PATH!\%%f"
+        for /f "delims=" %%f in ('dir /ad /b "!__PATH!\cmake*" 2^>NUL') do set "_CMAKE_HOME=!__PATH!\%%f"
     )
 )
 if not exist "%_CMAKE_HOME%\bin\cmake.exe" (
@@ -303,11 +305,18 @@ if defined __DOXYGEN_CMD (
     set "_DOXYGEN_HOME=%DOXY_HOME%"
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using environment variable DOXY_HOME 1>&2
 ) else (
-    set "__PATH=%ProgramFiles%"
-    for /f "delims=" %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
-    if not defined _DOXYGEN_HOME (
+    set __PATH=C:\opt
+    if exist "!__PATH!\doxygen\" ( set "_DOXYGEN_HOME=!__PATH!\doxygen"
+    ) else (
         set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
+        for /f "delims=" %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
+        if not defined _DOXYGEN_HOME (
+            set "__PATH=%ProgramFiles%"
+           for /f "delims=" %%f in ('dir /ad /b "!__PATH!\doxygen-*" 2^>NUL') do set "_DOXYGEN_HOME=!__PATH!\%%f"
+        )
+    )
+    if defined _DOXYGEN_HOME (
+        if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Doxygen installation directory "!_DOXYGEN_HOME!" 1>&2
     )
 )
 if not exist "%_DOXYGEN_HOME%\doxygen.exe" (
@@ -338,11 +347,14 @@ if defined __PYTHON_CMD (
     set __PATH=C:\opt
     if exist "!__PATH!\Python\" ( set "_PYTHON_HOME=!__PATH!\Python"
     ) else (
-        for /f %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
+        for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
         if not defined _PYTHON_HOME (
             set "__PATH=%ProgramFiles%"
             for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Python-3*" 2^>NUL') do set "_PYTHON_HOME=!__PATH!\%%f"
         )
+    )
+    if defined _PYTHON_HOME (
+        if %_DEBUG%==1 echo %_DEBUG_LABEL% Using default Python installation directory "!_PYTHON_HOME!" 1>&2
     )
 )
 if not exist "%_PYTHON_HOME%\python.exe" (
@@ -379,7 +391,7 @@ if defined __MAKE_CMD (
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\msys*" 2^>NUL') do set "_MSYS_HOME=!__PATH!\%%f"
     if not defined _MSYS_HOME (
         set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\msys*" 2^>NUL') do set "_MSYS_HOME=!__PATH!\%%f"
+        for /f "delims=" %%f in ('dir /ad /b "!__PATH!\msys*" 2^>NUL') do set "_MSYS_HOME=!__PATH!\%%f"
     )
 )
 if not exist "%_MSYS_HOME%\usr\bin\make.exe" (
@@ -411,7 +423,7 @@ if defined __CLANG_CMD (
     for /f "delims=" %%f in ('dir /ad /b "!__PATH!\%_LLVM_PREFIX%*" 2^>NUL') do set "_LLVM_HOME=!__PATH!\%%f"
     if not defined _LLVM_HOME (
         set __PATH=C:\opt
-        for /f %%f in ('dir /ad /b "!__PATH!\%_LLVM_PREFIX%*" 2^>NUL') do set "_LLVM_HOME=!__PATH!\%%f"
+        for /f "delims=" %%f in ('dir /ad /b "!__PATH!\%_LLVM_PREFIX%*" 2^>NUL') do set "_LLVM_HOME=!__PATH!\%%f"
     )
 )
 if not exist "%_LLVM_HOME%\bin\clang.exe" (
@@ -530,7 +542,7 @@ if defined __GIT_CMD (
     for /f "delims=" %%f in ("!__GIT_BIN_DIR!\.") do set "_GIT_HOME=%%~dpf"
     @rem Executable git.exe is present both in bin\ and \mingw64\bin\
     if not "!_GIT_HOME:mingw=!"=="!_GIT_HOME!" (
-        for %%f in ("!_GIT_HOME!\.") do set "_GIT_HOME=%%~dpf"
+        for /f "delims=" %%f in ("!_GIT_HOME!\.") do set "_GIT_HOME=%%~dpf"
     )
     if %_DEBUG%==1 echo %_DEBUG_LABEL% Using path of Git executable found in PATH 1>&2
     @rem keep _GIT_PATH undefined since executable already in path
@@ -542,10 +554,10 @@ if defined __GIT_CMD (
     set __PATH=C:\opt
     if exist "!__PATH!\Git\" ( set "_GIT_HOME=!__PATH!\Git"
     ) else (
-        for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "_GIT_HOME=!__PATH!\%%f"
+        for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "_GIT_HOME=!__PATH!\%%f"
         if not defined _GIT_HOME (
             set "__PATH=%ProgramFiles%"
-            for /f %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "_GIT_HOME=!__PATH!\%%f"
+            for /f "delims=" %%f in ('dir /ad /b "!__PATH!\Git*" 2^>NUL') do set "_GIT_HOME=!__PATH!\%%f"
         )
     )
     if defined _GIT_HOME (
@@ -577,9 +589,9 @@ goto :eof
 
 :print_env
 set __VERBOSE=%1
-set "__VERSIONS_LINE1=  "
-set "__VERSIONS_LINE2=  "
-set "__VERSIONS_LINE3=  "
+set __VERSIONS_LINE1=
+set __VERSIONS_LINE2=
+set __VERSIONS_LINE3=
 set __WHERE_ARGS=
 where /q "%LLVM_HOME%\bin:clang.exe"
 if %ERRORLEVEL%==0 (
@@ -636,7 +648,9 @@ if %ERRORLEVEL%==0 (
 )
 where /q "%GIT_HOME%\bin:git.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,2,*" %%i in ('"%GIT_HOME%\bin\git.exe" --version') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% git %%k,"
+    for /f "tokens=1,2,*" %%i in ('"%GIT_HOME%\bin\git.exe" --version') do (
+        for /f "delims=. tokens=1,2,3,*" %%a in ("%%k") do set "__VERSIONS_LINE4=%__VERSIONS_LINE4% git %%a.%%b.%%c,"
+    )
     set __WHERE_ARGS=%__WHERE_ARGS% "%GIT_HOME%\bin:git.exe"
 )
 where /q "%GIT_HOME%\usr\bin:diff.exe"
@@ -657,15 +671,17 @@ if %ERRORLEVEL%==0 (
     set __WHERE_ARGS=%__WHERE_ARGS% vswhere.exe
 )
 echo Tool versions:
-echo %__VERSIONS_LINE1%
-echo %__VERSIONS_LINE2%
-echo %__VERSIONS_LINE3%
+echo   %__VERSIONS_LINE1%
+echo   %__VERSIONS_LINE2%
+echo   %__VERSIONS_LINE3%
 if %__VERBOSE%==1 if defined __WHERE_ARGS (
     @rem if %_DEBUG%==1 echo %_DEBUG_LABEL% where %__WHERE_ARGS%
     echo Tool paths: 1>&2
-    for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do echo    %%p 1>&2
-)
-if %__VERBOSE%==1 if defined CMAKE_HOME (
+    for /f "tokens=*" %%p in ('where %__WHERE_ARGS%') do (
+        set "__LINE=%%p"
+        setlocal enabledelayedexpansion
+        echo    !__LINE:%USERPROFILE%=%%USERPROFILE%%! 1>&2
+    )
     echo Environment variables: 1>&2
     if defined CMAKE_HOME echo    "CMAKE_HOME=%CMAKE_HOME%" 1>&2
     if defined DOXYGEN_HOME echo    "DOXYGEN_HOME=%DOXYGEN_HOME%" 1>&2

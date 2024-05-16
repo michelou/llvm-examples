@@ -150,7 +150,7 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="-timer" ( set _TIMER=1
     ) else if "%__ARG%"=="-verbose" ( set _VERBOSE=1
     ) else (
-        echo %_ERROR_LABEL% Unknown option %__ARG% 1>&2
+        echo %_ERROR_LABEL% Unknown option "%__ARG%" 1>&2
         set _EXITCODE=1
         goto args_done
     )
@@ -161,14 +161,14 @@ if "%__ARG:~0,1%"=="-" (
     ) else if "%__ARG%"=="help" ( set _HELP=1
     ) else if "%__ARG%"=="run" ( set _COMPILE=1& set _RUN=1
     ) else (
-        echo %_ERROR_LABEL% Unknown subcommand %__ARG% 1>&2
+        echo %_ERROR_LABEL% Unknown subcommand "%__ARG%" 1>&2
         set _EXITCODE=1
         goto args_done
     )
     set /a __N+=1
 )
 shift
-goto :args_loop
+goto args_loop
 :args_done
 set _STDOUT_REDIRECT=1^>NUL
 if %_DEBUG%==1 set _STDOUT_REDIRECT=1^>CON
@@ -187,14 +187,14 @@ goto :eof
 echo Usage: %_BASENAME% { ^<option^> ^| ^<subcommand^> }
 echo.
 echo   Options:
-echo     -debug      show commands executed by this script
-echo     -timer      display total elapsed time
-echo     -verbose    display progress messages
+echo     -debug      print commands executed by this script
+echo     -timer      print total execution time
+echo     -verbose    print progress messages
 echo.
 echo   Subcommands:
 echo     clean       delete generated files
 echo     compile     generate executable
-echo     help        display this help message
+echo     help        print this help message
 echo     run         run generated executable
 goto :eof
 
@@ -211,6 +211,7 @@ if %_DEBUG%==1 ( echo %_DEBUG_LABEL% rmdir /s /q "%__DIR%" 1>&2
 )
 rmdir /s /q "%__DIR%"
 if not %ERRORLEVEL%==0 (
+    echo %_ERROR_LABEL% Failed to delete directory "!__DIR:%_ROOT_DIR%=!" 1>&2
     set _EXITCODE=1
     goto :eof
 )

@@ -9,35 +9,37 @@
   </tr>
 </table>
 
-[Ada][ada_examples], [Akka][akka_examples], [C++][cpp_examples], [Dart][dart_examples], [Deno][deno_examples], [Docker][docker_examples], [Flix][flix_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kafka][kafka_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spark][spark_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX Toolset][wix_examples] are other trending topics we are continuously monitoring.
+[Ada][ada_examples], [Akka][akka_examples], [C++][cpp_examples], [COBOL][cobol_examples], [Dart][dart_examples], [Deno][deno_examples], [Docker][docker_examples], [Erlang][erlang_examples], [Flix][flix_examples], [Golang][golang_examples], [GraalVM][graalvm_examples], [Haskell][haskell_examples], [Kafka][kafka_examples], [Kotlin][kotlin_examples], [Node.js][nodejs_examples], [Rust][rust_examples], [Scala 3][scala3_examples], [Spark][spark_examples], [Spring][spring_examples], [TruffleSqueak][trufflesqueak_examples] and [WiX Toolset][wix_examples] are other topics we are continuously monitoring.
 
 ## <span id="proj_deps">Project dependencies</span>
 
 This project depends on the following external software for the **Microsoft Windows** platform:
 
-- [CMake 3.27][cmake_downloads] ([*release notes*][cmake_relnotes])
-- [Git 2.42][git_downloads] ([*release notes*][git_relnotes])
+- [CMake 3.29][cmake_downloads] ([*release notes*][cmake_relnotes])
+- [Git 2.45][git_downloads] ([*release notes*][git_relnotes])
 - [LLVM 15 Windows binaries][llvm15_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm14_relnotes])
 - [Microsoft Visual Studio Community 2019][vs2019_downloads] <sup id="anchor_02">[2](#footnote_02)</sup> ([*release notes*][vs2019_relnotes])
 - [Python 3.11][python_downloads] ([*changelog*][python_changelog])
 
 Optionally one may also install the following software:
 
-- [Cppcheck 2.11][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
-- [Doxygen 1.9][doxygen_downloads] ([*changelog*][doxygen_changelog])
+- [Cppcheck 2.16][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
+- [Doxygen 1.10][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [LLVM 14 Windows binaries][llvm14_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm12_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04">[4](#footnote_04)</sup>
 - [Ninja 1.11][ninja_downloads] ([*release notes*][ninja_relnotes])
+- [Visual Studio Code 1.89][vscode_downloads] ([*release notes*][vscode_relnotes])
 
 <!--
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*October 2023*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*May 2024*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
-C:\opt\cmake-3.27.7-windows-x86_64\  <i>( 106 MB)</i>
-C:\opt\doxygen-1.9.8\                <i>( 117 MB)</i>
+C:\opt\cmake\                        <i>( 106 MB)</i>
+C:\opt\ConEmu\                       <i>( 26 MB)</i>
+C:\opt\doxygen\                      <i>( 117 MB)</i>
 C:\opt\Git\                          <i>( 358 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
@@ -170,8 +172,8 @@ Command [**`setenv.bat`**](setenv.bat) is executed once to setup our development
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
    clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.8, pelook v1.73,
-   cmake 3.27.7, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
-   git 2.42.0.windows.1, diff 3.10, bash 5.2.15(1)-release
+   cmake 3.29.3, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
+   git 2.45.1, diff 3.10, bash 5.2.26(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-15.0.7\bin\clang.exe
@@ -191,8 +193,8 @@ Command [**`setenv.bat`**](setenv.bat) with option **`-verbose`** displays addit
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
    clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.8, pelook v1.73,
-   cmake 3.27.7, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
-   git 2.42.0.windows.1, diff 3.10, bash 5.2.15(1)-release
+   cmake 3.29.3, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
+   git 2.45.1, diff 3.10, bash 5.2.26(1)-release
 Tool paths:
    C:\opt\LLVM-15.0.7\bin\clang.exe
    C:\opt\LLVM-15.0.7\bin\lli.exe
@@ -309,18 +311,21 @@ The <a href="http://cppcheck.sourceforge.net/" rel="external">Cppcheck</a> stati
 <dd>
 Below we execute the command <code>pacman -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></code> and then check the <code>cppcheck</code> installation :
 <pre style="font-size:80%;">
+<b>$ <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/where">where</a> /r c:\opt\msys64 pacman.exe</b>
+c:\opt\msys64\usr\bin\pacman.exe
+&nbsp;
 <b>$ <a href="https://www.archlinux.org/pacman/pacman.8.html">pacman</a> -S <a href="https://packages.msys2.org/package/mingw-w64-x86_64-cppcheck?repo=mingw64">mingw-w64-x86_64-cppcheck</a></b>
 resolving dependencies...
 looking for conflicting packages...
 &nbsp;
-Packages (1) mingw-w64-x86_64-cppcheck-2.10.2-1
+Packages (1) mingw-w64-x86_64-cppcheck-2.13.4-1
 &nbsp;
-Total Download Size:    3.43 MiB
-Total Installed Size:  13.39 MiB
+Total Installed Size:  15.80 MiB
+Net Upgrade Size:       0.00 MiB
 &nbsp;
 :: Proceed with installation? [Y/n] y
 :: Retrieving packages...
- mingw-w64-x86_64-cppcheck-2.10.2-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
+ mingw-w64-x86_64-cppcheck-2.13.4-1-any    3.4 MiB   255 KiB/s 00:14 [#############################] 100%
 (1/1) checking keys in keyring                                      [#############################] 100%
 (1/1) checking package integrity                                    [#############################] 100%
 (1/1) loading package files                                         [#############################] 100%
@@ -332,11 +337,11 @@ Optional dependencies for mingw-w64-x86_64-cppcheck
     mingw-w64-x86_64-qt5: cppcheck-gui
     mingw-w64-x86_64-python-pygments: cppcheck-htmlreport
 &nbsp;
-<b>$ <a href="https://linux.die.net/man/1/which">which</a> cppcheck</b>
-/mingw64/bin/cppcheck
+<b>$ <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/where">where</a> /r c:\opt\msys64 cppcheck.exe</b>
+c:\opt\msys64\mingw64\bin\cppcheck.exe
 &nbsp;
-<b>$ <a href="https://linux.die.net/man/1/cppcheck">cppcheck</a> --version</b>
-Cppcheck 2.10.2
+<b>$ c:\opt\msys64\mingw64\bin\<a href="https://linux.die.net/man/1/cppcheck">cppcheck</a> --version</b>
+Cppcheck 2.13.4
 </pre>
 </dd></dl>
 
@@ -437,27 +442,27 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.27.7-windows-x86_x64.zip</a>  <i>( 37 MB)</i>
-<a href="https://www.doxygen.nl/download.html">doxygen-1.9.8.windows.x64.bin.zip</a> <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.42.0-64-bit.7z.exe</a>  <i>( 41 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>              <i>(131 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>             <i>(150 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>             <i>(172 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">LLVM-12.0.1-win64.exe</a>             <i>(182 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">LLVM-13.0.1-win64.exe</a>             <i>(228 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">LLVM-14.0.6-win64.exe</a>             <i>(263 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7">LLVM-15.0.7-win64.exe</a>             <i>(263 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>             <i>( 29 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>            <i>( 31 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>            <i>( 37 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>            <i>( 41 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>            <i>( 43 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">llvm-14.0.6.src.tar.xz</a>            <i>( 47 MB)</i>
-<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7">llvm-15.0.7.src.tar.xz</a>            <i>( 47 MB)</i>
-<a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>         <i>( 86 MB)</i>
-<a href="https://github.com/ninja-build/ninja/releases/tag/v1.11.1">ninja-win.zip</a>                     <i>(0.2 MB)</i>
-<a href="https://www.python.org/downloads/windows/">python-3.11.1-amd64.exe</a>           <i>( 27 MB)</i>
-vs_2019_community.exe             <i>(1.7 GB)</i>
+<a href="https://cmake.org/download/">cmake-3.29.3-windows-x86_x64.zip</a>    <i>( 37 MB)</i>
+<a href="https://www.doxygen.nl/download.html">doxygen-1.10.0.windows.x64.bin.zip</a>  <i>( 22 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.45.1-64-bit.7z.exe</a>    <i>( 41 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>                <i>(131 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>               <i>(150 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>               <i>(172 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">LLVM-12.0.1-win64.exe</a>               <i>(182 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">LLVM-13.0.1-win64.exe</a>               <i>(228 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">LLVM-14.0.6-win64.exe</a>               <i>(263 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7">LLVM-15.0.7-win64.exe</a>               <i>(263 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">llvm-8.0.1.src.tar.xz</a>               <i>( 29 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1">llvm-10.0.1.src.tar.xz</a>              <i>( 31 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">llvm-11.1.0.src.tar.xz</a>              <i>( 37 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1">llvm-12.0.1.src.tar.xz</a>              <i>( 41 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.1">llvm-13.0.1.src.tar.xz</a>              <i>( 43 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6">llvm-14.0.6.src.tar.xz</a>              <i>( 47 MB)</i>
+<a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.7">llvm-15.0.7.src.tar.xz</a>              <i>( 47 MB)</i>
+<a href="http://repo.msys2.org/distrib/x86_64/">msys2-x86_64-20190524.exe</a>           <i>( 86 MB)</i>
+<a href="https://github.com/ninja-build/ninja/releases/tag/v1.11.1">ninja-win.zip</a>                       <i>(0.2 MB)</i>
+<a href="https://www.python.org/downloads/windows/">python-3.11.1-amd64.exe</a>             <i>( 27 MB)</i>
+vs_2019_community.exe               <i>(1.7 GB)</i>
 </pre>
 </dd>
 <dd>
@@ -466,36 +471,40 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/October 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/May 2024* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
 
-[ada_examples]: https://github.com/michelou/ada-examples
-[akka_examples]: https://github.com/michelou/akka-examples
+[ada_examples]: https://github.com/michelou/ada-examples#top
+[akka_examples]: https://github.com/michelou/akka-examples#top
 [batch_file]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
-[cpp_examples]: https://github.com/michelou/cpp-examples
+[cobol_examples]: https://github.com/michelou/cobol-examples#top
+[conemu_downloads]: https://github.com/Maximus5/ConEmu/releases
+[conemu_relnotes]: https://conemu.github.io/blog/2023/07/24/Build-230724.html
+[cpp_examples]: https://github.com/michelou/cpp-examples#top
 [cmake_downloads]: https://cmake.org/download/
 [cmake_modules]: https://cmake.org/cmake/help/v3.27/manual/cmake-modules.7.html
-[cmake_relnotes]: https://cmake.org/cmake/help/v3.27/release/3.27.html
+[cmake_relnotes]: https://cmake.org/cmake/help/v3.29/release/3.29.html
 [cppcheck_changelog]: https://github.com/danmar/cppcheck/releases
 [cppcheck_downloads]: http://cppcheck.sourceforge.net/#download
-[dart_examples]: https://github.com/michelou/dart-examples
-[deno_examples]: https://github.com/michelou/deno-examples
-[docker_examples]: https://github.com/michelou/docker-examples
+[dart_examples]: https://github.com/michelou/dart-examples#top
+[deno_examples]: https://github.com/michelou/deno-examples#top
+[docker_examples]: https://github.com/michelou/docker-examples#top
 [doxygen_changelog]: https://www.doxygen.nl/manual/changelog.html
 [doxygen_downloads]: https://www.doxygen.nl/download.html#srcbin
-[flix_examples]: https://github.com/michelou/flix-examples
+[erlang_examples]: https://github.com/michelou/erlang-examples#top
+[flix_examples]: https://github.com/michelou/flix-examples#top
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.42.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.43.0.txt
 [github_markdown]: https://github.github.com/gfm/
 [gnu_cmake]: https://cmake.org/
-[golang_examples]: https://github.com/michelou/golang-examples
-[graalvm_examples]: https://github.com/michelou/graalvm-examples
-[haskell_examples]: https://github.com/michelou/haskell-examples
-[kafka_examples]: https://github.com/michelou/kafka-examples
-[kotlin_examples]: https://github.com/michelou/kotlin-examples
+[golang_examples]: https://github.com/michelou/golang-examples#top
+[graalvm_examples]: https://github.com/michelou/graalvm-examples#top
+[haskell_examples]: https://github.com/michelou/haskell-examples#top
+[kafka_examples]: https://github.com/michelou/kafka-examples#top
+[kotlin_examples]: https://github.com/michelou/kotlin-examples#top
 [linux_opt]: https://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/opt.html
 [llvm]: https://llvm.org/
 [llvm_as]: https://llvm.org/docs/CommandGuide/llvm-as.html
@@ -518,20 +527,22 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 [msys2_downloads]: http://repo.msys2.org/distrib/x86_64/
 [ninja_downloads]: https://github.com/ninja-build/ninja/releases/tag/v1.11.1
 [ninja_relnotes]: https://github.com/ninja-build/ninja/releases/tag/v1.11.1
-[nodejs_examples]: https://github.com/michelou/nodejs-examples
+[nodejs_examples]: https://github.com/michelou/nodejs-examples#top
 [pelook_exe]: http://bytepointer.com/tools/index.htm#pelook
 [python_changelog]: https://docs.python.org/release/3.11.1/whatsnew/changelog.html
 [python_downloads]: https://www.python.org/downloads/
-[rust_examples]: https://github.com/michelou/rust-examples
-[scala3_examples]: https://github.com/michelou/dotty-examples
-[spark_examples]: https://github.com/michelou/spark-examples
-[spring_examples]: https://github.com/michelou/spring-examples
-[trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples
+[rust_examples]: https://github.com/michelou/rust-examples#top
+[scala3_examples]: https://github.com/michelou/dotty-examples#top
+[spark_examples]: https://github.com/michelou/spark-examples#top
+[spring_examples]: https://github.com/michelou/spring-examples#top
+[trufflesqueak_examples]: https://github.com/michelou/trufflesqueak-examples#top
 [vs2019_downloads]: https://visualstudio.microsoft.com/en/downloads/
 [vs2019_relnotes]: https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes
+[vscode_downloads]: https://code.visualstudio.com/#alt-downloads
+[vscode_relnotes]: https://code.visualstudio.com/updates/
 [vswhere_exe]: https://github.com/microsoft/vswhere
 [windows_cmake]: https://devblogs.microsoft.com/cppblog/cmake-support-in-visual-studio/
 [windows_limitation]: https://support.microsoft.com/en-gb/help/830473/command-prompt-cmd-exe-command-line-string-limitation
 [windows_subst]: https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/subst
-[wix_examples]: https://github.com/michelou/wix-examples
+[wix_examples]: https://github.com/michelou/wix-examples#top
 [zip_archive]: https://www.howtogeek.com/178146/htg-explains-everything-you-need-to-know-about-zipped-files/
