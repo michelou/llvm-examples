@@ -1,4 +1,4 @@
-# <span id="top">LLVM Resources</span> <span style="size:30%;"><a href="README.md">↩</a></span>
+# <span id="top">LLVM Resources</span> <span style="font-size:90%;">[↩](README.md#top)</span>
 
 <table style="font-family:Helvetica,Arial;line-height:1.6;">
   <tr>
@@ -53,15 +53,17 @@
 
 ## <span id="books">Books</span> [**&#x25B4;**](#top)
 
+- [Learn LLVM 17][book_nacke_2nd] (2<sup>nd</sup> Edition) by Kai Nacke, January 2024.<br/><span style="font-size:80%;">(Packt, ISBN 978-1-83763-134-6, 416 pages)</span>
 - [Advanced Compiler Design with LLVM][book_chisnall] by David Chisnall, March 2022.<br/><span style="font-size:80%;">(Pearson, ISBN  978-0-1337-9864-7, 360 pages)</span>
-- [Learn LLVM 12][book_nacke] by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8392-1350-2, 392 pages)</span>
 - [LLVM Techniques, Tips and Best Practices][book_hsu] by Min-Yih Hsu, April 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8388-2495-2, 370 pages)</span>
 - [Tutorial: Creating an LLVM Backend for the Cpu0 Architecture][book_cpu0] by Chen Chung-Shu, February 2020 (*Release 3.9.1*).
 - [Mapping High Level Constructs to LVVM IR](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/) (*ebook*) by Michael Rodle, 2018.
 - [LLVM Essentials][book_sarda] by S. Sarda &amp; M. Pandey, December 2015<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-080-1, 166 pages)</span>.
 - [LLVM Cookbook][book_pandey], by M. Pandey &amp; S. Sarda, May 2015.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78528-598-1, 296 pages)</span>
 - [Getting Started with LLVM Core Libraries][book_lopez] by B. Cardoso Lopez &amp; R. Auler, August 2014.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-78216-692-4, 314 pages)</span>
-
+<!--
+- [Learn LLVM 12][book_nacke] by Kai Nacke, May 2021.<br/><span style="font-size:80%;">(Packt Publishing, ISBN 978-1-8392-1350-2, 392 pages)</span>
+-->
 
 ## <span id="courses">Courses</span>
 
@@ -114,7 +116,7 @@
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/December 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2024* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -140,6 +142,7 @@
 [book_hsu]: https://www.packtpub.com/product/llvm-techniques-tips-and-best-practices-clang-and-middle-end-libraries/9781838824952
 [book_lopez]: https://www.packtpub.com/application-development/getting-started-llvm-core-libraries
 [book_nacke]: https://www.packtpub.com/product/learn-llvm-12/978183921350
+[book_nacke_2nd]: https://www.packtpub.com/product/learn-llvm-17-second-edition/9781837631346
 [book_pandey]: https://www.packtpub.com/application-development/llvm-cookbook
 [book_sarda]: https://www.packtpub.com/application-development/llvm-essentials
 [course_hirvisalo]: https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015

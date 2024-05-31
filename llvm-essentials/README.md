@@ -1,4 +1,4 @@
-# <span id="top">Book <i>LLVM Essentials</i></span> <span style="size:30%;"><a href="../README.md">⬆</a></span>
+# <span id="top">Book <i>LLVM Essentials</i></span> <span style="font-size:90%;">[⬆](../README.md#top)</span>
 
 <table style="font-family:Helvetica,Arial;font-size:14px;line-height:1.6;">
   <tr>
@@ -154,7 +154,7 @@ C:\opt\LLVM-15.0.6\bin\lli.exe: error: 'main' function not found in module.
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2023* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2024* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- hyperrefs -->

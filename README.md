@@ -23,8 +23,8 @@ This project depends on the following external software for the **Microsoft Wind
 
 Optionally one may also install the following software:
 
-- [Cppcheck 2.16][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
-- [Doxygen 1.10][doxygen_downloads] ([*changelog*][doxygen_changelog])
+- [Cppcheck 2.14][cppcheck_downloads] <sup id="anchor_03">[3](#footnote_03)</sup> ([*changelog*][cppcheck_changelog])
+- [Doxygen 1.11][doxygen_downloads] ([*changelog*][doxygen_changelog])
 - [LLVM 14 Windows binaries][llvm14_downloads] <sup id="anchor_01"><a href="#footnote_01">1</a></sup> ([*release notes*][llvm12_relnotes])
 - [MSYS2][msys2_downloads] <sup id="anchor_04">[4](#footnote_04)</sup>
 - [Ninja 1.11][ninja_downloads] ([*release notes*][ninja_relnotes])
@@ -34,12 +34,12 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*May 2024*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*June 2024*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
 C:\opt\cmake\                        <i>( 106 MB)</i>
-C:\opt\ConEmu\                       <i>( 26 MB)</i>
-C:\opt\doxygen\                      <i>( 117 MB)</i>
+C:\opt\ConEmu\                       <i>(  26 MB)</i>
+C:\opt\doxygen\                      <i>( 118 MB)</i>
 C:\opt\Git\                          <i>( 358 MB)</i>
 C:\opt\LLVM-8.0.1\                   <i>(1.1  GB)</i>
 C:\opt\LLVM-9.0.1\                   <i>(1.3  GB)</i>
@@ -51,11 +51,12 @@ C:\opt\LLVM-15.0.7\                  <i>(3.1 GB)</i>
 C:\opt\LLVM-16.0.6\                  <i>(2.5 GB)</i>
 C:\opt\msys64\                       <i>(2.85 GB)</i>
 C:\opt\ninja-1.11.1\                 <i>( 0.5 MB)</i>
-C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\  <i>(2.98 GB)</i>
 C:\opt\Python-3.11.1\                <i>(  61 MB)</i>
 </pre>
-
+<!-->
+C:\Program Files\Cppcheck\           <i>(  48 MB)</i>
+-->
 <!-- cmake 3.23.2 = 92 MB, 3.24.0 = 95 MB, 3.26.0 = 98 MB, 2.26.3 = 100 MB -->
 <!-- cmake 3.37.0 = 106 MB -->
 
@@ -171,8 +172,8 @@ Command [**`setenv.bat`**](setenv.bat) is executed once to setup our development
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.8, pelook v1.73,
-   cmake 3.29.3, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
+   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.11.0, pelook v1.73,
+   cmake 3.29.3, cppcheck 2.14.1, make 4.4.1, gcc 14.1.0, python 3.11.1,
    git 2.45.1, diff 3.10, bash 5.2.26(1)-release
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
@@ -192,8 +193,8 @@ Command [**`setenv.bat`**](setenv.bat) with option **`-verbose`** displays addit
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.9.8, pelook v1.73,
-   cmake 3.29.3, cppcheck 2.10, make 4.3, gcc 13.2.0, python 3.11.1,
+   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.11.0, pelook v1.73,
+   cmake 3.29.3, cppcheck 2.14.1, make 4.4.1, gcc 14.1.0, python 3.11.1,
    git 2.45.1, diff 3.10, bash 5.2.26(1)-release
 Tool paths:
    C:\opt\LLVM-15.0.7\bin\clang.exe
@@ -213,7 +214,7 @@ Tool paths:
 Environment variables:
    "CMAKE_HOME=C:\opt\cmake-3.27.7-win64-x64"
    "CPPCHECK_HOME=C:\Program Files\Cppcheck"
-   "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
+   "DOXYGEN_HOME=C:\opt\doxygen"
    "LLVM_HOME=C:\opt\LLVM-15.0.7"
    "MSVC_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
    "MSVS_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2019"
@@ -356,7 +357,7 @@ We give here three differences between <a href="http://repo.msys2.org/distrib/x8
 <tr><td>Installation size</td><td>4.74 GB</td><td>614 MB</td></tr>
 <tr>
   <td>Version/architecture</td>
-  <td><a href="https://gcc.gnu.org/gcc-11/changes.html"><code>gcc 13.2.0</code></a></td>
+  <td><a href="https://gcc.gnu.org/gcc-14/changes.html"><code>gcc 14.1.0</code></a></td>
   <td><a href="https://gcc.gnu.org/gcc-8/changes.html"><code>gcc 8.1</code></a></td>
 </tr>
 <tr>
@@ -390,7 +391,7 @@ c:\opt\msys64\usr\bin\make.exe
 c:\opt\msys64\usr\bin\pacman.exe
 &nbsp;
 <b>&gt; c:\opt\msys64\mingw64\bin\<a href="https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html">gcc.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> gcc</b>
-gcc (Rev3, Built by MSYS2 project) 13.2.0
+gcc (Rev3, Built by MSYS2 project) 14.1.0
 &nbsp;
 <b>&gt; c:\opt\msys64\usr\bin\<a href="https://www.gnu.org/software/make/manual/make.html">make.exe</a> --version | <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/findstr">findstr</a> Make</b>
 GNU Make 4.4
@@ -443,7 +444,7 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 <dd>
 <pre style="font-size:80%;max-width:500px;">
 <a href="https://cmake.org/download/">cmake-3.29.3-windows-x86_x64.zip</a>    <i>( 37 MB)</i>
-<a href="https://www.doxygen.nl/download.html">doxygen-1.10.0.windows.x64.bin.zip</a>  <i>( 22 MB)</i>
+<a href="https://www.doxygen.nl/download.html">doxygen-1.11.0.windows.x64.bin.zip</a>  <i>( 22 MB)</i>
 <a href="https://git-scm.com/download/win">PortableGit-2.45.1-64-bit.7z.exe</a>    <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>                <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>               <i>(150 MB)</i>
@@ -471,7 +472,7 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/May 2024* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/June 2024* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->
@@ -497,7 +498,7 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 [flix_examples]: https://github.com/michelou/flix-examples#top
 [git_downloads]: https://git-scm.com/download/win
 [git_exe]: https://git-scm.com/docs/git
-[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.43.0.txt
+[git_relnotes]: https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.45.1.txt
 [github_markdown]: https://github.github.com/gfm/
 [gnu_cmake]: https://cmake.org/
 [golang_examples]: https://github.com/michelou/golang-examples#top

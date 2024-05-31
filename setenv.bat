@@ -611,10 +611,10 @@ if %ERRORLEVEL%==0 (
     for /f "tokens=1,2,3,*" %%i in ('"%LLVM_HOME%\bin\opt.exe" --version 2^>^&1 ^| findstr version') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% opt %%k,"
     set __WHERE_ARGS=%__WHERE_ARGS% "%LLVM_HOME%\bin:opt.exe"
 )
-where /q "%DOXYGEN_HOME%\bin:doxygen.exe"
+where /q "%DOXYGEN_HOME%:doxygen.exe"
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1,*" %%i in ('"%DOXYGEN_HOME%\bin\doxygen.exe" -v 2^>^&1') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% doxygen %%i,"
-    set __WHERE_ARGS=%__WHERE_ARGS% "%DOXYGEN_HOME%\bin:doxygen.exe"
+    for /f "tokens=1,*" %%i in ('"%DOXYGEN_HOME%\doxygen.exe" -v 2^>^&1') do set "__VERSIONS_LINE1=%__VERSIONS_LINE1% doxygen %%i,"
+    set __WHERE_ARGS=%__WHERE_ARGS% "%DOXYGEN_HOME%:doxygen.exe"
 )
 set "__PELOOK_CMD=%ROOT_DIR%bin\pelook.exe"
 @rem if %ERRORLEVEL%==0 (
