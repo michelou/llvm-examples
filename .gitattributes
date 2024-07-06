@@ -3,28 +3,39 @@
 
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
+# (see https://github.com/github-linguist/linguist/blob/master/lib/linguist/languages.yml)
 *.ada text linguist-language=Ada
 *.adb text linguist-language=Ada
+*.adc text linguist-language=Ada
 *.ads text linguist-language=Ada
-*.awk text linguist-vendored=false
+*.awk text linguist-language=Awk
 *.c text linguist-language=C
 *.cabal text linguist-language=Cabal Config
+*.cbl text linguist-language=COBOL
+*.cob text linguist-language=COBOL
 *.cpp text linguist-language=C++
+*.cpy text linguist-language=COBOL
+*.cs text linguist-language=CSharp
 *.daml text linguist-language=Haskell
+*.dart text linguist-language=Dart
+*.erl text linguist-language=Erlang
 *.es text linguist-language=JavaScript
+*.flix text linguist-language=Flix
 *.go text linguist-language=Go
 *.h text linguist-language=C
 *.hpp text linguist-language=C++
 *.hs text linguist-language=Haskell
 *.hsc text linguist-language=Haskell
+*.inc text linguist-language=Makefile
 *.ini text linguist-language=INI
 *.java text linguist-language=Java
 *.js text linguist-language=JavaScript
 *.json text linguist-language=JSON
 *.jsx text linguist-language=JavaScript
-*.kt text linguist-vendored=Kotlin
-*.kts text linguist-vendored=Kotlin
+*.kt text linguist-language=Kotlin
+*.kts text linguist-language=Kotlin
 *.md text linguist-documentation=true
+*.mod test linguist-language=Modula-2
 *.properties text linguist-language=INI
 *.py text linguist-language=Python
 *.rs text linguist-language=Rust
@@ -34,7 +45,11 @@
 *.txt text linguist-language=Text
 *.xml text linguist-language=XML
 *.xslt text linguist-language=XSLT
+*.wxi text linguist-language=XML
+*.wxl text linguist-language=XML
+*.wxs text linguist-language=XML
 *.yaml text linguist-language=MiniYAML
+*.zig text linguist-language=Zig
 
 # Declare files that will always have CRLF line endings on checkout.
 *.bat eol=crlf linguist-detectable=false
@@ -52,8 +67,10 @@ Makefile.inc text eol=crlf linguist-detectable=false
 # Denote all files that are truly binary and should not be modified.
 *.bmp binary
 *.class binary
+*.dat binary
 *.dll binary
 *.gif binary
+*.ico binary
 *.jar binary
 *.jpg binary
 *.m4a binary
@@ -62,4 +79,7 @@ Makefile.inc text eol=crlf linguist-detectable=false
 *.rtf binary
 *.zip binary
 
+# Project specific attributes
+# https://aldomann.com/post/override-github-linguist-with-gitattributes-files/
+bin/* linguist-vendored
 docs/* linguist-documentation

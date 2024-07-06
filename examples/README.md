@@ -1,4 +1,4 @@
-# <span id="top">LLVM examples on Windows</span> <span style="size:30%;"><a href="../README.md">⬆</a></span>
+# <span id="top">LLVM examples on Windows</span> <span style="font-size:90%;">[⬆](../README.md#top)</span>
 
 <table style="font-family:Helvetica,Arial;line-height:1.6;">
   <tr>
@@ -21,9 +21,23 @@ In this document we present the following examples in more detail (each of them 
 - [**`llvm-hello`**](#llvm-hello)
 
 
-## <span id="hello">`hello`</span>
+## <span id="hello">`hello` Example</span>
 
-Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** to the console (sources: [**`hello.c`**](hello/src/main/c/hello.c) or [**`hello.cpp`**](hello/src/main/cpp/hello.cpp)).
+Example [**`hello\`**](hello/) simply prints the message **`"Hello world !"`** to the console. It has the following directory structure :
+
+<pre style="font-size:80%;">
+<b>&gt; <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tree" rel="external">tree</a> /a /f . | <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr" rel="external">findstr</a> /v /b [A-Z]</b>
+|   <a href="./hello/build.bat">build.bat</a>
+|   <a href="./hello/CMakeLists.txt">CMakeLists.txt</a>
+|   <a href="./hello/Doxyfile">Doxyfile</a>
+|   <a href="./hello/Makefile">Makefile</a>
+\---<b>src</b>
+    \---<b>main</b>
+        +---<b>c</b>
+        |       <a href="./hello/src/main/c/hello.c">hello.c</a>
+        \---<b>cpp</b>
+                <a href="./hello/src/main/cpp/hello.cpp">hello.cpp</a>
+</pre>
 
 Our main goal here is to refresh our knowledge of the build tools [**`Clang`**][llvm_clang], [**`CMake`**][gnu_cmake], [**`GCC`**][gnu_gcc], [**`GNU Make`**][gnu_make] and [**`MSBuild`**][windows_msbuild] (see also the page [*"Getting Started with the LLVM System using Microsoft Visual Studio"*][llvm_msvs] from the [LLVM documentation][llvm_docs]). 
 
@@ -82,7 +96,7 @@ Command [**`build.bat -debug run`**](hello/build.bat) uses the [**`MSVC`**][wind
 <b>&gt; <a href="hello/build.bat">build</a> -debug run</b>
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] Toolset: MSVC/MSBuild, Project: hello
 [build] Configuration: Release, Platform: x64
@@ -119,7 +133,7 @@ Command [**`build.bat -debug -clang clean run`**](hello/build.bat) uses the [**`
 <b>&gt; <a href="hello/build.bat">build</a> -debug -clang clean run</b>
 [build] Options    : _TIMER=0 _TOOLSET=clang _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: Clang/GNU Make, Project: hello
@@ -154,7 +168,7 @@ Finally, command [**`build.bat -debug -gcc clean run`**](hello/build.bat) uses t
 <b>&gt; <a href="hello/build.bat">build</a> -debug -gcc clean run</b>
 [build] Options    : _TIMER=0 _TOOLSET=gcc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\hello\build"
 [build] Toolset: GCC/GNU Make, Project: hello
@@ -188,7 +202,7 @@ Command [**`build.bat -debug lint`**](hello/build.bat) performs code analysis wi
 <b>&gt; <a href="hello/build.bat">build</a> -debug lint</b>
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=0 _COMPILE=0 _DOC=0 _DUMP=0 _LINT=1 _RUN=0
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] "C:\Program Files\Cppcheck\cppcheck.exe" --template=vs --std=c++17 "L:\examples\hello\src"
 Checking L:\examples\hello\src\main\c\hello.c ...
@@ -200,9 +214,21 @@ Checking L:\examples\hello\src\main\cpp\hello.cpp ...
 
 ## <span id="tut1">`JITTutorial1` Example</span>
 
-Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Function"*][llvm_tutorial1] (*outdated*) from the LLVM 2.6 tutorial.
+Example [**`JITTutorial1\`**](JITTutorial1/) is based on example [*"A First Function"*][llvm_tutorial1] (*outdated*) from the LLVM 2.6 tutorial. It defines a function **`mul_add`** and generates its [IR code](llvm_ir) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
 
-It defines a function **`mul_add`** and generates its [IR code](llvm_ir) (source: [**`tut1.cpp`**](JITTutorial1/src/tut1.cpp)).
+This example has the following directory structure :
+
+<pre style="font-size:80%;">
+<b>&gt; <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tree" rel="external">tree</a> /a /f . | <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/finstr" rel="external">findstr</a> /v /b [A-Z]</b>
+|   <a href="./JITTutorial1/00download.txt">00download.txt</a>
+|   <a href="./JITTutorial1/build.bat">build.bat</a>
+|   <a href="./JITTutorial1/build.sh">build.sh</a>
+|   <a href="./JITTutorial1/CMakeLists.txt">CMakeLists.txt</a>
+|   <a href="./JITTutorial1/Doxyfile">Doxyfile</a>
+|   <a href="./JITTutorial1/Makefile">Makefile</a>
+\---<b>src</b>
+        <a href="./JITTutorial1/src/tut1.cpp">tut1.cpp</a>
+</pre>
 
 Command [**`build.bat`**](JITTutorial1/build.bat) with no argument displays the available options and subcommands :
 
@@ -274,7 +300,7 @@ Finally, command [**`build.bat -debug clean run`**](JITTutorial1/build.bat) disp
 <b>&gt; <a href="JITTutorial1/build.bat">build</a> -debug clean run</b> 
 [build] Options    : _TIMER=0 _TOOLSET=msvc _VERBOSE=0
 [build] Subcommands: _CLEAN=1 _COMPILE=1 _DOC=0 _DUMP=0 _LINT=0 _RUN=1
-[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen-1.9.8"
+[build] Variables  : "DOXYGEN_HOME=C:\opt\doxygen"
 [build] Variables  : "MSYS_HOME=C:\opt\msys64"
 [build] rmdir /s /q "L:\examples\JITTUT~1\build"
 [build] Toolset: MSVC/MSBuild, Project: JITTutorial1
