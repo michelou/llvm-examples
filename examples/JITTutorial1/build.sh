@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2023 Stéphane Micheloud
+# Copyright (c) 2018-2024 Stéphane Micheloud
 #
 # Licensed under the MIT License.
 #
@@ -52,13 +52,13 @@ args() {
     for arg in "$@"; do
         case "$arg" in
         ## options
-		-clang)       TOOLSET=clang ;;
-        -debug)       DEBUG=true ;;
-		-gcc)         TOOLSET=gcc ;;
-        -help)        HELP=true ;;
-		-msvc)        TOOLSET=msvc ;;
-        -timer)       TIMER=true ;;
-        -verbose)     VERBOSE=true ;;
+		-clang)   TOOLSET=clang ;;
+        -debug)   DEBUG=true ;;
+		-gcc)     TOOLSET=gcc ;;
+        -help)    HELP=true ;;
+		-msvc)    TOOLSET=msvc ;;
+        -timer)   TIMER=true ;;
+        -verbose) VERBOSE=true ;;
         -*)
             error "Unknown option $arg"
             EXITCODE=1 && return 0
@@ -204,8 +204,8 @@ EXITCODE=0
 
 ROOT_DIR="$(getHome)"
 
-SOURCE_DIR=$ROOT_DIR/src/main/cpp
-TARGET_DIR=$ROOT_DIR/build
+SOURCE_DIR="$ROOT_DIR/src/main/cpp"
+TARGET_DIR="$ROOT_DIR/build"
 
 CLEAN=false
 COMPILE=false

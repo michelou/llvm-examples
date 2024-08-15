@@ -12,24 +12,25 @@ else
 ARCH = x86
 endif
 
-TARGET_EXT   = .exe
-PSEP         = ;
-LLVM_BINPATH = $(subst \,/,$(LLVM_HOME))/bin
+TARGET_EXT  = .exe
+PSEP        = ;
+MSYS_PATH   = $(subst \,/,$(MSYS_HOME))
+LLVM_PATH   = $(subst \,/,$(LLVM_HOME))
 #
-CLANG        = $(LLVM_BINPATH)/clang.exe
-LLC          = $(LLVM_BINPATH)/llc.exe
-LLVM_CONFIG  = $(LLVM_BINPATH)/llvm-config.exe
-CL           = $(MSVC_HOME)/bin/Host$(ARCH)/$(ARCH)/cl.exe
+CLANG       = $(LLVM_PATH)/bin/clang.exe
+LLC         = $(LLVM_PATH))/bin/llc.exe
+LLVM_CONFIG = $(LLVM_PATH))/bin/llvm-config.exe
+CL          = $(MSVC_HOME)/bin/Host$(ARCH)/$(ARCH)/cl.exe
 ## $(MSYS_HOME)\usr\bin\{cp.exe, make.exe, wget.exe}
-CC           = /mingw64/bin/cc.exe
-CP           = /usr/bin/cp.exe
-CXX          = /mingw64/bin/g++.exe
-ECHO         = /usr/bin/echo.exe
-FIND         = /usr/bin/find.exe
-MKDIR        = /usr/bin/mkdir.exe
-RM           = /usr/bin/rm.exe
-TEST         = /usr/bin/test.exe
-TOUCH        = /usr/bin/touch.exe
+CC          = /mingw64/bin/cc.exe
+CP          = /usr/bin/cp.exe
+CXX         = /mingw64/bin/g++.exe
+ECHO        = /usr/bin/echo.exe
+FIND        = /usr/bin/find.exe
+MKDIR       = /usr/bin/mkdir.exe
+RM          = /usr/bin/rm.exe
+TEST        = /usr/bin/test.exe
+TOUCH       = /usr/bin/touch.exe
 #
 MSVC_INCPATH   = /include
 MSVC_LIBPATH   = /lib/$(ARCH)

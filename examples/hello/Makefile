@@ -1,18 +1,37 @@
+##
+## Copyright (c) 2018-2024 Stéphane Micheloud
+##
+## Licensed under the MIT License.
+##
+##############################################################################
+
+TOOLSET ?= gcc
+CXXSTD ?= c++20
+
 include ../Makefile.inc
 
 ##############################################################################
 ## main rules
 
-SOURCE_FILES=$(wildcard src/main/cpp/*.cpp)
+TARGET_DIR = build
 
-PROGRAM_NAME=hello
+ifeq ($(TOOLSET),gcc)
+CXXFLAGS = --std=$(CXXSTD) -O2 -Wall -Wno-unused-variable
+CXXLINK =
+else
+$(error Variable TOOLSET is invalid)
+endif
+CXXDEBUG =
+CXXVARS =
 
-CONFIG=$(shell $(LLVM_CONFIG) --cxxflags --ldflags --system-libs --libs core)
+SOURCE_FILES = $(wildcard src/main/cpp/*.cpp)
+
+PROGRAM_NAME = hello
 
 all: build
 
 build: $(SOURCE_FILES)
-	"$(CXX)" -g -O3 $(CONFIG) -o main $<
+	"$(CXX)" $(CXXDEBUG) $(CXXFLAGS) $(CXXVARS) -o main $^ $(CXXLINK)
 
 executable: build
 	./main
@@ -24,11 +43,7 @@ run: executable
 	./$(PROGRAM_NAME)
 
 clean:
-	[ -f "main" ] && "$(RM)" -f main
-	[ -d "main.dSYM" ] && "$(RM)" -rf main.dSYM
-	[ -f "$(PROGRAM_NAME).ll" ] && $(RM) -f $(PROGRAM_NAME).ll
-	[ -f "$(PROGRAM_NAME).o" ] && $(RM) -f $(PROGRAM_NAME).o
-	[ -f "$(PROGRAM_NAME)" ] && $(RM) -f $(PROGRAM_NAME)
+	"$(RM)" -rf "$(TARGET_DIR)"
 
 help:
 	@$(ECHO) "Usage: make all|build|clean|executable|help|run"

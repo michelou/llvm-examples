@@ -194,7 +194,8 @@ for /f "tokens=1,2,*" %%f in ('subst') do (
     set "__SUBST_DRIVE=%%f"
     set "__SUBST_DRIVE=!__SUBST_DRIVE:~0,2!"
     set "__SUBST_PATH=%%h"
-    if "!__SUBST_DRIVE!"=="!__GIVEN_PATH:~0,2!" (
+    @rem Windows local file systems are not case sensitive (by default)
+    if /i "!__SUBST_DRIVE!"=="!__GIVEN_PATH:~0,2!" (
         set _DRIVE_NAME=!__SUBST_DRIVE:~0,2!
         if %_DEBUG%==1 ( echo %_DEBUG_LABEL% Select drive !_DRIVE_NAME! for which a substitution already exists 1>&2
         ) else if %_VERBOSE%==1 ( echo Select drive !_DRIVE_NAME! for which a substitution already exists 1>&2
@@ -670,7 +671,11 @@ if %ERRORLEVEL%==0 (
 @rem see https://github.com/Microsoft/vswhere/releases
 where /q vswhere.exe
 if %ERRORLEVEL%==0 (
-    for /f "tokens=1-4,5,*" %%i in ('vswhere -help ^| findstr /R /C:"version [0-9][0-9.+]*"') do set "__VERSIONS_LINE3=%__VERSIONS_LINE3% vswhere %%m"
+    for /f "tokens=1-4,5,*" %%i in ('vswhere -help ^| findstr /R /C:"version [0-9][0-9.+]*"') do (
+        for /f "delims=+ tokens=1,*" %%v in ("%%m") do set "__VERSION=%%v"
+        setlocal enabledelayedexpansion
+        set "__VERSIONS_LINE3=%__VERSIONS_LINE3% vswhere !__VERSION!"
+    )
     set __WHERE_ARGS=%__WHERE_ARGS% vswhere.exe
 )
 echo Tool versions:

@@ -34,7 +34,7 @@ Optionally one may also install the following software:
 > **:mag_right:** Git for Windows provides a BASH emulation used to run [**`git`**](https://git-scm.com/docs/git) from the command line (as well as over 250 Unix commands like [**`awk`**](https://www.linux.org/docs/man1/awk.html), [**`diff`**](https://www.linux.org/docs/man1/diff.html), [**`file`**](https://www.linux.org/docs/man1/file.html), [**`grep`**](https://www.linux.org/docs/man1/grep.html), [**`more`**](https://www.linux.org/docs/man1/more.html), [**`mv`**](https://www.linux.org/docs/man1/mv.html), [**`rmdir`**](https://www.linux.org/docs/man1/rmdir.html), [**`sed`**](https://www.linux.org/docs/man1/sed.html) and [**`wc`**](https://www.linux.org/docs/man1/wc.html)).
 -->
 
-For instance our development environment looks as follows (*July 2024*) <sup id="anchor_05">[5](#footnote_05)</sup>:
+For instance our development environment looks as follows (*August 2024*) <sup id="anchor_05">[5](#footnote_05)</sup>:
 
 <pre style="font-size:80%;max-width:560px;">
 C:\opt\cmake\                        <i>( 106 MB)</i>
@@ -172,9 +172,9 @@ Command [**`setenv.bat`**](setenv.bat) is executed once to setup our development
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a></b>
 Tool versions:
-   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.11.0, pelook v1.73,
-   cmake 3.30.0, cppcheck 2.14.1, make 4.4.1, gcc 14.1.0, python 3.11.1,
-   git 2.45.2, diff 3.10, bash 5.2.26(1)
+   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.12.0, pelook v1.73,
+   cmake 3.30.2, cppcheck 2.14.1, make 4.4.1, gcc 14.1.0, python 3.11.1,
+   git 2.46.0, diff 3.10, bash 5.2.26(1)
 
 <b>&gt; <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/where_1">where</a> clang git</b>
 C:\opt\LLVM-15.0.7\bin\clang.exe
@@ -193,9 +193,9 @@ Command [**`setenv.bat`**](setenv.bat) with option **`-verbose`** displays addit
 <pre style="font-size:80%;">
 <b>&gt; <a href="setenv.bat">setenv</a> -verbose</b>
 Tool versions:
-   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.11.0, pelook v1.73,
-   cmake 3.30.0, cppcheck 2.14.1, make 4.4.1, gcc 14.1.0, python 3.11.1,
-   git 2.45.2, diff 3.10, bash 5.2.26(1)
+   clang 15.0.7, lli 15.0.7, opt 15.0.7, doxygen 1.12.0, pelook v1.73,
+   cmake 3.30.2, cppcheck 2.14.1, make 4.4.1, gcc 14.1.0, python 3.11.1,
+   git 2.46.0, diff 3.10, bash 5.2.26(1), vswhere 2.7.1
 Tool paths:
    C:\opt\LLVM-15.0.7\bin\clang.exe
    C:\opt\LLVM-15.0.7\bin\lli.exe
@@ -443,9 +443,9 @@ In our case we downloaded the following installation files (see <a href="#proj_d
 </dd>
 <dd>
 <pre style="font-size:80%;max-width:500px;">
-<a href="https://cmake.org/download/">cmake-3.30.0-windows-x86_x64.zip</a>    <i>( 37 MB)</i>
-<a href="https://www.doxygen.nl/download.html">doxygen-1.11.0.windows.x64.bin.zip</a>  <i>( 22 MB)</i>
-<a href="https://git-scm.com/download/win">PortableGit-2.45.2-64-bit.7z.exe</a>    <i>( 41 MB)</i>
+<a href="https://cmake.org/download/">cmake-3.30.2-windows-x86_x64.zip</a>    <i>( 37 MB)</i>
+<a href="https://www.doxygen.nl/download.html">doxygen-1.12.0.windows.x64.bin.zip</a>  <i>( 22 MB)</i>
+<a href="https://git-scm.com/download/win">PortableGit-2.46.0-64-bit.7z.exe</a>    <i>( 41 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-8.0.1">LLVM-8.0.1-win64.exe</a>                <i>(131 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.0">LLVM-10.0.0-win64.exe</a>               <i>(150 MB)</i>
 <a href="https://github.com/llvm/llvm-project/releases/tag/llvmorg-11.1.0">LLVM-11.1.0-win64.exe</a>               <i>(172 MB)</i>
@@ -472,7 +472,7 @@ Microsoft does not provide an offline installer for <a href="https://visualstudi
 
 ***
 
-*[mics](https://lampwww.epfl.ch/~michelou/)/July 2024* [**&#9650;**](#top)
+*[mics](https://lampwww.epfl.ch/~michelou/)/August 2024* [**&#9650;**](#top)
 <span id="bottom">&nbsp;</span>
 
 <!-- link refs -->

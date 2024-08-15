@@ -1,18 +1,25 @@
+##
+## Copyright (c) 2018-2024 Stéphane Micheloud
+##
+## Licensed under the MIT License.
+##
+##############################################################################
+
 include ../Makefile.inc
 
 ##############################################################################
 ## main rules
 
-SOURCE_FILES=$(wildcard src/main/cpp/*.cpp)
+SOURCE_FILES = $(wildcard src/main/cpp/*.cpp)
 
-PROGRAM_NAME=JITTutorial1
+PROGRAM_NAME = JITTutorial1
 
-CONFIG=$(shell $(LLVM_CONFIG) --cxxflags --ldflags --system-libs --libs core)
+CONFIG = $(shell $(LLVM_CONFIG) --cxxflags --ldflags --system-libs --libs core)
 
 all: build
 
 build: $(SOURCE_FILES)
-	$(CXX) -g -O3 $(CONFIG) -o main $<
+	"$(CXX)" -g -O3 $(CONFIG) -o main $<
 
 executable: build
 	./main
